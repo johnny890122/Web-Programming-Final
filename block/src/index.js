@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './Block';
 import reportWebVitals from './reportWebVitals';
 
 // 要加這個

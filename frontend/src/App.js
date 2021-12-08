@@ -1,9 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css';
+
 import { Fragment } from 'react';
 import Header from './containers/Header.js';
 import NavBar from './containers/NavBar.js';
 import Body from './containers/Body.js'
+import Block from './components/Block.js'
 
 
 function App() {
@@ -12,6 +14,10 @@ function App() {
 			<Header / >
 			<NavBar / >
 			<Body / >
+			<Block 
+				title="Block1" 
+				description="This is the first testing block."
+			/>
 		</>
 	)
 }
