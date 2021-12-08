@@ -25,9 +25,7 @@ function App() {
 
       		<BasicTable />
 
-      		<div style={{width:"20cm"}}>
-				<CreateTeam / >
-			</div>
+			<CreateTeam / >
 		</>
 
 	)
