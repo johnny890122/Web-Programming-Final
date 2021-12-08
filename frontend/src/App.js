@@ -8,6 +8,7 @@ import Body from './containers/Body.js';
 import Block from './components/Block.js';
 import Gantt from "./components/Gantt";
 import BasicTable from "./components/Table";
+import CreateTeam from "./components/CreateTeam"
 
 function App() {
 	return (
@@ -23,7 +24,12 @@ function App() {
 			<Gantt />
 
       		<BasicTable />
+
+      		<div style={{width:"20cm"}}>
+				<CreateTeam / >
+			</div>
 		</>
+
 	)
 }
 
