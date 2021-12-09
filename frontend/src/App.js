@@ -1,24 +1,18 @@
 import './App.css';
-import Calendar from './Components/Calendar';
-import UserTeam from './Components/UserTeam';
-import UserAchievement from './Components/UserAchievement';
-import TeamHP from './Components/TeamHp';
-import TeamPost from './Components/TeamPost';
-import TeamScore from './Components/TeamScore';
-import TeamVote from './Components/TeamVote';
+import { Fragment } from 'react';
+import Header from './containers/Header.js';
+import NavBar from './containers/NavBar.js';
+import Body from './containers/Body.js'
+
 
 function App() {
-  return (
-    <section>
-      <Calendar/>
-      <UserTeam/>
-      <UserAchievement/>
-      <TeamHP/>
-      <TeamPost/>
-      <TeamScore/>
-      <TeamVote/>
-    </section>
-  );
+	return (
+		<>
+			<Header / >
+			<NavBar / >
+			<Body / >
+		</>
+	)
 }
 
 export default App;
