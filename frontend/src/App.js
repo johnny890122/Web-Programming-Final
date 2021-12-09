@@ -1,24 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import Calendar from './Components/Calendar';
+import UserTeam from './Components/UserTeam';
+import UserAchievement from './Components/UserAchievement';
+import TeamHP from './Components/TeamHp';
+import TeamPost from './Components/TeamPost';
+import TeamScore from './Components/TeamScore';
+import TeamVote from './Components/TeamVote';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section>
+      <Calendar/>
+      <UserTeam/>
+      <UserAchievement/>
+      <TeamHP/>
+      <TeamPost/>
+      <TeamScore/>
+      <TeamVote/>
+    </section>
   );
 }
 
