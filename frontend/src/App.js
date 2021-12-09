@@ -4,18 +4,22 @@ import { Fragment } from "react";
 import Header from "./containers/Header.js";
 import NavBar from "./containers/NavBar.js";
 import Body from "./containers/Body.js";
-import Gantt from "./components/Gantt";
-import BasicTable from "./components/Table";
 
 function App() {
   return (
-    <>
-      <Header />
-      <NavBar />
-      <Body />
-      <Gantt />
-      <BasicTable />
-    </>
+    <section className="wrapper">
+      <section className="header-container">
+        <Header />
+      </section>
+      <section className="page-container">
+        <div className="navbar-container">
+          <NavBar />
+        </div>
+        <div className="body-container">
+          <Body />
+        </div>
+      </section>
+    </section>
   );
 }
 

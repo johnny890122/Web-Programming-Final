@@ -1,9 +1,13 @@
-function Body () {
+import Gantt from "../components/Gantt";
+import BasicTable from "../components/Table";
 
-	return (
-		<body>Body Test</body>
-	)
-}
-
+const Body = () => {
+  return (
+    <>
+      <Gantt />
+      <BasicTable />
+    </>
+  );
+};
 
 export default Body;
