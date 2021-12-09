@@ -8,7 +8,9 @@ import Body from './containers/Body.js';
 import Block from './components/Block.js';
 import Gantt from "./components/Gantt";
 import BasicTable from "./components/Table";
-import CreateTeam from "./components/CreateTeam"
+import CreateTeam from "./components/CreateTeam";
+import Todo from "./components/Todo/App";
+import Notification from "./components/Notification"
 
 function App() {
 	return (
@@ -16,18 +18,19 @@ function App() {
 {/*			<Header / >
 			<NavBar / >
 			<Body / >
+      		<CreateTeam / >
+			
 			<Block 
 				title="Block1" 
 				description="This is the first testing block."
-			/>
+			/>*/}
 
-			<Gantt />
+			{/*<Gantt />*/}
 
-      		<BasicTable />*/}
-      		<div style={{width:"20"}}>
-      			<CreateTeam / >
-      		</div>
-			
+      		{/*<BasicTable />*/}
+
+      		{/*<Todo / >*/}
+      		<Notification / >
 		</>
 
 	)
