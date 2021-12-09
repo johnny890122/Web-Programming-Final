@@ -13,7 +13,7 @@ import CreateTeam from "./components/CreateTeam"
 function App() {
 	return (
 		<>
-			<Header / >
+{/*			<Header / >
 			<NavBar / >
 			<Body / >
 			<Block 
@@ -23,9 +23,11 @@ function App() {
 
 			<Gantt />
 
-      		<BasicTable />
-
-			<CreateTeam / >
+      		<BasicTable />*/}
+      		<div style={{width:"20"}}>
+      			<CreateTeam / >
+      		</div>
+			
 		</>
 
 	)

@@ -11,7 +11,6 @@ function Invite () {
 			<Title level = {3}> 輸入電子郵件 </Title>
 			<br/>
 	  		<Input 
-	  			disabled
 		        style={{ width: 'calc(100% - 200px)' }}
 		        defaultValue="Amy"
 		    />
@@ -19,7 +18,7 @@ function Invite () {
 			<Button icon={<CopyOutlined />} />
 			</Tooltip>
 			<br/>
-			
+
 			{/* 輸入電子郵件 */}
 		    <Title level = {3}> 複製連結 </Title>
 		    <br/>
@@ -34,6 +33,5 @@ function Invite () {
 		</Input.Group >
 	)
 }
-
 
 export default Invite;

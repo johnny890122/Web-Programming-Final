@@ -29,6 +29,11 @@ function CreateTeam () {
 		currentStep < totalStep-1 ? setCurrentStep(currentStep + 1) : setCurrentStep(currentStep);
 	}
 
+	const handleClickStep = (e) => {
+		setCurrentStep(e);
+		console.log(e);
+	}
+
 	useEffect(
 		() => {
 			setTitle(titleText[currentStep])
@@ -44,11 +49,11 @@ function CreateTeam () {
       	{currentStep === 2 ? <Title>Something</Title> : [] }
       	{currentStep === 3 ? <Title>Something</Title> : [] }
 
-        <Steps current={currentStep}>
-          <Step title="Step 1" description="填寫基本資訊" />
-          <Step title="Step 2" description="Invite people" />
-          <Step title="Step 3" description="Customize your page" />
-          <Step title="Step 4" description="建立" />
+        <Steps current={currentStep} onChange={handleClickStep}>
+          <Step key={0} title="Step 1" description="填寫基本資訊" />
+          <Step key="1" title="Step 2" description="Invite people" />
+          <Step key="2" title="Step 3" description="Customize your page" />
+          <Step key="3" title="Step 4" description="建立" />
         </Steps>
 
         <Button 
