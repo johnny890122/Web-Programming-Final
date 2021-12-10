@@ -1,24 +1,20 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Fragment } from "react";
-import Header from "./containers/Header.js";
-import NavBar from "./containers/NavBar.js";
-import Body from "./containers/Body.js";
+
+import { useState } from "react";
+import UserDashboard from "./containers/UserDashboard";
+import LogIn from "./containers/LogIn";
 
 function App() {
+  const [logined, setLogined] = useState(false);
   return (
     <section className="wrapper">
-      <section className="header-container">
-        <Header />
-      </section>
-      <section className="page-container">
-        <div className="navbar-container">
-          <NavBar />
-        </div>
-        <div className="body-container">
-          <Body />
-        </div>
-      </section>
+      {logined ? (
+        <UserDashboard setLogined={setLogined} />
+      ) : (
+        <LogIn setLogined={setLogined} />
+      )}
     </section>
   );
 }
