@@ -20,22 +20,13 @@
 .navbarIcon {
   color: #2e4c6d;
   width: 1.5rem;
-=======
+
 .App {
   margin: 100px auto;
   width: 1600px;
   height: 900px;
 }
 
-<<<<<<< HEAD
-=======
-.App {
-  margin: 100px auto;
-  width: 1600px;
-  height: 900px;
-}
-
->>>>>>> main
 .main-section {
   max-width: 900px;
 }
@@ -60,11 +51,6 @@
 
 .user-achievement-list {
   max-width: 900px;
-<<<<<<< HEAD
->>>>>>> 0f88246... .
-=======
->>>>>>> origin/Yoga
->>>>>>> main
 }
 
 .user-achievement-item {
@@ -75,8 +61,4 @@
   margin: 20px;
   padding: 10px;
   display:block;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main
