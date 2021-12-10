@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./Header.js";
-import Body from "./Body.js";
+import Header from "../components/Header.js";
+import Body from "../components/Body.js";
 
 const LogIn = ({ setLogined }) => {
   return (
