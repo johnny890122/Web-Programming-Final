@@ -1,16 +1,14 @@
 import Draggable from "react-draggable";
 import { Card, Button} from 'antd';
-import { DragOutlined } from '@ant-design/icons';
-
+import { DragOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 
 function Block(props) {
   const { Meta } = Card;
   
   return (
   <Draggable handle="Button">
+    
     <Card
-      // hoverable
-      // style={{ height: 240  }}
       extra={
               <Button 
                   className="handle"
@@ -21,11 +19,11 @@ function Block(props) {
               > <DragOutlined /> </Button>
             }
     >
-    {/*<Meta title={props.title} description={props.description} />*/}
-
     {props.component}
-
-    <Button onClick={props.enlarge} type="primary">放大</Button>
+    <Button onClick={props.enlarge} 
+            type="primary" 
+            icon={ props.fullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />} 
+    / >
 
     </Card>
   </Draggable>

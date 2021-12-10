@@ -31,6 +31,8 @@ const UserDashboard = ({ setLogined }) => {
     	setIsModalVisible(false);
   	};
 
+  const [todo, setTodo] = useState([]);
+
 	return (
 	<section className="wrapper">
 	  <section className="header-container">
@@ -43,8 +45,8 @@ const UserDashboard = ({ setLogined }) => {
 
 		{/* Block 本體 */}
 		<div className="body-container">
-			<Block enlarge={ showModalWithNotification } component={ <Notification/> } /> 
-			<Block enlarge={ showModalWithNotification } component={ <Todo/> }/ >
+      <Block enlarge={ showModalWithNotification } component={ <Notification/> } fullscreen={isModalVisible} /> 
+      <Block enlarge={ showModalWithTodo } component={ <Todo/> } fullscreen={isModalVisible}/ >
 		</div>
 
 		{/* Block 大圖 */}
