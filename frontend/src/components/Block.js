@@ -10,7 +10,7 @@ function Block(props) {
   <Draggable handle="Button">
     <Card
       // hoverable
-      style={{ width: 240 }}
+      // style={{ height: 240  }}
       extra={
               <Button 
                   className="handle"
@@ -21,7 +21,10 @@ function Block(props) {
               > <DragOutlined /> </Button>
             }
     >
-    <Meta title={props.title} description={props.description} />
+    {/*<Meta title={props.title} description={props.description} />*/}
+
+    {props.component}
+
     </Card>
   </Draggable>
   );

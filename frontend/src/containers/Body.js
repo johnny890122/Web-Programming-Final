@@ -4,8 +4,8 @@ import BasicTable from "../components/Table";
 const Body = () => {
   return (
     <>
-      <Gantt />
-      <BasicTable />
+      {/*<Gantt />
+      <BasicTable />*/}
     </>
   );
 };

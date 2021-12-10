@@ -1,25 +1,30 @@
-import { Typography, Divider, List, Avatar } from 'antd';
+import "./css/components.css";
+import { UserOutlined, TeamOutlined, NotificationOutlined } from '@ant-design/icons';
+
+import { Typography, Divider, List, Avatar, Tag, Space } from 'antd';
 function NotificationItem (props){
-	const { Title } = Typography;
+	const { Title, Text } = Typography;
 	return (
 		<>
-			<Title level={3} > {props.time} </Title>
+			<Title level={4} > {props.time} </Title>
 			{
-				props.task != [] ? 
+				props.task != [] ?
 				<List
+					bordered
 				    itemLayout="horizontal"
 				    dataSource={props.task}
 				    renderItem={item => (
 						<List.Item>
-							<List.Item.Meta
-							  title={item.type}
-							  description={item.content}
-							/>
+							<Tag 
+								color={item.type === "Personal" ? "blue" : "red"}
+								icon={item.type === "Personal" ? <UserOutlined /> : <TeamOutlined/>}>
+								<Text strong>{item.type}</Text>
+							</Tag>
+							{item.content}
 						</List.Item>
 			    	)}
 			  	/> : []
 		  	}
-			< Divider / >
 		</>
 	)
 }
