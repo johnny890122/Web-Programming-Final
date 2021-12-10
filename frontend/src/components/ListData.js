@@ -45,21 +45,47 @@ const TeamData = [
 ]
 
 const ScoreData = [
+    {id: "3", 
+     team: "ECON",
+     date: "2021-12-09",
+     opponent: "土木",
+     teamSet: 0,
+     oppoSet: 2,     
+     win: "lose",
+     points: [{set: 1,
+               teamPoint: 15,
+               oppoPoint: 25}, 
+              {set: 2,
+               teamPoint: 17,
+               oppoPoint: 25}]
+    },
     {id: "2", 
      team: "ECON",
      date: "2021-11-18",
      opponent: "外文",
      teamSet: 0,
-     opponentSet: 2,     
-     win: "lose"
+     oppoSet: 2,     
+     win: "lose",
+     points: [{set: 1,
+               teamPoint: 13,
+               oppoPoint: 25}, 
+              {set: 2,
+               teamPoint: 9,
+               oppoPoint: 25}]
     },
     {id: "1", 
      team: "ECON",
      date: "2021-11-18",
      opponent: "地地",
      teamSet: 2,
-     opponentSet: 0,     
-     win: "win"
+     oppoSet: 0,     
+     win: "win",
+     points: [{set: 1,
+               teamPoint: 25,
+               oppoPoint: 22}, 
+              {set: 2,
+               teamPoint: 25,
+               oppoPoint: 14}]
     },
 ]
 
@@ -113,9 +139,10 @@ const BirthData = [
 
 const PostData = [
     {id: "1", 
-     title: "Yoga",
+     title: "[閒聊] 出事了阿北",
+     author: "Yoga", 
      time: "2021-11-27 19:32:00",
-     content: "沒錢交隊費..."
+     content: "沒有錢交隊費..."
     },
 ]
 
