@@ -17,6 +17,11 @@ function CreateEvent() {
                                        type: null,
                                        location: null})
 
+    const [eDate, setEDate] = useState(null)
+    const [eTime, setETime] = useState(null)                                    
+    const eDateChange = (newValue) => {setEDate(newValue)};
+    const eTimeChange = (newValue) => {setETime(newValue)};
+
     return(
     <>
         <h2>Create New Event</h2>
@@ -28,7 +33,7 @@ function CreateEvent() {
             <TextField id="create-event-title"
                        required
                        label="Title"
-                       placeholder="打疫苗" />
+                       placeholder="Eg. 打疫苗" />
           </div>
           <div>
             <TextField id="create-event-description"
@@ -41,15 +46,15 @@ function CreateEvent() {
                     //id="create-event-date"
                     label="Date"
                     inputFormat="yyyy-MM-dd"
-                    value={"2021-11-28"}
-                    onChange={console.log('date')}
+                    //value={"2021-11-28"}
+                    onChange={eDateChange}
                     renderInput={(params) => <TextField {...params} />}
                 />
                 <TimePicker
                     //id="create-event-time"
                     label="Time"
-                    value={"18:30"}
-                    onChange={console.log('time')}
+                    //value={"18:30"}
+                    onChange={eTimeChange}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
