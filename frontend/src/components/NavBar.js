@@ -1,3 +1,4 @@
+import "../containers/App.css";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -6,32 +7,33 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChartLine,
-  faMedal,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
-import { faCalendarAlt } from "@fortawesome/free-regular-svg-icons";
 import { makeStyles } from "@material-ui/core";
+import {
+  DashboardCustomizeOutlined,
+  GroupsOutlined,
+  TodayOutlined,
+  EmojiEventsOutlined,
+} from "@mui/icons-material";
 
-const drawerWidth = 240;
+const drawerWidth = 230;
 const useStyles = makeStyles({
   paper: {
     background: "#f2f2f2",
   },
+  icon: {
+    fill: "#2e4c6d",
+    fontSize: "1.5rem",
+  },
 });
 
 const Navbar = () => {
-  const iconList = [
-    <FontAwesomeIcon class="navbarIcon" icon={faChartLine} />,
-    <FontAwesomeIcon class="navbarIcon" icon={faUsers} />,
-    <FontAwesomeIcon class="navbarIcon" icon={faCalendarAlt} />,
-    <FontAwesomeIcon class="navbarIcon" icon={faMedal} />,
-  ];
-
   const styles = useStyles();
+  const iconList = [
+    <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+  ];
 
   return (
     <Drawer
@@ -42,9 +44,12 @@ const Navbar = () => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: "border-box",
+          // position: "absolute",
         },
       }}
       classes={{ paper: styles.paper }}
+      // position="static"
+      // display="sticky"
     >
       <Toolbar />
       <Box sx={{ overflow: "auto", padding: "1rem 1.25rem" }}>

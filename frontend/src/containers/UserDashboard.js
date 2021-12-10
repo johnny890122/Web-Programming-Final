@@ -1,63 +1,65 @@
 import React from "react";
-import Header from "./Header.js";
-import NavBar from "./NavBar.js";
-import Body from "./Body.js";
+import Header from "../components/Header.js";
+import NavBar from "../components/NavBar.js";
 import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 
-import { Modal } from 'antd';
+import { Modal } from "antd";
 import { useState } from "react";
 
 const UserDashboard = ({ setLogined }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [componentInModal, setComponentInModal] = useState("");
+  const showModalWithNotification = () => {
+    setIsModalVisible(true);
+    setComponentInModal("Notification");
+  };
 
-	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [componentInModal, setComponentInModal] = useState("");
-	const showModalWithNotification = () => {
-    	setIsModalVisible(true);
-    	setComponentInModal("Notification");
-  	};
+  const showModalWithTodo = () => {
+    setIsModalVisible(true);
+    setComponentInModal("Todo");
+  };
 
-  	const showModalWithTodo = () => {
-    	setIsModalVisible(true);
-    	setComponentInModal("Todo");
-  	};
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setComponentInModal("");
+  };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-  	const handleOk = () => {
-    	setIsModalVisible(false);
-    	setComponentInModal("");
-  	};
-	const handleCancel = () => {
-    	setIsModalVisible(false);
-  	};
+  return (
+    <section className="wrapper">
+      <section className="header-container">
+        <Header />
+      </section>
+      <section className="page-container">
+        <div className="navbar-container">
+          <NavBar />
+        </div>
+        <div className="body-container">
+          <div value={"noti"} onClick={showModalWithNotification}>
+            <Block component={<Notification />} />
+          </div>
+          <div onClick={showModalWithTodo}>
+            <Block component={<Todo />} />
+          </div>
+        </div>
 
-	return (
-	<section className="wrapper">
-	  <section className="header-container">
-		<Header />
-	  </section>
-	  <section className="page-container">
-		<div className="navbar-container">
-		  <NavBar />
-		</div>
-		<div className="body-container">
-			<div value={"noti"} onClick={ showModalWithNotification }> 
-				<Block component={ <Notification / >}  / > 
-			</div>
-			<div onClick={ showModalWithTodo }> 
-				<Block component={ <Todo / >} / >
-			</div>
-		</div>
-
-		{/*按下 Block 後，顯示該 Block 大圖。*/}
-	 	<Modal title="Testing" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-	 		{componentInModal === "Notification" ? <Notification / > : []}
-	 		{componentInModal === "Todo" ? <Todo / > : []}
-	    </Modal>
-
-	  </section>
-	</section>
-	);
+        {/*按下 Block 後，顯示該 Block 大圖。*/}
+        <Modal
+          title="Testing"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          {componentInModal === "Notification" ? <Notification /> : []}
+          {componentInModal === "Todo" ? <Todo /> : []}
+        </Modal>
+      </section>
+    </section>
+  );
 };
 
 export default UserDashboard;
