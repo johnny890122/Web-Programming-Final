@@ -6,16 +6,14 @@ import {EventData} from "./ListData";
 
 function Calendar(props) {
   return (
-    <div  className = 'calendar'>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView={props.initialView}
-        locale="zh-tw" // 中文化
-        events={EventData}
-        selectable="true"
-        select={props.selectDateByDragAndDrop}
-      />
-    </div>
+    <FullCalendar
+      plugins={[dayGridPlugin, interactionPlugin]}
+      initialView={props.initialView}
+      locale="zh-tw" // 中文化
+      events={EventData}
+      selectable="true"
+      select={props.selectDateByDragAndDrop}
+    />
   );
 };
 export default Calendar;

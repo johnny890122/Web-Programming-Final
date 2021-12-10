@@ -1,31 +1,41 @@
 const EventData = [
     {id: "5",
      title: "打疫苗",
+     description: "", 
      start: "2021-11-29 17:00",
+     end: null,
      type: "user",
      location: "診所"
     },    
     {id: "4",
      title: "壽喜燒",
+     description: "", 
      start: "2021-11-28 18:30",
+     end: null,
      type: "team",
      location: "一番地"
     },
     {id: "3",
      title: "系級杯",
+     description: "", 
      start: "2021-11-28 08:30",
+     end: null,
      type: "team",
      location: "台大"
     },// ISO 8601の形式で。
     {id: "2",
-     title: "練球", 
+     title: "練球",
+     description: "",  
      start: "2021-11-24", 
      end: "2021-11-25", 
-     type: "team"
+     type: "team",
+     location: "台大"
     },
     {id: "1", 
      title: "vs 外文", 
+     description: "", 
      start: "2021-11-18",
+     end: null,
      type: "team",
      location: "台大"
     },
@@ -89,12 +99,13 @@ const ScoreData = [
     },
 ]
 
-const VoteData = [
+var VoteData = [
     {id: "2", 
      title: "隊聚時間",
+     description: "快點決定!",
      end: "2021-12-1 00:00",
      act: true,
-     limit: null,
+     limit: false,
      options: [
             {id: "3",
              name: "12/8(三)",
@@ -113,6 +124,7 @@ const VoteData = [
     },
     {id: "1", 
      title: "校長盃不行時間",
+     description: "都不行...",
      end: "2021-12-1 00:00",
      act: false,
      limit: 1,
