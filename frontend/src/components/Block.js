@@ -25,6 +25,8 @@ function Block(props) {
 
     {props.component}
 
+    <Button onClick={props.enlarge} type="primary">放大</Button>
+
     </Card>
   </Draggable>
   );

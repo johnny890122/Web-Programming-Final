@@ -6,7 +6,7 @@ import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import { useState } from "react";
 
 const UserDashboard = ({ setLogined }) => {
@@ -38,18 +38,16 @@ const UserDashboard = ({ setLogined }) => {
 	  </section>
 	  <section className="page-container">
 		<div className="navbar-container">
-		  <NavBar />
-		</div>
-		<div className="body-container">
-			<div value={"noti"} onClick={ showModalWithNotification }> 
-				<Block component={ <Notification / >}  / > 
-			</div>
-			<div onClick={ showModalWithTodo }> 
-				<Block component={ <Todo / >} / >
-			</div>
+			<NavBar />
 		</div>
 
-		{/*按下 Block 後，顯示該 Block 大圖。*/}
+		{/* Block 本體 */}
+		<div className="body-container">
+			<Block enlarge={ showModalWithNotification } component={ <Notification/> } /> 
+			<Block enlarge={ showModalWithNotification } component={ <Todo/> }/ >
+		</div>
+
+		{/* Block 大圖 */}
 	 	<Modal title="Testing" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
 	 		{componentInModal === "Notification" ? <Notification / > : []}
 	 		{componentInModal === "Todo" ? <Todo / > : []}
