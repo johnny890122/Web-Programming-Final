@@ -44,12 +44,9 @@ const Navbar = () => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: "border-box",
-          // position: "absolute",
         },
       }}
       classes={{ paper: styles.paper }}
-      // position="static"
-      // display="sticky"
     >
       <Toolbar />
       <Box sx={{ overflow: "auto", padding: "1rem 1.25rem" }}>

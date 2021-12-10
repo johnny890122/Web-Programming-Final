@@ -1,14 +1,12 @@
-import React from "react";
-import Header from "../components/Header.js";
-import NavBar from "../components/NavBar.js";
+import React, { useState } from "react";
 import Notification from "../components/Notification";
-import Block from "../components/Block";
 import Todo from "../components/Todo/App";
+import Template from "../components/Template";
+import "antd/dist/antd.css";
 
 import { Modal } from "antd";
-import { useState } from "react";
 
-const UserDashboard = ({ setLogined }) => {
+const UserDashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const showModalWithNotification = () => {
@@ -29,36 +27,23 @@ const UserDashboard = ({ setLogined }) => {
     setIsModalVisible(false);
   };
 
-  return (
-    <section className="wrapper">
-      <section className="header-container">
-        <Header />
-      </section>
-      <section className="page-container">
-        <div className="navbar-container">
-          <NavBar />
-        </div>
-        <div className="body-container">
-          <div value={"noti"} onClick={showModalWithNotification}>
-            <Block component={<Notification />} />
-          </div>
-          <div onClick={showModalWithTodo}>
-            <Block component={<Todo />} />
-          </div>
-        </div>
+  const dashboard = (
+    <Modal
+      title="Testing"
+      visible={isModalVisible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      style={{ zIndex: 1200 }}
+    >
+      {componentInModal === "Notification" ? <Notification /> : []}
+      {componentInModal === "Todo" ? <Todo /> : []}
+    </Modal>
+  );
 
-        {/*按下 Block 後，顯示該 Block 大圖。*/}
-        <Modal
-          title="Testing"
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          {componentInModal === "Notification" ? <Notification /> : []}
-          {componentInModal === "Todo" ? <Todo /> : []}
-        </Modal>
-      </section>
-    </section>
+  return (
+    <div className="Wrapper">
+      <Template content={dashboard} />
+    </div>
   );
 };
 
