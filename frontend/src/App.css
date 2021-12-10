@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
   padding: 0;
   margin: 0;
@@ -19,4 +20,46 @@
 .navbarIcon {
   color: #2e4c6d;
   width: 1.5rem;
+=======
+.App {
+  margin: 100px auto;
+  width: 1600px;
+  height: 900px;
+}
+
+.main-section {
+  max-width: 900px;
+}
+
+.calendar {
+  text-align: center;
+  margin: 20px auto;
+}
+
+.user-team-list {
+  display: inline-block;
+}
+
+.user-team-item {
+  width: 300px;
+  height: 130px;
+  background-color: rgb(219, 229, 248);
+  margin: 20px;
+  padding: 10px;
+  display:inline-table;
+}
+
+.user-achievement-list {
+  max-width: 900px;
+>>>>>>> 0f88246... .
+}
+
+.user-achievement-item {
+  max-width: 800px auto;
+  min-width: 300px;
+  min-height: 150px;
+  background-color: rgb(219, 229, 248);
+  margin: 20px;
+  padding: 10px;
+  display:block;
 }
