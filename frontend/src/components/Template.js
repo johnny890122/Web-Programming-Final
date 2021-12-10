@@ -161,8 +161,8 @@ export default function Template({ content }) {
         <List>
           {["Dashboard", "Team", "Calendar", "Achievement"].map(
             (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{iconList[index]}</ListItemIcon>
+              <ListItem button key={text} >
+                <ListItemIcon onClick={() => console.log(text)}>{iconList[index]}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             )

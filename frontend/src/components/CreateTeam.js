@@ -3,6 +3,7 @@ import { Steps, Divider, Typography, Input, Button, Tooltip } from 'antd';
 import { CopyOutlined, RightCircleOutlined } from '@ant-design/icons';
 import TeamForm from './CreateTeamForm';
 import Invite from './CreateTeamInvite';
+import Template from './Template'
 
 
 function CreateTeam () {
@@ -39,10 +40,9 @@ function CreateTeam () {
 			setTitle(titleText[currentStep])
 		}, [currentStep]
 	);
-
-    return (
-      <>
-      	<Title>{title}</Title>
+		const createTeam = (
+			<>
+			<Title>{title}</Title>
 
       	{currentStep === 0 ? <TeamForm / > : []}
       	{currentStep === 1 ? <Invite / > : []}
@@ -52,7 +52,7 @@ function CreateTeam () {
         <Steps current={currentStep} onChange={handleClickStep}>
           <Step key={0} title="Step 1" description="填寫基本資訊" />
           <Step key="1" title="Step 2" description="Invite people" />
-          <Step key="2" title="Step 3" description="Customize your page" />
+          <Step key="2" titsle="Step 3" description="Customize your page" />
           <Step key="3" title="Step 4" description="建立" />
         </Steps>
 
@@ -64,8 +64,12 @@ function CreateTeam () {
         	>
         	Next
         </Button>
-
       </>
+		)
+    return (
+        <div className="Wrapper">
+      			<Template content={createTeam} />
+    		</div>
     );
 }
 

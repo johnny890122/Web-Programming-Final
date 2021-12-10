@@ -9,6 +9,8 @@ function Block(props) {
   <Draggable handle="Button">
     
     <Card
+      // hoverable
+      style={{ width: 500  }}
       extra={
               <Button 
                   className="handle"
@@ -19,6 +21,8 @@ function Block(props) {
               > <DragOutlined /> </Button>
             }
     >
+    {/*<Meta title={props.title} description={props.description} />*/}
+
     {props.component}
     <Button onClick={props.enlarge} 
             type="primary" 
