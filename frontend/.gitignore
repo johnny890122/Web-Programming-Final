@@ -24,5 +24,15 @@ yarn-error.log*
 
 
 # yogatest
+<<<<<<< HEAD
+<<<<<<< HEAD
+App.js
+App.css
+=======
 src/App.js
 src/App.css
+>>>>>>> main
+=======
+src/App.js
+src/App.css
+>>>>>>> 24951e5... Update .gitignore
