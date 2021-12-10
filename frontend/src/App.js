@@ -2,6 +2,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Fragment } from "react";
+<<<<<<< HEAD
 
 import { useState } from "react";
 import UserDashboard from "./containers/UserDashboard";
@@ -16,6 +17,12 @@ import TeamPost from './Components/TeamPost';
 import TeamScore from './Components/TeamScore';
 import TeamVote from './Components/TeamVote';
 >>>>>>> 0f88246... .
+=======
+import Header from "./containers/Header.js";
+import NavBar from "./containers/NavBar.js";
+import Body from "./containers/Body.js";
+import ListUserTeam from './components/List';
+>>>>>>> main
 
 function App() {
   const [logined, setLogined] = useState(false);
@@ -40,5 +47,4 @@ function App() {
     </section>
   );
 }
-
 export default App;

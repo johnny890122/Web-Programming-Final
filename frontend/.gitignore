@@ -24,5 +24,10 @@ yarn-error.log*
 
 
 # yogatest
+<<<<<<< HEAD
 App.js
 App.css
+=======
+src/App.js
+src/App.css
+>>>>>>> main
