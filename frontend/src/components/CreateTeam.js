@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Steps, Divider, Typography, Input, Button, Tooltip } from 'antd';
-import { CopyOutlined, RightCircleOutlined } from '@ant-design/icons';
+import { CopyOutlined, LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 import TeamForm from './CreateTeamForm';
 import Invite from './CreateTeamInvite';
-import Template from './Template'
+import Template from './Template';
+import styled from 'styled-components';
+import "../App.css";
 
 
 function CreateTeam () {
@@ -30,10 +32,17 @@ function CreateTeam () {
 		currentStep < totalStep-1 ? setCurrentStep(currentStep + 1) : setCurrentStep(currentStep);
 	}
 
+	const handleBack = () =>{
+		currentStep > 0 ? setCurrentStep(currentStep - 1) : setCurrentStep(currentStep);
+	}
+
 	const handleClickStep = (e) => {
 		setCurrentStep(e);
 		console.log(e);
 	}
+
+	const buttonDiv = styled.div`display: flex; justify-content: space-between;`
+	const allButtonDiv = styled.div`display: flex; justify-content: space-between;`
 
 	useEffect(
 		() => {
@@ -42,32 +51,42 @@ function CreateTeam () {
 	);
 		const createTeam = (
 			<>
-			<Title>{title}</Title>
+				<Steps current={currentStep} onChange={handleClickStep}>
+	          <Step key={0} title="Step 1" description="填寫基本資訊" />
+	          <Step key="1" title="Step 2" description="邀請成員" />
+	          <Step key="2" title="Step 3" description="客製化頁面" />
+	          <Step key="3" title="Step 4" description="建立團隊" />
+	      </Steps>
 
-      	{currentStep === 0 ? <TeamForm / > : []}
-      	{currentStep === 1 ? <Invite / > : []}
-      	{currentStep === 2 ? <Title>Something</Title> : [] }
-      	{currentStep === 3 ? <Title>Something</Title> : [] }
+	      <Divider / >
 
-        <Steps current={currentStep} onChange={handleClickStep}>
-          <Step key={0} title="Step 1" description="填寫基本資訊" />
-          <Step key="1" title="Step 2" description="Invite people" />
-          <Step key="2" titsle="Step 3" description="Customize your page" />
-          <Step key="3" title="Step 4" description="建立" />
-        </Steps>
+	    	{currentStep === 0 ? <TeamForm / > : []}
+	    	{currentStep === 1 ? <Invite / > : []}
+	    	{currentStep === 2 ? [] : [] }
+	    	{currentStep === 3 ? [] : [] }
 
-        <Button 
-        	type="primary" 
-        	icon={<RightCircleOutlined />} 
-        	size="large"
-        	onClick={handleNext}
-        	>
-        	Next
-        </Button>
+	    	<div class="createTeamButtonDiv">
+	    		<div class="createTeamButtonDiv">
+			    	{ 
+			    		currentStep === 0 ? [] :
+			    		<Button type="primary" icon={<LeftCircleOutlined />} size="large" onClick={handleBack} >
+			      		Back
+			      	</Button> 
+			      }   			
+	    		</div>
+	    		<div class="createTeamButtonDiv">
+			    	{
+			    		currentStep === totalStep-1 ? [] :
+			        <Button type="primary" icon={<RightCircleOutlined />} size="large"onClick={handleNext} >
+			        	Next
+			        </Button>
+			    	} 
+		    	</div>	
+	    	</div>
       </>
 		)
     return (
-        <div className="Wrapper">
+        <div className="Wrapper createTeam">
       			<Template content={createTeam} />
     		</div>
     );

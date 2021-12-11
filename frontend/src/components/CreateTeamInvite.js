@@ -1,36 +1,32 @@
-import { Typography, Input, Button, Tooltip } from 'antd';
-import { CopyOutlined } from '@ant-design/icons';
+import { Typography, Input, Button, Tooltip, Form } from 'antd';
+import { CopyOutlined, InfoCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 
 
 function Invite () {
 	const { Title } = Typography;
 
 	return (
-		<Input.Group compact>
-			{/* 輸入電子郵件 */}
-			<Title level = {3}> 輸入電子郵件 </Title>
-			<br/>
-	  		<Input 
-		        style={{ width: 'calc(100% - 200px)' }}
-		        defaultValue="Amy"
-		    />
-		    <Tooltip title="copy git url">
-			<Button icon={<CopyOutlined />} />
-			</Tooltip>
-			<br/>
+		<Form>
+	      	{/* 輸入電子郵件 */}
+	      	<Form.Item
+		        label="輸入郵件" tooltip={{ title: '提示文字', icon: <InfoCircleOutlined /> }}>
+	        	<Input 
+		        	defaultValue="Amy" 
+		        	icon={< CopyOutlined />} 
+		        	addonAfter={ <Tooltip title="Invite"> <UserAddOutlined /> </Tooltip> }
+	        	/>
+	      	</Form.Item>
 
-			{/* 輸入電子郵件 */}
-		    <Title level = {3}> 複製連結 </Title>
-		    <br/>
-	  		<Input 
-	  			disabled
-		        style={{ width: 'calc(100% - 200px)' }}
-		        defaultValue="git@github.com:ant-design/ant-design.git"
-		    />
-			<Tooltip title="copy git url">
-				<Button icon={<CopyOutlined />} />
-			</Tooltip>
-		</Input.Group >
+
+	      	<Form.Item
+		        label="複製連結" tooltip={{ title: '提示文字', icon: <InfoCircleOutlined /> }}>
+	        	<Input 
+		        	defaultValue="git@github.com:ant-design/ant-design.git"
+		        	icon={< CopyOutlined />} 
+		        	addonAfter={ <Tooltip title="copy url"> < CopyOutlined /> </Tooltip> }
+	        	/>
+	      	</Form.Item>
+		</Form>
 	)
 }
 

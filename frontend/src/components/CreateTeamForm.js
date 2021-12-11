@@ -25,13 +25,13 @@ function TeamFrom () {
 	return (
       	<Form>
       		{/*隊名*/}
-	      	<Form.Item label="Team Name" required tooltip="This is a required field">
-	        	<Input placeholder="placeholder" />
+	      	<Form.Item label="團隊名稱" required tooltip="This is a required field">
+	        	<Input />
 	      	</Form.Item>
 
 	      	{/*球隊描述*/}
 	      	<Form.Item
-		        label="Description" 
+		        label="團隊描述" 
 		        tooltip={{ title: '提示文字', icon: <InfoCircleOutlined /> }}
 		    	>
 	        	<TextArea rows={4} />
@@ -39,7 +39,7 @@ function TeamFrom () {
 
 	      	{/*球隊類型*/}
 	      	<Form.Item
-		        label="Team Type" 
+		        label="團隊類型" 
 		        tooltip={{ title: '提示文字', icon: <InfoCircleOutlined /> }}
 		    	>
 
