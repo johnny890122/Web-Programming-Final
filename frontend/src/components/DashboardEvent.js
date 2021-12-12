@@ -8,8 +8,7 @@ function DashboardEvent() {
         <div className = "dashboard-event">
           <h2>Upcoming Events</h2>
           <List className = "dashboard-event-list">
-              {EventData.filter(event => event.type === "user")
-                        .map(event => <ListItem   button key = {event.id}>
+              {EventData.map(event => <ListItem   button key = {event.id}>
                                           <ListItemText primary = {event.title}
                                                         secondary = {event.start}/>
                                       </ListItem> )}
