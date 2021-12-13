@@ -36,6 +36,7 @@ import {
   StackedLineChart,
   Edit,
 } from "@mui/icons-material";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -280,21 +281,25 @@ export default function Template({ content }) {
         <Divider />
         <List>
           {pages.map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon onClick={() => console.log(text)}>
-                {iconList[index]}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+            <NavLink to={"/" + text}>
+              <ListItem button key={text}>
+                <ListItemIcon onClick={() => console.log(text)}>
+                  {iconList[index]}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            </NavLink>
           ))}
         </List>
         <Divider />
         <List>
           {teamPages.map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{teamIconList[index]}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+            <NavLink to={"/team/" + text}>
+              <ListItem button key={text}>
+                <ListItemIcon>{teamIconList[index]}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            </NavLink>
           ))}
         </List>
       </Drawer>
