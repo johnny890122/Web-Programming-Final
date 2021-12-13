@@ -1,10 +1,9 @@
 import Template from "../components/Template";
 import "antd/dist/antd.css";
-import {useState} from "react";
+import { useState } from "react";
 import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
-
 
 import { Modal } from "antd";
 
@@ -32,9 +31,17 @@ const UserDashboard = () => {
   const dashboard = (
     <>
       {/*<div className="body-container">*/}
-        <Block enlarge={ showModalWithNotification } component={ <Notification/> } fullscreen={isModalVisible} /> 
-        <Block enlarge={ showModalWithTodo } component={ <Todo/> } fullscreen={isModalVisible}/ >
-        {/*<Block enlarge={ showModalWithTodo } component={<h1>Event 待補</h1>} fullscreen={isModalVisible}/ >*/}
+      <Block
+        enlarge={showModalWithNotification}
+        component={<Notification />}
+        fullscreen={isModalVisible}
+      />
+      <Block
+        enlarge={showModalWithTodo}
+        component={<Todo />}
+        fullscreen={isModalVisible}
+      />
+      {/*<Block enlarge={ showModalWithTodo } component={<h1>Event 待補</h1>} fullscreen={isModalVisible}/ >*/}
 
       <Modal
         title="Testing"
