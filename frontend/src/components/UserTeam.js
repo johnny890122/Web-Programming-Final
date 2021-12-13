@@ -1,19 +1,34 @@
-import UserTeamItem from "./UserTeamItem";
+import { List, ListItem, ListItemText, ListItemIcon, Typography } from '@mui/material';
 import {TeamData} from "./ListData";
 
 function UserTeam() {
-    return (
-      <div className = "user-team">
-        <h2>Team List</h2>
-        <ul className = "user-team-list">
-            {TeamData.map(team => <UserTeamItem team = {team}
-                                                key={team.id}/>)}
-            <li className = "user-team-item" key = "0">
-                <div className = "create-user-team">Create Team</div>
-            </li>
-        </ul>
-      </div>
-    );
-  };
+  return (
+    <List className = "user-team-list">
+          {TeamData.map(team => (
+              <ListItem 
+                button
+                key = {team.id}>
+                  <ListItemText primary = {team.teamname} 
+                                secondary={
+                                  <React.Fragment>
+                                    <Typography
+                                      sx={{ display: 'inline' }}
+                                      component="span"
+                                      variant="body3"
+                                      color="text.secondary"
+                                    >{team.status} </Typography>
+                                    <Typography
+                                      sx={{ display: 'inline' }}
+                                      component="span"
+                                      variant="body3"
+                                      color="#bbbbbb"
+                                    >-- {team.description}</Typography>
+                                  </React.Fragment>
+                                }/>
+              </ListItem>
+          ))}
+      </List>
+  );
+};
   
 export default UserTeam;
