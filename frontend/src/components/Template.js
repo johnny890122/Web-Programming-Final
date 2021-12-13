@@ -10,29 +10,39 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@material-ui/core";
 import {
   DashboardCustomizeOutlined,
   GroupsOutlined,
   TodayOutlined,
   EmojiEventsOutlined,
+  Cottage,
+  EventNote,
+  PostAdd,
+  PeopleAlt,
+  SportsScore,
+  HowToVote,
+  Collections,
+  StackedLineChart,
+  Edit,
 } from "@mui/icons-material";
 
-const drawerWidth = 240;
+const drawerWidth = 210;
 const useStyles = makeStyles({
-  paper: {
-    background: "#f2f2f2",
-  },
-  icon: {
-    fill: "#2e4c6d",
-    fontSize: "1.5rem",
+  customWidth: {
+    "& div": {
+      width: "10rem",
+    },
   },
 });
 
@@ -104,6 +114,8 @@ const Drawer = styled(MuiDrawer, {
 export default function Template({ content }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -113,13 +125,47 @@ export default function Template({ content }) {
     setOpen(false);
   };
 
-  const styles = useStyles();
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const classes = useStyles();
+  const pages = ["Dashboard", "Team", "Calendar", "Achievement"];
   const iconList = [
     <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
+  const teamPages = [
+    "Home",
+    "Calendar",
+    "Posts",
+    "Member",
+    "Score",
+    "Vote",
+    "Gallery",
+    "Gantt",
+  ];
+  const teamIconList = [
+    <Cottage sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <EventNote sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <PostAdd sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <PeopleAlt sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <SportsScore sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <HowToVote sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <Collections sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+  ];
+  const settings = ["USERNAME", "2000/11/25"];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -145,9 +191,83 @@ export default function Template({ content }) {
           <Typography variant="h6" noWrap component="div">
             USERNAME
           </Typography>
+          <Box
+            sx={{ flexGrow: 0 }}
+            style={{ position: "absolute", right: "1.5rem" }}
+          >
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
+                />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+              className={classes.customWidth}
+            >
+              <MenuItem>
+                <img
+                  src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
+                  style={{
+                    width: "7rem",
+                    height: "7rem",
+                    borderRadius: "10rem",
+                  }}
+                />
+              </MenuItem>
+              {settings.map((setting) => (
+                <MenuItem
+                  key={setting}
+                  onClick={handleCloseNavMenu}
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    padding: "0 1rem",
+                  }}
+                >
+                  <div
+                    className="text-container"
+                    // style={{ position: "absolute", right: "1rem" }}
+                    style={{ margin: "0.4rem" }}
+                  >
+                    <Typography>{setting}</Typography>
+                  </div>
+                  <div
+                    className="icon-container"
+                    style={{
+                      position: "absolute",
+                      left: "8rem",
+                      margin: "0.4rem 0",
+                    }}
+                  >
+                    <Edit sx={{ fontSize: "0.75rem" }} />
+                  </div>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} classes={{ paper: styles.paper }}>
+      <Drawer
+        variant="permanent"
+        open={open}
+        PaperProps={{ style: { background: "#F2F2F2" } }}
+      >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -159,22 +279,20 @@ export default function Template({ content }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Dashboard", "Team", "Calendar", "Achievement"].map(
-            (text, index) => (
-              <ListItem button key={text} >
-                <ListItemIcon onClick={() => console.log(text)}>{iconList[index]}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
+          {pages.map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon onClick={() => console.log(text)}>
+                {iconList[index]}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          {teamPages.map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{teamIconList[index]}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
