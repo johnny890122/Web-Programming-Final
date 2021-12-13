@@ -51,7 +51,7 @@ function CreateTeam () {
 	);
 		const createTeam = (
 			<>
-				<Steps current={currentStep} onChange={handleClickStep}>
+			  <Steps current={currentStep} onChange={handleClickStep}>
 	          <Step key={0} title="Step 1" description="填寫基本資訊" />
 	          <Step key="1" title="Step 2" description="邀請成員" />
 	          <Step key="2" title="Step 3" description="客製化頁面" />
@@ -88,7 +88,7 @@ function CreateTeam () {
     return (
         <div className="Wrapper createTeam">
       			<Template content={createTeam} />
-    		</div>
+    	</div>
     );
 }
 

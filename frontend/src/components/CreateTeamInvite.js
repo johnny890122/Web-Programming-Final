@@ -1,7 +1,6 @@
 import { Typography, Input, Button, Tooltip, Form } from 'antd';
 import { CopyOutlined, InfoCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 
-
 function Invite () {
 	const { Title } = Typography;
 
