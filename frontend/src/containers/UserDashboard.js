@@ -1,5 +1,6 @@
 import Template from "../components/Template";
 import "antd/dist/antd.css";
+import "./App.css";
 import { useState } from "react";
 import Notification from "../components/Notification";
 import Block from "../components/Block";

@@ -6,8 +6,8 @@ import UserDashboard from "./UserDashboard";
 function App() {
   return (
     <>
-      {/* <Example /> */}
-      <UserDashboard />
+      <Example />
+      {/* <UserDashboard /> */}
     </>
   );
 }
