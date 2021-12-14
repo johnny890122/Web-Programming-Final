@@ -8,6 +8,7 @@ function Calendar(props) {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
+      height= {650}
       initialView={props.initialView}
       locale="zh-tw" // 中文化
       events={EventData}
