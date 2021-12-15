@@ -8,19 +8,26 @@ import UserDashboard from "./UserDashboard";
 import UserAchievement from "./UserAchievement";
 import TeamGantt from "./TeamGantt";
 import TeamMember from "./TeamMember";
+import TeamScore from "./TeamScore";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* login and signup */}
         <Route path="/" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+
+        {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
         <Route path="/user/Team" element={<Example />} />
         <Route path="/user/Achievement" element={<UserAchievement />} />
-        {/* 下面就照這個邏輯繼續加其他頁面 */}
+
+        {/* team part */}
         <Route path="/team/Member" element={<TeamMember />} />
+        <Route path="/team/Score" element={<TeamScore />} />
         <Route path="/team/Gantt" element={<TeamGantt />} />
+        {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>
     </>
   );

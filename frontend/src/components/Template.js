@@ -120,6 +120,7 @@ export default function Template({ content }) {
   const [open, setOpen] = React.useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isTeam, setIsTeam] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -174,6 +175,14 @@ export default function Template({ content }) {
     .replace("http://localhost:3000", "")
     .split("/");
   breadItem.shift();
+
+  React.useEffect(() => {
+    if (breadItem[1] === "Team" || breadItem[0] === "team") {
+      setIsTeam(true);
+    } else {
+      setIsTeam(false);
+    }
+  }, [breadItem]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -248,11 +257,7 @@ export default function Template({ content }) {
                     padding: "0 1rem",
                   }}
                 >
-                  <div
-                    className="text-container"
-                    // style={{ position: "absolute", right: "1rem" }}
-                    style={{ margin: "0.4rem" }}
-                  >
+                  <div className="text-container" style={{ margin: "0.4rem" }}>
                     <Typography>{setting}</Typography>
                   </div>
                   <div
@@ -290,24 +295,34 @@ export default function Template({ content }) {
           {pages.map((text, index) => (
             <NavLink to={"/user/" + text}>
               <ListItem button key={text}>
-                <ListItemIcon onClick={() => console.log(text)}>
+                <ListItemIcon
+                  onClick={() => {
+                    if (text === "Team") {
+                      setIsTeam(true);
+                    } else {
+                      setIsTeam(false);
+                    }
+                  }}
+                >
                   {iconList[index]}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ color: "#2e4c6d" }} />
+                <ListItemText primary={text} sx={{ color: "black" }} />
               </ListItem>
             </NavLink>
           ))}
         </List>
         <Divider />
         <List>
-          {teamPages.map((text, index) => (
-            <NavLink to={"/team/" + text}>
-              <ListItem button key={text}>
-                <ListItemIcon>{teamIconList[index]}</ListItemIcon>
-                <ListItemText primary={text} sx={{ color: "#2e4c6d" }} />
-              </ListItem>
-            </NavLink>
-          ))}
+          {isTeam
+            ? teamPages.map((text, index) => (
+                <NavLink to={"/team/" + text}>
+                  <ListItem button key={text}>
+                    <ListItemIcon>{teamIconList[index]}</ListItemIcon>
+                    <ListItemText primary={text} sx={{ color: "black" }} />
+                  </ListItem>
+                </NavLink>
+              ))
+            : null}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -321,9 +336,9 @@ export default function Template({ content }) {
               // underline="hover"
               // color="inherit"
               // href={"http://localhost:3000/" + item}
-              sx={{ color: "#2e4c6d" }}
+              sx={{ color: "black" }}
             >
-              {item}
+              {item.toUpperCase()}
             </Typography>
           ))}
         </Breadcrumbs>

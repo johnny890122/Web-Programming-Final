@@ -67,7 +67,7 @@ const SignUp = () => {
             focused
             style={{ margin: "0.75rem" }}
           />
-          <NavLink to="/Dashboard">
+          <NavLink to="/user/Dashboard">
             <Button variant="contained" style={{ margin: "0.75rem" }}>
               Sign Up
             </Button>

@@ -84,7 +84,7 @@ const text = (
 const Example = () => {
   return (
     <div className="Wrapper">
-      <Template content={text}/>
+      <Template content={text} />
     </div>
   );
 };
