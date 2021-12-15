@@ -35,11 +35,11 @@ import {
   Collections,
   StackedLineChart,
   Edit,
+  NavigateNext,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import RouteBreadcrumbs from "./Breadcrumbs";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -170,6 +170,10 @@ export default function Template({ content }) {
     <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
   const settings = ["USERNAME", "2000/11/25"];
+  let breadItem = window.location.href
+    .replace("http://localhost:3000", "")
+    .split("/");
+  breadItem.shift();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -308,21 +312,22 @@ export default function Template({ content }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Breadcrumbs aria-label="breadcrumb" separator="›">
-          <Link underline="hover" color="inherit" href="/user/Dashboard/">
-            USER
-          </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            // href="/getting-started/installation/"
-          >
-            Core
-          </Link>
-          <Typography color="text.primary">Breadcrumbs</Typography>
+        <Breadcrumbs
+          aria-label="breadcrumb"
+          separator={<NavigateNext fontSize="small" />}
+        >
+          {breadItem.map((item) => (
+            <Typography
+              // underline="hover"
+              // color="inherit"
+              // href={"http://localhost:3000/" + item}
+              sx={{ color: "#2e4c6d" }}
+            >
+              {item}
+            </Typography>
+          ))}
         </Breadcrumbs>
         <br />
-        {/* <RouteBreadcrumbs /> */}
         {content}
       </Box>
     </Box>

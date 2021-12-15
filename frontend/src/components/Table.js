@@ -14,7 +14,7 @@ const BasicTable = ({ columnName, data }) => {
         <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
           <TableRow>
             {columnName.map((name) => (
-              <TableCell align="right">{name}</TableCell>
+              <TableCell align="left">{name}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -25,7 +25,7 @@ const BasicTable = ({ columnName, data }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               {row.map((value) => (
-                <TableCell align="right">{value}</TableCell>
+                <TableCell align="left">{value}</TableCell>
               ))}
             </TableRow>
           ))}
