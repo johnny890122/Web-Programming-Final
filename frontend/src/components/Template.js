@@ -37,6 +37,9 @@ import {
   Edit,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import RouteBreadcrumbs from "./Breadcrumbs";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -281,12 +284,12 @@ export default function Template({ content }) {
         <Divider />
         <List>
           {pages.map((text, index) => (
-            <NavLink to={"/" + text}>
+            <NavLink to={"/user/" + text}>
               <ListItem button key={text}>
                 <ListItemIcon onClick={() => console.log(text)}>
                   {iconList[index]}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text} sx={{ color: "#2e4c6d" }} />
               </ListItem>
             </NavLink>
           ))}
@@ -297,7 +300,7 @@ export default function Template({ content }) {
             <NavLink to={"/team/" + text}>
               <ListItem button key={text}>
                 <ListItemIcon>{teamIconList[index]}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text} sx={{ color: "#2e4c6d" }} />
               </ListItem>
             </NavLink>
           ))}
@@ -305,6 +308,21 @@ export default function Template({ content }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+        <Breadcrumbs aria-label="breadcrumb" separator="›">
+          <Link underline="hover" color="inherit" href="/user/Dashboard/">
+            USER
+          </Link>
+          <Link
+            underline="hover"
+            color="inherit"
+            // href="/getting-started/installation/"
+          >
+            Core
+          </Link>
+          <Typography color="text.primary">Breadcrumbs</Typography>
+        </Breadcrumbs>
+        <br />
+        {/* <RouteBreadcrumbs /> */}
         {content}
       </Box>
     </Box>
