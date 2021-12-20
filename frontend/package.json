@@ -57,5 +57,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^25.3.0"
+  },
+  "extends": [ "eslint:recommended", "plugin:jest/recommended" ]
 }
