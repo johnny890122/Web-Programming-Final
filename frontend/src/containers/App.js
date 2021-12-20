@@ -9,6 +9,7 @@ import UserAchievement from "./UserAchievement";
 import TeamGantt from "./TeamGantt";
 import TeamMember from "./TeamMember";
 import TeamScore from "./TeamScore";
+import TeamScoreDetail from "./TeamScoreDetail";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         {/* team part */}
         <Route path="/team/Member" element={<TeamMember />} />
         <Route path="/team/Score" element={<TeamScore />} />
+        <Route path="/team/Score/detail" element={<TeamScoreDetail />} />
         <Route path="/team/Gantt" element={<TeamGantt />} />
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>
