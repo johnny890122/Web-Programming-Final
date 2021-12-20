@@ -14,7 +14,6 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -125,24 +124,16 @@ export default function Template({ content }) {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const classes = useStyles();
   const pages = ["Dashboard", "Team", "Calendar", "Achievement"];
   const iconList = [
     <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
@@ -235,7 +226,6 @@ export default function Template({ content }) {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-              className={classes.customWidth}
             >
               <MenuItem>
                 <img
@@ -250,7 +240,6 @@ export default function Template({ content }) {
               {settings.map((setting) => (
                 <MenuItem
                   key={setting}
-                  onClick={handleCloseNavMenu}
                   style={{
                     position: "relative",
                     display: "flex",

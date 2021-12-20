@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Example from "./Example";
+// import Example from "./Example";
 import LogIn from "./LogIn";
 import SignUp from "./SignUp";
 import UserDashboard from "./UserDashboard";
@@ -10,7 +10,8 @@ import TeamGantt from "./TeamGantt";
 import TeamMember from "./TeamMember";
 import TeamScore from "./TeamScore";
 import TeamScoreDetail from "./TeamScoreDetail";
-import Gallery from "../components/Gallery"
+import Gallery from "../components/Gallery";
+import UserTeam from "./UserTeam";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
 
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
-        <Route path="/user/Team" element={<Example />} />
+        <Route path="/user/Team" element={<UserTeam />} />
         <Route path="/user/Achievement" element={<UserAchievement />} />
 
         {/* team part */}
