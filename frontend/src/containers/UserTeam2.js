@@ -1,72 +1,57 @@
-<<<<<<< HEAD
+import React from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import Template from "../components/Template";
-import { TeamData } from '../components/ListData';
-import { Typography, Box, Card, Button, CardContent } from '@mui/material';
-import { CardActionArea, CardMedia } from '@mui/material';
-import styled from "styled-components";
+import { Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-function UserTeam() {
+const UserTeam = () => {
+  const cardStyle = {
+    width: "95%",
+    margin: "1em",
+    padding: "1rem",
+    display: "inline-block",
+  };
 
-  /*
-    連結創建隊伍頁面、隊伍頁面 (下面改 href)
-  */
-
-  const teamlist = (
-      <div className = "user-team-list">
-          <Card sx={{ m: 2,
-                      width: 450,
-                      height: 100 }}
-                      key = "0">
-              <CardActionArea sx={{ width: 450,
-                                    height: 100,
-                                    display: 'inline' }}
-
-                              href={`#create-team`}>  
-                              {/* 連結創建隊伍頁面 */}
-
-                <CardContent sx={{ p: 4 }}>
-                  <Typography gutterBottom variant="h4" component="div">
-                    Create New Team
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-          </Card>
-
-          {TeamData.map(team => (
-            <Card sx={{ m: 2,
-                        width: 450,
-                        height: 200 }}
-                        key = {team.id}>
-              <CardActionArea sx={{ width: 450,
-                                    height: 200,
-                                    display: 'inline' }}
-                                    
-                              href={`#${team.id}`}> 
-                              {/* 連結隊伍頁面 */}
-
-                <CardContent sx={{ p: 4 }}>
-                  <Typography gutterBottom variant="h4" component="div">
-                    {team.teamname}
-                  </Typography>
-                  <Typography variant="p" color="text.secondary">
-                    身份 : {team.status}
-                  </Typography>
-                  <Typography variant="h6" color="text.secondary">
-                    -- {team.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>))}              
-      </div>
-    )                                 
-   
-
-    return (
-      <div className="Wrapper">
-        <Template content={teamlist} />
+  let teamName = [
+    "Web Programming 110-1 Project",
+    "NTU ECON Volley",
+    "DSSI 110-1 Project",
+  ];
+  let teamDes = [
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci vero quis consectetur ratione voluptate pariatur possimus nam aliquid. Velit,quae.",
+    "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate ad repellat dolor quae eum ullam qui laudantium ut accusamus rem?",
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius rerum reiciendis asperiores. Expedita quae accusantium earum porro nostrum. Totam, provident res.",
+  ];
+  let cardContent = [null, null, null];
+  for (let i = 0; i < teamName.length; i++) {
+    cardContent[i] = (
+      <div className="card-content">
+        <Typography variant="h5">{teamName[i]}</Typography>
+        <br />
+        <Typography>{teamDes[i]}</Typography>
       </div>
     );
+  }
+
+  const team = (
+    <NavLink to="/team/Home">
+      <div className="box-container" style={{ display: "flex", width: "85vw" }}>
+        {cardContent.map((aCard) => (
+          <Box sx={{ minWidth: 300 }}>
+            <Card variant="outlined" style={cardStyle}>
+              {aCard}
+            </Card>
+          </Box>
+        ))}
+      </div>
+    </NavLink>
+  );
+
+  return (
+    <div className="Wrapper">
+      <Template content={team} />
+    </div>
+  );
 };
 
-export default UserTeam;
