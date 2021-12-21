@@ -56,7 +56,7 @@ function TeamHome() {
                                       </CardActionArea>
                                     </Card>)}
             <Box sx={{ px: 1, width: '100%', maxWidth: 530, textAlign: 'right' }}>
-              <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/Calendar'>
                 View All
               </Button>
             </Box>
@@ -126,7 +126,7 @@ function TeamHome() {
                                       </CardActionArea>
                                     </Card>)}
             <Box sx={{ px: 1, width: '100%', maxWidth: 530, textAlign: 'right' }}>
-              <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/Score'>
                 View All
               </Button>
             </Box>
@@ -164,7 +164,7 @@ function TeamHome() {
                                       </CardActionArea>
                                     </Card>)}
             <Box sx={{ px: 1, width: '100%', maxWidth: 530, textAlign: 'right' }}>
-              <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/Vote'>
                 View All
               </Button>
             </Box>
@@ -182,7 +182,7 @@ function TeamHome() {
             </Box>
             {/* gallery */}
             <Box sx={{ px: 1, width: '100%', maxWidth: 530, textAlign: 'right' }}>
-              <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/Gallery'>
                 View All
               </Button>
             </Box>
@@ -200,7 +200,7 @@ function TeamHome() {
             </Box>
             {/* gantt */}
             <Box sx={{ px: 1, width: '100%', maxWidth: 530, textAlign: 'right' }}>
-              <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/Gantt'>
                 View All
               </Button>
             </Box>
