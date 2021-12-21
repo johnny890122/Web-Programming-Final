@@ -15,6 +15,7 @@ import TeamMember from "./TeamMember";
 import TeamPost from "./TeamPost";
 import TeamScore from "./TeamScore";
 import TeamVote from "./TeamVote";
+import TeamScoreDetail from "./TeamScoreDetail";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/team/Score" element={<TeamScore />} />
         <Route path="/team/Vote" element={<TeamVote />} />
         <Route path="/team/Gantt" element={<TeamGantt />} />
+        <Route path="/team/Score/4/detail" element={<TeamScoreDetail />} />
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>
     </>
