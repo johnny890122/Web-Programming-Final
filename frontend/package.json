@@ -11,6 +11,9 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/interaction": "^5.10.1",
+    "@fullcalendar/react": "^5.10.1",
     "@material-ui/core": "^4.12.3",
     "@mui/icons-material": "^5.2.1",
     "@mui/material": "^5.2.3",
@@ -31,6 +34,7 @@
     "react-router-dom": "^6.1.1",
     "react-scripts": "4.0.3",
     "react-swipeable": "^6.2.0",
+    "styled-component": "^2.8.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1"
   },
@@ -61,5 +65,8 @@
   "devDependencies": {
     "eslint-plugin-jest": "^25.3.0"
   },
-  "extends": [ "eslint:recommended", "plugin:jest/recommended" ]
+  "extends": [
+    "eslint:recommended",
+    "plugin:jest/recommended"
+  ]
 }

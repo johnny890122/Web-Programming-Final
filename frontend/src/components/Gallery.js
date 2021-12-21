@@ -4,31 +4,19 @@ import CreateTeam from "../components/CreateTeam";
 
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import styled from "styled-components";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 
-function gallery () {
-	const images = [
-	  {
-	    original: 'https://picsum.photos/id/1018/1000/600/',
-	    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-	  },
-	  {
-	    original: 'https://picsum.photos/id/1015/1000/600/',
-	    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-	  },
-	  {
-	    original: 'https://picsum.photos/id/1019/1000/600/',
-	    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-	  },
-	];
+function gallery (props) {
+	const images = props.images;
+	const galleryDiv = styled.div`width: 400;`;
 
 	function renderLeftNav(onClick, disabled) {
 	    return (
 	    	<Button label="sjjs" icon={<CaretLeftOutlined />} size="large" onClick={onClick} disabled={disabled} >
 	    		Back
 	    	</Button>
-
 	    );
 	}
 
@@ -48,11 +36,7 @@ function gallery () {
         />
 	)
 
-  	return (
-        <div className="Wrapper" style={{"width": 700}}>
-			<Template content={ gallery } />
-    	</div>
-  	)
+  	return gallery
 };
 
 export default gallery;
