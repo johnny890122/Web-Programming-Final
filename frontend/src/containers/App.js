@@ -31,10 +31,10 @@ function App() {
         <Route path="/user/Achievement" element={<UserAchievement />} />
 
         {/* team part */}
-        <Route path="/team/Home" element={<TeamHome />} />
+        <Route path="/team/2/Home" element={<TeamHome />} />
         <Route path="/team/Member" element={<TeamMember />} />
-        <Route path="/team/Calendar" element={<TeamEvent/>} />
-        <Route path="/team/Posts" element={<TeamPost/>} />
+        <Route path="/team/Calendar" element={<TeamEvent />} />
+        <Route path="/team/Posts" element={<TeamPost />} />
         <Route path="/team/Score" element={<TeamScore />} />
         <Route path="/team/Vote" element={<TeamVote />} />
         <Route path="/team/Gantt" element={<TeamGantt />} />

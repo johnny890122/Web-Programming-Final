@@ -38,7 +38,6 @@ import {
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -117,7 +116,6 @@ const Drawer = styled(MuiDrawer, {
 export default function Template({ content }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [isTeam, setIsTeam] = React.useState(false);
 

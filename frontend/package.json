@@ -11,6 +11,9 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/interaction": "^5.10.1",
+    "@fullcalendar/react": "^5.10.1",
     "@material-ui/core": "^4.12.3",
     "@mui/icons-material": "^5.2.1",
     "@mui/material": "^5.2.3",
@@ -61,5 +64,8 @@
   "devDependencies": {
     "eslint-plugin-jest": "^25.3.0"
   },
-  "extends": [ "eslint:recommended", "plugin:jest/recommended" ]
+  "extends": [
+    "eslint:recommended",
+    "plugin:jest/recommended"
+  ]
 }
