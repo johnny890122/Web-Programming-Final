@@ -1,26 +1,27 @@
 const EventData = [
-    {id: "4",
+    {id: "5",
      title: "練球",
      description: "好想回家嗚嗚嗚", 
-     start: "2021-12-15 18:00",
+     start: "2021-12-25 08:00",
+     end: null,
+     type: "team",
+     location: "台大",
+     posttime: "2021-12-20 08:00",
+     author: {id: "0",
+              name: "Yoga"},
+     reply: true
+    },
+    {id: "4",
+     title: "交換禮物",
+     description: "賣家該出貨了吧", 
+     start: "2021-12-22 18:00",
      end: null,
      type: "team",
      location: "台大",
      posttime: "2021-12-15 03:00",
      author: {id: "0",
               name: "Yoga"},
-     reply: [{id: "0",
-              name: "Yoga",
-              attend: true,
-              content: null},
-              {id: "0",
-              name: "Yoga2",
-              attend: null,
-              content: null},
-              {id: "0",
-              name: "Yoga3",
-              attend: false,
-              content: "很累"},]
+     reply: false
     },
     {id: "3",
      title: "投票",
@@ -53,7 +54,8 @@ const EventData = [
      location: "一番地",
      posttime: "2021-11-10 01:00",
      author: {id: "0",
-              name: "Yoga"}
+              name: "Yoga"},
+     reply: false
     }
 ]
 
@@ -71,6 +73,20 @@ const TeamData = [
 ]
 
 const ScoreData = [
+    {id: "4", 
+     team: "ECON",
+     date: "2021-12-17",
+     opponent: "平手看看",
+     teamSet: 1,
+     oppoSet: 1,     
+     win: "tie",
+     points: [{set: 1,
+               teamPoint: 15,
+               oppoPoint: 25}, 
+              {set: 2,
+               teamPoint: 25,
+               oppoPoint: 21}]
+    },
     {id: "3", 
      team: "ECON",
      date: "2021-12-09",
@@ -116,12 +132,36 @@ const ScoreData = [
 ]
 
 var VoteData = [
+    {id: "3", 
+     title: "隊聚餐廳",
+     description: "真的好餓",
+     end: "2021-12-31 00:00",
+     act: true,
+     limit: false,
+     replied: false,
+     options: [
+            {id: "3",
+             name: "2樓",
+             select: false,
+             count: 7},
+            {id: "2",
+             name: "熱炒",
+             select: true,
+              count: 5},
+            {id: "1",
+             name: "肯德基",
+             select: false,
+             count: 9}
+            ],
+     result: null
+    },
     {id: "2", 
      title: "隊聚時間",
      description: "快點決定!",
      end: "2021-12-1 00:00",
      act: true,
      limit: false,
+     replied: true,
      options: [
             {id: "3",
              name: "12/8(三)",
@@ -166,6 +206,18 @@ const BirthData = [
 ]
 
 const PostData = [
+    {id: "3", 
+     title: "[閒聊] 快樂雞塊分享餐",
+     author: "Yoga3", 
+     time: "2021-12-20 19:32:00",
+     content: "最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧最適合跟自己分享吧"
+    },
+    {id: "2", 
+     title: "[閒聊] 出事了阿北2",
+     author: "Yoga2", 
+     time: "2021-11-28 19:32:00",
+     content: "沒有錢交隊費..."
+    },
     {id: "1", 
      title: "[閒聊] 出事了阿北",
      author: "Yoga", 

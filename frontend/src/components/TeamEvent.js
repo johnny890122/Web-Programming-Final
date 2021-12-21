@@ -61,7 +61,7 @@ function TeamEvent() {
         </>
     )
 
-    const ListView = (() =>
+    const ListView = (
 
         /* 點擊event進入detail頁面 */
 
@@ -71,10 +71,10 @@ function TeamEvent() {
                                button key = {event.id}>
                         <ListItemText primary = {ItemText(event)}/>
                     </ListItem> )}
-          </List>
+        </List>
     )
 
-    const CalendarView = (() =>      
+    const CalendarView = (      
             <FullCalendar
                 className = "team-event-calendar"
                 plugins={[dayGridPlugin, interactionPlugin]}
