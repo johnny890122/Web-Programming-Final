@@ -34,6 +34,7 @@
     "react-router-dom": "^6.1.1",
     "react-scripts": "4.0.3",
     "react-swipeable": "^6.2.0",
+    "styled-component": "^2.8.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.0.1"
   },
