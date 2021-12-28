@@ -17,6 +17,7 @@ import TeamScore from "./TeamScore";
 import TeamVote from "./TeamVote";
 import TeamScoreDetail from "./TeamScoreDetail";
 import TeamGallery from "./TeamGallery"
+import TeamCreate from "./TeamCreate"
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/user/Achievement" element={<UserAchievement />} />
 
         {/* team part */}
+        <Route path="/team/Create" element={<TeamCreate />} />
         <Route path="/team/2/Home" element={<TeamHome />} />
         <Route path="/team/Member" element={<TeamMember />} />
         <Route path="/team/Calendar" element={<TeamEvent />} />
@@ -42,6 +44,7 @@ function App() {
         <Route path="/team/Gantt" element={<TeamGantt />} />
         <Route path="/team/Score/4/detail" element={<TeamScoreDetail />} />
         <Route path="/team/Gallery" element={<TeamGallery />} />
+
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>
     </>

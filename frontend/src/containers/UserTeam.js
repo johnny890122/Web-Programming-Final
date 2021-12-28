@@ -25,7 +25,6 @@ function UserTeam() {
           <Card style={cardStyle} key="0">
             <CardActionArea sx={{ width: 450, height: 100, display: "inline" }}>
               {/* 連結創建隊伍頁面 */}
-
               <CardContent sx={{ p: 4 }}>
                 <Typography gutterBottom variant="h5" component="div">
                   Create New Team
