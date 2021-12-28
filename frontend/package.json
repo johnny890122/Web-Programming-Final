@@ -22,6 +22,7 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.17.3",
     "axios": "^0.24.0",
+    "babel-jest": "^27.4.5",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.20",
     "package.json": "^2.0.1",
@@ -63,7 +64,8 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-jest": "^25.3.0"
+    "eslint-plugin-jest": "^25.3.0",
+    "react-test-renderer": "^17.0.2"
   },
   "extends": [
     "eslint:recommended",

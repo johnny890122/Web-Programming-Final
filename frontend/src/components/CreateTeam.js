@@ -49,47 +49,38 @@ function CreateTeam () {
 			setTitle(titleText[currentStep])
 		}, [currentStep]
 	);
-		const createTeam = (
-			<>
-			  <Steps current={currentStep} onChange={handleClickStep}>
-	          <Step key={0} title="Step 1" description="填寫基本資訊" />
-	          <Step key="1" title="Step 2" description="邀請成員" />
-	          <Step key="2" title="Step 3" description="客製化頁面" />
-	          <Step key="3" title="Step 4" description="建立團隊" />
-	      </Steps>
+	return (
+	<>
+		<Steps current={currentStep} onChange={handleClickStep}>
+			<Step key={0} title="Step 1" description="填寫基本資訊" />
+			<Step key="1" title="Step 2" description="邀請成員" />
+			<Step key="2" title="Step 3" description="客製化頁面" />
+			<Step key="3" title="Step 4" description="建立團隊" />
+	    </Steps>
 
-	      <Divider / >
+	    <Divider / >
 
-	    	{currentStep === 0 ? <TeamForm / > : []}
-	    	{currentStep === 1 ? <Invite / > : []}
-	    	{currentStep === 2 ? [] : [] }
-	    	{currentStep === 3 ? [] : [] }
+    	{currentStep === 0 ? <TeamForm / > : []}
+    	{currentStep === 1 ? <Invite / > : []}
+    	{currentStep === 2 ? [] : [] }
+    	{currentStep === 3 ? [] : [] }
 
+    	<div class="createTeamButtonDiv">
+    		<div class="createTeamButtonDiv">
+		    	{ 
+		    		currentStep === 0 ? [] :
+		    		<Button type="primary" icon={<LeftCircleOutlined />} size="large" onClick={handleBack} > Back </Button> 
+		      }   			
+    		</div>
 	    	<div class="createTeamButtonDiv">
-	    		<div class="createTeamButtonDiv">
-			    	{ 
-			    		currentStep === 0 ? [] :
-			    		<Button type="primary" icon={<LeftCircleOutlined />} size="large" onClick={handleBack} >
-			      		Back
-			      	</Button> 
-			      }   			
-	    		</div>
-	    		<div class="createTeamButtonDiv">
-			    	{
-			    		currentStep === totalStep-1 ? [] :
-			        <Button type="primary" icon={<RightCircleOutlined />} size="large"onClick={handleNext} >
-			        	Next
-			        </Button>
-			    	} 
-		    	</div>	
-	    	</div>
+				{
+				    currentStep === totalStep-1 ? [] :
+			        <Button type="primary" icon={<RightCircleOutlined />} size="large"onClick={handleNext} > Next </Button>
+				} 
+			</div>	
+	    </div>
       </>
-		)
-    return (
-        <div className="Wrapper createTeam">
-      			<Template content={createTeam} />
-    	</div>
-    );
+	)
 }
 
 export default CreateTeam;
