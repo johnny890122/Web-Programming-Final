@@ -7,5 +7,4 @@ const UserPlaySetSchema = new Schema({
 	scoreDetail: [{type: Number, required: true}],
 })
 
-
 export  mongoose.model("UserPlaySet", UserPlaySetSchema);

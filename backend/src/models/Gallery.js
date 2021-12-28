@@ -7,5 +7,4 @@ const GallerySchema = new Schema({
 	thumbnailUrl: {type: String, required: true},
 })
 
-
 export  mongoose.model("Gallery", GallerySchema);
