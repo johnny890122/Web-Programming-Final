@@ -9,12 +9,7 @@
     "react-router-dom": "^6.1.1"
   },
   "scripts": {
-<<<<<<< HEAD
     "start" : "cd frontend && yarn start",
     "server" : "cd backend && yarn server"
-=======
-    "start": "cd ./frontend && yarn start",
-    "server": "cd ./backend && yarn server"
->>>>>>> Johnny
   }
 }

@@ -38,7 +38,6 @@ function CreateTeam () {
 
 	const handleClickStep = (e) => {
 		setCurrentStep(e);
-		console.log(e);
 	}
 
 	const buttonDiv = styled.div`display: flex; justify-content: space-between;`
@@ -52,14 +51,14 @@ function CreateTeam () {
 	return (
 	<>
 		<Steps current={currentStep} onChange={handleClickStep}>
-			<Step key={0} title="Step 1" description="填寫基本資訊" />
+			<Step key="0" title="Step 1" description="填寫基本資訊" />
 			<Step key="1" title="Step 2" description="邀請成員" />
 			<Step key="2" title="Step 3" description="客製化頁面" />
 			<Step key="3" title="Step 4" description="建立團隊" />
 	    </Steps>
 
 	    <Divider / >
-
+	    
     	{currentStep === 0 ? <TeamForm / > : []}
     	{currentStep === 1 ? <Invite / > : []}
     	{currentStep === 2 ? [] : [] }
