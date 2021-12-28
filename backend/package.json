@@ -1,20 +1,29 @@
 {
   "name": "backend",
-  "packageManager": "yarn@3.1.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "server": "nodemon server.js --exec babel-node --presets babel-preset-env"
+    "start": "nodemon index.js  --ext js,graphql --exec babel-node",
+    "server": "nodemon src/index.js --ext js,graphql --exec babel-node"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2",
+    "apollo-server": "^3.5.0",
+    "apollo-server-express": "^3.5.0",
+    "dotenv": "^10.0.0",
+    "dotenv-defaults": "^3.0.0",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
+    "mongoose": "^6.1.4",
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.2.3",
-    "babel-preset-env": "^1.7.0"
-  },
-  "scripts": {
-    "server": "nodemon src/index.js --ext js,graphql --exec babel-node"
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/preset-env": "^7.16.5"
   }
 }
