@@ -1,0 +1,12 @@
+type Query {
+	testQuery(test: String): String
+}
+
+type Mutation {
+	testMutation(test: String): String
+
+}
+
+type Subscription {
+	testSubscription: String
+}
