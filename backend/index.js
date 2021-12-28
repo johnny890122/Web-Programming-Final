@@ -1,6 +1,6 @@
-const { ApolloServer } = require('apollo-server');
-const { typeDefs } = require('./src/testTypeDef')
-const { resolvers } = require("./src/testResolvers");
+const { ApolloServer } = require('apollo-server'); // Apollo Server 2
+const { typeDefs } = require('./src/tempTypeDefs') // 改掉
+const { resolvers } = require("./src/tempResolvers"); // 改掉
 const mongoose = require('mongoose');
 require("dotenv-defaults/config.js");
 
