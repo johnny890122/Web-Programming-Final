@@ -17,6 +17,7 @@
     "dotenv-defaults": "^3.0.0",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
+    "graphql-yoga": "^1.18.3",
     "mongoose": "^6.1.4",
     "nodemon": "^2.0.15"
   },

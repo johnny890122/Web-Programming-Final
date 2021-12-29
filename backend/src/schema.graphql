@@ -1,12 +1,64 @@
 type Query {
-	testQuery(test: String): String
+  testQuery(test: String): String
 }
 
 type Mutation {
-	testMutation(test: String): String
-
+  testMutation(test: String): String
 }
 
 type Subscription {
-	testSubscription: String
+  testSubscription: String
+}
+
+type User {
+  userID: ID!
+  userAccount: String!
+  userPassword: String!
+  userEmail: String!
+  userName: String!
+  userBirthday: Int!
+  userStatus: String!
+  userProfile: String!
+  allTeams: [Team]!
+  userTodo: [DashboardTodo]!
+  userNotification: [DashboardNotification]!
+  userEvent: [DashboardEvent]!
+  userPlaySet: [UserPlaySet]!
+}
+
+type DashboardTodo {
+  dashboardTodoID: ID!
+  todos: [Todo]!
+}
+
+type Todo {
+  todoID: ID!
+  todoStatus: String!
+  todoContent: String!
+}
+
+type DashboardNotification {
+  notificationDDL: Int!
+  notificationTask: [NotificationTask]!
+}
+
+type NotificationTask {
+  taskType: String!
+  taskContent: String!
+}
+
+type DashboardEvent {
+  eventID: ID!
+  eventTitle: String!
+  eventDescription: String
+  eventStart: Int!
+  eventEnd: Int!
+  eventLocation: String
+  eventPosttime: Int!
+}
+
+type UserPlaySet {
+  userPlaySetID: ID!
+  playSetUser: User!
+  scoreDetail: [Int!]!
 }
