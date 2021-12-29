@@ -109,7 +109,10 @@ function TeamEvent() {
                 <ToggleButton size ="small" value="list">List</ToggleButton>         
                 <ToggleButton size ="small" value="calendar">Calendar</ToggleButton>
             </ToggleButtonGroup>
-          </div>  
+          </div> 
+          <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/CreateTeamEvent'>
+            Create
+          </Button> 
 
           {(viewmode === 'list') ? 
             <div className = "team-event-filtertoggle">

@@ -18,6 +18,7 @@ import TeamVote from "./TeamVote";
 import TeamScoreDetail from "./TeamScoreDetail";
 import TeamGallery from "./TeamGallery"
 import TeamCreate from "./TeamCreate"
+import CreateEvent from "./CreateEvent";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
         <Route path="/user/Calendar" element={<UserEvent />} />
+        <Route path="/user/CreateUserEvent" element={<CreateEvent />} />
         <Route path="/user/Team" element={<UserTeam />} />
         <Route path="/user/Achievement" element={<UserAchievement />} />
 

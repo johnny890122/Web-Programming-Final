@@ -5,8 +5,8 @@ import { GraphQLServer, PubSub } from "graphql-yoga";
 //import Mutation from "./resolvers/Mutation.js";
 //import Subscription from "./resolvers/Subscription.js";
 
-const { typeDefs } = require('./src/tempTypeDefs') // 改掉
-const { resolvers } = require("./src/tempResolvers"); // 改掉
+const { typeDefs } = require('./tempTypeDefs') // 改掉
+const { resolvers } = require("./tempResolvers"); // 改掉
 // db
 // import taskModel from "./models/task.js";
 

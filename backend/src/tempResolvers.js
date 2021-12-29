@@ -54,6 +54,6 @@ const resolvers = {
             return removeUser
         }
     }
-
 }
+
 module.exports = { resolvers };

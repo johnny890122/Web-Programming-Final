@@ -10,6 +10,7 @@ const TeamScoreDetail = () => {
     ["第二局比數", "20", "25"],
     ["第三局比數", "-", "-"],
   ];
+  
   let scoreDetail = <Table columnName={columnName} data={data} />;
   return (
     <div className="Wrapper">
