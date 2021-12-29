@@ -23,12 +23,9 @@ type User {
   userTodo: [DashboardTodo]!
   userNotification: [DashboardNotification]!
   userEvent: [DashboardEvent]!
+  userTodo: [Todo!]!
   userPlaySet: [UserPlaySet]!
-}
-
-type DashboardTodo {
-  dashboardTodoID: ID!
-  todos: [Todo]!
+  userAchievement: [Achievement]!
 }
 
 type Todo {
@@ -61,4 +58,10 @@ type UserPlaySet {
   userPlaySetID: ID!
   playSetUser: User!
   scoreDetail: [Int!]!
+}
+
+type userAchievement {
+  userAchievementID: ID!
+  userAchievementTitle: String!
+  userAchievementContent: String!
 }
