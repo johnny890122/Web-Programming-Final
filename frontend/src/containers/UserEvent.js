@@ -1,6 +1,6 @@
 import Template from "../components/Template";
 import { EventData } from '../components/ListData';
-import { Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
+import { Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import { CardActionArea, CardMedia } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
@@ -112,6 +112,9 @@ function UserEvent() {
                 <ToggleButton size ="small" value="list">List</ToggleButton>         
                 <ToggleButton size ="small" value="calendar">Calendar</ToggleButton>
             </ToggleButtonGroup>
+            <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/user/CreateUserEvent'>
+                Create
+            </Button>
           </div>  
 
           {(viewmode === 'list') ? 
