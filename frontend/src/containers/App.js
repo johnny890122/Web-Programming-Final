@@ -16,8 +16,8 @@ import TeamPost from "./TeamPost";
 import TeamScore from "./TeamScore";
 import TeamVote from "./TeamVote";
 import TeamScoreDetail from "./TeamScoreDetail";
-import TeamGallery from "./TeamGallery"
-import TeamCreate from "./TeamCreate"
+import TeamGallery from "./TeamGallery";
+import TeamCreate from "./TeamCreate";
 import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
 

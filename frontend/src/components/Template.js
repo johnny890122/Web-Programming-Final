@@ -312,25 +312,33 @@ export default function Template({ content }) {
             : null}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          marginLeft: "2.5rem",
+          marginTop: "2rem",
+        }}
+      >
         <DrawerHeader />
         <Breadcrumbs
           aria-label="breadcrumb"
           separator={<NavigateNext fontSize="small" />}
         >
           {breadItem.map((item) => (
-            <Typography
-              // underline="hover"
-              // color="inherit"
-              // href={"http://localhost:3000/" + item}
-              sx={{ color: "black" }}
-            >
+            <Typography sx={{ color: "black" }}>
               {item.toUpperCase()}
             </Typography>
           ))}
         </Breadcrumbs>
         <br />
-        {content}
+        <div className="main" style={{ width: "95%" }}>
+          {content}
+        </div>
+        <br />
+        <br />
       </Box>
     </Box>
   );
