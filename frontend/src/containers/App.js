@@ -38,16 +38,19 @@ function App() {
 
         {/* team part */}
         <Route path="/team/Create" element={<TeamCreate />} />
-        <Route path="/team/2/Home" element={<TeamHome />} />
-        <Route path="/team/Member" element={<TeamMember />} />
-        <Route path="/team/Calendar" element={<TeamEvent />} />
+        <Route path="/team/:teamname/Home" element={<TeamHome />} />
+        <Route path="/team/:teamname/Member" element={<TeamMember />} />
+        <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
         <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
-        <Route path="/team/Posts" element={<TeamPost />} />
-        <Route path="/team/Score" element={<TeamScore />} />
-        <Route path="/team/Vote" element={<TeamVote />} />
-        <Route path="/team/Gantt" element={<TeamGantt />} />
-        <Route path="/team/Score/4/detail" element={<TeamScoreDetail />} />
-        <Route path="/team/Gallery" element={<TeamGallery />} />
+        <Route path="/team/:teamname/Posts" element={<TeamPost />} />
+        <Route path="/team/:teamname/Score" element={<TeamScore />} />
+        <Route path="/team/:teamname/Vote" element={<TeamVote />} />
+        <Route path="/team/:teamname/Gantt" element={<TeamGantt />} />
+        <Route
+          path="/team/:teamname/Score/4/detail"
+          element={<TeamScoreDetail />}
+        />
+        <Route path="/team/:teamname/Gallery" element={<TeamGallery />} />
 
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>

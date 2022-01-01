@@ -36,7 +36,7 @@ import {
   Edit,
   NavigateNext,
 } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 
 const drawerWidth = 210;
@@ -166,7 +166,7 @@ export default function Template({ content }) {
   breadItem.shift();
 
   React.useEffect(() => {
-    if (breadItem[1] === "Team" || breadItem[0] === "team") {
+    if (breadItem[0] === "team") {
       setIsTeam(true);
     } else {
       setIsTeam(false);
@@ -302,12 +302,12 @@ export default function Template({ content }) {
         <List>
           {isTeam
             ? teamPages.map((text, index) => (
-                <NavLink to={"/team/" + text}>
+                <Link to={"/team/" + breadItem[1] + "/" + text}>
                   <ListItem button key={text}>
                     <ListItemIcon>{teamIconList[index]}</ListItemIcon>
                     <ListItemText primary={text} sx={{ color: "black" }} />
                   </ListItem>
-                </NavLink>
+                </Link>
               ))
             : null}
         </List>
@@ -329,7 +329,7 @@ export default function Template({ content }) {
         >
           {breadItem.map((item) => (
             <Typography sx={{ color: "black" }}>
-              {item.toUpperCase()}
+              {decodeURI(item).toUpperCase()}
             </Typography>
           ))}
         </Breadcrumbs>
