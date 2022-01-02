@@ -6,4 +6,4 @@ const VoteSchema = new Schema({
 })
 
 
-export  mongoose.model("Vote", VoteSchema);
+export default mongoose.model("Vote", VoteSchema);

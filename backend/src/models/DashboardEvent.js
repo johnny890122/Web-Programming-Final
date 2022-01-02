@@ -14,4 +14,4 @@ const DashboardEventSchema = new Schema({
 })
 
 
-export  mongoose.model("DashboardEvent", DashboardEventSchema);
+export default mongoose.model("DashboardEvent", DashboardEventSchema);

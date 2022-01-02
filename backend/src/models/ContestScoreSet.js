@@ -9,4 +9,4 @@ const ContestScoreSetSchema = new Schema({
 })
 
 
-export  mongoose.model("ContestScoreSet", ContestScoreSetSchema);
+export default mongoose.model("ContestScoreSet", ContestScoreSetSchema);

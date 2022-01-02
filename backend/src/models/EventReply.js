@@ -9,4 +9,4 @@ const EventReplySchema = new Schema({
 })
 
 
-export  mongoose.model("EventReply", EventReplySchema);
+export default mongoose.model("EventReply", EventReplySchema);

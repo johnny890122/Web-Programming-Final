@@ -7,4 +7,4 @@ const VoteOptionSchema = new Schema({
 	votedUser: [{type: mongoose.Types.ObjectId, ref: "User"}],
 })
 
-export  mongoose.model("VoteOption",VoteOptionSchema);
+export default mongoose.model("VoteOption",VoteOptionSchema);

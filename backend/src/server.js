@@ -1,22 +1,25 @@
 import { GraphQLServer, PubSub } from "graphql-yoga";
 
 // resolvers
-//import Query from "./resolvers/Query.js";
-//import Mutation from "./resolvers/Mutation.js";
-//import Subscription from "./resolvers/Subscription.js";
-
-const { typeDefs } = require('./tempTypeDefs') // 改掉
-const { resolvers } = require("./tempResolvers"); // 改掉
+import Query from "./resolvers/Query.js";
+import Mutation from "./resolvers/Mutation.js";
+// import Subscription from "./resolvers/Subscription.js";
 // db
-// import taskModel from "./models/task.js";
 
-const port = process.env.PORT || 5000;
+import UserModel from "./models/User"
+import TodoModel from "./models/Todo"
+
 const pubSub = new PubSub();
 const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
+  typeDefs: "./src/schema.graphql",
+  resolvers: {
+    Query,
+    Mutation,
+    // Subscription,
+  },
   context: {
-    // taskModel,
+    userModel: UserModel,
+    todoModel: TodoModel,
     pubSub,
   },
 });

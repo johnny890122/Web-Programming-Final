@@ -7,5 +7,4 @@ const TodoSchema = new Schema({
 	todoContent: {type: String, required: true},
 })
 
-export  mongoose.model("Todo", TodoSchema);
-w
+export default mongoose.model("Todo", TodoSchema);
