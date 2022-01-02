@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
+import "dotenv-defaults/config.js";
 
-require('dotenv').config();
-
-async function connect () {
+async function connect() {
   mongoose.connect(
     process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -11,6 +10,5 @@ async function connect () {
   .then((res) => console.log("mongo db connection created"))
   .catch((res) => console.log("mongo db connection has not created")); // 定義 Mongo DB 的連線
 }
-
 
 export default { connect };

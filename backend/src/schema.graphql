@@ -1,9 +1,12 @@
 type Query {
-  testQuery(test: String): String
+  userLogin(account:String, password: String): User
+  initUserTodo(_id: ID): Todo
+  initUserEvent(_id: ID): DashboardEvent
 }
 
 type Mutation {
-  testMutation(test: String): String
+  createUser(userAccount: String, userPassword: String, userEmail: String): User
+  createUserTodo(_id: ID, todoContent: String): Todo
 }
 
 type Subscription {
@@ -15,17 +18,17 @@ type User {
   userAccount: String!
   userPassword: String!
   userEmail: String!
-  userName: String!
-  userBirthday: Int!
-  userStatus: String!
-  userProfile: String!
-  allTeams: [Team]!
-  userTodo: [DashboardTodo]!
-  userNotification: [DashboardNotification]!
-  userEvent: [DashboardEvent]!
-  userTodo: [Todo!]!
-  userPlaySet: [UserPlaySet]!
-  userAchievement: [Achievement]!
+  userName: String
+  userBirthday: Int
+  userStatus: String
+  userProfile: String
+  # allTeams: [Team]!
+  userTodo: [Todo]!
+  # userNotification: [DashboardNotification]!
+  # userEvent: [DashboardEvent]!
+  # userTodo: [Todo!]!
+  # userPlaySet: [UserPlaySet]!
+  # userAchievement: [Achievement]!
 }
 
 type Todo {

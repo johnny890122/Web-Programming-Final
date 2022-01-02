@@ -11,7 +11,30 @@ import { TextField } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
+import { useQuery, useMutation } from '@apollo/client';
+import { CREATE_USER } from '../graphql';
+
+import { useState } from "react";
+
 const SignUp = () => {
+
+  const [email, setEmail] = useState("");
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+
+  const [addUser] = useMutation(CREATE_USER);
+
+  const submitSignUp = () => {
+      addUser({ 
+        variables: {
+          userAccount: account,
+          userPassword: password,
+          userEmail: email,
+        }
+      })
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#2e4c6d" }}>
@@ -44,34 +67,42 @@ const SignUp = () => {
           }}
         >
           <TextField
+            onChange={(e) => setEmail(e.target.value)}
             label="信箱"
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
           />
           <TextField
+            onChange={(e) => setAccount(e.target.value)}
             label="帳號"
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
           />
           <TextField
+            onChange={(e) => setPassword(e.target.value)}
             label="密碼"
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
           />
           <TextField
+            onChange={(e) => setPasswordCheck(e.target.value)}
             label="確認密碼"
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
           />
-          <NavLink to="/user/Dashboard">
-            <Button variant="contained" style={{ margin: "0.75rem" }}>
+          {/*<NavLink to="/user/Dashboard">*/}
+            <Button 
+              onClick = {submitSignUp}
+              variant="contained" 
+              style={{ margin: "0.75rem" }}>
               Sign Up
             </Button>
-          </NavLink>
+          {/*</NavLink>*/}
+
           <NavLink to="/">
             <Button variant="contained" style={{ margin: "0.75rem" }}>
               have an account? log in!

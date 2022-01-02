@@ -17,5 +17,4 @@ const UserSchema = new Schema({
 	userPlaySet: [{type: mongoose.Types.ObjectId, ref: "DashboardPlaySet"}],
 })
 
-
 export default mongoose.model("User", UserSchema);
