@@ -1,6 +1,6 @@
 import Template from "../components/Template";
 import { EventData } from '../components/ListData';
-import { Chip, List, ListItem, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
+import { Button, Chip, List, ListItem, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import { CardActionArea, CardMedia } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -109,10 +109,10 @@ function TeamEvent() {
                 <ToggleButton size ="small" value="list">List</ToggleButton>         
                 <ToggleButton size ="small" value="calendar">Calendar</ToggleButton>
             </ToggleButtonGroup>
+            <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/CreateTeamEvent'>
+                Create
+            </Button> 
           </div> 
-          <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/CreateTeamEvent'>
-            Create
-          </Button> 
 
           {(viewmode === 'list') ? 
             <div className = "team-event-filtertoggle">

@@ -36,7 +36,7 @@ import {
   Edit,
   NavigateNext,
 } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 
 const drawerWidth = 210;
@@ -166,7 +166,7 @@ export default function Template({ content }) {
   breadItem.shift();
 
   React.useEffect(() => {
-    if (breadItem[1] === "Team" || breadItem[0] === "team") {
+    if (breadItem[0] === "team") {
       setIsTeam(true);
     } else {
       setIsTeam(false);
@@ -302,35 +302,43 @@ export default function Template({ content }) {
         <List>
           {isTeam
             ? teamPages.map((text, index) => (
-                <NavLink to={"/team/" + text}>
+                <Link to={"/team/" + breadItem[1] + "/" + text}>
                   <ListItem button key={text}>
                     <ListItemIcon>{teamIconList[index]}</ListItemIcon>
                     <ListItemText primary={text} sx={{ color: "black" }} />
                   </ListItem>
-                </NavLink>
+                </Link>
               ))
             : null}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          marginLeft: "2.5rem",
+          marginTop: "2rem",
+        }}
+      >
         <DrawerHeader />
         <Breadcrumbs
           aria-label="breadcrumb"
           separator={<NavigateNext fontSize="small" />}
         >
           {breadItem.map((item) => (
-            <Typography
-              // underline="hover"
-              // color="inherit"
-              // href={"http://localhost:3000/" + item}
-              sx={{ color: "black" }}
-            >
-              {item.toUpperCase()}
+            <Typography sx={{ color: "black" }}>
+              {decodeURI(item).toUpperCase()}
             </Typography>
           ))}
         </Breadcrumbs>
         <br />
-        {content}
+        <div className="main" style={{ width: "95%" }}>
+          {content}
+        </div>
+        <br />
+        <br />
       </Box>
     </Box>
   );

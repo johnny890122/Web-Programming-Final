@@ -5,7 +5,7 @@ import { useState } from "react";
 import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
-import DashboardEvent from "../components/DashboardEvent"
+import DashboardEvent from "../components/DashboardEvent";
 import { Modal } from "antd";
 
 const UserDashboard = () => {
@@ -36,11 +36,11 @@ const UserDashboard = () => {
 
   const dashboard = (
     <>
-
-      <Block 
-        enlarge={ showModalWithEvent } 
-        component={< DashboardEvent />} 
-        fullscreen={isModalVisible}/ >
+      <Block
+        enlarge={showModalWithEvent}
+        component={<DashboardEvent />}
+        fullscreen={isModalVisible}
+      />
 
       <Block
         enlarge={showModalWithNotification}

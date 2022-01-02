@@ -3,6 +3,7 @@ import { TeamData } from "../components/ListData";
 import { Typography, Box, Card, Button, CardContent } from "@mui/material";
 import { CardActionArea, CardMedia } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
 function UserTeam() {
   /*
@@ -21,7 +22,7 @@ function UserTeam() {
         className="createBox-container"
         style={{ display: "flex", width: "80vw" }}
       >
-        <NavLink to="/team/Create">
+        <Link to="/team/Create">
           <Card style={cardStyle} key="0">
             <CardActionArea sx={{ width: 450, height: 100, display: "inline" }}>
               {/* 連結創建隊伍頁面 */}
@@ -32,7 +33,7 @@ function UserTeam() {
               </CardContent>
             </CardActionArea>
           </Card>
-        </NavLink>
+        </Link>
       </div>
 
       <div
@@ -40,7 +41,7 @@ function UserTeam() {
         style={{ display: "flex", width: "80vw" }}
       >
         {TeamData.map((team) => (
-          <NavLink to={`/team/${team.id}/Home`}>
+          <Link to={{ pathname: `/team/${team.teamname}/Home` }}>
             <Card style={cardStyle} key={team.id}>
               <CardActionArea
                 sx={{ width: 450, height: 200, display: "inline" }}
@@ -60,7 +61,7 @@ function UserTeam() {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </NavLink>
+          </Link>
         ))}
       </div>
     </div>

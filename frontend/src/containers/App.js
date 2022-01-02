@@ -16,9 +16,10 @@ import TeamPost from "./TeamPost";
 import TeamScore from "./TeamScore";
 import TeamVote from "./TeamVote";
 import TeamScoreDetail from "./TeamScoreDetail";
-import TeamGallery from "./TeamGallery"
-import TeamCreate from "./TeamCreate"
-import CreateEvent from "./CreateEvent";
+import TeamGallery from "./TeamGallery";
+import TeamCreate from "./TeamCreate";
+import CreateUserEvent from "./CreateUserEvent";
+import CreateTeamEvent from "./CreateTeamEvent";
 
 function App() {
   return (
@@ -31,21 +32,25 @@ function App() {
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
         <Route path="/user/Calendar" element={<UserEvent />} />
-        <Route path="/user/CreateUserEvent" element={<CreateEvent />} />
+        <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
         <Route path="/user/Team" element={<UserTeam />} />
         <Route path="/user/Achievement" element={<UserAchievement />} />
 
         {/* team part */}
         <Route path="/team/Create" element={<TeamCreate />} />
-        <Route path="/team/2/Home" element={<TeamHome />} />
-        <Route path="/team/Member" element={<TeamMember />} />
-        <Route path="/team/Calendar" element={<TeamEvent />} />
-        <Route path="/team/Posts" element={<TeamPost />} />
-        <Route path="/team/Score" element={<TeamScore />} />
-        <Route path="/team/Vote" element={<TeamVote />} />
-        <Route path="/team/Gantt" element={<TeamGantt />} />
-        <Route path="/team/Score/4/detail" element={<TeamScoreDetail />} />
-        <Route path="/team/Gallery" element={<TeamGallery />} />
+        <Route path="/team/:teamname/Home" element={<TeamHome />} />
+        <Route path="/team/:teamname/Member" element={<TeamMember />} />
+        <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
+        <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
+        <Route path="/team/:teamname/Posts" element={<TeamPost />} />
+        <Route path="/team/:teamname/Score" element={<TeamScore />} />
+        <Route path="/team/:teamname/Vote" element={<TeamVote />} />
+        <Route path="/team/:teamname/Gantt" element={<TeamGantt />} />
+        <Route
+          path="/team/:teamname/Score/4/detail"
+          element={<TeamScoreDetail />}
+        />
+        <Route path="/team/:teamname/Gallery" element={<TeamGallery />} />
 
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>
