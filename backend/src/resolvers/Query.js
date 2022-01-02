@@ -1,12 +1,13 @@
 const Query = {
-  userLogin: async(parent, {account, password}, {userModel, pubSub}) =>{
-    const user = await userModel.findOne( {userAccount: account} );
+  userLogin: async(parent, {userAccount, userPassword}, {userModel, pubSub}) =>{
+
+    const user = await userModel.findOne( {userAccount} );
 
     if (!user) {
-      throw new Error("User not found!")
+      throw new Error("Account not existed!")
     }
 
-    else if (user.userPassword != password){
+    else if (user.userPassword != userPassword){
       throw new Error("Password not correct!")
     }
     else{

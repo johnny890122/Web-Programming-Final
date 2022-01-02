@@ -7,11 +7,10 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MeetingRoom } from "@mui/icons-material";
-import { TextField } from "@mui/material";
-import { InputLabel } from "@mui/material";
+import { TextField, InputLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '../graphql';
 
 import { useState } from "react";
@@ -94,14 +93,14 @@ const SignUp = () => {
             focused
             style={{ margin: "0.75rem" }}
           />
-          {/*<NavLink to="/user/Dashboard">*/}
+          <NavLink to="/user/Dashboard">
             <Button 
               onClick = {submitSignUp}
               variant="contained" 
               style={{ margin: "0.75rem" }}>
               Sign Up
             </Button>
-          {/*</NavLink>*/}
+          </NavLink>
 
           <NavLink to="/">
             <Button variant="contained" style={{ margin: "0.75rem" }}>

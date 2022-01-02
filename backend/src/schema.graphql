@@ -1,5 +1,5 @@
 type Query {
-  userLogin(account:String, password: String): User
+  userLogin(userAccount:String, userPassword: String): User
   initUserTodo(_id: ID): Todo
   initUserEvent(_id: ID): DashboardEvent
 }

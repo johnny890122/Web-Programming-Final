@@ -11,7 +11,7 @@ export const CREATE_USER = gql`
       userPassword: $userPassword
       userEmail: $userEmail
     ) {
-        userAccount
+        userID
       }
     }
 `;

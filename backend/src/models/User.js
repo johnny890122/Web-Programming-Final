@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-	userID: {type: mongoose.Types.ObjectId, required: false},
+	userID: {type: String, required: false},
 	userAccount: {type: String, required: true},
 	userPassword: {type: String, required: true},
 	userEmail: {type: String, required: false},

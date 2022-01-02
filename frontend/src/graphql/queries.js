@@ -1,14 +1,18 @@
 import { gql } from "@apollo/client";
 
-// export const GET_TASKS_QUERY = gql`
-//   query GetTasksQuery {
-//     tasks {
-//       # TODO 2 Please modify the query to get more properties
-//       dueDate
-//       id
-//       status
-//       title
-//       content
-//     }
-//   }
-// `;
+export const USER_LOGIN = gql`
+  query userLogin (
+    $userAccount: String, 
+    $userPassword: String,
+  ) {
+    userLogin(
+      userAccount: $userAccount, 
+      userPassword: $userPassword
+    ) 
+    {
+      userID
+    }
+  }
+`;
+
+
