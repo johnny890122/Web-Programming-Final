@@ -7,4 +7,4 @@ const GallerySchema = new Schema({
 	thumbnailUrl: {type: String, required: true},
 })
 
-export  mongoose.model("Gallery", GallerySchema);
+export default mongoose.model("Gallery", GallerySchema);

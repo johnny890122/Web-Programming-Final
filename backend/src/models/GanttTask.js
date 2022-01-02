@@ -11,4 +11,4 @@ const GanttTaskSchema = new Schema({
 })
 
 
-export  mongoose.model("GanttTask", GanttTaskSchema);
+export default mongoose.model("GanttTask", GanttTaskSchema);

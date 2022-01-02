@@ -7,4 +7,4 @@ const GanttSchema = new Schema({
 })
 
 
-export  mongoose.model("Gantt", GanttSchema);
+export default mongoose.model("Gantt", GanttSchema);

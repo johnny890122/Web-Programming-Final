@@ -7,4 +7,4 @@ const DashboardNotificationSchema = new Schema({
 })
 
 
-export  mongoose.model("DashboardTodo", DashboardTodoSchema);
+export default mongoose.model("DashboardTodo", DashboardTodoSchema);
