@@ -48,7 +48,7 @@ function App() {
           <Route path="/team/:teamname/Home" element={<TeamHome />} />
           <Route path="/team/:teamname/Member" element={<TeamMember />} />
           <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
-          <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
+          <Route path="/team/:teamname/CreateTeamEvent" element={<CreateTeamEvent />} />
           <Route path="/team/:teamname/Posts" element={<TeamPost />} />
           <Route path="/team/:teamname/Score" element={<TeamScore />} />
           <Route path="/team/:teamname/Vote" element={<TeamVote />} />
