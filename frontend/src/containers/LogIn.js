@@ -11,28 +11,26 @@ import { TextField } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { useQuery } from '@apollo/client';
-import { USER_LOGIN } from '../graphql';
+import { useQuery } from "@apollo/client";
+import { USER_LOGIN } from "../graphql";
 
-const LogIn = () => {
+const LogIn = ({ setLogin }) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
-  const [login, setLogin] = useState(false);
   const [me, setMe] = useState("");
 
-  const { data, error, loading, subscribeToMore } = useQuery(
-      USER_LOGIN, {variables: {userAccount: account, userPassword: password}}
-  );
+  const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
+    variables: { userAccount: account, userPassword: password },
+  });
 
   const submitLogin = () => {
-      if (data) {
-        setLogin(true);
-        setMe(data.userLogin.userID);
-      }
-  }
+    if (data) {
+      setLogin(true);
+      setMe(data.userLogin.userID);
+    }
+  };
 
   return (
-
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "#2e4c6d" }}>
         <Toolbar>
@@ -63,9 +61,6 @@ const LogIn = () => {
             margin: "0.5rem 3rem",
           }}
         >
-          {/* <InputLabel shrink htmlFor="bootstrap-input">
-            帳號
-          </InputLabel> */}
           <TextField
             onChange={(e) => setAccount(e.target.value)}
             label="帳號"
@@ -82,17 +77,16 @@ const LogIn = () => {
           />
           <NavLink to="/user/Dashboard">
             <Button
-            onClick={submitLogin}
-            variant="contained" 
-            style={{ margin: "0.75rem" }}>
+              onClick={submitLogin}
+              variant="contained"
+              style={{ margin: "0.75rem" }}
+            >
               Log In
             </Button>
           </NavLink>
 
           <NavLink to="/SignUp">
-            <Button 
-              variant="contained" 
-              style={{ margin: "0.75rem" }}>
+            <Button variant="contained" style={{ margin: "0.75rem" }}>
               No account? Sign up right now!
             </Button>
           </NavLink>

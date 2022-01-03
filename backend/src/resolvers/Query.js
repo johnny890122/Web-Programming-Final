@@ -43,10 +43,29 @@ const Query = {
 
   initMember: async (parent, { teamID }, { teamModel, pubSub }) => {
     const team = await teamModel.findOne({ _id: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    if (team.teamMember.Length !== 0) return team.teamMember;
+    if (!team) throw new Error("Team not found!");
+    if (team.teamMember.length !== 0) return team.teamMember;
+    else return [];
+  },
+
+  initScore: async (parent, { teamID }, { teamModel, pubSub }) => {
+    const team = await teamModel.findOne({ _id: teamID });
+    if (!team) throw new Error("Team not found!");
+    if (team.teamScore.length !== 0) return team.teamScore;
+    else return [];
+  },
+
+  initGallery: async (parent, { teamID }, { teamModel, pubSub }) => {
+    const team = await teamModel.findOne({ _id: teamID });
+    if (!team) throw new Error("Team not found!");
+    if (team.teamGallery.length !== 0) return team.teamGallery;
+    else return [];
+  },
+
+  initGantt: async (parent, { teamID }, { teamModel, pubSub }) => {
+    const team = await teamModel.findOne({ _id: teamID });
+    if (!team) throw new Error("Team not found!");
+    if (team.teamGantt.length !== 0) return team.teamGantt;
     else return [];
   },
 };

@@ -10,13 +10,12 @@ import { MeetingRoom } from "@mui/icons-material";
 import { TextField, InputLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../graphql';
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../graphql";
 
 import { useState } from "react";
 
-const SignUp = () => {
-
+const SignUp = ({ setLogin }) => {
   const [email, setEmail] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -25,14 +24,15 @@ const SignUp = () => {
   const [addUser] = useMutation(CREATE_USER);
 
   const submitSignUp = () => {
-      addUser({ 
-        variables: {
-          userAccount: account,
-          userPassword: password,
-          userEmail: email,
-        }
-      })
-  }
+    addUser({
+      variables: {
+        userAccount: account,
+        userPassword: password,
+        userEmail: email,
+      },
+    });
+    setLogin(true);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -94,10 +94,11 @@ const SignUp = () => {
             style={{ margin: "0.75rem" }}
           />
           <NavLink to="/user/Dashboard">
-            <Button 
-              onClick = {submitSignUp}
-              variant="contained" 
-              style={{ margin: "0.75rem" }}>
+            <Button
+              onClick={submitSignUp}
+              variant="contained"
+              style={{ margin: "0.75rem" }}
+            >
               Sign Up
             </Button>
           </NavLink>
