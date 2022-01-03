@@ -1,3 +1,5 @@
+import User from "../models/User";
+
 const Query = {
   userLogin: async (
     parent,
@@ -68,6 +70,18 @@ const Query = {
     if (team.teamGantt.length !== 0) return team.teamGantt;
     else return [];
   },
+/* --------------------------------------- */
+  initTeam: async (parent, { userID }, { userModel, pubSub }) => {
+    const user = await userModel.findOne({ _id: userID });
+    if (!user) throw new Error("User not found!");
+    if (user.allTeams.length !== 0) return user.allTeams;
+    else return [];
+  },
+  users: () => {
+    return UserModel.find()
+  },
+
+  
 };
 
 export default Query;

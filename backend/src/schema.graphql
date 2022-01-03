@@ -6,6 +6,13 @@ type Query {
   initScore(_id: ID): [Contest]!
   initGallery(_id: ID): [Gallery]!
   initGantt(_id: ID): [Gantt]!
+  ##### Yoga #####
+  users(query: String): [User]!
+  initTeam(_id:ID): [Team]!
+  #initTeamEvent(_id: ID): [Event]!
+  #initTeamPost(_id: ID): [Post]!
+  #initVote(_id: ID) [Vote]!
+  ################
 }
 
 type Mutation {
@@ -15,6 +22,31 @@ type Mutation {
   createScoreDetail(data: CreateScoreDetailInput!): Contest!
   createGallery(data: CreateGalleryInput!): Gallery!
   createGantt(data: CreateGanttInput!): Gantt!
+  ##### Yoga #####
+  createTeam(
+    teamName: String!, 
+    teamDescription: String!, 
+    teamType: String!,
+    teamCreater: String! # ** 修正= > User?
+  ): Team!
+  #createTeamEvent(
+  #  _id: ID, 
+  #  eventTitle: String!, 
+  #  eventDescription: String!, 
+  #  eventStart: Int!, 
+  #  eventEnd: Int!, 
+  #  eventLocation: String, 
+  #  eventCreator: User!
+  #): Event
+  #createTeamPost(
+  #  _id: ID,
+  #  postTitle: String!,
+  #  postContent: String!,
+  #  postAuthor: User!
+  #): Post
+  #createVoteOption(_id: ID) [Vote]!
+  #createVote(_id: ID) [Vote]!
+  ################
 }
 
 type Subscription {
@@ -30,7 +62,7 @@ type User {
   userBirthday: Int
   userStatus: String
   userProfile: String
-  # allTeams: [Team]!
+  allTeams: [Team]!
   userTodo: [Todo]!
   # userNotification: [DashboardNotification]!
   # userEvent: [DashboardEvent]!
@@ -82,7 +114,7 @@ type Team {
   teamName: String!
   teamDescription: String!
   teamType: String!
-  teamCreateDate: Int!
+  #teamCreateDate: String # 修正
   teamMember: [User!]!
   teamGallery: [Gallery]!
   teamPost: [Post]!

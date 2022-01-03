@@ -17,5 +17,9 @@
   },
   "devDependencies": {
     "@babel/node": "^7.16.5"
+  },
+  "resolutions": {
+    "graphql": "^15.6.1",
+    "**/graphql": "^15.6.1"
   }
 }

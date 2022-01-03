@@ -65,6 +65,39 @@ const Mutation = {
     teamModel.teamGantt.unshift(newGantt);
     return teamModel.teamGantt;
   },
+
+  createGantt: (parent, args, { teamModel, pubSub }) => {
+    const newGantt = {
+      ganttID: uuidv4(),
+      ...args.data,
+    };
+    teamModel.teamGantt.unshift(newGantt);
+    return teamModel.teamGantt;
+  },
+
+  createTeam: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { teamName, teamDescription, teamType, teamCreater } = args;
+    const TeamExists = await teamModel.findOne({ teamName });
+    const creater = await userModel.findOne({ teamCreater });
+
+    if (TeamExists) {
+      throw new Error("This team name has existed!");
+    } 
+
+    console.log(creater)
+    const teamMember = [creater]
+    const newTeam = new teamModel({
+      teamID: uuidv4(),
+      teamName,
+      teamDescription,
+      teamType,
+      teamMember
+    });
+    await newTeam.save();
+    console.log("New Team Saved!");
+
+    return newTeam;
+  },
 };
 
 export default Mutation;
