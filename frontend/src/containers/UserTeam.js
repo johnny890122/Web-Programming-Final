@@ -2,8 +2,7 @@ import Template from "../components/Template";
 import { TeamData } from "../components/ListData";
 import { Typography, Box, Card, Button, CardContent } from "@mui/material";
 import { CardActionArea, CardMedia } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function UserTeam() {
   /*

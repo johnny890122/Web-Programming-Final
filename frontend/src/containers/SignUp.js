@@ -15,7 +15,7 @@ import { CREATE_USER } from "../graphql";
 
 import { useState } from "react";
 
-const SignUp = ({ setLogin }) => {
+const SignUp = ({ setLogin, setNoAccount }) => {
   const [email, setEmail] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -24,13 +24,13 @@ const SignUp = ({ setLogin }) => {
   const [addUser] = useMutation(CREATE_USER);
 
   const submitSignUp = () => {
-    addUser({
-      variables: {
-        userAccount: account,
-        userPassword: password,
-        userEmail: email,
-      },
-    });
+    // addUser({
+    //   variables: {
+    //     userAccount: account,
+    //     userPassword: password,
+    //     userEmail: email,
+    //   },
+    // });
     setLogin(true);
   };
 
@@ -93,18 +93,22 @@ const SignUp = ({ setLogin }) => {
             focused
             style={{ margin: "0.75rem" }}
           />
-          <NavLink to="/user/Dashboard">
-            <Button
-              onClick={submitSignUp}
-              variant="contained"
-              style={{ margin: "0.75rem" }}
-            >
-              Sign Up
-            </Button>
-          </NavLink>
+          {/* <NavLink to="/user/Dashboard"> */}
+          <Button
+            onClick={submitSignUp}
+            variant="contained"
+            style={{ margin: "0.75rem" }}
+          >
+            Sign Up
+          </Button>
+          {/* </NavLink> */}
 
           <NavLink to="/">
-            <Button variant="contained" style={{ margin: "0.75rem" }}>
+            <Button
+              variant="contained"
+              style={{ margin: "0.75rem" }}
+              onClick={() => setNoAccount(false)}
+            >
               have an account? log in!
             </Button>
           </NavLink>

@@ -22,46 +22,48 @@ import CreateTeamEvent from "./CreateTeamEvent";
 
 function App() {
   const [login, setLogin] = useState(false);
-  if (login === false) {
-    return (
-      <>
-        <Routes>
-          {/* login and signup */}
-          <Route path="/" element={<LogIn setLogin={setLogin} />} />
-          <Route path="/SignUp" element={<SignUp setLogin={setLogin} />} />
-        </Routes>
-      </>
+  const [noAccount, setNoAccount] = useState(false);
+  if (!login) {
+    return noAccount ? (
+      <SignUp setLogin={setLogin} setNoAccount={setNoAccount} />
+    ) : (
+      <LogIn setLogin={setLogin} setNoAccount={setNoAccount} />
     );
-  } else
-    return (
-      <>
-        <Routes>
-          {/* user part */}
-          <Route path="/user/Dashboard" element={<UserDashboard />} />
-          <Route path="/user/Calendar" element={<UserEvent />} />
-          <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
-          <Route path="/user/Team" element={<UserTeam />} />
-          <Route path="/user/Achievement" element={<UserAchievement />} />
+  }
 
-          {/* team part */}
-          <Route path="/team/Create" element={<TeamCreate />} />
-          <Route path="/team/:teamname/Home" element={<TeamHome />} />
-          <Route path="/team/:teamname/Member" element={<TeamMember />} />
-          <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
-          <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
-          <Route path="/team/:teamname/Posts" element={<TeamPost />} />
-          <Route path="/team/:teamname/Score" element={<TeamScore />} />
-          <Route path="/team/:teamname/Vote" element={<TeamVote />} />
-          <Route path="/team/:teamname/Gantt" element={<TeamGantt />} />
-          <Route
-            path="/team/:teamname/Score/4/detail"
-            element={<TeamScoreDetail />}
-          />
-          <Route path="/team/:teamname/Gallery" element={<TeamGallery />} />
+  return (
+    <>
+      <Routes>
+        {/* login and signup */}
+        {/* <Route path="/" element={<LogIn setLogin={setLogin} />} /> */}
+        {/* <Route path="/SignUp" element={} /> */}
 
-          {/* 下面就照這個邏輯繼續加其他頁面 */}
-        </Routes>
-      </>
-    );
+        {/* user part */}
+        <Route path="/user/Dashboard" element={<UserDashboard />} />
+        <Route path="/user/Calendar" element={<UserEvent />} />
+        <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
+        <Route path="/user/Team" element={<UserTeam />} />
+        <Route path="/user/Achievement" element={<UserAchievement />} />
+
+        {/* team part */}
+        <Route path="/team/Create" element={<TeamCreate />} />
+        <Route path="/team/:teamname/Home" element={<TeamHome />} />
+        <Route path="/team/:teamname/Member" element={<TeamMember />} />
+        <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
+        <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
+        <Route path="/team/:teamname/Posts" element={<TeamPost />} />
+        <Route path="/team/:teamname/Score" element={<TeamScore />} />
+        <Route path="/team/:teamname/Vote" element={<TeamVote />} />
+        <Route path="/team/:teamname/Gantt" element={<TeamGantt />} />
+        <Route
+          path="/team/:teamname/Score/:id/detail"
+          element={<TeamScoreDetail />}
+        />
+        <Route path="/team/:teamname/Gallery" element={<TeamGallery />} />
+
+        {/* 下面就照這個邏輯繼續加其他頁面 */}
+      </Routes>
+    </>
+  );
 }
 export default App;

@@ -5,12 +5,15 @@ import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import ChangeHistoryTwoToneIcon from "@mui/icons-material/ChangeHistoryTwoTone";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 /* 連結detail頁面 */
 
 function Score() {
-  const myTeam = "ECON";
+  let breadItem = window.location.href
+    .replace("http://localhost:3000", "")
+    .split("/");
+  breadItem.shift();
 
   const winScore = (score) => (
     <Typography
@@ -67,7 +70,9 @@ function Score() {
         sx={{ m: 2, width: "100%", display: "block" }}
       >
         {ScoreData.map((score) => (
-          <NavLink to={`/team/Score/${score.id}/detail`}>
+          <Link
+            to={{ pathname: `/team/${breadItem[1]}/Score/${score.id}/detail` }}
+          >
             <ListItem
               button
               key={score.id}
@@ -79,7 +84,7 @@ function Score() {
                 component="div"
                 sx={{ width: "20%", textAlign: "center" }}
               >
-                {myTeam}
+                {breadItem[1]}
               </Typography>
               {score.win === "win"
                 ? winScore(score)
@@ -103,7 +108,7 @@ function Score() {
                 <EventNoteIcon sx={{ mx: 1, my: 0 }} /> {score.date}
               </Typography>
             </ListItem>
-          </NavLink>
+          </Link>
         ))}
       </List>
     </Box>

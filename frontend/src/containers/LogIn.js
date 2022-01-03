@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,26 +9,34 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { ExitToApp } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import { InputLabel } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
 
-const LogIn = ({ setLogin }) => {
+const LogIn = ({ setLogin, setNoAccount }) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
+  const [dataCorrect, setDataCorrect] = useState(false);
 
   const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
   });
 
   const submitLogin = () => {
-    if (data) {
-      setLogin(true);
-      setMe(data.userLogin.userID);
-    }
+    // if (data) {
+    //   setMe(data.userLogin.userID);
+    // }
+    if (dataCorrect) setLogin(true);
   };
+
+  useEffect(() => {
+    if (account == "123" && password == "123") {
+      setDataCorrect(true);
+    } else {
+      setDataCorrect(false);
+    }
+  }, [account, password]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -75,7 +83,8 @@ const LogIn = ({ setLogin }) => {
             focused
             style={{ margin: "0.75rem" }}
           />
-          <NavLink to="/user/Dashboard">
+
+          <NavLink to={dataCorrect ? "/user/Dashboard" : "/"}>
             <Button
               onClick={submitLogin}
               variant="contained"
@@ -86,7 +95,11 @@ const LogIn = ({ setLogin }) => {
           </NavLink>
 
           <NavLink to="/SignUp">
-            <Button variant="contained" style={{ margin: "0.75rem" }}>
+            <Button
+              variant="contained"
+              style={{ margin: "0.75rem" }}
+              onClick={() => setNoAccount(true)}
+            >
               No account? Sign up right now!
             </Button>
           </NavLink>

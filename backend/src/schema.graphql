@@ -11,18 +11,10 @@ type Query {
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
   createUserTodo(_id: ID, todoContent: String): Todo
-  createScore(
-    _id: ID
-    contestDate: Int
-    contestOpponent: Team
-    contestIsWin: Boolean
-  ): Contest
-  createScoreDetail(
-    contestScoreSet: ContestScoreSet
-    contestScoreItem: String
-  ): Contest
-  createGallery(_id: ID, galleryTitle: String): Gallery
-  createGantt(_id: ID, ganttTitle: String, ganttTask: GanttTask): Gantt
+  createScore(data: CreateScoreInput!): Contest!
+  createScoreDetail(data: CreateScoreDetailInput!): Contest!
+  createGallery(data: CreateGalleryInput!): Gallery!
+  createGantt(data: CreateGanttInput!): Gantt!
 }
 
 type Subscription {
@@ -173,4 +165,24 @@ type Event {
   eventLocation: String
   eventCreator: User!
   eventPosttime: Int!
+}
+
+input CreateScoreInput {
+  contestDate: Int!
+  contestOpponent: ID!
+  contestIsWin: Boolean!
+}
+
+input CreateScoreDetailInput {
+  contestScoreSet: ID!
+  contestScoreItem: [String!]!
+}
+
+input CreateGalleryInput {
+  galleryTitle: String!
+}
+
+input CreateGanttInput {
+  ganttTitle: String!
+  ganttTask: ID!
 }
