@@ -30,6 +30,53 @@ const Mutation = {
     { todoModel, pubSub }
   ) => {},
 
+  updateUserNotification: async (
+    parent, 
+    { userID, time, type, content}, 
+    { userModel, dashboardNotificationModel, notificationTaskModel, pubSub }
+  ) => {
+
+      const user = await userModel.findOne({ userID: userID });
+      if (!user) {
+        throw new Error("User not found!")
+      }
+
+      const dayExist = await dashboardNotificationModel.findOne({ "notificationDDL": time });
+      const dayID = dayExist ? dayExist.notificationId : uuidv4();
+
+      if (!dayExist) {
+        const newNotification = await userModel.findOneAndUpdate(
+          {userID}, 
+          {$push: { "userNotification": dayID}
+        })
+      }
+      
+      // 紀錄該天的待辦事項
+      const itemId = uuidv4();
+      const exists = await dashboardNotificationModel.findOne({ "notificationDDL": time });
+
+      if (!exists) {
+        const newItem = await new dashboardNotificationModel({
+          "notificationId": dayID,
+          "notificationDDL": time,
+          "notificationTask": [itemId]
+        }).save();
+      }
+      else {
+        const newItem = await dashboardNotificationModel.findOneAndUpdate(
+          {"notificationId": dayID}, 
+          { $push: { "notificationTask": itemId } 
+        })
+      }
+
+      const item = await new notificationTaskModel({
+        "taskID": itemId,
+        "taskType": type,
+        "taskContent": content,
+      }).save();
+
+  },
+
   createScore: (parent, args, { teamModel, pubSub }) => {
     const newScore = {
       contestID: uuidv4(),

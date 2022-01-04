@@ -1,5 +1,7 @@
 type Query {
   userLogin(userAccount: String, userPassword: String): User
+  initUserNotification(userID: String): [DashboardNotification]
+
   initUserTodo(_id: ID): Todo
   initUserEvent(_id: ID): DashboardEvent
   initMember(_id: ID): [User]!
@@ -62,6 +64,8 @@ type Mutation {
     vote: String!
     voter: String!
   ): VoteOption
+
+  updateUserNotification(userID: String, time: Int, type: String, content: String): String
 }
 
 type Subscription {

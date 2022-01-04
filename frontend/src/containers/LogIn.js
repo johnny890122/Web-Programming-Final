@@ -13,29 +13,35 @@ import { NavLink, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
 
-const LogIn = ({ setLogin }) => {
+const LogIn = (props) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
-  const [dataCorrect, setDataCorrect] = useState(true);
+
+  const [dataCorrect, setDataCorrect] = useState(false);
+
+  const [login, setLogin] = useState(false)
 
   const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
   });
 
   const submitLogin = () => {
-    if (dataCorrect){
-  //     setMe(data.userLogin.userID);
-      setLogin(true);
-    };
-  //   console.log(dataCorrect);
+    if (error === "Error: Account not existed!") {
+        console.log(error);
+    }
+    else if (dataCorrect) {} {
+        setLogin(true);
+        // console.log(me);
+    }
   };
 
   useEffect(() => {
-    if (data ) {
+    if (data) {
+      setMe(data.userLogin.userID)
       setDataCorrect(true);
     }
-  }, [account, password]);
+  })
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -83,23 +89,23 @@ const LogIn = ({ setLogin }) => {
             style={{ margin: "0.75rem" }}
           />
 
-          {/*<NavLink to={"/user/Dashboard"}>*/}
-          <NavLink to={dataCorrect ? "/user/Dashboard" : "/"}>
+          <Link 
+            to={ dataCorrect ? "/user/Dashboard" : "/"}
+            state= {{ me: me }}
+          >
             <Button
-              me={me}
               onClick={submitLogin}
               variant="contained"
               style={{ margin: "0.75rem" }}
             >
               Log In
             </Button>
-          </NavLink>
+          </Link>
 
-          <NavLink to="/SignUp">
+          <NavLink to= {{ pathname: "/SignUp" }}>
             <Button
               variant="contained"
               style={{ margin: "0.75rem" }}
-              // onClick={() => setNoAccount(true)}
             >
               No account? Sign up right now!
             </Button>

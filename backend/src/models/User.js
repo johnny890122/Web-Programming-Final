@@ -12,7 +12,7 @@ const UserSchema = new Schema({
 	userProfile: {type: String, required: false},
 	allTeams: [{type: mongoose.Types.ObjectId, ref: "Team"}],
 	userTodo: [{type: mongoose.Types.ObjectId, ref: "DashboardTodo"}],
-	userNotification: [{type: mongoose.Types.ObjectId, ref: "DashboardNotification"}],
+	userNotification: [{type: String, ref: "DashboardNotification"}],
 	userEvent: [{type: mongoose.Types.ObjectId, ref: "DashboardEvent"}],
 	userPlaySet: [{type: mongoose.Types.ObjectId, ref: "DashboardPlaySet"}],
 })
