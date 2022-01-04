@@ -13,7 +13,7 @@ import { NavLink, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
 
-const LogIn = ({ setLogin, setNoAccount }) => {
+const LogIn = ({ setLogin }) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
@@ -23,19 +23,19 @@ const LogIn = ({ setLogin, setNoAccount }) => {
     variables: { userAccount: account, userPassword: password },
   });
 
-  // const submitLogin = () => {
-  //   if (dataCorrect){
+  const submitLogin = () => {
+    if (dataCorrect){
   //     setMe(data.userLogin.userID);
-  //     // setLogin(true);
-  //   };
+      setLogin(true);
+    };
   //   console.log(dataCorrect);
-  // };
+  };
 
-  // useEffect(() => {
-  //   if (data ) {
-  //     setDataCorrect(true);
-  //   }
-  // }, [account, password]);
+  useEffect(() => {
+    if (data ) {
+      setDataCorrect(true);
+    }
+  }, [account, password]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -83,6 +83,7 @@ const LogIn = ({ setLogin, setNoAccount }) => {
             style={{ margin: "0.75rem" }}
           />
 
+          {/*<NavLink to={"/user/Dashboard"}>*/}
           <NavLink to={dataCorrect ? "/user/Dashboard" : "/"}>
             <Button
               me={me}
@@ -99,7 +100,7 @@ const LogIn = ({ setLogin, setNoAccount }) => {
 
               variant="contained"
               style={{ margin: "0.75rem" }}
-              onClick={() => setNoAccount(true)}
+              // onClick={() => setNoAccount(true)}
             >
               No account? Sign up right now!
             </Button>
