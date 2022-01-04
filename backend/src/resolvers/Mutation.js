@@ -69,7 +69,7 @@ const Mutation = {
   createGantt: (parent, args, { teamModel, pubSub }) => {
     const newGantt = {
       ganttID: uuidv4(),
-      ...args.data,
+      ...args.data 
     };
     teamModel.teamGantt.unshift(newGantt);
     return teamModel.teamGantt;
@@ -165,6 +165,22 @@ const Mutation = {
     console.log("New Team Saved!");
 
     return newTeam;
+  },
+
+  replyVote: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { voteOptionName, team, vote, voter } = args;
+    const Voter = await userModel.findOne({ voter });
+    const Team = await teamModel.findOne({ team });
+    const Vote = await Team.TeamVote.findOne({ vote });
+    const VoteOption = await Vote.voteOption.findOne({ voteOptionName });
+
+    const newVoteOption = {
+      voteOptionID: VoteOption.voteOptionID,
+      voteOptionName,
+      votedUser: VoteOption.votedUser.push(Voter)
+    };
+    //await teamModel.findOneAndUpdate()
+    return newVoteOption;
   },
 };
 
