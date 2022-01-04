@@ -1,9 +1,20 @@
 import {useState} from 'react';
 import NotificationItem from './NotificationItem';
 import {List} from 'antd';
+import {useQuery} from "@apollo/client";
+import {USER_NOTIFICATION_INIT} from "../graphql"
 
-function Notification () {
-	const data = [
+function Notification (props) {
+	const { data, error, loading, subscribeToMore } = useQuery(USER_NOTIFICATION_INIT, {
+    	variables: { userID: props.me },
+  	});
+
+ 	// const { data, error, loading, subscribeToMore } = useQuery(USER_NOTIFICATION_INIT);
+
+	console.log(data);
+
+
+	const data_tmp = [
 		{
 			"time": "2021-11-22", 
 			"task": [{"type": "Personal", "content": "記得帶球褲"}]

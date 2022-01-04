@@ -17,31 +17,38 @@ const Query = {
     }
   },
 
+  initUserNotification: async ( 
+    parent, {userID}, { userModel, dashboardNotificationModel, pubSub } 
+  ) => {
+
+    const user = await userModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    else if (user.userNotification.length === 0) {
+      throw new Error("Notification is empty!")
+    }
+
+    return user.userNotification;
+  },
+
   initUserTodo: async (
     parent,
     { userID },
     { userModel, todoModel, pubSub }
   ) => {
-    const user = await userModel.findOne({ _id: userID });
+    const user = await userModel.findOne({ userID: userID });
 
     if (!user) {
       throw new Error("User not found!");
     }
 
     if (user.userTodo.length === 0) {
-      return [];
+      console.log("Todo is empty");
     } else {
       console.log("todo not empty");
     }
   },
-
-  /**
-   * Get all tasks
-   */
-  // tasks: async (parent, args, { taskModel }) => {
-  //   const tasks = await taskModel.find().sort({ dueDate: -1 });
-  //   return tasks;
-  // },
 
   initMember: async (parent, { teamID }, { teamModel, pubSub }) => {
     const team = await teamModel.findOne({ _id: teamID });

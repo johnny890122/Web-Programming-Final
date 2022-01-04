@@ -28,17 +28,18 @@ const LogIn = (props) => {
 
   const submitLogin = () => {
     if (error === "Error: Account not existed!") {
-
+        console.log(error);
     }
-    else {
+    else if (dataCorrect) {} {
         setLogin(true);
-        console.log(me);
+        // console.log(me);
     }
   };
 
   useEffect(() => {
     if (data) {
       setMe(data.userLogin.userID)
+      setDataCorrect(true);
     }
   })
 
@@ -89,7 +90,7 @@ const LogIn = (props) => {
           />
 
           <Link 
-            to={ login ? "/user/Dashboard" : "/"}
+            to={ dataCorrect ? "/user/Dashboard" : "/"}
             state= {{ me: me }}
           >
             <Button

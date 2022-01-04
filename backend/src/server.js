@@ -11,6 +11,8 @@ import TodoModel from "./models/Todo";
 import TeamModel from "./models/Team";
 import EventModel from "./models/Event";
 import GalleryModel from "./models/Gallery";
+import DashboardNotificationModel from "./models/DashboardNotification"
+import NotificationTaskModel from "./models/NotificationTask"
 
 const pubSub = new PubSub();
 const server = new GraphQLServer({
@@ -23,6 +25,8 @@ const server = new GraphQLServer({
   context: {
     userModel: UserModel,
     todoModel: TodoModel,
+    dashboardNotificationModel: DashboardNotificationModel,
+    notificationTaskModel: NotificationTaskModel,
     teamModel: TeamModel,
     eventModel: EventModel,
     galleryModel: GalleryModel,

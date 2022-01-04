@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const DashboardNotificationSchema = new Schema({
+	notificationId: {type: String, required: true},
 	notificationDDL: {type: Number, required: true},
-	notificationTask: [{type: mongoose.Types.ObjectId, ref: "notificationTask"}],
+	notificationTask: [{type: String, ref: "notificationTask"}],
 })
 
 
-export default mongoose.model("DashboardTodo", DashboardTodoSchema);
+export default mongoose.model("DashboardNotification", DashboardNotificationSchema);
