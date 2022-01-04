@@ -96,7 +96,6 @@ const LogIn = ({ setLogin, setNoAccount }) => {
 
           <NavLink to="/SignUp">
             <Button
-
               variant="contained"
               style={{ margin: "0.75rem" }}
               onClick={() => setNoAccount(true)}
