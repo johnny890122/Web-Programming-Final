@@ -71,8 +71,12 @@ const Query = {
     else return [];
   },
 /* --------------------------------------- */
-  users: () => {
-    return UserModel.find()
+  users: async (parent, args, { userModel, pubSub }) => {
+    return userModel.find()
+  },
+
+  teams: async (parent, args, { teamModel, pubSub }) => {
+    return teamModel.find()
   },
 
   initTeam: async (parent, { userID }, { userModel, pubSub }) => {

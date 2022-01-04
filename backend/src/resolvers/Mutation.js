@@ -124,7 +124,7 @@ const Mutation = {
   createVote: async (parent, args, { teamModel, userModel, pubSub }) => {
     const { voteTitle, voteDescription, voteEnd, voteLimit, team, creater } =
       args;
-    const Creater = await userModel.findOne({ creater });
+    const Creater = await userModel.findOne({ userAccount: creater });
     const Team = await teamModel.findOne({ team });
     const TeamID = Team.teamID;
     const newVote = {
@@ -156,19 +156,20 @@ const Mutation = {
   createTeam: async (parent, args, { teamModel, userModel, pubSub }) => {
     const { teamName, teamDescription, teamType, creater } = args;
     const TeamExists = await teamModel.findOne({ teamName });
-    const Creater = await userModel.findOne({ creater });
+    const Creater = await userModel.findOne({ userAccount: creater });
 
     if (TeamExists) {
       throw new Error("This team name has existed!");
     }
 
     const teamMember = [Creater];
+    console.log(teamMember);
     const newTeam = new teamModel({
       teamID: uuidv4(),
       teamName,
       teamDescription,
       teamType,
-      teamMember,
+      teamMember: teamMember,
     });
     await newTeam.save();
     // user.allteams 更新
