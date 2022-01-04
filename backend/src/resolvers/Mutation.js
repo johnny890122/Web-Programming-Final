@@ -130,6 +130,19 @@ const Mutation = {
     return newVote;
   },
 
+  createVoteOption: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { voteOptionName, team } = args;
+    //const Creater = await userModel.findOne({ creater });
+    const Team = await teamModel.findOne({ team });
+    const newVoteOption = {
+      voteOptionID: uuidv4(),
+      voteOptionName,
+      votedUser: []
+    };
+    //await teamModel.findOneAndUpdate()
+    return newVoteOption;
+  },
+
   createTeam: async (parent, args, { teamModel, userModel, pubSub }) => {
     const { teamName, teamDescription, teamType, creater } = args;
     const TeamExists = await teamModel.findOne({ teamName });

@@ -52,7 +52,10 @@ type Mutation {
     team: String!
     creater: String!
   ): Vote
-  #createVoteOption(_id: ID) [Vote]!
+  createVoteOption(
+    voteOptionName: String!
+    team: String!
+  ): VoteOption
   ################
 }
 
