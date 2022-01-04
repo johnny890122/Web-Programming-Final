@@ -27,25 +27,32 @@ type Mutation {
     teamName: String!, 
     teamDescription: String!, 
     teamType: String!,
-    teamCreater: String! # ** 修正= > User?
+    creater: String! # ** 修正= > User?
   ): Team!
-  #createTeamEvent(
-  #  _id: ID, 
-  #  eventTitle: String!, 
-  #  eventDescription: String!, 
-  #  eventStart: Int!, 
-  #  eventEnd: Int!, 
-  #  eventLocation: String, 
-  #  eventCreator: User!
-  #): Event
-  #createTeamPost(
-  #  _id: ID,
-  #  postTitle: String!,
-  #  postContent: String!,
-  #  postAuthor: User!
-  #): Post
+  createTeamEvent(
+    eventTitle: String!, 
+    eventDescription: String!, 
+    eventStart: String!, 
+    eventEnd: String, 
+    eventLocation: String, 
+    team: String!
+    creater: String!
+  ): Event!
+  createTeamPost(
+    postTitle: String!,
+    postContent: String!,
+    team: String!
+    creater: String!
+  ): Post
+  createVote(
+    voteTitle: String!
+    voteDescription: String!
+    voteEnd: String!
+    voteLimit: Int
+    team: String!
+    creater: String!
+  ): Vote
   #createVoteOption(_id: ID) [Vote]!
-  #createVote(_id: ID) [Vote]!
   ################
 }
 
@@ -136,7 +143,7 @@ type Post {
   postTitle: String!
   postContent: String!
   postAuthor: User!
-  postTime: Int!
+  postTime: String!
 }
 
 type Gantt {
@@ -176,10 +183,10 @@ type Vote {
   voteID: ID!
   voteTitle: String!
   voteDescription: String!
-  voteEnd: Int!
+  voteEnd: String!
   voteLimit: Int
   voteCreator: User!
-  voteOption: [VoteOption!]!
+  voteOption: [VoteOption]!
 }
 
 type VoteOption {
@@ -192,11 +199,11 @@ type Event {
   eventID: ID!
   eventTitle: String!
   eventDescription: String!
-  eventStart: Int!
-  eventEnd: Int!
+  eventStart: String!
+  eventEnd: String
   eventLocation: String
-  eventCreator: User!
-  eventPosttime: Int!
+  eventCreator: User
+  eventPosttime: String!
 }
 
 input CreateScoreInput {

@@ -9,6 +9,7 @@ import Mutation from "./resolvers/Mutation.js";
 import UserModel from "./models/User"
 import TodoModel from "./models/Todo"
 import TeamModel from "./models/Team"
+import EventModel from "./models/Event";
 
 const pubSub = new PubSub();
 const server = new GraphQLServer({
@@ -22,6 +23,7 @@ const server = new GraphQLServer({
     userModel: UserModel,
     todoModel: TodoModel,
     teamModel: TeamModel,
+    eventModel: EventModel,
     pubSub,
   },
 });

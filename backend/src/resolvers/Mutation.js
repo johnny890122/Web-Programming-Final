@@ -75,17 +75,71 @@ const Mutation = {
     return teamModel.teamGantt;
   },
 
+  createTeamEvent: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { eventTitle, eventDescription, eventStart, eventEnd, eventLocation, team, creater } = args;
+    const Creater = await userModel.findOne({ creater });
+    const Team = await teamModel.findOne({ team });
+    const TeamID = Team.teamID
+    const eventPosttime = await new Date();
+    const newEvent = {
+      eventID: uuidv4(),
+      eventTitle, 
+      eventDescription, 
+      eventStart, 
+      eventEnd, 
+      eventLocation,
+      eventCreator: Creater,
+      eventPosttime
+    };
+    //await teamModel.findOneAndUpdate({ teamID: TeamID },{ $push: { "teamEvent": newEvent }},{ new: true })
+    return newEvent;
+  },
+
+  createTeamPost: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { postTitle, postContent, team, creater } = args;
+    const Creater = await userModel.findOne({ creater });
+    const Team = await teamModel.findOne({ team });
+    const TeamID = Team.teamID
+    const postTime = await new Date();
+    const newPost = {
+      postID: uuidv4(),
+      postTitle,
+      postContent,
+      postAuthor: Creater,
+      postTime,
+    };
+    //await teamModel.findOneAndUpdate()
+    return newPost;
+  },
+
+  createVote: async (parent, args, { teamModel, userModel, pubSub }) => {
+    const { voteTitle, voteDescription, voteEnd, voteLimit, team, creater } = args;
+    const Creater = await userModel.findOne({ creater });
+    const Team = await teamModel.findOne({ team });
+    const TeamID = Team.teamID
+    const newVote = {
+      voteID: uuidv4(),
+      voteTitle, 
+      voteDescription, 
+      voteEnd, 
+      voteLimit,
+      voteCreator: Creater,
+      voteOption: []
+    };
+    //await teamModel.findOneAndUpdate()
+    return newVote;
+  },
+
   createTeam: async (parent, args, { teamModel, userModel, pubSub }) => {
-    const { teamName, teamDescription, teamType, teamCreater } = args;
+    const { teamName, teamDescription, teamType, creater } = args;
     const TeamExists = await teamModel.findOne({ teamName });
-    const creater = await userModel.findOne({ teamCreater });
+    const Creater = await userModel.findOne({ creater });
 
     if (TeamExists) {
       throw new Error("This team name has existed!");
     } 
 
-    console.log(creater)
-    const teamMember = [creater]
+    const teamMember = [Creater]
     const newTeam = new teamModel({
       teamID: uuidv4(),
       teamName,
@@ -94,6 +148,7 @@ const Mutation = {
       teamMember
     });
     await newTeam.save();
+    // user.allteams 更新
     console.log("New Team Saved!");
 
     return newTeam;
