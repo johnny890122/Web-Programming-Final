@@ -21,22 +21,22 @@ import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
 
 function App() {
-  const [login, setLogin] = useState(false);
-  const [noAccount, setNoAccount] = useState(false);
-  if (!login) {
-    return noAccount ? (
-      <SignUp setLogin={setLogin} setNoAccount={setNoAccount} />
-    ) : (
-      <LogIn setLogin={setLogin} setNoAccount={setNoAccount} />
-    );
-  }
+  // const [login, setLogin] = useState(false);
+  // const [noAccount, setNoAccount] = useState(false);
+  // if (!login) {
+  //   return noAccount ? (
+  //     <SignUp setLogin={setLogin} setNoAccount={setNoAccount} />
+  //   ) : (
+  //     <LogIn setLogin={setLogin} setNoAccount={setNoAccount} />
+  //   );
+  // }
 
   return (
     <>
       <Routes>
         {/* login and signup */}
-        {/* <Route path="/" element={<LogIn setLogin={setLogin} />} /> */}
-        {/* <Route path="/SignUp" element={} /> */}
+        <Route path="/" element={<LogIn />} />
+        <Route path="/SignUp" element={<SignUp />} />
 
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
