@@ -35,13 +35,8 @@ function App() {
     <>
       <Routes>
         {/* login and signup */}
-<<<<<<< HEAD
-        <Route path="/" element={<LogIn />} />
+        <Route path="/" element={<LogIn />} setLogin={setLogin} />
         <Route path="/SignUp" element={<SignUp />} />
-=======
-         <Route path="/" element={<LogIn />} setLogin={setLogin} /> 
-         <Route path="/SignUp" element={<SignUp />} /> 
->>>>>>> 431155d... 修正 login bug
 
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
