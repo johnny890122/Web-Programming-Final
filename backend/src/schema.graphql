@@ -7,6 +7,7 @@ type Query {
   initGallery(_id: ID): [Gallery]!
   initGantt(_id: ID): [Gantt]!
   users(query: String): [User]!
+  teams(query: String): [Team]!
   initTeam(_id:ID): [Team]!
   initTeamEvent(_id:ID): [Event]!
   initTeamPost(_id: ID): [Post]!
