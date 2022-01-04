@@ -8,7 +8,7 @@ import Todo from "../components/Todo/App";
 import DashboardEvent from "../components/DashboardEvent";
 import { Modal } from "antd";
 
-const UserDashboard = () => {
+const UserDashboard = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const showModalWithNotification = () => {
@@ -36,6 +36,8 @@ const UserDashboard = () => {
 
   const dashboard = (
     <>
+      { props.me }
+      
       <Block
         enlarge={showModalWithEvent}
         component={<DashboardEvent />}

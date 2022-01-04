@@ -11,6 +11,8 @@ export const USER_LOGIN = gql`
     ) 
     {
       userID
+      userAccount
+      userPassword
     }
   }
 `;

@@ -17,26 +17,25 @@ const LogIn = ({ setLogin, setNoAccount }) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
-  const [dataCorrect, setDataCorrect] = useState(false);
+  const [dataCorrect, setDataCorrect] = useState(true);
 
   const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
   });
 
-  const submitLogin = () => {
-    // if (data) {
-    //   setMe(data.userLogin.userID);
-    // }
-    if (dataCorrect) setLogin(true);
-  };
+  // const submitLogin = () => {
+  //   if (dataCorrect){
+  //     setMe(data.userLogin.userID);
+  //     // setLogin(true);
+  //   };
+  //   console.log(dataCorrect);
+  // };
 
-  useEffect(() => {
-    if (account == "123" && password == "123") {
-      setDataCorrect(true);
-    } else {
-      setDataCorrect(false);
-    }
-  }, [account, password]);
+  // useEffect(() => {
+  //   if (data ) {
+  //     setDataCorrect(true);
+  //   }
+  // }, [account, password]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -86,6 +85,7 @@ const LogIn = ({ setLogin, setNoAccount }) => {
 
           <NavLink to={dataCorrect ? "/user/Dashboard" : "/"}>
             <Button
+              me={me}
               onClick={submitLogin}
               variant="contained"
               style={{ margin: "0.75rem" }}
@@ -96,6 +96,7 @@ const LogIn = ({ setLogin, setNoAccount }) => {
 
           <NavLink to="/SignUp">
             <Button
+
               variant="contained"
               style={{ margin: "0.75rem" }}
               onClick={() => setNoAccount(true)}
