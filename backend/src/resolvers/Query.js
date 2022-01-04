@@ -71,17 +71,40 @@ const Query = {
     else return [];
   },
 /* --------------------------------------- */
+  users: () => {
+    return UserModel.find()
+  },
+
   initTeam: async (parent, { userID }, { userModel, pubSub }) => {
     const user = await userModel.findOne({ _id: userID });
     if (!user) throw new Error("User not found!");
     if (user.allTeams.length !== 0) return user.allTeams;
     else return [];
   },
-  users: () => {
-    return UserModel.find()
+
+  initTeamEvent: async (parent, args, { teamModel, pubSub }) => {
+    const { _id } = args;
+    const Team = await teamModel.findOne({ _id: _id })
+    if (!Team) throw new Error("Team not found!");
+    if (Team.teamEvent.length !== 0) return Team.teamEvent;
+    else return [];
   },
 
-  
+  initTeamPost: async (parent, args, { teamModel, pubSub }) => {
+    const { _id } = args;
+    const Team = await teamModel.findOne({ _id: _id })
+    if (!Team) throw new Error("Team not found!");
+    if (Team.teamPost.length !== 0) return Team.teamPost;
+    else return [];
+  },
+
+  initVote: async (parent, args, { teamModel, pubSub }) => {
+    const { _id } = args;
+    const Team = await teamModel.findOne({ _id: _id })
+    if (!Team) throw new Error("Team not found!");
+    if (Team.teamVote.length !== 0) return Team.teamVote;
+    else return [];
+  },
 };
 
 export default Query;
