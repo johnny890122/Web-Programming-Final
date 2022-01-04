@@ -21,7 +21,7 @@ import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
 
 function App() {
-  const [login, setLogin] = useState(false);
+  const [me, setMe] = useState("");
   // const [noAccount, setNoAccount] = useState(false);
   // if (!login) {
   //   return noAccount ? (
@@ -35,16 +35,12 @@ function App() {
     <>
       <Routes>
         {/* login and signup */}
-<<<<<<< HEAD
-        <Route path="/" element={<LogIn />} />
-        <Route path="/SignUp" element={<SignUp />} />
-=======
-         <Route path="/" element={<LogIn />} setLogin={setLogin} /> 
+
+         <Route path="/" element={<LogIn />} /> 
          <Route path="/SignUp" element={<SignUp />} /> 
->>>>>>> 431155d... 修正 login bug
 
         {/* user part */}
-        <Route path="/user/Dashboard" element={<UserDashboard />} />
+        <Route path="/user/Dashboard" element= {<UserDashboard />} />
         <Route path="/user/Calendar" element={<UserEvent />} />
         <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
         <Route path="/user/Team" element={<UserTeam />} />

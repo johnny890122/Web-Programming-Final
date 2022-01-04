@@ -15,7 +15,7 @@ import { CREATE_USER } from "../graphql";
 
 import { useState } from "react";
 
-const SignUp = ({ setLogin, setNoAccount }) => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -24,14 +24,14 @@ const SignUp = ({ setLogin, setNoAccount }) => {
   const [addUser] = useMutation(CREATE_USER);
 
   const submitSignUp = () => {
-    // addUser({
-    //   variables: {
-    //     userAccount: account,
-    //     userPassword: password,
-    //     userEmail: email,
-    //   },
-    // });
-    setLogin(true);
+    addUser({
+      variables: {
+        userAccount: account,
+        userPassword: password,
+        userEmail: email,
+      },
+    });
+    // setLogin(true);
   };
 
   return (
@@ -107,7 +107,7 @@ const SignUp = ({ setLogin, setNoAccount }) => {
             <Button
               variant="contained"
               style={{ margin: "0.75rem" }}
-              onClick={() => setNoAccount(false)}
+              // onClick={() s=> setNoAccount(false)}
             >
               have an account? log in!
             </Button>

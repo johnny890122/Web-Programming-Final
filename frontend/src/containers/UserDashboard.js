@@ -7,6 +7,7 @@ import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 import DashboardEvent from "../components/DashboardEvent";
 import { Modal } from "antd";
+import { useLocation} from "react-router-dom";
 
 const UserDashboard = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,10 +35,16 @@ const UserDashboard = (props) => {
     setIsModalVisible(false);
   };
 
+  let location = useLocation();
+  const ME_KEY = "me";
+  if (!localStorage.getItem(ME_KEY)) {
+      localStorage.setItem(ME_KEY, location.state.me);
+  }
+  const me = localStorage.getItem(ME_KEY);
+
   const dashboard = (
     <>
-      { props.me }
-      
+      Hello {me}
       <Block
         enlarge={showModalWithEvent}
         component={<DashboardEvent />}
@@ -62,9 +69,9 @@ const UserDashboard = (props) => {
         onCancel={handleCancel}
         style={{ zIndex: 1200 }}
       >
-        {componentInModal === "Notification" ? <Notification /> : []}
-        {componentInModal === "Todo" ? <Todo /> : []}
-        {componentInModal === "Event" ? <DashboardEvent /> : []}
+        {componentInModal === "Notification" ? <Notification me={me} /> : []}
+        {componentInModal === "Todo" ? <Todo me={me} /> : []}
+        {componentInModal === "Event" ? <DashboardEvent me={me} /> : []}
       </Modal>
     </>
   );
