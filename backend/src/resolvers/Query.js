@@ -1,5 +1,3 @@
-import User from "../models/User";
-
 const Query = {
   userLogin: async (
     parent,
@@ -17,16 +15,16 @@ const Query = {
     }
   },
 
-  initUserNotification: async ( 
-    parent, {userID}, { userModel, dashboardNotificationModel, pubSub } 
+  initUserNotification: async (
+    parent,
+    { userID },
+    { userModel, dashboardNotificationModel, pubSub }
   ) => {
-
     const user = await userModel.findOne({ userID: userID });
     if (!user) {
       throw new Error("User not found!");
-    }
-    else if (user.userNotification.length === 0) {
-      throw new Error("Notification is empty!")
+    } else if (user.userNotification.length === 0) {
+      throw new Error("Notification is empty!");
     }
 
     return user.userNotification;
@@ -77,13 +75,13 @@ const Query = {
     if (team.teamGantt.length !== 0) return team.teamGantt;
     else return [];
   },
-/* --------------------------------------- */
+  /* --------------------------------------- */
   users: async (parent, args, { userModel, pubSub }) => {
-    return userModel.find()
+    return userModel.find();
   },
 
   teams: async (parent, args, { teamModel, pubSub }) => {
-    return teamModel.find()
+    return teamModel.find();
   },
 
   initTeam: async (parent, { userID }, { userModel, pubSub }) => {
@@ -95,7 +93,7 @@ const Query = {
 
   initTeamEvent: async (parent, args, { teamModel, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id })
+    const Team = await teamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamEvent.length !== 0) return Team.teamEvent;
     else return [];
@@ -103,7 +101,7 @@ const Query = {
 
   initTeamPost: async (parent, args, { teamModel, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id })
+    const Team = await teamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamPost.length !== 0) return Team.teamPost;
     else return [];
@@ -111,7 +109,7 @@ const Query = {
 
   initVote: async (parent, args, { teamModel, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id })
+    const Team = await teamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamVote.length !== 0) return Team.teamVote;
     else return [];

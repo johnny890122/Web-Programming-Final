@@ -1,12 +1,29 @@
-import mongo from "./mongo.js";
-import server from "./server.js";
+import mongo from "./mongo";
+import { GraphQLServer, PubSub } from "graphql-yoga";
 
-import "dotenv-defaults/config.js";
+// resolvers
+import Query from "./resolvers/Query";
+import Mutation from "./resolvers/Mutation";
+// import Subscription from "./resolvers/Subscription";
+// db
+import * as db from "./db";
 
-mongo.connect();
-const port = process.env.PORT | 4000;
+const pubSub = new PubSub();
+const server = new GraphQLServer({
+  typeDefs: "./src/schema.graphql",
+  resolvers: {
+    Query,
+    Mutation,
+    // Subscription,
+  },
+  context: {
+    db,
+    pubSub,
+  },
+});
 
+mongo();
 
-server.start({ port }, () => {
-  console.log(`The server is up on port ${port}!`);
+server.start({ port: process.env.PORT | 4000 }, () => {
+  console.log(`The server is up on port ${process.env.PORT | 4000}!`);
 });
