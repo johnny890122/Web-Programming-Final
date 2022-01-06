@@ -30,12 +30,7 @@ const Mutation = {
     { todoModel, pubSub }
   ) => {},
 
-  updateUserNotification: async (
-    parent, 
-    { userID, time, type, content}, 
-    { db, pubSub }
-  ) => {
-
+  updateUserNotification: async ( parent, { userID, time, type, content}, { db, pubSub }) => {
       // 找到要更新通知的 user 
       const user = await db.UserModel.findOne({ userID: userID });
       if (!user) {
@@ -54,27 +49,26 @@ const Mutation = {
           {userID}, {$push: { "userNotification": item}
       })
 
+      return itemId;
 
-      // const dayExist = await db.DashboardNotificationModel.findOne({ "notificationDDL": time });
-      // const dayID = dayExist ? dayExist.notificationId : uuidv4();
-      // const itemId = uuidv4();
+  },
 
-      // if (!dayExist) {
-      //   const newNotification = await db.UserModel.findOneAndUpdate(
-      //     {userID}, {$push: { "userNotification": dayID}
-      //   })
+  updateUserAchievement: async ( parent, { userID, title, content}, { db, pubSub }) => {
+      const user = await db.UserModel.findOne({ userID: userID });
+      if (!user) {
+        throw new Error("User not found!")
+      }
+      const itemId = uuidv4();
+      const item = await new db.AchievementModel({
+        "userID": userID,
+        "userAchievementID": itemId,
+        "userAchievementTitle": title,
+        "userAchievementContent": content,
+      }).save();
 
-      //   const newItem = await new db.DashboardNotificationModel({
-      //     "notificationId": dayID,
-      //     "notificationDDL": time,
-      //     "notificationTask": [itemId]
-      //   }).save();
-      // } else {
-      //   const newItem = await db.DashboardNotificationModel.findOneAndUpdate(
-      //     {"notificationId": dayID}, 
-      //     { $push: { "notificationTask": itemId } 
-      //   })
-      // }
+      const newNotification = await db.UserModel.findOneAndUpdate(
+          {userID}, {$push: { "userAchievement": item}
+      })
 
       return itemId;
 

@@ -1,6 +1,7 @@
 type Query {
   userLogin(userAccount: String, userPassword: String): User 
   initUserNotification(userID: String): [NotificationTask] # ok
+  initUserAchievement(userID: String): [userAchievement]
 
   initUserTodo(_id: ID): Todo
   initUserEvent(_id: ID): DashboardEvent
@@ -66,6 +67,7 @@ type Mutation {
   ): VoteOption
 
   updateUserNotification(userID: String, time: Int, type: String, content: String): String
+  updateUserAchievement(userID: String, title: String, content: String): String
 }
 
 type Subscription {
@@ -119,9 +121,10 @@ type UserPlaySet {
 }
 
 type userAchievement {
-  userAchievementID: ID!
+  userID: String!
+  userAchievementID: String!
   userAchievementTitle: String!
-  userAchievementContent: String!
+  userAchievementContent: String
 }
 
 type Team {

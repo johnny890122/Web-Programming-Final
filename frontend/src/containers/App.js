@@ -21,15 +21,7 @@ import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
 
 function App() {
-  const [me, setMe] = useState("");
-  // const [noAccount, setNoAccount] = useState(false);
-  // if (!login) {
-  //   return noAccount ? (
-  //     <SignUp setLogin={setLogin} setNoAccount={setNoAccount} />
-  //   ) : (
-  //     <LogIn setLogin={setLogin} setNoAccount={setNoAccount} />
-  //   );
-  // }
+  const ME_KEY = "me";
 
   return (
     <>
@@ -44,7 +36,7 @@ function App() {
         <Route path="/user/Calendar" element={<UserEvent />} />
         <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
         <Route path="/user/Team" element={<UserTeam />} />
-        <Route path="/user/Achievement" element={<UserAchievement />} />
+        <Route path="/user/Achievement" element={<UserAchievement me={localStorage.getItem(ME_KEY)} />} />
 
         {/* team part */}
         <Route path="/team/Create" element={<TeamCreate />} />

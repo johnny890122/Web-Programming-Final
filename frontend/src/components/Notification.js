@@ -2,7 +2,7 @@ import {useState} from 'react';
 import NotificationItem from './NotificationItem';
 import {List} from 'antd';
 import {useQuery} from "@apollo/client";
-import {USER_NOTIFICATION_INIT, USER_TASK_INIT} from "../graphql"
+import {USER_NOTIFICATION_INIT} from "../graphql"
 
 function Notification (props) {
 	const input = [];
@@ -10,7 +10,7 @@ function Notification (props) {
     	variables: { userID: props.me },
   	});
 
-	if (!loading) {
+	if (!loading & data) {
 		const tmp = {};
 	  	for (var i of data.initUserNotification) {
 	  		if (!tmp[i.taskTime]) { tmp[i.taskTime] = [] }

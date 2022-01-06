@@ -4,8 +4,10 @@ import Card from "@mui/material/Card";
 import Template from "../components/Template";
 import { Typography } from "@mui/material";
 import { MilitaryTech } from "@mui/icons-material";
+import {useQuery} from "@apollo/client";
+import { USER_ACHEIEVEMENT_INIT } from "../graphql";
 
-const UserAchievement = () => {
+const UserAchievement = (props) => {
   const cardStyle = {
     width: "95%",
     margin: "1em",
@@ -14,11 +16,17 @@ const UserAchievement = () => {
     display: "inline-block",
   };
 
-  let achieveTitle = ["練球一年全勤", "連續30天登入"];
-  let achieveContent = [
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci vero quis consectetur ratione voluptate pariatur possimus nam aliquid. Velit,quae.",
-    "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate ad repellat dolor quae eum ullam qui laudantium ut accusamus rem?",
-  ];
+  const { data, error, loading, subscribeToMore } = useQuery(USER_ACHEIEVEMENT_INIT, {
+      variables: { userID: props.me },
+  });
+
+  const achieveTitle = [];
+  const achieveContent = [];
+  if (!loading) {
+      data.initUserAchievement.map( i=> achieveTitle.push(i.userAchievementTitle))
+      data.initUserAchievement.map( i=> achieveContent.push(i.userAchievementContent))
+  }
+
   let cardContent = [null, null];
   for (let i = 0; i < achieveTitle.length; i++) {
     cardContent[i] = (

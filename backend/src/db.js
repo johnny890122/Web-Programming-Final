@@ -12,7 +12,10 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: mongoose.Types.ObjectId, ref: "Team" }],
   userTodo: [{ type: mongoose.Types.ObjectId, ref: "DashboardTodo" }],
+  
   userNotification: [{ type: Object, ref: "DashboardNotification" }],
+  userAchievement: [{ type: Object, ref: "NotificationTaskModel" }],
+
   userEvent: [{ type: mongoose.Types.ObjectId, ref: "DashboardEvent" }],
   userPlaySet: [{ type: mongoose.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
@@ -63,16 +66,20 @@ const NotificationTaskSchema = new Schema({
   taskContent: { type: String, required: true },
 });
 
+const AchievementSchema = new Schema({
+  userID: {type: String, required: true},
+  userAchievementID: {type: String, required: true},
+  userAchievementTitle: {type: String, required: true},
+  userAchievementContent: {type: String, required: false},
+})
+
 const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
 const EventModel = mongoose.model("Event", EventSchema);
 const GalleryModel = mongoose.model("Gallery", GallerySchema);
-
-const NotificationTaskModel = mongoose.model(
-  "NotificationTask",
-  NotificationTaskSchema
-);
+const NotificationTaskModel = mongoose.model("NotificationTask", NotificationTaskSchema);
+const AchievementModel = mongoose.model("Achievement", AchievementSchema);
 
 export {
   UserModel,
@@ -81,4 +88,5 @@ export {
   EventModel,
   GalleryModel,
   NotificationTaskModel,
+  AchievementModel
 };

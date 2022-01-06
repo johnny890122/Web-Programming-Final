@@ -22,7 +22,20 @@ const Query = {
       throw new Error("Notification is empty!");
     }
 
-    return await db.NotificationTaskModel.find( { userID: userID } );
+    return await db.NotificationTaskModel.find( { userID } );
+  },
+
+  initUserAchievement: async (parent, {userID}, {db, pubSub}) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    else if (user.userAchievement.length === 0) {
+      throw new Error("Achievement is empty!");
+    }
+
+    return await db.AchievementModel.find( { userID } );
   },
 
   initUserTodo: async (

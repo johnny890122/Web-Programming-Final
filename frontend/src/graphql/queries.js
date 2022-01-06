@@ -44,15 +44,15 @@ export const USER_NOTIFICATION_INIT = gql`
   }
 `
 
-export const USER_TASK_INIT = gql`
-  query initUserTask (
-    $taskID: String,
+export const USER_ACHEIEVEMENT_INIT = gql`
+  query initUserAchievement (
+    $userID: String,
   ) {
-    initUserTask(
-      taskID: $taskID
-    ){
-      taskType
-      taskContent
-    }
+  initUserAchievement(
+    userID: $userID
+  ){
+    userAchievementTitle
+    userAchievementContent
   }
+}
 `
