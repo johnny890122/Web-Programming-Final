@@ -37,7 +37,22 @@ export const USER_NOTIFICATION_INIT = gql`
     initUserNotification(
       userID: $userID
     ){
-      userID
+      taskTime
+      taskType
+      taskContent
+    }
+  }
+`
+
+export const USER_TASK_INIT = gql`
+  query initUserTask (
+    $taskID: String,
+  ) {
+    initUserTask(
+      taskID: $taskID
+    ){
+      taskType
+      taskContent
     }
   }
 `

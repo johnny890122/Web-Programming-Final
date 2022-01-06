@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 const Mutation = {
-  createUser: async (parent, args, { userModel, pubSub }) => {
+  createUser: async (parent, args, { db, pubSub }) => {
     const { userAccount, userPassword, userEmail } = args;
-    const accountExists = await userModel.findOne({ userAccount });
-    const emailExists = await userModel.findOne({ userEmail });
+    const accountExists = await db.UserModel.findOne({ userAccount });
+    const emailExists = await db.UserModel.findOne({ userEmail });
 
     if (accountExists) {
       throw new Error("This account has existed!");
@@ -12,7 +12,7 @@ const Mutation = {
       throw new Error("This email has been used!");
     }
     const userID = uuidv4();
-    const newUser = new userModel({
+    const newUser = new db.UserModel({
       userID,
       userAccount,
       userPassword,
@@ -33,47 +33,50 @@ const Mutation = {
   updateUserNotification: async (
     parent, 
     { userID, time, type, content}, 
-    { userModel, dashboardNotificationModel, notificationTaskModel, pubSub }
+    { db, pubSub }
   ) => {
 
-      const user = await userModel.findOne({ userID: userID });
+      // 找到要更新通知的 user 
+      const user = await db.UserModel.findOne({ userID: userID });
       if (!user) {
         throw new Error("User not found!")
       }
-
-      const dayExist = await dashboardNotificationModel.findOne({ "notificationDDL": time });
-      const dayID = dayExist ? dayExist.notificationId : uuidv4();
-
-      if (!dayExist) {
-        const newNotification = await userModel.findOneAndUpdate(
-          {userID}, 
-          {$push: { "userNotification": dayID}
-        })
-      }
-      
-      // 紀錄該天的待辦事項
-      const itemId = uuidv4();
-      const exists = await dashboardNotificationModel.findOne({ "notificationDDL": time });
-
-      if (!exists) {
-        const newItem = await new dashboardNotificationModel({
-          "notificationId": dayID,
-          "notificationDDL": time,
-          "notificationTask": [itemId]
-        }).save();
-      }
-      else {
-        const newItem = await dashboardNotificationModel.findOneAndUpdate(
-          {"notificationId": dayID}, 
-          { $push: { "notificationTask": itemId } 
-        })
-      }
-
-      const item = await new notificationTaskModel({
+      const itemId = uuidv4()
+      const item = await new db.NotificationTaskModel({
         "taskID": itemId,
+        "userID": userID,
+        "taskTime": time,
         "taskType": type,
         "taskContent": content,
       }).save();
+
+      const newNotification = await db.UserModel.findOneAndUpdate(
+          {userID}, {$push: { "userNotification": item}
+      })
+
+
+      // const dayExist = await db.DashboardNotificationModel.findOne({ "notificationDDL": time });
+      // const dayID = dayExist ? dayExist.notificationId : uuidv4();
+      // const itemId = uuidv4();
+
+      // if (!dayExist) {
+      //   const newNotification = await db.UserModel.findOneAndUpdate(
+      //     {userID}, {$push: { "userNotification": dayID}
+      //   })
+
+      //   const newItem = await new db.DashboardNotificationModel({
+      //     "notificationId": dayID,
+      //     "notificationDDL": time,
+      //     "notificationTask": [itemId]
+      //   }).save();
+      // } else {
+      //   const newItem = await db.DashboardNotificationModel.findOneAndUpdate(
+      //     {"notificationId": dayID}, 
+      //     { $push: { "notificationTask": itemId } 
+      //   })
+      // }
+
+      return itemId;
 
   },
 

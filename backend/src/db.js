@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: mongoose.Types.ObjectId, ref: "Team" }],
   userTodo: [{ type: mongoose.Types.ObjectId, ref: "DashboardTodo" }],
-  userNotification: [{ type: String, ref: "DashboardNotification" }],
+  userNotification: [{ type: Object, ref: "DashboardNotification" }],
   userEvent: [{ type: mongoose.Types.ObjectId, ref: "DashboardEvent" }],
   userPlaySet: [{ type: mongoose.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
@@ -55,14 +55,10 @@ const GallerySchema = new Schema({
   thumbnailUrl: { type: String },
 });
 
-const DashboardNotificationSchema = new Schema({
-  notificationId: { type: String, required: true },
-  notificationDDL: { type: Number, required: true },
-  notificationTask: [{ type: String, ref: "notificationTask" }],
-});
-
 const NotificationTaskSchema = new Schema({
+  userID: { type: String, required: true },
   taskID: { type: String, required: true },
+  taskTime: { type: Number, required: true },
   taskType: { type: String, required: true },
   taskContent: { type: String, required: true },
 });
@@ -72,10 +68,7 @@ const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
 const EventModel = mongoose.model("Event", EventSchema);
 const GalleryModel = mongoose.model("Gallery", GallerySchema);
-const DashboardNotificationModel = mongoose.model(
-  "DashboardNotification",
-  DashboardNotificationSchema
-);
+
 const NotificationTaskModel = mongoose.model(
   "NotificationTask",
   NotificationTaskSchema
@@ -87,6 +80,5 @@ export {
   TeamModel,
   EventModel,
   GalleryModel,
-  DashboardNotificationModel,
   NotificationTaskModel,
 };

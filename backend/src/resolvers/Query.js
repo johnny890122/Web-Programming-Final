@@ -1,41 +1,36 @@
 const Query = {
-  userLogin: async (
-    parent,
-    { userAccount, userPassword },
-    { userModel, pubSub }
-  ) => {
-    const user = await userModel.findOne({ userAccount });
+  userLogin: async ( parent, { userAccount, userPassword }, { db, pubSub } ) => {
+    const user = await db.UserModel.findOne({ userAccount });
 
     if (!user) {
       throw new Error("Account not existed!");
-    } else if (user.userPassword != userPassword) {
+    } 
+    else if (user.userPassword != userPassword) {
       throw new Error("Password not correct!");
-    } else {
-      return user;
     }
+
+    return user;
   },
 
-  initUserNotification: async (
-    parent,
-    { userID },
-    { userModel, dashboardNotificationModel, pubSub }
-  ) => {
-    const user = await userModel.findOne({ userID: userID });
+  initUserNotification: async (parent, { userID }, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    
     if (!user) {
       throw new Error("User not found!");
-    } else if (user.userNotification.length === 0) {
+    } 
+    else if (user.userNotification.length === 0) {
       throw new Error("Notification is empty!");
     }
 
-    return user.userNotification;
+    return await db.NotificationTaskModel.find( { userID: userID } );
   },
 
   initUserTodo: async (
     parent,
     { userID },
-    { userModel, todoModel, pubSub }
+    { db, pubSub }
   ) => {
-    const user = await userModel.findOne({ userID: userID });
+    const user = await db.UserModel.findOne({ userID: userID });
 
     if (!user) {
       throw new Error("User not found!");
@@ -48,68 +43,68 @@ const Query = {
     }
   },
 
-  initMember: async (parent, { teamID }, { teamModel, pubSub }) => {
-    const team = await teamModel.findOne({ _id: teamID });
+  initMember: async (parent, { teamID }, { db, pubSub }) => {
+    const team = await db.TeamModel.findOne({ _id: teamID });
     if (!team) throw new Error("Team not found!");
     if (team.teamMember.length !== 0) return team.teamMember;
     else return [];
   },
 
-  initScore: async (parent, { teamID }, { teamModel, pubSub }) => {
-    const team = await teamModel.findOne({ _id: teamID });
+  initScore: async (parent, { teamID }, { db, pubSub }) => {
+    const team = await db.TeamModel.findOne({ _id: teamID });
     if (!team) throw new Error("Team not found!");
     if (team.teamScore.length !== 0) return team.teamScore;
     else return [];
   },
 
-  initGallery: async (parent, { teamID }, { teamModel, pubSub }) => {
-    const team = await teamModel.findOne({ _id: teamID });
+  initGallery: async (parent, { teamID }, { db, pubSub }) => {
+    const team = await db.TeamModel.findOne({ _id: teamID });
     if (!team) throw new Error("Team not found!");
     if (team.teamGallery.length !== 0) return team.teamGallery;
     else return [];
   },
 
-  initGantt: async (parent, { teamID }, { teamModel, pubSub }) => {
-    const team = await teamModel.findOne({ _id: teamID });
+  initGantt: async (parent, { teamID }, { db, pubSub }) => {
+    const team = await db.TeamModel.findOne({ _id: teamID });
     if (!team) throw new Error("Team not found!");
     if (team.teamGantt.length !== 0) return team.teamGantt;
     else return [];
   },
   /* --------------------------------------- */
-  users: async (parent, args, { userModel, pubSub }) => {
-    return userModel.find();
+  users: async (parent, args, { db, pubSub }) => {
+    return db.UserModel.find();
   },
 
-  teams: async (parent, args, { teamModel, pubSub }) => {
-    return teamModel.find();
+  teams: async (parent, args, { db, pubSub }) => {
+    return db.TeamModel.find();
   },
 
-  initTeam: async (parent, { userID }, { userModel, pubSub }) => {
-    const user = await userModel.findOne({ _id: userID });
+  initTeam: async (parent, { userID }, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ _id: userID });
     if (!user) throw new Error("User not found!");
     if (user.allTeams.length !== 0) return user.allTeams;
     else return [];
   },
 
-  initTeamEvent: async (parent, args, { teamModel, pubSub }) => {
+  initTeamEvent: async (parent, args, { db, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id });
+    const Team = await db.TeamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamEvent.length !== 0) return Team.teamEvent;
     else return [];
   },
 
-  initTeamPost: async (parent, args, { teamModel, pubSub }) => {
+  initTeamPost: async (parent, args, { db, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id });
+    const Team = await db.TeamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamPost.length !== 0) return Team.teamPost;
     else return [];
   },
 
-  initVote: async (parent, args, { teamModel, pubSub }) => {
+  initVote: async (parent, args, { db, pubSub }) => {
     const { _id } = args;
-    const Team = await teamModel.findOne({ _id: _id });
+    const Team = await db.TeamModel.findOne({ _id: _id });
     if (!Team) throw new Error("Team not found!");
     if (Team.teamVote.length !== 0) return Team.teamVote;
     else return [];

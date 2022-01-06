@@ -1,6 +1,6 @@
 type Query {
-  userLogin(userAccount: String, userPassword: String): User
-  initUserNotification(userID: String): [DashboardNotification]
+  userLogin(userAccount: String, userPassword: String): User 
+  initUserNotification(userID: String): [NotificationTask] # ok
 
   initUserTodo(_id: ID): Todo
   initUserEvent(_id: ID): DashboardEvent
@@ -83,7 +83,6 @@ type User {
   userProfile: String
   allTeams: [Team]!
   userTodo: [Todo]!
-  # userNotification: [DashboardNotification]!
   # userEvent: [DashboardEvent]!
   # userTodo: [Todo!]!
   # userPlaySet: [UserPlaySet]!
@@ -96,14 +95,11 @@ type Todo {
   todoContent: String!
 }
 
-type DashboardNotification {
-  notificationDDL: Int!
-  notificationTask: [NotificationTask]!
-}
-
 type NotificationTask {
-  taskType: String!
-  taskContent: String!
+  taskID: String
+  taskTime: Int
+  taskType: String
+  taskContent: String
 }
 
 type DashboardEvent {

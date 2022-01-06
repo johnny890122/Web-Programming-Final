@@ -36,29 +36,25 @@ const UserDashboard = (props) => {
   };
 
   let location = useLocation();
-  const ME_KEY = "me";
-  if (!localStorage.getItem(ME_KEY)) {
-      localStorage.setItem(ME_KEY, location.state.me);
-  }
-  const me = localStorage.getItem(ME_KEY);
+  const me = location.state.me;
 
   const dashboard = (
     <>
       Hello {me}
       <Block
         enlarge={showModalWithEvent}
-        component={<DashboardEvent />}
+        component={<DashboardEvent me={me} />}
         fullscreen={isModalVisible}
       />
 
       <Block
         enlarge={showModalWithNotification}
-        component={<Notification />}
+        component={<Notification me={me} />}
         fullscreen={isModalVisible}
       />
       <Block
         enlarge={showModalWithTodo}
-        component={<Todo />}
+        component={<Todo me={me} />}
         fullscreen={isModalVisible}
       />
 

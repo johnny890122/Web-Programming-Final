@@ -17,7 +17,7 @@ const LogIn = (props) => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
-
+  const ME_KEY = "me";
   const [dataCorrect, setDataCorrect] = useState(false);
 
   const [login, setLogin] = useState(false)
@@ -28,11 +28,12 @@ const LogIn = (props) => {
 
   const submitLogin = () => {
     if (error === "Error: Account not existed!") {
+        localStorage.setItem(ME_KEY, "");
         console.log(error);
     }
     else if (dataCorrect) {} {
         setLogin(true);
-        // console.log(me);
+        localStorage.setItem(ME_KEY, me);
     }
   };
 
@@ -42,6 +43,9 @@ const LogIn = (props) => {
       setDataCorrect(true);
     }
   })
+
+
+  // console.log(localStorage.getItem(ME_KEY));
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -91,7 +95,7 @@ const LogIn = (props) => {
 
           <Link 
             to={ dataCorrect ? "/user/Dashboard" : "/"}
-            state= {{ me: me }}
+            state= {{ me: localStorage.getItem(ME_KEY) }}
           >
             <Button
               onClick={submitLogin}
