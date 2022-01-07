@@ -9,9 +9,6 @@ const DashboardEventSchema = new Schema({
 	eventEnd: {type: Number, required: true},
 	eventLocation: {type: String, required: true},
 	eventPostTime: {type: Number, required: true},
-
-
 })
-
 
 export default mongoose.model("DashboardEvent", DashboardEventSchema);

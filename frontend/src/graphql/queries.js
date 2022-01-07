@@ -56,3 +56,8 @@ export const USER_ACHEIEVEMENT_INIT = gql`
   }
 }
 `
+
+// export const USER_EVENT_INIT = gql``
+
+
+

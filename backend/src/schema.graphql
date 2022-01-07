@@ -67,7 +67,11 @@ type Mutation {
   ): VoteOption
 
   updateUserNotification(userID: String, time: Int, type: String, content: String): String
+
   updateUserAchievement(userID: String, title: String, content: String): String
+
+  createUserEvent(eventCreator: String, eventID: String, eventTitle:String, eventDescription: String, 
+    eventStart: Int, eventEnd: Int, eventLocation: String, eventPostTime: Int): String
 }
 
 type Subscription {

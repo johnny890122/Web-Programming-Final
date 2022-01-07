@@ -34,9 +34,8 @@ const UserDashboard = (props) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  let location = useLocation();
-  const me = location.state.me;
+  const ME_KEY = "me";
+  const me = localStorage.getItem(ME_KEY)
 
   const dashboard = (
     <>
