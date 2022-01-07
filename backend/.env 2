@@ -1,0 +1,1 @@
+MONGO_URL = "mongodb+srv://xiangxian:johnny890122@cluster0.vnz0p.mongodb.net/Web-Final?retryWrites=true&w=majority"

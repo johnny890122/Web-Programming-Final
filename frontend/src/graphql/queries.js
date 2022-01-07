@@ -57,7 +57,25 @@ export const USER_ACHEIEVEMENT_INIT = gql`
 }
 `
 
-// export const USER_EVENT_INIT = gql``
+export const USER_EVENT_INIT = gql`
+  query initUserEvent(
+    $userID: String,
+  ) {
+  initUserEvent (
+    userID: $userID
+  ){
+      eventTitle
+      eventDescription
+      eventStart
+      eventEnd
+      eventLocation
+      eventPostTime
+    }
+  }
+`
+
+// eventCreator: String, eventID: String, eventTitle:String, eventDescription: String, 
+    // eventStart: Int, eventEnd: Int, eventLocation: String, eventPostTime: Int
 
 
 

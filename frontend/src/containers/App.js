@@ -34,7 +34,7 @@ function App() {
         {/* user part */}
         <Route path="/user/Dashboard" element={<UserDashboard />} />
         <Route path="/user/Calendar" element={<UserEvent />} />
-        <Route path="/user/CreateUserEvent" element={<CreateUserEvent />} />
+        <Route path="/user/CreateUserEvent" element={<CreateUserEvent me={localStorage.getItem(ME_KEY)} />} />
         <Route path="/user/Team" element={<UserTeam />} />
         <Route path="/user/Achievement" element={<UserAchievement me={localStorage.getItem(ME_KEY)} />} />
 

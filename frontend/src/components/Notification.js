@@ -10,7 +10,7 @@ function Notification (props) {
     	variables: { userID: props.me },
   	});
 
-	if (!loading & data) {
+	if (!loading) {
 		const tmp = {};
 	  	for (var i of data.initUserNotification) {
 	  		if (!tmp[i.taskTime]) { tmp[i.taskTime] = [] }

@@ -81,10 +81,12 @@ const Mutation = {
       if (!user) {
         throw new Error("User not found!")
       }
+
       const eventID = uuidv4();
       const eventPostTime = await new Date();
 
       const event = await new db.DashboardEventModel({
+        "userID": eventCreator,
         "eventID": eventID,
         "eventTitle": eventTitle,
         "eventDescription": eventDescription,

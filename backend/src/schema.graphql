@@ -4,7 +4,8 @@ type Query {
   initUserAchievement(userID: String): [userAchievement]
 
   initUserTodo(_id: ID): Todo
-  initUserEvent(_id: ID): DashboardEvent
+  initUserEvent(userID: String): [DashboardEvent]
+
   initMember(_id: ID): [User]!
   initScore(_id: ID): [Contest]!
   initGallery(_id: ID): [Gallery]!
@@ -71,7 +72,7 @@ type Mutation {
   updateUserAchievement(userID: String, title: String, content: String): String
 
   createUserEvent(eventCreator: String, eventID: String, eventTitle:String, eventDescription: String, 
-    eventStart: Int, eventEnd: Int, eventLocation: String, eventPostTime: Int): String
+    eventStart: Float, eventEnd: Float, eventLocation: String, eventPostTime: Int): String
 }
 
 type Subscription {
@@ -112,10 +113,10 @@ type DashboardEvent {
   eventID: ID!
   eventTitle: String!
   eventDescription: String
-  eventStart: Int!
-  eventEnd: Int!
+  eventStart: Float!
+  eventEnd: Float!
   eventLocation: String
-  eventPosttime: Int!
+  eventPostTime: Float,
 }
 
 type UserPlaySet {

@@ -9,35 +9,43 @@ import DateFnsUtils from '@date-io/date-fns';
 import moment from "moment";
 import { EventData } from '../components/ListData';
 import { Event } from "@mui/icons-material";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER_EVENT } from "../graphql";
 
-function CreateUserEvent() {
+function CreateUserEvent(props) {
 
-    const [event, setEvent] = useState({
-        eventTitle: null,
-        eventDescription: null,
-        eventLocation: null
-    })
-
-    const [title, setTitle] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [location, setlocation] = useState(null);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [location, setLocation] = useState("");
     const [sDate, setSDate] = useState(null);
     const [sTime, setSTime] = useState(null);
     const [eDate, setEDate] = useState(null);
     const [eTime, setETime] = useState(null);
 
-    const subbmitEvent = () => {
-        const eventInput = {
-            eventTitle: title,
-            eventDescription: description,
-            eventStart: sDate+ sTime,
-            eventEnd: eDate+ eTime,
-            eventLocation: location
-        };
-        setEvent(eventInput); // 送出表單
-        console.log(eventInput);
+    const [addEvent] = useMutation(CREATE_USER_EVENT);
+
+    const subbmitEvent = async () => {
+        await addEvent({
+            variables: {
+                eventCreator: "6a912694-ceef-4371-9d5f-8b8737e538c7",
+                eventTitle: title,
+                eventDescription: description,
+                eventStart: Date.parse(sDate) + Date.parse(sTime),
+                eventEnd: Date.parse(eDate) + Date.parse(eTime),
+                eventLocation: location
+          }
+        });
+
+        setTitle("");
+        setDescription("");
+        setLocation("");
+        setSDate(null);
+        setSTime(null);
+        setEDate(null);
+        setETime(null);
 
     }
+
     const CreatePage = ( 
       <div className = "create-event-page">
         <h2>Create My Event</h2>
@@ -52,11 +60,12 @@ function CreateUserEvent() {
                         label="活動名稱"
                         placeholder="Title" 
                         onChange={e => setTitle(e.target.value)}
-                        //ref={titleRef}
+                        value ={title}
                         />
             </div>
             <div>
                 <TextField id="create-event-description"
+                        value ={description}
                         sx={{ m: 2 }}
                         label="活動內容"
                         placeholder="Description" 
@@ -69,14 +78,16 @@ function CreateUserEvent() {
                             id="create-event-sDate"
                             label="開始日期 *"
                             value={sDate}
+                            required
                             onChange={(newValue) => {setSDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
                         />
                         <TimePicker
                             id="create-event-sTime"
                             sx={{ m: 5 }}
-                            label="開始時間"
+                            label="開始時間 *"
                             value={sTime}
+                            required
                             onChange={(newValue) => {setSTime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -89,16 +100,18 @@ function CreateUserEvent() {
                         <MobileDatePicker
                             id="create-event-eDate"
                             sx={{ m: 5 }}
-                            label="結束日期"
+                            label="結束日期 *"
                             value={eDate}
+                            required
                             onChange={(newValue) => {setEDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
                         />
                         <TimePicker
                             id="create-event-eDime"
                             sx={{ m: 5 }}
-                            label="結束時間"
+                            label="結束時間 *"
                             value={eTime}
+                            required
                             onChange={(newValue) => {setETime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -110,7 +123,8 @@ function CreateUserEvent() {
                         sx={{ m: 2 }}
                         label="活動地點"
                         placeholder="Location" 
-                        onChange={e => setlocation(e.target.value)}/>
+                        value={location}
+                        onChange={e => setLocation(e.target.value)}/>
             </div>    
             <div>
                 <Button sx={{ m: 2 }} color= "success" variant="contained" size="large"

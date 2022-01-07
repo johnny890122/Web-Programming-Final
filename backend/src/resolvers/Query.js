@@ -38,6 +38,18 @@ const Query = {
     return await db.AchievementModel.find( { userID } );
   },
 
+  initUserEvent: async (parent, {userID}, {db, pubSub}) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    else if (user.userAchievement.length === 0) {
+      throw new Error("User event is empty!");
+    }
+    
+    return await db.DashboardEventModel.find( { userID } );
+  },
+
   initUserTodo: async (
     parent,
     { userID },
