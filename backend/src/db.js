@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: mongoose.Types.ObjectId, ref: "Team" }],
   userTodo: [{ type: Object, ref: "DashboardTodo" }],
-  
+
   userNotification: [{ type: Object, ref: "DashboardNotification" }],
   userAchievement: [{ type: Object, ref: "NotificationTaskModel" }],
   userEvent: [{ type: Object, ref: "DashboardEvent" }],
@@ -56,8 +56,14 @@ const EventSchema = new Schema({
 const GallerySchema = new Schema({
   galleryID: { type: String, required: true },
   galleryTitle: { type: String, required: true },
-  originalUrl: { type: String },
-  thumbnailUrl: { type: String },
+  originalUrl: [{ type: String }],
+  thumbnailUrl: [{ type: String }],
+});
+
+const GanttSchema = new Schema({
+  ganttID: { type: String, required: true },
+  ganttTitle: { type: String, required: true },
+  ganttTaskID: [{ type: mongoose.Types.ObjectId, ref: "GanttTask" }],
 });
 
 const NotificationTaskSchema = new Schema({
@@ -69,31 +75,45 @@ const NotificationTaskSchema = new Schema({
 });
 
 const AchievementSchema = new Schema({
-  userID: {type: String, required: true},
-  userAchievementID: {type: String, required: true},
-  userAchievementTitle: {type: String, required: true},
-  userAchievementContent: {type: String, required: false},
-})
+  userID: { type: String, required: true },
+  userAchievementID: { type: String, required: true },
+  userAchievementTitle: { type: String, required: true },
+  userAchievementContent: { type: String, required: false },
+});
 
 const DashboardEventSchema = new Schema({
   userID: { type: String, ref: "User" },
-  eventID: {type: String, required: true},
-  eventTitle: {type: String, required: true},
-  eventDescription: {type: String, required: true},
-  eventStart: {type: Number, required: true},
-  eventEnd: {type: Number, required: true},
-  eventLocation: {type: String, required: true},
-  eventPostTime: {type: Number, required: true},
-})
+  eventID: { type: String, required: true },
+  eventTitle: { type: String, required: true },
+  eventDescription: { type: String, required: true },
+  eventStart: { type: Number, required: true },
+  eventEnd: { type: Number, required: true },
+  eventLocation: { type: String, required: true },
+  eventPostTime: { type: Number, required: true },
+});
+
+const ScoreSchema = new Schema({
+  contestDate: { type: Number, required: true },
+  contestOpponent: { type: String, required: true },
+  contestIsWin: { type: Boolean, required: true },
+});
 
 const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
 const EventModel = mongoose.model("Event", EventSchema);
 const GalleryModel = mongoose.model("Gallery", GallerySchema);
-const NotificationTaskModel = mongoose.model("NotificationTask", NotificationTaskSchema);
+const GanttModel = mongoose.model("Gantt", GanttSchema);
+const NotificationTaskModel = mongoose.model(
+  "NotificationTask",
+  NotificationTaskSchema
+);
 const AchievementModel = mongoose.model("Achievement", AchievementSchema);
-const DashboardEventModel = mongoose.model("DashboardEvent", DashboardEventSchema);
+const DashboardEventModel = mongoose.model(
+  "DashboardEvent",
+  DashboardEventSchema
+);
+const ScoreModel = mongoose.model("Score", ScoreSchema);
 
 export {
   UserModel,
@@ -101,7 +121,9 @@ export {
   TeamModel,
   EventModel,
   GalleryModel,
+  GanttModel,
   NotificationTaskModel,
   AchievementModel,
-  DashboardEventModel
+  DashboardEventModel,
+  ScoreModel,
 };

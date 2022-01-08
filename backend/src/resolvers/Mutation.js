@@ -24,108 +24,136 @@ const Mutation = {
     return newUser;
   },
 
-  createUserTodo: async ( parent, { userID, todoContent}, { db, pubSub }) => {
+  createUserTodo: async (parent, { userID, todoContent }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
     if (!user) {
-      throw new Error("User not found!")
+      throw new Error("User not found!");
     }
 
     const todoID = uuidv4();
     const todo = await new db.TodoModel({
-      "userID": userID,
-      "todoID": todoID,
-      "todoDone": false,
-      "todoDeleted": false,
-      "todoContent": todoContent,
+      userID: userID,
+      todoID: todoID,
+      todoDone: false,
+      todoDeleted: false,
+      todoContent: todoContent,
     }).save();
 
     const newTodo = await db.UserModel.findOneAndUpdate(
-        {userID}, {$push: { "userTodo": todo}
-    });
+      { userID },
+      { $push: { userTodo: todo } }
+    );
 
     return todo;
   },
 
-  updateUserNotification: async ( parent, { userID, time, type, content}, { db, pubSub }) => {
-      // 找到要更新通知的 user 
-      const user = await db.UserModel.findOne({ userID: userID });
-      if (!user) {
-        throw new Error("User not found!")
-      }
-      const itemId = uuidv4()
-      const item = await new db.NotificationTaskModel({
-        "taskID": itemId,
-        "userID": userID,
-        "taskTime": time,
-        "taskType": type,
-        "taskContent": content,
-      }).save();
+  updateUserNotification: async (
+    parent,
+    { userID, time, type, content },
+    { db, pubSub }
+  ) => {
+    // 找到要更新通知的 user
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    const itemId = uuidv4();
+    const item = await new db.NotificationTaskModel({
+      taskID: itemId,
+      userID: userID,
+      taskTime: time,
+      taskType: type,
+      taskContent: content,
+    }).save();
 
-      const newNotification = await db.UserModel.findOneAndUpdate(
-          {userID}, {$push: { "userNotification": item}
-      })
+    const newNotification = await db.UserModel.findOneAndUpdate(
+      { userID },
+      { $push: { userNotification: item } }
+    );
 
-      return itemId;
+    return itemId;
   },
 
-  updateUserAchievement: async ( parent, { userID, title, content}, { db, pubSub }) => {
-      const user = await db.UserModel.findOne({ userID: userID });
-      if (!user) {
-        throw new Error("User not found!")
-      }
+  updateUserAchievement: async (
+    parent,
+    { userID, title, content },
+    { db, pubSub }
+  ) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
 
-      const itemId = uuidv4();
-      const item = await new db.AchievementModel({
-        "userID": userID,
-        "userAchievementID": itemId,
-        "userAchievementTitle": title,
-        "userAchievementContent": content,
-      }).save();
+    const itemId = uuidv4();
+    const item = await new db.AchievementModel({
+      userID: userID,
+      userAchievementID: itemId,
+      userAchievementTitle: title,
+      userAchievementContent: content,
+    }).save();
 
-      const newNotification = await db.UserModel.findOneAndUpdate(
-          {userID}, {$push: { "userAchievement": item} 
-      })
+    const newNotification = await db.UserModel.findOneAndUpdate(
+      { userID },
+      { $push: { userAchievement: item } }
+    );
 
-      return itemId;
+    return itemId;
   },
 
-  createUserEvent: async ( parent, { eventCreator, eventTitle, eventDescription, eventStart,
-   eventEnd, eventLocation}, { db, pubSub }) => {
+  createUserEvent: async (
+    parent,
+    {
+      eventCreator,
+      eventTitle,
+      eventDescription,
+      eventStart,
+      eventEnd,
+      eventLocation,
+    },
+    { db, pubSub }
+  ) => {
+    const user = await db.UserModel.findOne({ userID: eventCreator });
+    if (!user) {
+      throw new Error("User not found!");
+    }
 
-      const user = await db.UserModel.findOne({ userID: eventCreator });
-      if (!user) {
-        throw new Error("User not found!")
-      }
+    const eventID = uuidv4();
+    const eventPostTime = await new Date();
 
-      const eventID = uuidv4();
-      const eventPostTime = await new Date();
+    const event = await new db.DashboardEventModel({
+      userID: eventCreator,
+      eventID: eventID,
+      eventTitle: eventTitle,
+      eventDescription: eventDescription,
+      eventStart: eventStart,
+      eventEnd: eventEnd,
+      eventLocation: eventLocation,
+      eventPostTime: eventPostTime,
+    }).save();
 
-      const event = await new db.DashboardEventModel({
-        "userID": eventCreator,
-        "eventID": eventID,
-        "eventTitle": eventTitle,
-        "eventDescription": eventDescription,
-        "eventStart": eventStart,
-        "eventEnd": eventEnd,
-        "eventLocation": eventLocation,
-        "eventPostTime": eventPostTime
-      }).save();
+    const newEvent = await db.UserModel.findOneAndUpdate(
+      { userID: eventCreator },
+      { $push: { userEvent: event } }
+    );
 
-      const newEvent = await db.UserModel.findOneAndUpdate(
-          {userID: eventCreator}, {$push: { "userEvent": event} 
-      })
-
-      return eventID;
+    return eventID;
   },
 
-
-  createScore: (parent, args, { teamModel, pubSub }) => {
-    const newScore = {
-      contestID: uuidv4(),
-      ...args.data,
-    };
-    teamModel.teamScore.unshift(newScore);
-    return teamModel.teamScore;
+  createScore: async (
+    parent,
+    { contestDate, contestOpponent, contestIsWin },
+    { db, pubSub }
+  ) => {
+    const contestID = uuidv4();
+    const newScore = new db.ScoreModel({
+      contestID,
+      contestDate,
+      contestOpponent,
+      contestIsWin,
+      contestTitle,
+    });
+    await newScore.save();
+    return newScore;
   },
 
   createScoreDetail: (parent, args, { teamModel, pubSub }) => {
@@ -137,9 +165,9 @@ const Mutation = {
     return teamModel.teamScore;
   },
 
-  createGallery: async (parent, { galleryTitle }, { galleryModel, pubSub }) => {
+  createGallery: async (parent, { galleryTitle }, { db, pubSub }) => {
     const galleryID = uuidv4();
-    const newGallery = new galleryModel({
+    const newGallery = new db.GalleryModel({
       galleryID,
       galleryTitle,
     });
@@ -147,22 +175,14 @@ const Mutation = {
     return newGallery;
   },
 
-  createGantt: (parent, args, { teamModel, pubSub }) => {
-    const newGantt = {
-      ganttID: uuidv4(),
-      ...args.data,
-    };
-    teamModel.teamGantt.unshift(newGantt);
-    return teamModel.teamGantt;
-  },
-
-  createGantt: (parent, args, { teamModel, pubSub }) => {
-    const newGantt = {
-      ganttID: uuidv4(),
-      ...args.data,
-    };
-    teamModel.teamGantt.unshift(newGantt);
-    return teamModel.teamGantt;
+  createGantt: async (parent, { ganttTitle }, { db, pubSub }) => {
+    const ganttID = uuidv4();
+    const newGantt = new db.GanttModel({
+      ganttID,
+      ganttTitle,
+    });
+    await newGantt.save();
+    return newGantt;
   },
 
   createTeamEvent: async (parent, args, { teamModel, userModel, pubSub }) => {

@@ -1,5 +1,5 @@
 type Query {
-  userLogin(userAccount: String, userPassword: String): User 
+  userLogin(userAccount: String, userPassword: String): User
   initUserNotification(userID: String): [NotificationTask] # ok
   initUserAchievement(userID: String): [userAchievement]
   initUserTodo(_id: ID): Todo
@@ -20,11 +20,15 @@ type Query {
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
   createUserTodo(userID: String, todoContent: String): Todo
-
-  createScore(data: CreateScoreInput!): Contest!
+  createScore(
+    contestDate: Int!
+    contestOpponent: ID!
+    contestIsWin: Boolean!
+    contestTitle: String!
+  ): Contest!
   createScoreDetail(data: CreateScoreDetailInput!): Contest!
   createGallery(galleryTitle: String!): Gallery!
-  createGantt(data: CreateGanttInput!): Gantt!
+  createGantt(ganttTitle: String!): Gantt!
   createTeam(
     teamName: String!
     teamDescription: String!
@@ -67,12 +71,25 @@ type Mutation {
     voter: String!
   ): VoteOption
 
-  updateUserNotification(userID: String, time: Int, type: String, content: String): String
+  updateUserNotification(
+    userID: String
+    time: Int
+    type: String
+    content: String
+  ): String
 
   updateUserAchievement(userID: String, title: String, content: String): String
 
-  createUserEvent(eventCreator: String, eventID: String, eventTitle:String, eventDescription: String, 
-    eventStart: Float, eventEnd: Float, eventLocation: String, eventPostTime: Int): String
+  createUserEvent(
+    eventCreator: String
+    eventID: String
+    eventTitle: String
+    eventDescription: String
+    eventStart: Float
+    eventEnd: Float
+    eventLocation: String
+    eventPostTime: Int
+  ): String
 }
 
 type Subscription {
@@ -118,7 +135,7 @@ type DashboardEvent {
   eventStart: Float!
   eventEnd: Float!
   eventLocation: String
-  eventPostTime: Float,
+  eventPostTime: Float
 }
 
 type UserPlaySet {
@@ -224,12 +241,6 @@ type Event {
   eventPosttime: String!
 }
 
-input CreateScoreInput {
-  contestDate: Int!
-  contestOpponent: ID!
-  contestIsWin: Boolean!
-}
-
 input CreateScoreDetailInput {
   contestScoreSet: ID!
   contestScoreItem: [String!]!
@@ -237,11 +248,6 @@ input CreateScoreDetailInput {
 
 input CreateGalleryInput {
   galleryTitle: String!
-}
-
-input CreateGanttInput {
-  ganttTitle: String!
-  ganttTask: ID!
 }
 
 enum EventReply {
