@@ -84,7 +84,7 @@ function Score() {
                 component="div"
                 sx={{ width: "20%", textAlign: "center" }}
               >
-                {breadItem[1]}
+                {decodeURI(breadItem[1])}
               </Typography>
               {score.win === "win"
                 ? winScore(score)

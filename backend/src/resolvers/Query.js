@@ -1,11 +1,10 @@
 const Query = {
-  userLogin: async ( parent, { userAccount, userPassword }, { db, pubSub } ) => {
+  userLogin: async (parent, { userAccount, userPassword }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userAccount });
 
     if (!user) {
       throw new Error("Account not existed!");
-    } 
-    else if (user.userPassword != userPassword) {
+    } else if (user.userPassword != userPassword) {
       throw new Error("Password not correct!");
     }
 
@@ -14,46 +13,48 @@ const Query = {
 
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
-    
+
     if (!user) {
       throw new Error("User not found!");
     }
-    const notification = await db.NotificationTaskModel.find( { userID } );
+    const notification = await db.NotificationTaskModel.find({ userID });
 
-    if (!notification) { return [] }
+    if (!notification) {
+      return [];
+    }
 
     return notification;
   },
 
-  initUserAchievement: async (parent, {userID}, {db, pubSub}) => {
+  initUserAchievement: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
-    const achievement = await db.AchievementModel.find( { userID } );
+    const achievement = await db.AchievementModel.find({ userID });
     if (!user) {
       throw new Error("User not found!");
     }
 
-    if (!achievement) { return [] }
+    if (!achievement) {
+      return [];
+    }
 
-    return achievement
+    return achievement;
   },
 
-  initUserEvent: async (parent, {userID}, {db, pubSub}) => {
+  initUserEvent: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
     if (!user) {
       throw new Error("User not found!");
     }
 
-    const event = await db.DashboardEventModel.find( { userID } );
-    if (!event) { return [] }
-    
+    const event = await db.DashboardEventModel.find({ userID });
+    if (!event) {
+      return [];
+    }
+
     return event;
   },
 
-  initUserTodo: async (
-    parent,
-    { userID },
-    { db, pubSub }
-  ) => {
+  initUserTodo: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
 
     if (!user) {
@@ -75,24 +76,39 @@ const Query = {
   },
 
   initScore: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ _id: teamID });
-    if (!team) throw new Error("Team not found!");
-    if (team.teamScore.length !== 0) return team.teamScore;
-    else return [];
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const score = await db.ScoreModel.find({ teamID });
+    if (!score) {
+      return [];
+    }
+    return score;
   },
 
   initGallery: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ _id: teamID });
-    if (!team) throw new Error("Team not found!");
-    if (team.teamGallery.length !== 0) return team.teamGallery;
-    else return [];
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const gantt = await db.GanttModel.find({ teamID });
+    if (!gantt) {
+      return [];
+    }
+    return gantt;
   },
 
   initGantt: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ _id: teamID });
-    if (!team) throw new Error("Team not found!");
-    if (team.teamGantt.length !== 0) return team.teamGantt;
-    else return [];
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const gallery = await db.GalleryModel.find({ teamID });
+    if (!gallery) {
+      return [];
+    }
+    return gallery;
   },
   /* --------------------------------------- */
   users: async (parent, args, { db, pubSub }) => {

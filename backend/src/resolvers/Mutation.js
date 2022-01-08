@@ -154,11 +154,12 @@ const Mutation = {
 
   createScore: async (
     parent,
-    { contestDate, contestOpponent, contestIsWin },
+    { teamID, contestDate, contestOpponent, contestIsWin, contestTitle },
     { db, pubSub }
   ) => {
     const contestID = uuidv4();
     const newScore = new db.ScoreModel({
+      teamID,
       contestID,
       contestDate,
       contestOpponent,
@@ -169,18 +170,25 @@ const Mutation = {
     return newScore;
   },
 
-  createScoreDetail: (parent, args, { teamModel, pubSub }) => {
-    const newScoreDetail = {
-      contestScoreSetID: uuidv4(),
-      ...args.data,
-    };
-    teamModel.teamScore.contestScoreSet.unshift(newScoreDetail);
-    return teamModel.teamScore;
-  },
+  // createScoreDetail: async (
+  //   parent,
+  //   { contestScoreSet, contestScoreSetItem },
+  //   { db, pubSub }
+  // ) => {
+  //   const contestScoreSetID = uuidv4();
+  //   const newScoreDetail = new db.ScoreDetailModel({
+  //     contestScoreSetID,
+  //     contestScoreSet,
+  //     contestScoreSetItem,
+  //   });
+  //   await newScoreDetail.save();
+  //   return newScoreDetail;
+  // },
 
-  createGallery: async (parent, { galleryTitle }, { db, pubSub }) => {
+  createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
     const galleryID = uuidv4();
     const newGallery = new db.GalleryModel({
+      teamID,
       galleryID,
       galleryTitle,
     });
@@ -188,9 +196,10 @@ const Mutation = {
     return newGallery;
   },
 
-  createGantt: async (parent, { ganttTitle }, { db, pubSub }) => {
+  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
     const ganttID = uuidv4();
     const newGantt = new db.GanttModel({
+      teamID,
       ganttID,
       ganttTitle,
     });

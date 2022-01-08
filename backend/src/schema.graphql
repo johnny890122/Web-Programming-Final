@@ -6,9 +6,9 @@ type Query {
   initUserEvent(userID: String): [DashboardEvent]
 
   initMember(_id: ID): [User]!
-  initScore(_id: ID): [Contest]!
-  initGallery(_id: ID): [Gallery]!
-  initGantt(_id: ID): [Gantt]!
+  initScore(teamID: String): [Contest]!
+  initGallery(teamID: String): [Gallery]!
+  initGantt(teamID: String): [Gantt]!
   users(query: String): [User]!
   teams(query: String): [Team]!
   initTeam(_id: ID): [Team]!
@@ -20,15 +20,19 @@ type Query {
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
   createUserTodo(userID: String, todoContent: String): Todo
-  createScore(
+  createScore( # ok
+    teamID: String
     contestDate: Int!
-    contestOpponent: ID!
+    contestOpponent: String!
     contestIsWin: Boolean!
     contestTitle: String!
   ): Contest!
-  createScoreDetail(data: CreateScoreDetailInput!): Contest!
-  createGallery(galleryTitle: String!): Gallery!
-  createGantt(ganttTitle: String!): Gantt!
+  createScoreDetail(
+    contestScoreSet: ID!
+    contestScoreItem: [String!]!
+  ): ContestScoreSet!
+  createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
+  createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
   createTeam(
     teamName: String!
     teamDescription: String!
@@ -167,6 +171,7 @@ type Team {
 }
 
 type Gallery {
+  teamID: String!
   galleryID: ID!
   galleryTitle: String!
   original_url: [String!]!
@@ -182,6 +187,7 @@ type Post {
 }
 
 type Gantt {
+  teamID: String!
   ganttID: ID!
   ganttTitle: String!
   ganttTaskID: [GanttTask]!
@@ -197,11 +203,12 @@ type GanttTask {
 }
 
 type Contest {
+  teamID: String!
   contestID: ID!
   contestTitle: String!
-  contestMyTeam: Team!
+  contestMyTeamID: String!
   contestDate: Int!
-  contestOpponent: Team!
+  contestOpponent: String!
   contestIsWin: Boolean!
   contestScoreSet: [ContestScoreSet!]
   contestScoreItem: [String!]
@@ -239,11 +246,6 @@ type Event {
   eventLocation: String
   eventCreator: User
   eventPosttime: String!
-}
-
-input CreateScoreDetailInput {
-  contestScoreSet: ID!
-  contestScoreItem: [String!]!
 }
 
 input CreateGalleryInput {
