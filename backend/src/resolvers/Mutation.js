@@ -74,30 +74,43 @@ const Mutation = {
     return itemId;
   },
 
-  updateUserAchievement: async (
+  createUserEvent: async (
     parent,
-    { userID, title, content },
+    {
+      eventCreator,
+      eventTitle,
+      eventDescription,
+      eventStart,
+      eventEnd,
+      eventLocation,
+    },
     { db, pubSub }
   ) => {
-    const user = await db.UserModel.findOne({ userID: userID });
+    const user = await db.UserModel.findOne({ userID: eventCreator });
     if (!user) {
       throw new Error("User not found!");
     }
 
-    const itemId = uuidv4();
-    const item = await new db.AchievementModel({
-      userID: userID,
-      userAchievementID: itemId,
-      userAchievementTitle: title,
-      userAchievementContent: content,
+    const eventID = uuidv4();
+    const eventPostTime = await new Date();
+
+    const event = await new db.DashboardEventModel({
+      userID: eventCreator,
+      eventID: eventID,
+      eventTitle: eventTitle,
+      eventDescription: eventDescription,
+      eventStart: eventStart,
+      eventEnd: eventEnd,
+      eventLocation: eventLocation,
+      eventPostTime: eventPostTime,
     }).save();
 
-    const newNotification = await db.UserModel.findOneAndUpdate(
-      { userID },
-      { $push: { userAchievement: item } }
+    const newEvent = await db.UserModel.findOneAndUpdate(
+      { userID: eventCreator },
+      { $push: { userEvent: event } }
     );
 
-    return itemId;
+    return eventID;
   },
 
   createUserEvent: async (
