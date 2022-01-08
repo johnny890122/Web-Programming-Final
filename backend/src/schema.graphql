@@ -29,7 +29,7 @@ type Mutation {
     teamName: String!
     teamDescription: String!
     teamType: String!
-    creater: String! # ** 修正= > User?
+    createrID: String! # ** 修正= > User?
   ): Team!
   createTeamEvent(
     eventTitle: String!
@@ -37,22 +37,22 @@ type Mutation {
     eventStart: String!
     eventEnd: String
     eventLocation: String
-    team: String!
-    creater: String!
+    teamID: String!
+    createrID: String!
   ): Event!
   createTeamPost(
     postTitle: String!
     postContent: String!
-    team: String!
-    creater: String!
+    teamID: String!
+    createrID: String!
   ): Post
   createVote(
     voteTitle: String!
     voteDescription: String!
     voteEnd: String!
     voteLimit: Int
-    team: String!
-    creater: String!
+    teamID: String!
+    createrID: String!
   ): Vote
   createVoteOption(voteOptionName: String!, team: String!): VoteOption
   #replyTeamEvent(
@@ -62,9 +62,9 @@ type Mutation {
   #): Event
   replyVote(
     voteOptionName: String!
-    team: String!
+    teamID: String!
     vote: String!
-    voter: String!
+    voterID: String!
   ): VoteOption
 
   updateUserNotification(userID: String, time: Int, type: String, content: String): String

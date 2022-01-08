@@ -97,7 +97,7 @@ const Query = {
   },
   /* --------------------------------------- */
   users: async (parent, args, { db, pubSub }) => {
-    return db.UserModel.find();
+    return db.UserModel;
   },
 
   teams: async (parent, args, { db, pubSub }) => {

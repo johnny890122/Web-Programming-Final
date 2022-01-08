@@ -35,7 +35,7 @@ function DashboardEvent(props) {
       <div className = "dashboard-event">
         <h2>Upcoming Events</h2>
         <List className = "dashboard-event-list">
-            {eventData.map(event => <ListItem   button key = {event.id}>
+            {eventData.map(event => <ListItem  key = {event.id}>
                                         <ListItemText primary = {event.title}
                                                       secondary = {event.start}/>
                                     </ListItem> )}
