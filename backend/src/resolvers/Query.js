@@ -17,19 +17,24 @@ const Query = {
     
     if (!user) {
       throw new Error("User not found!");
-    } 
+    }
+    const notification = await db.NotificationTaskModel.find( { userID } );
 
-    return await db.NotificationTaskModel.find( { userID } );
+    if (!notification) { return [] }
+
+    return notification;
   },
 
   initUserAchievement: async (parent, {userID}, {db, pubSub}) => {
     const user = await db.UserModel.findOne({ userID: userID });
-    
+    const achievement = await db.AchievementModel.find( { userID } );
     if (!user) {
       throw new Error("User not found!");
     }
 
-    return await db.AchievementModel.find( { userID } );
+    if (!achievement) { return [] }
+
+    return achievement
   },
 
   initUserEvent: async (parent, {userID}, {db, pubSub}) => {
@@ -37,8 +42,11 @@ const Query = {
     if (!user) {
       throw new Error("User not found!");
     }
+
+    const event = await db.DashboardEventModel.find( { userID } );
+    if (!event) { return [] }
     
-    return await db.DashboardEventModel.find( { userID } );
+    return event;
   },
 
   initUserTodo: async (
