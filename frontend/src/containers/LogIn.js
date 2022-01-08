@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 import { ExitToApp } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import { InputLabel } from "@mui/material";
@@ -19,8 +22,12 @@ const LogIn = (props) => {
   const [me, setMe] = useState("");
   const ME_KEY = "me";
   const [dataCorrect, setDataCorrect] = useState(false);
+  const [login, setLogin] = useState(false);
 
-  const [login, setLogin] = useState(false)
+  const [errorVisibility, setErrorVisibility] = useState("none");
+  const [errorSeverity, setErrorSeverity] = useState("");
+  const [errorMessageTitle, setErrorMessageTitle] = useState("");
+  const [errorMessageBody, setErrorMessageBody] = useState("");
 
   const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
@@ -29,12 +36,12 @@ const LogIn = (props) => {
   const submitLogin = () => {
     if (error === "Error: Account not existed!") {
         localStorage.setItem(ME_KEY, "");
-        console.log(error);
     }
     else if (dataCorrect) {} {
         setLogin(true);
         localStorage.setItem(ME_KEY, me);
     }
+    setErrorVisibility("block");
   };
 
   useEffect(() => {
@@ -42,14 +49,25 @@ const LogIn = (props) => {
       setMe(data.userLogin.userID)
       setDataCorrect(true);
     }
-  })
+  });
 
+  useEffect( () => {
+    setErrorVisibility("none");
+  }, [account, password])
 
-  // console.log(localStorage.getItem(ME_KEY));
+  const errorBlock = error ? ( error.graphQLErrors.map(i =>
+      <Alert severity="error" style={{ display : errorVisibility}}>
+      {/*<AlertTitle> {} </AlertTitle>*/}
+        {i.message}
+      </Alert>
+  )): [];
 
   return (
+
     <Box sx={{ flexGrow: 1 }}>
+
       <AppBar position="static" style={{ backgroundColor: "#2e4c6d" }}>
+
         <Toolbar>
           <IconButton
             size="large"
@@ -65,6 +83,7 @@ const LogIn = (props) => {
           </Typography>
         </Toolbar>
       </AppBar>
+
       <div
         className="content"
         style={{ display: "flex", margin: "10rem 23rem" }}
@@ -97,6 +116,9 @@ const LogIn = (props) => {
             to={ dataCorrect ? "/user/Dashboard" : "/"}
             state= {{ me: localStorage.getItem(ME_KEY) }}
           >
+
+            {errorBlock}
+
             <Button
               onClick={submitLogin}
               variant="contained"
@@ -104,6 +126,7 @@ const LogIn = (props) => {
             >
               Log In
             </Button>
+
           </Link>
 
           <NavLink to= {{ pathname: "/SignUp" }}>
