@@ -28,8 +28,6 @@ function DashboardEvent(props) {
       )
     )
   }
-  console.log(data)
-  console.log(eventData);
 
   return(
       <div className = "dashboard-event">

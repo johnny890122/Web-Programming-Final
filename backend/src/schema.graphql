@@ -2,7 +2,6 @@ type Query {
   userLogin(userAccount: String, userPassword: String): User 
   initUserNotification(userID: String): [NotificationTask] # ok
   initUserAchievement(userID: String): [userAchievement]
-
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
 
@@ -20,7 +19,8 @@ type Query {
 
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
-  createUserTodo(_id: ID, todoContent: String): Todo
+  createUserTodo(userID: String, todoContent: String): Todo
+
   createScore(data: CreateScoreInput!): Contest!
   createScoreDetail(data: CreateScoreDetailInput!): Contest!
   createGallery(galleryTitle: String!): Gallery!
@@ -97,9 +97,11 @@ type User {
 }
 
 type Todo {
-  todoID: ID!
-  todoStatus: String!
-  todoContent: String!
+  userID: String
+  todoID: String
+  todoDone: Boolean
+  todoDeleted: Boolean
+  todoContent: String
 }
 
 type NotificationTask {

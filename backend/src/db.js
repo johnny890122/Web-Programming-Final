@@ -11,7 +11,7 @@ const UserSchema = new Schema({
   userStatus: { type: String, required: false },
   userProfile: { type: String, required: false },
   allTeams: [{ type: mongoose.Types.ObjectId, ref: "Team" }],
-  userTodo: [{ type: mongoose.Types.ObjectId, ref: "DashboardTodo" }],
+  userTodo: [{ type: Object, ref: "DashboardTodo" }],
   
   userNotification: [{ type: Object, ref: "DashboardNotification" }],
   userAchievement: [{ type: Object, ref: "NotificationTaskModel" }],
@@ -21,8 +21,10 @@ const UserSchema = new Schema({
 });
 
 const TodoSchema = new Schema({
-  TodoID: { type: mongoose.Types.ObjectId, required: true },
-  todoStatus: { type: String, required: true },
+  userID: { type: String, ref: "User" },
+  todoID: { type: String, required: true },
+  todoDone: { type: Boolean, required: true },
+  todoDeleted: { type: Boolean, required: true },
   todoContent: { type: String, required: true },
 });
 

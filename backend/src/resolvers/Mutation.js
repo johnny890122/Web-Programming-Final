@@ -24,11 +24,27 @@ const Mutation = {
     return newUser;
   },
 
-  createUserTodo: async (
-    parent,
-    { _id, todoContent },
-    { todoModel, pubSub }
-  ) => {},
+  createUserTodo: async ( parent, { userID, todoContent}, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!")
+    }
+
+    const todoID = uuidv4();
+    const todo = await new db.TodoModel({
+      "userID": userID,
+      "todoID": todoID,
+      "todoDone": false,
+      "todoDeleted": false,
+      "todoContent": todoContent,
+    }).save();
+
+    const newTodo = await db.UserModel.findOneAndUpdate(
+        {userID}, {$push: { "userTodo": todo}
+    });
+
+    return todo;
+  },
 
   updateUserNotification: async ( parent, { userID, time, type, content}, { db, pubSub }) => {
       // 找到要更新通知的 user 
@@ -50,7 +66,6 @@ const Mutation = {
       })
 
       return itemId;
-
   },
 
   updateUserAchievement: async ( parent, { userID, title, content}, { db, pubSub }) => {
