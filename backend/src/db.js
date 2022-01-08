@@ -10,9 +10,8 @@ const UserSchema = new Schema({
   userBirthday: { type: Number, required: false },
   userStatus: { type: String, required: false },
   userProfile: { type: String, required: false },
-  allTeams: [{ type: mongoose.Types.ObjectId, ref: "Team" }],
-  userTodo: [{ type: Object, ref: "DashboardTodo" }],
-
+  allTeams: [{ type: Object, ref: "Team" }],
+  userTodo: [{ type: mongoose.Types.ObjectId, ref: "DashboardTodo" }],
   userNotification: [{ type: Object, ref: "DashboardNotification" }],
   userAchievement: [{ type: Object, ref: "NotificationTaskModel" }],
   userEvent: [{ type: Object, ref: "DashboardEvent" }],
@@ -34,12 +33,12 @@ const TeamSchema = new Schema({
   teamDescription: { type: String, required: false },
   teamType: { type: String, required: true },
   //teamCreateDate: {type: Number, required: true},
-  teamMember: [{ type: mongoose.Types.ObjectId, ref: "User" }],
-  teamPost: [{ type: mongoose.Types.ObjectId, ref: "Post" }],
-  teamGantt: [{ type: mongoose.Types.ObjectId, ref: "Gantt" }],
-  teamScore: [{ type: mongoose.Types.ObjectId, ref: "Score" }],
-  teamVote: [{ type: mongoose.Types.ObjectId, ref: "Vote" }],
-  teamEvent: [{ type: mongoose.Types.ObjectId, ref: "Event" }],
+  teamMember: [{ type: Object, ref: "User" }],
+  teamPost: [{ type: Object, ref: "Post" }],
+  teamGantt: [{ type: Object, ref: "Gantt" }],
+  teamScore: [{ type: Object, ref: "Score" }],
+  teamVote: [{ type: Object, ref: "Vote" }],
+  teamEvent: [{ type: Object, ref: "Event" }],
 });
 
 const EventSchema = new Schema({
@@ -49,7 +48,7 @@ const EventSchema = new Schema({
   eventStart: { type: String, required: true },
   eventEnd: { type: String, required: false },
   eventLocation: { type: String, required: false },
-  eventCreater: { type: mongoose.Types.ObjectId, ref: "User" },
+  eventCreater: { type: Object, ref: "User" },
   eventPostTime: { type: String, required: true },
 });
 
