@@ -1,15 +1,14 @@
 type Query {
-  userLogin(userAccount: String, userPassword: String): User 
+  userLogin(userAccount: String, userPassword: String): User
   initUserNotification(userID: String): [NotificationTask] # ok
   initUserAchievement(userID: String): [userAchievement]
-
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
 
   initMember(_id: ID): [User]!
-  initScore(_id: ID): [Contest]!
-  initGallery(_id: ID): [Gallery]!
-  initGantt(_id: ID): [Gantt]!
+  initScore(teamID: String): [Contest]!
+  initGallery(teamID: String): [Gallery]!
+  initGantt(teamID: String): [Gantt]!
   users(query: String): [User]!
   teams(query: String): [Team]!
   initTeam(_id: ID): [Team]!
@@ -20,11 +19,20 @@ type Query {
 
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
-  createUserTodo(_id: ID, todoContent: String): Todo
-  createScore(data: CreateScoreInput!): Contest!
-  createScoreDetail(data: CreateScoreDetailInput!): Contest!
-  createGallery(galleryTitle: String!): Gallery!
-  createGantt(data: CreateGanttInput!): Gantt!
+  createUserTodo(userID: String, todoContent: String): Todo
+  createScore( # ok
+    teamID: String
+    contestDate: Int!
+    contestOpponent: String!
+    contestIsWin: Boolean!
+    contestTitle: String!
+  ): Contest!
+  createScoreDetail(
+    contestScoreSet: ID!
+    contestScoreItem: [String!]!
+  ): ContestScoreSet!
+  createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
+  createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
   createTeam(
     teamName: String!
     teamDescription: String!
@@ -67,12 +75,25 @@ type Mutation {
     voterID: String!
   ): VoteOption
 
-  updateUserNotification(userID: String, time: Int, type: String, content: String): String
+  updateUserNotification(
+    userID: String
+    time: Int
+    type: String
+    content: String
+  ): String
 
   updateUserAchievement(userID: String, title: String, content: String): String
 
-  createUserEvent(eventCreator: String, eventID: String, eventTitle:String, eventDescription: String, 
-    eventStart: Float, eventEnd: Float, eventLocation: String, eventPostTime: Int): String
+  createUserEvent(
+    eventCreator: String
+    eventID: String
+    eventTitle: String
+    eventDescription: String
+    eventStart: Float
+    eventEnd: Float
+    eventLocation: String
+    eventPostTime: Int
+  ): String
 }
 
 type Subscription {
@@ -97,9 +118,11 @@ type User {
 }
 
 type Todo {
-  todoID: ID!
-  todoStatus: String!
-  todoContent: String!
+  userID: String
+  todoID: String
+  todoDone: Boolean
+  todoDeleted: Boolean
+  todoContent: String
 }
 
 type NotificationTask {
@@ -116,7 +139,7 @@ type DashboardEvent {
   eventStart: Float!
   eventEnd: Float!
   eventLocation: String
-  eventPostTime: Float,
+  eventPostTime: Float
 }
 
 type UserPlaySet {
@@ -148,6 +171,7 @@ type Team {
 }
 
 type Gallery {
+  teamID: String!
   galleryID: ID!
   galleryTitle: String!
   original_url: [String!]!
@@ -163,6 +187,7 @@ type Post {
 }
 
 type Gantt {
+  teamID: String!
   ganttID: ID!
   ganttTitle: String!
   ganttTaskID: [GanttTask]!
@@ -178,11 +203,12 @@ type GanttTask {
 }
 
 type Contest {
+  teamID: String!
   contestID: ID!
   contestTitle: String!
-  contestMyTeam: Team!
+  contestMyTeamID: String!
   contestDate: Int!
-  contestOpponent: Team!
+  contestOpponent: String!
   contestIsWin: Boolean!
   contestScoreSet: [ContestScoreSet!]
   contestScoreItem: [String!]
@@ -222,24 +248,8 @@ type Event {
   eventPosttime: String!
 }
 
-input CreateScoreInput {
-  contestDate: Int!
-  contestOpponent: ID!
-  contestIsWin: Boolean!
-}
-
-input CreateScoreDetailInput {
-  contestScoreSet: ID!
-  contestScoreItem: [String!]!
-}
-
 input CreateGalleryInput {
   galleryTitle: String!
-}
-
-input CreateGanttInput {
-  ganttTitle: String!
-  ganttTask: ID!
 }
 
 enum EventReply {

@@ -1,5 +1,7 @@
 import Template from "../components/Template";
-import { EventData } from '../components/ListData';
+import { useQuery } from "@apollo/client";
+import { USER_EVENT_INIT } from "../graphql";
+
 import { Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import { CardActionArea, CardMedia } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -17,7 +19,7 @@ import styled from "styled-components";
 event, createEvent, editEvent, deleteEvent
 */
 
-function UserEvent() {
+function UserEvent(props) {
 
     const ViewBox = styled.div`
         max-width: 800px;
@@ -25,9 +27,28 @@ function UserEvent() {
 
     const [viewmode, setViewmode] = useState("list"); // 預覽模式
     const [filtermode, setFiltermode] = useState("upcoming"); // 活動篩選模式
-    const [events, setEvents] = useState(EventData); // 所有活動資料
+    const [events, setEvents] = useState([]); // 所有活動資料
     const today = new Date();
     
+
+    const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
+      variables: { userID: props.me },
+    });
+
+    const EventData = [];
+    if (!loading) {
+        data.initUserEvent.map( 
+          i=>EventData.push(
+            {
+              "title": i.eventTitle, "description": i.eventDescription, "start": i.eventStart,
+              "end": i.eventEnd, "location": i.eventLocation, "posttime": i.eventPostTime
+            }
+          )
+        )
+        if (!events) {
+            setEvents(EventData)
+        }
+    }
 
     const handleViewChange = (view, newView) => {
         setViewmode(newView);
@@ -41,50 +62,53 @@ function UserEvent() {
         setEvents(EventData.filter(event => new Date(event.start) <= today))
       } else if (newFilter === 'unrespond') {
         setEvents(EventData.filter(event => event.reply === false && new Date(event.start) > today))
-      } else setEvents(EventData)
+      } else {
+        setEvents(EventData);
+      }
       /* 篩選並排序符合條件的活動 */
     };
 
-
-    const ListView = (() =>
-
-        /* 點擊event進入detail頁面 */
-
+    const ListView = (() => /* 點擊event進入detail頁面 */
         <List className = "user-event-list">
-              {events.map(event => 
-                    <Card className = "user-event-item"
-                          sx={{ m: 2,
-                                width: 450,
-                                height: 250 }}
-                          key = {event.id}>
-                        <CardActionArea sx={{ width: 450,
-                                              height: 250,
-                                              display: 'block' }}
-                                                
-                                        href={`#${event.id}`}> 
-                                        {/* 連結活動頁面 */}
-      
-                            <CardContent sx={{ p: 4 }}>
-                                <Typography gutterBottom variant="h4" component="div">
-                                    {event.title}   
-                                    {(event.type === "team") ? <PeopleIcon sx={{ mx : 1 }} /> : <PersonIcon sx={{ mx : 1 }} />} 
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary">
-                                    <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary">
-                                    <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
-                                </Typography>
-                                {new Date(event.start) <= today ? 
-                                    <Chip label="Finished" sx={{ my : 1 }} /> :
-                                    (event.reply ? <Chip label="Replied" color='success' sx={{ my : 1 }} /> :
-                                                   <Chip label="Ureplied" color='error' sx={{ my : 1 }} />)}
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                         )}
-          </List>
-    )
+            {events.map(event => 
+            <Card 
+                className = "user-event-item"
+                sx={{ m: 2, width: 450, height: 250 }}
+                key = {event.id}>
+                <CardActionArea 
+                    sx={{ width: 450, height: 250, display: 'block' }}
+                    href={`#${event.id}`}> 
+                    
+                    {/*連結活動頁面*/}
+                    <CardContent sx={{ p: 4 }}>
+                        <Typography gutterBottom variant="h4" component="div">
+                            {event.title}   
+                            {
+                                event.type === "team"
+                                ? <PeopleIcon sx={{ mx : 1 }} /> 
+                                : <PersonIcon sx={{ mx : 1 }} />
+                            } 
+                        </Typography>
+
+                        <Typography variant="subtitle1" color="text.secondary">
+                            <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
+                        </Typography>
+
+                        <Typography variant="subtitle1" color="text.secondary">
+                            <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
+                        </Typography>
+
+                        {
+                            new Date(event.start) <= today 
+                            ? <Chip label="Finished" sx={{ my : 1 }} /> 
+                            : (event.reply 
+                                ? <Chip label="Replied" color='success' sx={{ my : 1 }} /> 
+                                : <Chip label="Ureplied" color='error' sx={{ my : 1 }} />)
+                        }
+                    </CardContent>
+                </CardActionArea>
+            </Card> )}
+        </List>)
 
     const CalendarView = (() =>      
             <FullCalendar
@@ -92,7 +116,7 @@ function UserEvent() {
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView='dayGridMonth'
                 locale="zh-tw" // 中文化
-                events={events}
+                events={EventData}
 
                 /* 點擊date顯示當日event的list(或是空list: 本日無活動) */
                 
@@ -139,6 +163,7 @@ function UserEvent() {
     )
     
     return(
+
         <div className="Wrapper">
             <Template content={eventlist} />
         </div>        
