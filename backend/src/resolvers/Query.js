@@ -18,9 +18,6 @@ const Query = {
     if (!user) {
       throw new Error("User not found!");
     } 
-    else if (user.userNotification.length === 0) {
-      throw new Error("Notification is empty!");
-    }
 
     return await db.NotificationTaskModel.find( { userID } );
   },
@@ -31,9 +28,6 @@ const Query = {
     if (!user) {
       throw new Error("User not found!");
     }
-    else if (user.userAchievement.length === 0) {
-      throw new Error("Achievement is empty!");
-    }
 
     return await db.AchievementModel.find( { userID } );
   },
@@ -42,9 +36,6 @@ const Query = {
     const user = await db.UserModel.findOne({ userID: userID });
     if (!user) {
       throw new Error("User not found!");
-    }
-    else if (user.userAchievement.length === 0) {
-      throw new Error("User event is empty!");
     }
     
     return await db.DashboardEventModel.find( { userID } );

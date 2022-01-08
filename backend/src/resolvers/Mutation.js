@@ -46,7 +46,7 @@ const Mutation = {
     return todo;
   },
 
-  updateUserNotification: async ( parent, { userID, time, type, content}, { db, pubSub }) => {
+  updateUserNotification: async ( parent, { userID, time, type, content }, { db, pubSub }) => {
       // 找到要更新通知的 user 
       const user = await db.UserModel.findOne({ userID: userID });
       if (!user) {
@@ -89,9 +89,7 @@ const Mutation = {
       return itemId;
   },
 
-  createUserEvent: async ( parent, { eventCreator, eventTitle, eventDescription, eventStart,
-   eventEnd, eventLocation}, { db, pubSub }) => {
-
+  createUserEvent: async ( parent, { eventCreator, eventTitle, eventDescription, eventStart, eventEnd, eventLocation}, { db, pubSub }) => {
       const user = await db.UserModel.findOne({ userID: eventCreator });
       if (!user) {
         throw new Error("User not found!")
