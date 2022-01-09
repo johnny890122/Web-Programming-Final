@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+const ObjectId = require('mongodb').ObjectID;;
 
 const Mutation = {
   createUser: async (parent, args, { db, pubSub }) => {
@@ -12,12 +13,14 @@ const Mutation = {
       throw new Error("This email has been used!");
     }
     const userID = uuidv4();
+    const OBID = ObjectId();
     const newUser = new db.UserModel({
-      userID,
-      userAccount,
-      userPassword,
-      userEmail,
-    });
+        "_id": OBID,
+        "userID": userID,
+        "userAccount": userAccount,
+        "userPassword": userPassword,
+        "userEmail": userEmail,
+      });
     await newUser.save();
     console.log("New User Saved!");
 
@@ -208,89 +211,108 @@ const Mutation = {
   },
 
   createTeamEvent: async (parent, args, { db, pubSub }) => {
-    const { eventTitle, eventDescription, eventStart, eventEnd, eventLocation, teamID, createrID } = args;
-    const Creater = await db.UserModel.findOne({ createrID });
-    const Team = await db.TeamModel.findOne({ teamID });
-    const TeamID = Team.teamID;
+    const { eventTitle, eventDescription, eventStart, eventEnd, eventLocation, teamID, creatorID } = args;
+    const Creator = await db.UserModel.findOne({ userID: creatorID });
+    
     const eventPostTime = await new Date();
+    const OBID = ObjectId();
     const event = await new db.EventModel({
-      eventID: uuidv4(),
-      eventTitle,
-      eventDescription,
-      eventStart,
-      eventEnd,
-      eventLocation,
-      eventCreator: Creater,
-      eventPostTime: eventPostTime,
+      "_id": OBID,
+      "eventID": uuidv4(),
+      "eventTitle": eventTitle,
+      "eventDescription": eventDescription,
+      "eventStart": eventStart,
+      "eventEnd": eventEnd,
+      "eventLocation": eventLocation,
+      "eventCreator": Creator._id,
+      "eventPostTime": eventPostTime,
     }).save();
 
     const newEvent = await db.TeamModel.findOneAndUpdate(
-      {teamID: TeamID}, {$push: {"teamEvent": event} 
-  })
+      {teamID: teamID}, {$push: {"teamEvent": event.id} 
+    })
+    console.log("New Team Event Saved!");  
     return event;
   },
 
-  createTeamPost: async (parent, args, { teamModel, userModel, pubSub }) => {
-    const { postTitle, postContent, team, creater } = args;
-    const Creater = await userModel.findOne({ creater });
-    const Team = await teamModel.findOne({ team });
-    const TeamID = Team.teamID;
+  createTeamPost: async (parent, args, { db, pubSub }) => {
+    const { postTitle, postContent, teamID, creatorID } = args;
+    const Creator = await db.UserModel.findOne({ userID: creatorID });
+    
     const postTime = await new Date();
-    const newPost = {
-      postID: uuidv4(),
-      postTitle,
-      postContent,
-      postAuthor: Creater,
-      postTime,
-    };
-    //await teamModel.findOneAndUpdate()
-    return newPost;
+    const OBID = ObjectId();
+    const post = await new db.PostModel({
+      "_id": OBID,
+      "postID": uuidv4(),
+      "postTitle": postTitle,
+      "postContent": postContent,
+      "postAuthor": Creator._id,
+      "postTime": postTime,
+    }).save();
+
+    const newPost = await db.TeamModel.findOneAndUpdate(
+      {teamID: teamID}, {$push: {"teamPost": post._id} 
+    })
+    console.log("New Post Saved!");
+    return post;
   },
 
-  createVote: async (parent, args, { teamModel, userModel, pubSub }) => {
-    const { voteTitle, voteDescription, voteEnd, voteLimit, team, creater } =
-      args;
-    const Creater = await userModel.findOne({ userAccount: creater });
-    const Team = await teamModel.findOne({ team });
-    const TeamID = Team.teamID;
-    const newVote = {
-      voteID: uuidv4(),
-      voteTitle,
-      voteDescription,
-      voteEnd,
-      voteLimit,
-      voteCreator: Creater,
-      voteOption: [],
-    };
-    //await teamModel.findOneAndUpdate()
-    return newVote;
+  createVote: async (parent, args, { db, pubSub }) => {
+    const { voteTitle, voteDescription, voteEnd, voteLimit, teamID, creatorID } = args;
+    const Creator = await db.UserModel.findOne({ userID: creatorID });
+    
+    const postTime = await new Date();
+    const OBID = ObjectId();
+    const vote = await new db.VoteModel({
+      "_id": OBID,
+      "voteID": uuidv4(),
+      "voteTitle": voteTitle,
+      "voteDescription": voteDescription,
+      "voteEnd": voteEnd,
+      "voteLimit": voteLimit,
+      "voteCreator": Creator._id,
+      "voteOption": [],
+    }).save();
+    
+    const newVote = await db.TeamModel.findOneAndUpdate(
+      {teamID: teamID}, {$push: {"teamVote": vote._id} 
+    })
+    console.log("New Vote Saved!");
+    return vote;
   },
 
-  createVoteOption: async (parent, args, { teamModel, userModel, pubSub }) => {
-    const { voteOptionName, team } = args;
-    //const Creater = await userModel.findOne({ creater });
-    const Team = await teamModel.findOne({ team });
-    const newVoteOption = {
-      voteOptionID: uuidv4(),
-      voteOptionName,
-      votedUser: [],
-    };
-    //await teamModel.findOneAndUpdate()
-    return newVoteOption;
+  createVoteOption: async (parent, args, { db, pubSub }) => {
+    const { voteOptionName, voteID } = args;
+
+    const OBID = ObjectId();
+    const voteOption = await new db.VoteOptionModel({
+      "_id": OBID,
+      "voteOptionID": uuidv4(),
+      "voteOptionName": voteOptionName,
+      "votedUser": [],
+    }).save();
+
+    const newVoteOption = await db.VoteModel.findOneAndUpdate(
+      {voteID: voteID}, {$push: {"voteOption": voteOption._id} 
+    })
+    console.log("New VoteOption Saved!");
+    return voteOption;
   },
 
   createTeam: async (parent, args, { db, pubSub }) => {
-    const { teamName, teamDescription, teamType, createrID } = args;
+    const { teamName, teamDescription, teamType, creatorID } = args;
     const TeamExists = await db.TeamModel.findOne({ teamName: teamName });
-    const Creater = await db.UserModel.findOne({ userID: createrID });
+    const Creator = await db.UserModel.findOne({ userID: creatorID });
 
     if (TeamExists) {
       throw new Error("This team name has existed!");
     }
 
-    const teamMember = [Creater];
+    const teamMember = [Creator._id];
     const teamId = uuidv4();
+    const OBID = ObjectId();
     const team = await new db.TeamModel({
+      "_id": OBID,
       "teamID": teamId,
       "teamName": teamName,
       "teamDescription": teamDescription,
@@ -298,12 +320,11 @@ const Mutation = {
       "teamMember": teamMember,
     }).save();
     const newAllTeams = await db.UserModel.findOneAndUpdate(
-      {userID: createrID}, {$push: {"allTeams": team}})
+      {_id: Creator._id}, {$push: {"allTeams": team._id}})
     // user.allteams 更新
     console.log("New Team Saved!");
-
     return team;
-  },
+  },  
 
   replyVote: async (parent, args, { db, pubSub }) => {
     const { voteOptionName, teamID, vote, voterID } = args;

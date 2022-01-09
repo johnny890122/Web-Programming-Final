@@ -10,13 +10,13 @@ const UserSchema = new Schema({
   userBirthday: { type: Number, required: false },
   userStatus: { type: String, required: false },
   userProfile: { type: String, required: false },
-  allTeams: [{ type: Object, ref: "Team" }],
-  userTodo: [{ type: mongoose.Types.ObjectId, ref: "DashboardTodo" }],
-  userNotification: [{ type: Object, ref: "DashboardNotification" }],
-  userAchievement: [{ type: Object, ref: "NotificationTaskModel" }],
-  userEvent: [{ type: Object, ref: "DashboardEvent" }],
+  allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
+  userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
+  userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" }],
+  userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" }],
+  userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
 
-  userPlaySet: [{ type: mongoose.Types.ObjectId, ref: "DashboardPlaySet" }],
+  userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
 
 const TodoSchema = new Schema({
@@ -33,12 +33,12 @@ const TeamSchema = new Schema({
   teamDescription: { type: String, required: false },
   teamType: { type: String, required: true },
   //teamCreateDate: {type: Number, required: true},
-  teamMember: [{ type: Object, ref: "User" }],
-  teamPost: [{ type: Object, ref: "Post" }],
-  teamGantt: [{ type: Object, ref: "Gantt" }],
-  teamScore: [{ type: Object, ref: "Score" }],
-  teamVote: [{ type: Object, ref: "Vote" }],
-  teamEvent: [{ type: Object, ref: "Event" }],
+  teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
+  teamScore: [{ type: Schema.Types.ObjectId, ref: "Score" }],
+  teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
+  teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
 });
 
 const EventSchema = new Schema({
@@ -48,7 +48,7 @@ const EventSchema = new Schema({
   eventStart: { type: String, required: true },
   eventEnd: { type: String, required: false },
   eventLocation: { type: String, required: false },
-  eventCreater: { type: Object, ref: "User" },
+  eventCreator: { type: Schema.Types.ObjectId, ref: "User" },
   eventPostTime: { type: String, required: true },
 });
 
@@ -102,6 +102,30 @@ const ScoreSchema = new Schema({
   contestTitle: { type: String, required: true },
 });
 
+const PostSchema = new Schema({
+	postID: { type: String, required: true },
+	postTitle: { type: String, required: true },
+	postContent: { type: String, required: true },
+	postAuthor: { type: Schema.Types.ObjectId, ref: "User" },
+	postTime: { type: String, required:true },
+})
+
+const VoteSchema = new Schema({
+	voteID: {type: String, required: true},
+	voteTitle: {type: String, required: true},
+	voteDescription: {type: String, required: true},
+	voteEnd: {type: String, required: true},
+	voteLimit: {type: Number, required: false},
+	voteCreator: {type: Schema.Types.ObjectId, ref: "User"},
+	voteOption: [{ type: Schema.Types.ObjectId, ref: "VoteOption" }],
+})
+
+const VoteOptionSchema = new Schema({
+	voteOptionID: {type: String, required: true},
+	voteOptionName: {type: String, required: true},
+	votedUser: [{type: Schema.Types.ObjectId, ref: "User"}],
+})
+
 // const ScoreDetailSchema = new Schema({
 //   contestScoreSetID: { type: String, required: true },
 //   contestScoreSet: { type: String, required: true },
@@ -112,6 +136,9 @@ const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
 const EventModel = mongoose.model("Event", EventSchema);
+const PostModel = mongoose.model("Post", PostSchema);
+const VoteModel = mongoose.model("Vote", VoteSchema);
+const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
 const GalleryModel = mongoose.model("Gallery", GallerySchema);
 const GanttModel = mongoose.model("Gantt", GanttSchema);
 const NotificationTaskModel = mongoose.model(
@@ -131,6 +158,9 @@ export {
   TodoModel,
   TeamModel,
   EventModel,
+  PostModel,
+  VoteModel,
+  VoteOptionModel,
   GalleryModel,
   GanttModel,
   NotificationTaskModel,

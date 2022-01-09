@@ -1,4 +1,7 @@
+import { UserModel } from "../db";
+
 const Query = {
+
   userLogin: async (parent, { userAccount, userPassword }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userAccount });
 
@@ -112,11 +115,11 @@ const Query = {
   },
   /* --------------------------------------- */
   users: async (parent, args, { db, pubSub }) => {
-    return db.UserModel;
+    return db.UserModel.find();
   },
 
   teams: async (parent, args, { db, pubSub }) => {
-    return db.TeamModel.find();
+    return db.TeamModel.find({}, {}, { lean: true });
   },
 
   initTeam: async (parent, { userID }, { db, pubSub }) => {

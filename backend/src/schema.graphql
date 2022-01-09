@@ -4,13 +4,12 @@ type Query {
   initUserAchievement(userID: String): [userAchievement]
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
-
   initMember(_id: ID): [User]!
   initScore(teamID: String): [Contest]!
   initGallery(teamID: String): [Gallery]!
   initGantt(teamID: String): [Gantt]!
-  users(query: String): [User]!
-  teams(query: String): [Team]!
+  users(query: String): [User]
+  teams(query: String): [Team]
   initTeam(_id: ID): [Team]!
   initTeamEvent(_id: ID): [Event]!
   initTeamPost(_id: ID): [Post]!
@@ -37,8 +36,8 @@ type Mutation {
     teamName: String!
     teamDescription: String!
     teamType: String!
-    createrID: String! # ** 修正= > User?
-  ): Team!
+    creatorID: String! # ** 修正= > User?
+  ): Team
   createTeamEvent(
     eventTitle: String!
     eventDescription: String!
@@ -46,13 +45,13 @@ type Mutation {
     eventEnd: String
     eventLocation: String
     teamID: String!
-    createrID: String!
+    creatorID: String!
   ): Event!
   createTeamPost(
     postTitle: String!
     postContent: String!
     teamID: String!
-    createrID: String!
+    creatorID: String!
   ): Post
   createVote(
     voteTitle: String!
@@ -60,9 +59,12 @@ type Mutation {
     voteEnd: String!
     voteLimit: Int
     teamID: String!
-    createrID: String!
+    creatorID: String!
   ): Vote
-  createVoteOption(voteOptionName: String!, team: String!): VoteOption
+  createVoteOption(
+    voteOptionName: String!, 
+    voteID: String!
+  ): VoteOption
   #replyTeamEvent(
   #  eventReplyMember: String!
   #  eventReplyAttend: String!
@@ -101,16 +103,17 @@ type Subscription {
 }
 
 type User {
-  userID: ID!
-  userAccount: String!
-  userPassword: String!
-  userEmail: String!
+  _id: ID!
+  userID: String
+  userAccount: String
+  userPassword: String
+  userEmail: String
   userName: String
   userBirthday: Int
   userStatus: String
   userProfile: String
-  allTeams: [Team]!
-  userTodo: [Todo]!
+  allTeams: [Team]
+  userTodo: [Todo]
   # userEvent: [DashboardEvent]!
   # userTodo: [Todo!]!
   # userPlaySet: [UserPlaySet]!
@@ -156,18 +159,18 @@ type userAchievement {
 }
 
 type Team {
-  teamID: ID!
-  teamName: String!
-  teamDescription: String!
-  teamType: String!
+  teamID: String!
+  teamName: String
+  teamDescription: String
+  teamType: String
   #teamCreateDate: String # 修正
-  teamMember: [User!]!
-  teamGallery: [Gallery]!
-  teamPost: [Post]!
-  teamGantt: [Gantt]!
-  teamScore: [Contest]!
-  teamVote: [Vote]!
-  teamEvent: [Event]!
+  teamMember: [User]
+  teamGallery: [Gallery]
+  teamPost: [Post]
+  teamGantt: [Gantt]
+  teamScore: [Contest]
+  teamVote: [Vote]
+  teamEvent: [Event]
 }
 
 type Gallery {
@@ -179,11 +182,11 @@ type Gallery {
 }
 
 type Post {
-  postID: ID!
-  postTitle: String!
-  postContent: String!
-  postAuthor: User!
-  postTime: String!
+  postID: String!
+  postTitle: String
+  postContent: String
+  postAuthor: User
+  postTime: String
 }
 
 type Gantt {
@@ -204,7 +207,7 @@ type GanttTask {
 
 type Contest {
   teamID: String!
-  contestID: ID!
+  contestID: String!
   contestTitle: String!
   contestMyTeamID: String!
   contestDate: Int!
@@ -215,37 +218,37 @@ type Contest {
 }
 
 type ContestScoreSet {
-  contestScoreID: ID!
+  contestScoreID: String!
   myTeamScore: Int!
   opponentScore: Int!
   userPlaySet: [UserPlaySet!]
 }
 
 type Vote {
-  voteID: ID!
-  voteTitle: String!
-  voteDescription: String!
-  voteEnd: String!
+  voteID: String
+  voteTitle: String
+  voteDescription: String
+  voteEnd: String
   voteLimit: Int
-  voteCreator: User!
-  voteOption: [VoteOption]!
+  voteCreator: User
+  voteOption: [VoteOption]
 }
 
 type VoteOption {
-  voteOptionID: ID!
-  voteOptionName: String!
-  votedUser: [User]!
+  voteOptionID: String
+  voteOptionName: String
+  votedUser: [User]
 }
 
 type Event {
-  eventID: ID!
-  eventTitle: String!
-  eventDescription: String!
-  eventStart: String!
+  eventID: String
+  eventTitle: String
+  eventDescription: String
+  eventStart: String
   eventEnd: String
   eventLocation: String
   eventCreator: User
-  eventPosttime: String!
+  eventPosttime: String
 }
 
 input CreateGalleryInput {
@@ -257,3 +260,5 @@ enum EventReply {
   No
   Unsure
 }
+
+
