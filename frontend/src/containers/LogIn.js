@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 import { ExitToApp } from "@mui/icons-material";
 import { TextField } from "@mui/material";
@@ -35,38 +35,41 @@ const LogIn = (props) => {
 
   const submitLogin = () => {
     if (error === "Error: Account not existed!") {
-        localStorage.setItem(ME_KEY, "");
+      localStorage.setItem(ME_KEY, "");
+    } else if (dataCorrect) {
     }
-    else if (dataCorrect) {} {
-        setLogin(true);
-        localStorage.setItem(ME_KEY, me);
+    {
+      setLogin(true);
+      localStorage.setItem(ME_KEY, me);
     }
     setErrorVisibility("block");
   };
 
   useEffect(() => {
     if (data) {
-      setMe(data.userLogin.userID)
+      setMe(data.userLogin.userID);
       setDataCorrect(true);
     }
   });
 
-  useEffect( () => {
+  useEffect(() => {
     setErrorVisibility("none");
-  }, [account, password])
+  }, [account, password]);
 
-  const errorBlock = error ? ( error.graphQLErrors.map(i =>
-      <Alert severity="error" style={{ display : errorVisibility}}>
-        {i.message}
-      </Alert>
-  )): [];
+  const errorBlock = error
+    ? error.graphQLErrors.map((i) => (
+        <Alert
+          severity="error"
+          style={{ display: errorVisibility, width: "20%" }}
+        >
+          {i.message}
+        </Alert>
+      ))
+    : [];
 
   return (
-
-    <Box sx={{ flexGrow: 1 }}>
-
-      <AppBar position="static" style={{ backgroundColor: "#2e4c6d" }}>
-
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="fixed" style={{ backgroundColor: "#2e4c6d" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -82,18 +85,22 @@ const LogIn = (props) => {
           </Typography>
         </Toolbar>
       </AppBar>
-
-      <div
-        className="content"
-        style={{ display: "flex", margin: "10rem 23rem" }}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          marginLeft: "2.5rem",
+          marginTop: "10rem",
+        }}
       >
-        <ExitToApp style={{ fontSize: "20rem" }} />
         <div
-          className="input-container"
+          className="main"
           style={{
             display: "flex",
+            alignItems: "center",
             flexDirection: "column",
-            margin: "0.5rem 3rem",
           }}
         >
           <TextField
@@ -101,43 +108,41 @@ const LogIn = (props) => {
             label="帳號"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
             label="密碼"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
           />
 
-          <Link 
-            to={ dataCorrect ? "/user/Dashboard" : "/"}
-            state= {{ me: localStorage.getItem(ME_KEY) }}
+          {errorBlock}
+          <Link
+            to={
+              dataCorrect
+                ? data.userLogin.userBirthday
+                  ? "/user/Dashboard"
+                  : "/user/Settings"
+                : "/"
+            }
+            state={{ me: localStorage.getItem(ME_KEY) }}
+            style={{ width: "20%" }}
           >
-
-            {errorBlock}
-
             <Button
               onClick={submitLogin}
               variant="contained"
-              style={{ margin: "0.75rem" }}
+              style={{ margin: "0.75rem 0", width: "100%" }}
             >
               Log In
             </Button>
-
           </Link>
-
-          <NavLink to= {{ pathname: "/SignUp" }}>
-            <Button
-              variant="contained"
-              style={{ margin: "0.75rem" }}
-            >
-              No account? Sign up right now!
-            </Button>
-          </NavLink>
+          <p>
+            no account? <NavLink to="/SignUp">sign up</NavLink>
+          </p>
         </div>
-      </div>
+      </Box>
     </Box>
   );
 };

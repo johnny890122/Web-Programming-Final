@@ -12,7 +12,15 @@ export const USER_LOGIN = gql`
 
 export const USER_ACCOUNT = gql`
   query myUserAccount($userID: String) {
-    myUserAccount(userID: $userID)
+    myUserAccount(userID: $userID) {
+      userID
+      userAccount
+      userPassword
+      userName
+      userProfile
+      userBirthday
+      userEmail
+    }
   }
 `;
 

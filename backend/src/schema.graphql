@@ -14,7 +14,7 @@ type Query {
   initTeamEvent(_id: ID): [Event]!
   initTeamPost(_id: ID): [Post]!
   initVote(_id: ID): [Vote]!
-  myUserAccount(userID: String): String
+  myUserAccount(userID: String): User
 }
 
 type Mutation {
@@ -62,10 +62,7 @@ type Mutation {
     teamID: String!
     creatorID: String!
   ): Vote
-  createVoteOption(
-    voteOptionName: String!, 
-    voteID: String!
-  ): VoteOption
+  createVoteOption(voteOptionName: String!, voteID: String!): VoteOption
   #replyTeamEvent(
   #  eventReplyMember: String!
   #  eventReplyAttend: String!
@@ -97,8 +94,6 @@ type Mutation {
     eventLocation: String
     eventPostTime: Int
   ): String
-
-
 }
 
 type Subscription {
@@ -263,5 +258,3 @@ enum EventReply {
   No
   Unsure
 }
-
-

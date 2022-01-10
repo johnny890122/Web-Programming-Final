@@ -222,7 +222,7 @@ export default function Template({ content }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Hello {loading ? "" : data.myUserAccount}
+            Hello {loading ? "" : data.myUserAccount.userAccount}
           </Typography>
           <Box
             sx={{ flexGrow: 0 }}
@@ -254,7 +254,9 @@ export default function Template({ content }) {
                     </Tag>
                     <Input
                       disabled="true"
-                      defaultValue={loading ? "" : data.myUserAccount}
+                      defaultValue={
+                        loading ? "" : data.myUserAccount.userAccount
+                      }
                       style={{ width: "70%" }}
                       size="small"
                     />
@@ -266,7 +268,7 @@ export default function Template({ content }) {
                     </Tag>
                     <Input
                       disabled="true"
-                      defaultValue={loading ? "" : "b07303129@ntu.edu.tw"}
+                      defaultValue={loading ? "" : data.myUserAccount.userEmail}
                       style={{ width: "76%" }}
                       size="small"
                     />
@@ -277,7 +279,7 @@ export default function Template({ content }) {
                       <Typography>Display Name</Typography>
                     </Tag>
                     <Input
-                      defaultValue={loading ? "" : data.myUserAccount}
+                      defaultValue={loading ? "" : data.myUserAccount.userName}
                       style={{ width: "58%" }}
                       size="small"
                     />
