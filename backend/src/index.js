@@ -8,6 +8,7 @@ import Team from "./resolvers/Team";
 import User from "./resolvers/User";
 import Post from "./resolvers/Post";
 import Event from "./resolvers/Event";
+import EventReply from "./resolvers/EventReply";
 import Vote from "./resolvers/Vote";
 import VoteOption from "./resolvers/VoteOption";
 // import Subscription from "./resolvers/Subscription";
@@ -24,6 +25,7 @@ const server = new GraphQLServer({
     Team,
     Post,
     Event,
+    EventReply,
     Vote,
     VoteOption
     // Subscription,

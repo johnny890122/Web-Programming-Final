@@ -7,7 +7,7 @@ const UserSchema = new Schema({
   userPassword: { type: String, required: true },
   userEmail: { type: String, required: false },
   userName: { type: String, required: false },
-  userBirthday: { type: Number, required: false },
+  userBirthday: { type: String, required: false },
   userStatus: { type: String, required: false },
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
@@ -15,7 +15,6 @@ const UserSchema = new Schema({
   userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" }],
   userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" }],
   userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
-
   userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
 
@@ -31,8 +30,8 @@ const TeamSchema = new Schema({
   teamID: { type: String, required: true },
   teamName: { type: String, required: true },
   teamDescription: { type: String, required: false },
-  teamType: { type: String, required: true },
-  //teamCreateDate: {type: Number, required: true},
+  teamType: { type: String, required: false },
+  teamCreateTime: {type: String, required: false},
   teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
@@ -50,7 +49,15 @@ const EventSchema = new Schema({
   eventLocation: { type: String, required: false },
   eventCreator: { type: Schema.Types.ObjectId, ref: "User" },
   eventPostTime: { type: String, required: true },
+  eventReply: [{ type: Schema.Types.ObjectId, ref: "EventReply" }],
 });
+
+const EventReplySchema = new Schema({
+	eventReplyID: { type: String, required: true},
+	eventReplyMemeber: {type: Schema.Types.ObjectId, ref: "User"},
+	eventReplyOption: {type: String, required: false},
+	eventReplyContent: {type: String, required: false}
+})
 
 const GallerySchema = new Schema({
   teamID: { type: String, required: true },
@@ -90,7 +97,7 @@ const DashboardEventSchema = new Schema({
   eventStart: { type: Number, required: true },
   eventEnd: { type: Number, required: true },
   eventLocation: { type: String, required: true },
-  eventPostTime: { type: Number, required: true },
+  eventPostTime: { type: String, required: true },
 });
 
 const ScoreSchema = new Schema({
@@ -113,11 +120,12 @@ const PostSchema = new Schema({
 const VoteSchema = new Schema({
 	voteID: {type: String, required: true},
 	voteTitle: {type: String, required: true},
-	voteDescription: {type: String, required: true},
+	voteDescription: {type: String, required: true},   
 	voteEnd: {type: String, required: true},
 	voteLimit: {type: Number, required: false},
 	voteCreator: {type: Schema.Types.ObjectId, ref: "User"},
 	voteOption: [{ type: Schema.Types.ObjectId, ref: "VoteOption" }],
+  voteCreateTime: { type: String, required: true },
 })
 
 const VoteOptionSchema = new Schema({
@@ -136,6 +144,7 @@ const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
 const EventModel = mongoose.model("Event", EventSchema);
+const EventReplyModel = mongoose.model("EventReply", EventReplySchema);
 const PostModel = mongoose.model("Post", PostSchema);
 const VoteModel = mongoose.model("Vote", VoteSchema);
 const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
@@ -158,6 +167,7 @@ export {
   TodoModel,
   TeamModel,
   EventModel,
+  EventReplyModel,
   PostModel,
   VoteModel,
   VoteOptionModel,

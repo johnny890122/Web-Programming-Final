@@ -11,6 +11,13 @@ const Team = {
         //console.log(parent.teamEvent)
         return await db.EventModel.find({_id: { $in : parent.teamEvent }})
     },
+    teamVote: async (parent, args, { db, pubSub }) => {
+        return await db.VoteModel.find({_id: { $in : parent.teamVote }})
+    },
+
+    //teamGallery: async (parent, args, { db, pubSub }) => {},
+    //teamGantt: async (parent, args, { db, pubSub }) => {},
+    //teamScore: async (parent, args, { db, pubSub }) => {},
 }
   
 export default Team;
