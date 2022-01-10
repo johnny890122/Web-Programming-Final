@@ -35,11 +35,11 @@ function DashboardEvent(props) {
   return (
     <div className="dashboard-event">
       <h2 style={{ display: "inline-block" }}>Upcoming Events</h2>
-      <Button 
+      {/*<Button 
       variant="outlined" color="success" sx={{ m: 1 }} href = '/user/CreateUserEvent' 
       style={{ display: "inline-block" }}>
                 Create
-      </Button>
+      </Button>*/}
 
       <List className="dashboard-event-list">
         {eventData.map((event) => (
