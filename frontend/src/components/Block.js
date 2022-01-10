@@ -6,20 +6,20 @@ function Block(props) {
   const { Meta } = Card;
   
   return (
-  <Draggable handle="Button">
+  /*<Draggable handle="Button">*/
     
     <Card
       // hoverable
       style={{ width: 500  }}
-      extra={
-              <Button 
-                  className="handle"
-                  type="danger" 
-                  shape="circle"
-                  size={5}
-                  style={{ color: 'white'}}
-              > <DragOutlined /> </Button>
-            }
+      // extra={
+      //         <Button 
+      //             className="handle"
+      //             type="danger" 
+      //             shape="circle"
+      //             size={5}
+      //             style={{ color: 'white'}}
+      //         > <DragOutlined /> </Button>
+      //       }
     >
     {/*<Meta title={props.title} description={props.description} />*/}
 
@@ -30,7 +30,7 @@ function Block(props) {
     / >
 
     </Card>
-  </Draggable>
+  // </Draggable>
   );
 }
 

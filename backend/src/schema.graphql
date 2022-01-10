@@ -14,6 +14,7 @@ type Query {
   initTeamEvent(_id: ID): [Event]!
   initTeamPost(_id: ID): [Post]!
   initVote(_id: ID): [Vote]!
+  myUserAccount(userID: String): User
 }
 
 type Mutation {
@@ -344,5 +345,3 @@ enum EventReplyOption {
   No
   Unsure
 }
-
-

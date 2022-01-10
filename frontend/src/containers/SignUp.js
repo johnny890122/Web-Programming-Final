@@ -5,18 +5,21 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import CssBaseline from "@mui/material/CssBaseline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MeetingRoom } from "@mui/icons-material";
 import { TextField, InputLabel } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import { NavLink, Link } from "react-router-dom";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphql";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, useEffect } from "react";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
+import { useQuery } from "@apollo/client";
+import { USER_LOGIN } from "../graphql";
 
 const SignUp = () => {
   // 後端的訊息
@@ -38,8 +41,9 @@ const SignUp = () => {
   const [passwordFormatWrong, setPasswordFormatWrong] = useState(false);
   const [passwordCheckIsWrong, setPasswordCheckIsWrong] = useState(false);
   const [passwordFormatHelperText, setPasswordFormatHelperText] = useState("");
-  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] = useState("");
-  // 顯示 password or not 
+  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] =
+    useState("");
+  // 顯示 password or not
   const [showPassword, setShowPassword] = useState(false);
 
   // alert message block
@@ -49,62 +53,77 @@ const SignUp = () => {
 
   // 按下繳交
   const submitSignUp = async () => {
-    if (!emailFormatWrong & !accountFormatWrong & !passwordFormatWrong & !passwordCheckIsWrong & 
-        email.length != 0 & account.length != 0 & password.length!=0 & passwordCheck.length != 0 
-    ) { 
-      await addUser({ variables: { userAccount: account, userPassword: password,userEmail: email }, })
+    if (
+      !emailFormatWrong &
+      !accountFormatWrong &
+      !passwordFormatWrong &
+      !passwordCheckIsWrong &
+      (email.length != 0) &
+      (account.length != 0) &
+      (password.length != 0) &
+      (passwordCheck.length != 0)
+    ) {
+      await addUser({
+        variables: {
+          userAccount: account,
+          userPassword: password,
+          userEmail: email,
+        },
+      });
     } else {
-      setAlertVisibility("block");
+      setAlertVisibility("inline-block");
       setAlertSeverity("error");
       setAlertMessageBody("有資訊未填！");
     }
   };
 
   function accountIsLatinString(s) {
-    var c, whietlist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    var c,
+      whietlist =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    for( c in s ) {
-      if( !whietlist.includes(s[c]) ) {
+    for (c in s) {
+      if (!whietlist.includes(s[c])) {
         setAccountFormatHelperText("帳戶名稱須為中英組合");
         setAccountFormatWrong(true);
-        return
+        return;
       }
     }
 
-    if (s.length <= 6 & s.length != 0) {
-      setAccountFormatHelperText("帳戶長度需大於 6 個字元。")
+    if ((s.length <= 6) & (s.length != 0)) {
+      setAccountFormatHelperText("帳戶長度需大於 6 個字元。");
       setAccountFormatWrong(true);
-      return
-    }
-    else if (account === password & s.length != 0) {
+      return;
+    } else if ((account === password) & (s.length != 0)) {
       setAccountFormatHelperText("帳號不可和密碼相同");
       setAccountFormatWrong(true);
-      return
+      return;
     }
     setAccountFormatHelperText("");
     setAccountFormatWrong(false);
   }
-  
-  function passwordIsLatinString(s) {
-    var c, whietlist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    for( c in s ) {
-      if( !whietlist.includes(s[c]) ) {
+  function passwordIsLatinString(s) {
+    var c,
+      whietlist =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    for (c in s) {
+      if (!whietlist.includes(s[c])) {
         setPasswordFormatHelperText("密碼須為中英組合");
         setPasswordFormatWrong(true);
-        return
+        return;
       }
     }
 
-    if (s.length <= 6 & s.length != 0) {
-      setPasswordFormatHelperText("密碼長度需大於 6 個字元。")
+    if ((s.length <= 6) & (s.length != 0)) {
+      setPasswordFormatHelperText("密碼長度需大於 6 個字元。");
       setPasswordFormatWrong(true);
-      return
-    }
-    else if (account === password & s.length != 0) {
+      return;
+    } else if ((account === password) & (s.length != 0)) {
       setPasswordFormatHelperText("密碼不可和帳號相同");
       setPasswordFormatWrong(true);
-      return
+      return;
     }
     setPasswordFormatHelperText("");
     setPasswordFormatWrong(false);
@@ -114,29 +133,29 @@ const SignUp = () => {
     if (password != passwordCheck) {
       setPasswordCheckIsWrongHelperText("密碼不相符");
       setPasswordCheckIsWrong(true);
-      return
+      return;
     }
     setPasswordCheckIsWrongHelperText("");
     setPasswordCheckIsWrong(false);
   }
 
   const checkIfEmailIsWrong = (email) => {
-    if (!email) { 
-      setEmailFormatHelperText("")
-      setEmailFormatWrong(false)
-      return; 
-    }
-    
-    else if (email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )) { 
-      setEmailFormatHelperText("")
+    if (!email) {
+      setEmailFormatHelperText("");
       setEmailFormatWrong(false);
-      return
-    };
+      return;
+    } else if (
+      email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      setEmailFormatHelperText("");
+      setEmailFormatWrong(false);
+      return;
+    }
 
     setEmailFormatWrong(true);
-    setEmailFormatHelperText("Email 格式錯誤")
+    setEmailFormatHelperText("Email 格式錯誤");
     return;
   };
 
@@ -147,54 +166,53 @@ const SignUp = () => {
     event.preventDefault();
   };
 
-  // useEffect 
-  useEffect( () => {
-    checkIfEmailIsWrong(email); 
+  // useEffect
+  useEffect(() => {
+    checkIfEmailIsWrong(email);
   }, [email]);
 
-  useEffect( () => {
-    accountIsLatinString(account); 
+  useEffect(() => {
+    accountIsLatinString(account);
   }, [account]);
 
-  useEffect( () => {
-    passwordIsLatinString(password); 
+  useEffect(() => {
+    passwordIsLatinString(password);
   }, [password]);
 
-  useEffect( () => {
-    validatePasswordCheck(passwordCheck); 
+  useEffect(() => {
+    validatePasswordCheck(passwordCheck);
   }, [passwordCheck]);
 
-  useEffect( () => {
+  useEffect(() => {
     if (alert) {
-      alert.graphQLErrors.map( i=> setAlertMessageBody(i.message));
+      alert.graphQLErrors.map((i) => setAlertMessageBody(i.message));
     }
   }, [alert]);
 
-
-  // add user 
+  // add user
   const [addUser] = useMutation(CREATE_USER, {
     onCompleted: () => {
-      setEmail("") 
-      setAccount("") 
-      setPassword("") 
-      setPasswordCheck("") 
-      setAlertSeverity("success") 
-      setAlertMessageBody("註冊成功") 
-      setAlertVisibility("block")
+      setEmail("");
+      setAccount("");
+      setPassword("");
+      setPasswordCheck("");
+      setAlertSeverity("success");
+      setAlertMessageBody("註冊成功，請回到登入頁面重新登入");
+      setAlertVisibility("block");
       setAlert(null);
-      console.log("成功")
+      console.log("成功");
     },
     onError: (err) => {
-      setAlert(err) 
-      setAlertSeverity("error") 
-      setAlertVisibility("block") 
-    }
+      setAlert(err);
+      setAlertSeverity("error");
+      setAlertVisibility("block");
+    },
   });
 
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ backgroundColor: "#2e4c6d" }}>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" style={{ backgroundColor: "#2e4c6d" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -206,55 +224,60 @@ const SignUp = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            LogIn
+            Sign Up
           </Typography>
         </Toolbar>
       </AppBar>
-      <div
-        className="content"
-        style={{ display: "flex", margin: "5rem 23rem" }}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+          marginLeft: "2.5rem",
+          marginTop: "7rem",
+        }}
       >
-        <MeetingRoom style={{ fontSize: "20rem", marginTop: "5rem" }} />
         <div
-          className="input-container"
+          className="main"
           style={{
             display: "flex",
+            alignItems: "center",
             flexDirection: "column",
-            margin: "0.5rem 3rem",
           }}
         >
           <TextField
             value={email}
             error={emailFormatWrong}
-            helperText= {emailFormatHelperText}
+            helperText={emailFormatHelperText}
             onChange={(e) => setEmail(e.target.value)}
             label="信箱"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
           />
           <TextField
             value={account}
-            error = {accountFormatWrong}
-            helperText= {accountFormatHelperText}
+            error={accountFormatWrong}
+            helperText={accountFormatHelperText}
             onChange={(e) => setAccount(e.target.value)}
             label="帳號"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
           />
           <TextField
             value={password}
-            type={showPassword ? 'text' : 'password' }
-            error = {passwordFormatWrong}
-            helperText= {passwordFormatHelperText}
+            type={showPassword ? "text" : "password"}
+            error={passwordFormatWrong}
+            helperText={passwordFormatHelperText}
             onChange={(e) => setPassword(e.target.value)}
             label="密碼"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
             InputProps={{
-              endAdornment: 
+              endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     onClick={handleClickShowPassword}
@@ -264,21 +287,22 @@ const SignUp = () => {
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
+              ),
             }}
           />
 
           <TextField
             value={passwordCheck}
-            type={showPassword ? 'text' : 'password' }
+            type={showPassword ? "text" : "password"}
             error={passwordCheckIsWrong}
             helperText={passwordCheckIsWrongHelperText}
             onChange={(e) => setPasswordCheck(e.target.value)}
             label="確認密碼"
             color="primary"
             focused
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
             InputProps={{
-              endAdornment: 
+              endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     onClick={handleClickShowPassword}
@@ -288,32 +312,27 @@ const SignUp = () => {
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
+              ),
             }}
           />
-
+          <Alert
+            severity={alertSeverity}
+            style={{ display: alertVisibility, width: "20%" }}
+          >
+            <p>{alertMessageBody}</p>
+          </Alert>
           <Button
             onClick={submitSignUp}
             variant="contained"
-            style={{ margin: "0.75rem" }}
+            style={{ margin: "0.75rem", width: "20%" }}
           >
             Sign Up
           </Button>
-
-          <NavLink to="/">
-
-            <Alert severity={alertSeverity} style={{ display : alertVisibility }}>
-              {alertMessageBody}
-            </Alert>
-
-            <Button
-              variant="contained"
-              style={{ margin: "0.75rem" }}
-            >
-              have an account? log in!
-            </Button>
-          </NavLink>
+          <p>
+            have an account? <NavLink to="/">log in</NavLink>
+          </p>
         </div>
-      </div>
+      </Box>
     </Box>
   );
 };

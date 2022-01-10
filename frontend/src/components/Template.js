@@ -10,10 +10,14 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
+import { Avatar } from "antd";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import { Modal } from "antd";
+import { Input, DatePicker, Tag } from "antd";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -38,6 +42,9 @@ import {
 } from "@mui/icons-material";
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import { useQuery } from "@apollo/client";
+import { USER_ACCOUNT } from "../graphql";
+import moment from "moment";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -114,10 +121,29 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Template({ content }) {
+  const ME_KEY = "me";
+  const { data, error, loading, subscribeToMore } = useQuery(USER_ACCOUNT, {
+    variables: { userID: localStorage.getItem(ME_KEY) },
+  });
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [isTeam, setIsTeam] = React.useState(false);
+
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -132,12 +158,12 @@ export default function Template({ content }) {
     setAnchorElUser(null);
   };
 
-  const pages = ["Dashboard", "Team", "Calendar", "Achievement"];
+  const pages = ["Dashboard", "Calendar", "Achievement", "Team"];
   const iconList = [
     <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
-    <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
   const teamPages = [
     "Home",
@@ -172,6 +198,14 @@ export default function Template({ content }) {
       setIsTeam(false);
     }
   }, [breadItem]);
+  const concatBread = (item) => {
+    let href = "";
+    let stopIndex = breadItem.indexOf(item);
+    for (let i = 0; i <= stopIndex; i++) href = href + "/" + breadItem[i];
+    return href;
+  };
+
+  const dateFormat = "YYYY/MM/DD";
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -195,71 +229,97 @@ export default function Template({ content }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            USERNAME
+            Hello {loading ? "" : data.myUserAccount.userAccount}
           </Typography>
           <Box
             sx={{ flexGrow: 0 }}
             style={{ position: "absolute", right: "1.5rem" }}
           >
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={showModal} sx={{ p: 0 }}>
                 <Avatar
-                  alt="Remy Sharp"
+                  size="large"
                   src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
                 />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+            <Modal
+              title="User Settings"
+              visible={isModalVisible}
+              onOk={handleOk}
+              onCancel={handleCancel}
             >
-              <MenuItem>
-                <img
+              <div className="container" style={{ display: "flex" }}>
+                <Avatar
+                  size={150}
                   src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
-                  style={{
-                    width: "7rem",
-                    height: "7rem",
-                    borderRadius: "10rem",
-                  }}
                 />
-              </MenuItem>
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
+                <div className="text-block" style={{ marginLeft: "2rem" }}>
+                  <div className="row" style={{ display: "flex" }}>
+                    <Tag color="geekblue">
+                      <Typography>Account</Typography>
+                    </Tag>
+                    <Input
+                      disabled="true"
+                      defaultValue={
+                        loading ? "" : data.myUserAccount.userAccount
+                      }
+                      style={{ width: "70%" }}
+                      size="small"
+                    />
+                  </div>
+                  <br />
+                  <div className="row" style={{ display: "flex" }}>
+                    <Tag color="geekblue">
+                      <Typography>Email</Typography>
+                    </Tag>
+                    <Input
+                      disabled="true"
+                      defaultValue={loading ? "" : data.myUserAccount.userEmail}
+                      style={{ width: "76%" }}
+                      size="small"
+                    />
+                  </div>
+                  <br />
+                  <div className="row" style={{ display: "flex" }}>
+                    <Tag color="geekblue">
+                      <Typography>Display Name</Typography>
+                    </Tag>
+                    <Input
+                      defaultValue={loading ? "" : data.myUserAccount.userName}
+                      style={{ width: "58%" }}
+                      size="small"
+                    />
+                  </div>
+                  <br />
+                  <div className="row" style={{ display: "flex" }}>
+                    <Tag color="geekblue">
+                      <Typography>Birthday</Typography>
+                    </Tag>
+                    <DatePicker
+                      addonBefore="Birthday"
+                      defaultValue={moment("2000/01/01", dateFormat)}
+                      format={dateFormat}
+                      style={{ width: "70%" }}
+                      size="small"
+                    />
+                  </div>
+                </div>
+              </div>
+              <Link to="/">
+                <Button
+                  variant="contained"
+                  color="error"
                   style={{
-                    position: "relative",
-                    display: "flex",
-                    padding: "0 1rem",
+                    marginTop: "2rem",
+                    marginLeft: "13rem",
+                    width: "30%",
                   }}
                 >
-                  <div className="text-container" style={{ margin: "0.4rem" }}>
-                    <Typography>{setting}</Typography>
-                  </div>
-                  <div
-                    className="icon-container"
-                    style={{
-                      position: "absolute",
-                      left: "8rem",
-                      margin: "0.4rem 0",
-                    }}
-                  >
-                    <Edit sx={{ fontSize: "0.75rem" }} />
-                  </div>
-                </MenuItem>
-              ))}
-            </Menu>
+                  Logout
+                </Button>
+              </Link>
+            </Modal>
           </Box>
         </Toolbar>
       </AppBar>
@@ -328,9 +388,11 @@ export default function Template({ content }) {
           separator={<NavigateNext fontSize="small" />}
         >
           {breadItem.map((item) => (
-            <Typography sx={{ color: "black" }}>
-              {decodeURI(item).toUpperCase()}
-            </Typography>
+            <NavLink to={concatBread(item)}>
+              <Typography sx={{ color: "black" }}>
+                {decodeURI(item).toUpperCase()}
+              </Typography>
+            </NavLink>
           ))}
         </Breadcrumbs>
         <br />

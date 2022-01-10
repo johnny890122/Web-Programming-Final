@@ -19,6 +19,7 @@ import TeamGallery from "./TeamGallery";
 import TeamCreate from "./TeamCreate";
 import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
+import UserSettings from "./UserSettings";
 
 function App() {
   const ME_KEY = "me";
@@ -30,13 +31,29 @@ function App() {
 
         <Route path="/" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route
+          path="/user/Settings"
+          element={<UserSettings me={localStorage.getItem(ME_KEY)} />}
+        />
 
         {/* user part */}
-        <Route path="/user/Dashboard" element={<UserDashboard />} />
-        <Route path="/user/Calendar" element={<UserEvent me={localStorage.getItem(ME_KEY)} />} />
-        <Route path="/user/CreateUserEvent" element={<CreateUserEvent me={localStorage.getItem(ME_KEY)} />} />
+        <Route
+          path="/user/Dashboard"
+          element={<UserDashboard me={localStorage.getItem(ME_KEY)} />}
+        />
+        <Route
+          path="/user/Calendar"
+          element={<UserEvent me={localStorage.getItem(ME_KEY)} />}
+        />
+        <Route
+          path="/user/CreateUserEvent"
+          element={<CreateUserEvent me={localStorage.getItem(ME_KEY)} />}
+        />
         <Route path="/user/Team" element={<UserTeam />} />
-        <Route path="/user/Achievement" element={<UserAchievement me={localStorage.getItem(ME_KEY)} />} />
+        <Route
+          path="/user/Achievement"
+          element={<UserAchievement me={localStorage.getItem(ME_KEY)} />}
+        />
 
         {/* team part */}
         <Route path="/team/Create" element={<TeamCreate />} />
