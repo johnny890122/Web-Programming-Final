@@ -127,9 +127,9 @@ function UserEvent(props) {
     const eventlist = (
 
         <div className = "user-event">
-          <h1>Events</h1>
+          <h1>日曆</h1>
           
-          <div className = "user-event-viewtoggle">  
+{/*          <div className = "user-event-viewtoggle">  
             <ToggleButtonGroup color="primary" value={viewmode} exclusive
                 onChange={handleViewChange} // 切換預覽模式(列表、日曆)
                 >
@@ -139,9 +139,9 @@ function UserEvent(props) {
             <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/user/CreateUserEvent'>
                 Create
             </Button>
-          </div>  
+          </div>  */}
 
-          {(viewmode === 'list') ? 
+{/*          {(viewmode === 'list') ? 
             <div className = "user-event-filtertoggle">
                 <ToggleButtonGroup color="primary" value={filtermode} exclusive
                     onChange={handleFilterChange} 
@@ -153,11 +153,11 @@ function UserEvent(props) {
                     <ToggleButton value="unrespond">Unrespond</ToggleButton>
                 </ToggleButtonGroup>
             </div> : 
-            <></>}
+            <></>}*/}
                                                    
-
           <ViewBox >
-              {(viewmode === 'list') ? <ListView/> : <CalendarView/>}
+              {/*{(viewmode === 'list') ? <ListView/> : <CalendarView/>}*/}
+              <CalendarView/>
           </ViewBox>
       </div>
     )
