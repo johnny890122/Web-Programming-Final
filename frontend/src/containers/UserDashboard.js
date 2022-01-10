@@ -17,6 +17,8 @@ import { useQuery } from "@apollo/client";
 import { USER_EVENT_INIT } from "../graphql";
 import styled from "styled-components";
 
+import CreateUserEvent from "../containers/CreateUserEvent"
+
 const UserDashboard = (props) => {
   const today = new Date();
   const [events, setEvents] = useState([]); // 所有活動資料
@@ -129,7 +131,11 @@ const UserDashboard = (props) => {
               <ToggleButton value="upcoming">Upcoming</ToggleButton>
               <ToggleButton value="past">Past</ToggleButton>
               <ToggleButton value="unrespond">Unrespond</ToggleButton>
-              <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/user/CreateUserEvent'>
+              <Button 
+                variant="outlined" color="success" sx={{ m: 1 }} 
+                onClick={ () => setIsModalVisible(true) & setComponentInModal("CreateEvent") }
+                // href = '/user/CreateUserEvent'
+              >
                   Create
               </Button>
           </ToggleButtonGroup>
@@ -172,6 +178,7 @@ const UserDashboard = (props) => {
         >
           {componentInModal === "Notification" ? <Notification me={props.me}/> : []}
           {componentInModal === "Event" ? <DashboardEvent me={props.me}/> : []}
+          {componentInModal === "CreateEvent" ? < CreateUserEvent me={props.me} />  : []}
         </Modal>
       </div>
     </div>

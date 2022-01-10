@@ -17,6 +17,8 @@ function CreateUserEvent(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [location, setLocation] = useState("");
+    let clickedDate = props.date ? props.date.dateStr : null;
+    let now = new Date();
     const [sDate, setSDate] = useState(null);
     const [sTime, setSTime] = useState(null);
     const [eDate, setEDate] = useState(null);
@@ -77,7 +79,7 @@ function CreateUserEvent(props) {
                         <MobileDatePicker
                             id="create-event-sDate"
                             label="開始日期 *"
-                            value={sDate}
+                            value={sDate || clickedDate}
                             required
                             onChange={(newValue) => {setSDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -86,7 +88,7 @@ function CreateUserEvent(props) {
                             id="create-event-sTime"
                             sx={{ m: 5 }}
                             label="開始時間 *"
-                            value={sTime}
+                            value={ sTime || now.getHours() }
                             required
                             onChange={(newValue) => {setSTime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -101,7 +103,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDate"
                             sx={{ m: 5 }}
                             label="結束日期 *"
-                            value={eDate}
+                            value={eDate || clickedDate}
                             required
                             onChange={(newValue) => {setEDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -110,7 +112,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDime"
                             sx={{ m: 5 }}
                             label="結束時間 *"
-                            value={eTime}
+                            value={eTime || now.getHours()}
                             required
                             onChange={(newValue) => {setETime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -137,9 +139,10 @@ function CreateUserEvent(props) {
     )
     
     return(
-        <div className="Wrapper">
-            <Template content={CreatePage} />
-        </div>
+        CreatePage
+        // <div className="Wrapper">
+        //     <Template content= />
+        // </div>
     )
 }
 
