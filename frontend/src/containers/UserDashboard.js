@@ -7,7 +7,9 @@ import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 import DashboardEvent from "../components/DashboardEvent";
 import { Modal } from "antd";
-import { useLocation} from "react-router-dom";
+
+import { Button } from '@mui/material';
+
 
 const UserDashboard = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,26 +36,23 @@ const UserDashboard = (props) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const ME_KEY = "me";
-  const me = localStorage.getItem(ME_KEY)
 
   const dashboard = (
     <>
-      Hello {me}
       <Block
         enlarge={showModalWithEvent}
-        component={<DashboardEvent me={me} />}
+        component={<DashboardEvent me={props.me}/>}
         fullscreen={isModalVisible}
       />
 
       <Block
         enlarge={showModalWithNotification}
-        component={<Notification me={me} />}
+        component={<Notification me={props.me} />}
         fullscreen={isModalVisible}
       />
       <Block
         enlarge={showModalWithTodo}
-        component={<Todo me={me} />}
+        component={<Todo me={props.me} />}
         fullscreen={isModalVisible}
       />
 
@@ -64,9 +63,9 @@ const UserDashboard = (props) => {
         onCancel={handleCancel}
         style={{ zIndex: 1200 }}
       >
-        {componentInModal === "Notification" ? <Notification me={me} /> : []}
-        {componentInModal === "Todo" ? <Todo me={me} /> : []}
-        {componentInModal === "Event" ? <DashboardEvent me={me} /> : []}
+        {componentInModal === "Notification" ? <Notification /> : []}
+        {componentInModal === "Todo" ? <Todo /> : []}
+        {componentInModal === "Event" ? <DashboardEvent /> : []}
       </Modal>
     </>
   );

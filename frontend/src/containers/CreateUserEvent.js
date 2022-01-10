@@ -27,7 +27,7 @@ function CreateUserEvent(props) {
     const subbmitEvent = async () => {
         await addEvent({
             variables: {
-                eventCreator: "6a912694-ceef-4371-9d5f-8b8737e538c7",
+                eventCreator: props.me,
                 eventTitle: title,
                 eventDescription: description,
                 eventStart: Date.parse(sDate) + Date.parse(sTime),
