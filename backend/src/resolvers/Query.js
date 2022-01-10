@@ -2,6 +2,15 @@ import { UserModel } from "../db";
 
 const Query = {
 
+  myUserAccount: async(parent, { userID }, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    return user.userAccount
+  },
+
   userLogin: async (parent, { userAccount, userPassword }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userAccount });
 

@@ -38,6 +38,9 @@ import {
 } from "@mui/icons-material";
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import { useQuery } from "@apollo/client";
+import { USER_ACCOUNT } from "../graphql";
+
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -114,6 +117,15 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Template({ content }) {
+  const ME_KEY = "me";
+  const { data, error, loading, subscribeToMore } = useQuery(USER_ACCOUNT, {
+    variables: { userID: localStorage.getItem(ME_KEY) },
+  });
+
+  if (!loading) {
+    console.log(data.myUserAccount);
+  }
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -195,7 +207,7 @@ export default function Template({ content }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            USERNAME
+            Hello {loading ? "" : data.myUserAccount}
           </Typography>
           <Box
             sx={{ flexGrow: 0 }}

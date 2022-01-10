@@ -17,6 +17,14 @@ export const USER_LOGIN = gql`
   }
 `;
 
+export const USER_ACCOUNT = gql`
+query myUserAccount (
+  $userID: String,
+) {
+  myUserAccount(userID: $userID)
+}
+`
+
 export const USER_TODO_INIT = gql`
   query initUserTodo (
     $userID: String,
