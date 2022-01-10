@@ -9,23 +9,57 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { MeetingRoom } from "@mui/icons-material";
 import { TextField, InputLabel } from "@mui/material";
 import { NavLink } from "react-router-dom";
-
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphql";
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState, useEffect } from "react";
+import Alert from '@mui/material/Alert';
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [account, setAccount] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [addUser] = useMutation(CREATE_USER);
+  // 後端的訊息
+  const [alert, setAlert] = useState(null);
 
-  // 檢查帳號格式是否正確
+  // 信箱
+  const [email, setEmail] = useState("");
+  const [emailFormatWrong, setEmailFormatWrong] = useState(false);
+  const [emailFormatHelperText, setEmailFormatHelperText] = useState("");
+
+  // 帳號
+  const [account, setAccount] = useState("");
   const [accountFormatWrong, setAccountFormatWrong] = useState(false);
   const [accountFormatHelperText, setAccountFormatHelperText] = useState("");
-  
+
+  // 密碼
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [passwordFormatWrong, setPasswordFormatWrong] = useState(false);
+  const [passwordCheckIsWrong, setPasswordCheckIsWrong] = useState(false);
+  const [passwordFormatHelperText, setPasswordFormatHelperText] = useState("");
+  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] = useState("");
+  // 顯示 password or not 
+  const [showPassword, setShowPassword] = useState(false);
+
+  // alert message block
+  const [alertVisibility, setAlertVisibility] = useState("none");
+  const [alertSeverity, setAlertSeverity] = useState("error");
+  const [alertMessageBody, setAlertMessageBody] = useState("");
+
+  // 按下繳交
+  const submitSignUp = async () => {
+    if (!emailFormatWrong & !accountFormatWrong & !passwordFormatWrong & !passwordCheckIsWrong & 
+        email.length != 0 & account.length != 0 & password.length!=0 & passwordCheck.length != 0 
+    ) { 
+      await addUser({ variables: { userAccount: account, userPassword: password,userEmail: email }, })
+    } else {
+      setAlertVisibility("block");
+      setAlertSeverity("error");
+      setAlertMessageBody("有資訊未填！");
+    }
+  };
+
   function accountIsLatinString(s) {
     var c, whietlist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -50,10 +84,6 @@ const SignUp = () => {
     setAccountFormatHelperText("");
     setAccountFormatWrong(false);
   }
-
-  // 檢查密碼格式是否正確
-  const [passwordFormatWrong, setPasswordFormatWrong] = useState(false);
-  const [passwordFormatHelperText, setPasswordFormatHelperText] = useState("");
   
   function passwordIsLatinString(s) {
     var c, whietlist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -80,9 +110,6 @@ const SignUp = () => {
     setPasswordFormatWrong(false);
   }
 
-  // 密碼 check 是否正確
-  const [passwordCheckIsWrong, setPasswordCheckIsWrong] = useState(false);
-  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] = useState("");
   function validatePasswordCheck(s) {
     if (password != passwordCheck) {
       setPasswordCheckIsWrongHelperText("密碼不相符");
@@ -93,9 +120,6 @@ const SignUp = () => {
     setPasswordCheckIsWrong(false);
   }
 
-  // 檢查信箱是否格式正確
-  const [emailFormatWrong, setEmailFormatWrong] = useState(false);
-  const [emailFormatHelperText, setEmailFormatHelperText] = useState("");
   const checkIfEmailIsWrong = (email) => {
     if (!email) { 
       setEmailFormatHelperText("")
@@ -103,7 +127,7 @@ const SignUp = () => {
       return; 
     }
     
-    if (email.match(
+    else if (email.match(
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )) { 
       setEmailFormatHelperText("")
@@ -116,30 +140,57 @@ const SignUp = () => {
     return;
   };
 
+  const handleClickShowPassword = () => {
+    showPassword ? setShowPassword(false) : setShowPassword(true);
+  };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  // useEffect 
   useEffect( () => {
-    checkIfEmailIsWrong(email); }, [email]);
+    checkIfEmailIsWrong(email); 
+  }, [email]);
 
   useEffect( () => {
     accountIsLatinString(account); 
-  }, [account])
+  }, [account]);
 
   useEffect( () => {
     passwordIsLatinString(password); 
-  }, [password])
+  }, [password]);
 
   useEffect( () => {
     validatePasswordCheck(passwordCheck); 
-  }, [passwordCheck])
+  }, [passwordCheck]);
 
-  const submitSignUp = () => {
-    addUser({
-      variables: {
-        userAccount: account,
-        userPassword: password,
-        userEmail: email,
-      },
-    });
-  };
+  useEffect( () => {
+    if (alert) {
+      alert.graphQLErrors.map( i=> setAlertMessageBody(i.message));
+    }
+  }, [alert]);
+
+
+  // add user 
+  const [addUser] = useMutation(CREATE_USER, {
+    onCompleted: () => {
+      setEmail("") 
+      setAccount("") 
+      setPassword("") 
+      setPasswordCheck("") 
+      setAlertSeverity("success") 
+      setAlertMessageBody("註冊成功") 
+      setAlertVisibility("block")
+      setAlert(null);
+      console.log("成功")
+    },
+    onError: (err) => {
+      setAlert(err) 
+      setAlertSeverity("error") 
+      setAlertVisibility("block") 
+    }
+  });
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -173,6 +224,7 @@ const SignUp = () => {
           }}
         >
           <TextField
+            value={email}
             error={emailFormatWrong}
             helperText= {emailFormatHelperText}
             onChange={(e) => setEmail(e.target.value)}
@@ -182,6 +234,7 @@ const SignUp = () => {
             style={{ margin: "0.75rem" }}
           />
           <TextField
+            value={account}
             error = {accountFormatWrong}
             helperText= {accountFormatHelperText}
             onChange={(e) => setAccount(e.target.value)}
@@ -191,6 +244,8 @@ const SignUp = () => {
             style={{ margin: "0.75rem" }}
           />
           <TextField
+            value={password}
+            type={showPassword ? 'text' : 'password' }
             error = {passwordFormatWrong}
             helperText= {passwordFormatHelperText}
             onChange={(e) => setPassword(e.target.value)}
@@ -198,8 +253,23 @@ const SignUp = () => {
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
+            InputProps={{
+              endAdornment: 
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+            }}
           />
+
           <TextField
+            value={passwordCheck}
+            type={showPassword ? 'text' : 'password' }
             error={passwordCheckIsWrong}
             helperText={passwordCheckIsWrongHelperText}
             onChange={(e) => setPasswordCheck(e.target.value)}
@@ -207,8 +277,20 @@ const SignUp = () => {
             color="primary"
             focused
             style={{ margin: "0.75rem" }}
+            InputProps={{
+              endAdornment: 
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+            }}
           />
-          {/* <NavLink to="/user/Dashboard"> */}
+
           <Button
             onClick={submitSignUp}
             variant="contained"
@@ -216,13 +298,16 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          {/* </NavLink> */}
 
           <NavLink to="/">
+
+            <Alert severity={alertSeverity} style={{ display : alertVisibility }}>
+              {alertMessageBody}
+            </Alert>
+
             <Button
               variant="contained"
               style={{ margin: "0.75rem" }}
-              // onClick={() s=> setNoAccount(false)}
             >
               have an account? log in!
             </Button>

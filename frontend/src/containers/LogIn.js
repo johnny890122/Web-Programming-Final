@@ -57,7 +57,6 @@ const LogIn = (props) => {
 
   const errorBlock = error ? ( error.graphQLErrors.map(i =>
       <Alert severity="error" style={{ display : errorVisibility}}>
-      {/*<AlertTitle> {} </AlertTitle>*/}
         {i.message}
       </Alert>
   )): [];
