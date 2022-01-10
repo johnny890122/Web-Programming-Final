@@ -15,6 +15,7 @@ import { Avatar } from "antd";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import { Modal } from "antd";
 import { Input, DatePicker, Tag } from "antd";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -197,6 +198,12 @@ export default function Template({ content }) {
       setIsTeam(false);
     }
   }, [breadItem]);
+  const concatBread = (item) => {
+    let href = "";
+    let stopIndex = breadItem.indexOf(item);
+    for (let i = 0; i <= stopIndex; i++) href = href + "/" + breadItem[i];
+    return href;
+  };
 
   const dateFormat = "YYYY/MM/DD";
 
@@ -299,6 +306,19 @@ export default function Template({ content }) {
                   </div>
                 </div>
               </div>
+              <Link to="/">
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={{
+                    marginTop: "2rem",
+                    marginLeft: "13rem",
+                    width: "30%",
+                  }}
+                >
+                  Logout
+                </Button>
+              </Link>
             </Modal>
           </Box>
         </Toolbar>
@@ -368,9 +388,11 @@ export default function Template({ content }) {
           separator={<NavigateNext fontSize="small" />}
         >
           {breadItem.map((item) => (
-            <Typography sx={{ color: "black" }}>
-              {decodeURI(item).toUpperCase()}
-            </Typography>
+            <NavLink to={concatBread(item)}>
+              <Typography sx={{ color: "black" }}>
+                {decodeURI(item).toUpperCase()}
+              </Typography>
+            </NavLink>
           ))}
         </Breadcrumbs>
         <br />
