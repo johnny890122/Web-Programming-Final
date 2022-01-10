@@ -122,10 +122,6 @@ export default function Template({ content }) {
     variables: { userID: localStorage.getItem(ME_KEY) },
   });
 
-  if (!loading) {
-    console.log(data.myUserAccount);
-  }
-
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);

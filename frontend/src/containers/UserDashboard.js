@@ -60,12 +60,16 @@ const UserDashboard = (props) => {
         title="Testing"
         visible={isModalVisible}
         onOk={handleOk}
-        onCancel={handleCancel}
         style={{ zIndex: 1200 }}
+        footer={[
+            <Button key="" onClick={handleOk}>
+              Ok
+            </Button>,
+          ]}
       >
-        {componentInModal === "Notification" ? <Notification /> : []}
-        {componentInModal === "Todo" ? <Todo /> : []}
-        {componentInModal === "Event" ? <DashboardEvent /> : []}
+        {componentInModal === "Notification" ? <Notification me={props.me}/> : []}
+        {componentInModal === "Todo" ? <Todo me={props.me}/> : []}
+        {componentInModal === "Event" ? <DashboardEvent me={props.me}/> : []}
       </Modal>
     </>
   );
