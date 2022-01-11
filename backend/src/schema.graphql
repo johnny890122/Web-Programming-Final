@@ -20,6 +20,7 @@ type Query {
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
   createUserTodo(userID: String, todoContent: String): Todo
+
   createScore( # ok
     teamID: String
     contestDate: Int!
@@ -33,12 +34,23 @@ type Mutation {
   ): ContestScoreSet!
   createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
   createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
+  
+  ## --------- Team ----------##
+  
   createTeam(
     teamName: String!
     teamDescription: String!
     teamType: String!
     creatorID: String! # ** 修正= > User?
   ): Team
+
+  deleteTeam(
+    teamID: String!
+    memberID: String!
+  ): Team
+
+  ##---------- Team Event, Reply (完成) ----------##
+
   createTeamEvent(
     eventTitle: String!
     eventDescription: String!
@@ -48,12 +60,58 @@ type Mutation {
     teamID: String!
     creatorID: String!
   ): Event!
-  createTeamPost(
+  replyTeamEvent(
+    eventReplyOption: String!
+    eventReplyContent: String
+    memberID: String!
+    eventID: String!
+  ): EventReply
+
+  updateTeamEvent(
+    eventTitle: String
+    eventDescription: String
+    eventStart: String
+    eventEnd: String
+    eventLocation: String
+    eventID: String
+  ): Event
+  updateEventReply(
+    eventReplyOption: String
+    eventReplyContent: String
+    eventReplyID: String
+  ): EventReply
+
+  deleteEventReply(
+    eventReplyID: String
+    eventID: String
+  ): Event
+  deleteEvent(
+    eventID: String
+    teamID: String
+  ): Team
+
+  ##---------- Team Post (完成) ----------##
+
+  createPost(
     postTitle: String!
     postContent: String!
     teamID: String!
     creatorID: String!
   ): Post
+
+  updatePost(
+    postTitle: String
+    postContent: String
+    postID: String
+  ): Post
+
+  deletePost(
+    postID: String
+    teamID: String
+  ): Team
+
+  ##---------- Team Vote, Option (完成) ----------##
+
   createVote(
     voteTitle: String!
     voteDescription: String!
@@ -62,18 +120,38 @@ type Mutation {
     teamID: String!
     creatorID: String!
   ): Vote
-  createVoteOption(voteOptionName: String!, voteID: String!): VoteOption
-  #replyTeamEvent(
-  #  eventReplyMember: String!
-  #  eventReplyAttend: String!
-  #  eventReplyContent: String!
-  #): Event
-  replyVote(
-    voteOptionName: String!
-    teamID: String!
-    vote: String!
-    voterID: String!
+  createVoteOption(
+    voteOptionName: String!, 
+    voteID: String!
   ): VoteOption
+
+  updateVote(
+    voteTitle: String
+    voteDescription: String
+    voteEnd: String
+    voteLimit: Int
+    voteID: String
+  ): Vote
+  updateVoteOption(
+    voteOptionName: String
+    voteOptionID: String
+  ): VoteOption
+
+  replyVote(
+    voteOptionID: String
+    voterID: String
+  ): VoteOption
+  
+  deleteVoteOption(
+    voteOptionID: String
+    voteID: String
+  ): Vote
+  deleteVote(
+    voteID: String
+    teamID: String    
+  ): Team
+
+  ##------------------------------##
 
   updateUserNotification(
     userID: String
@@ -81,7 +159,6 @@ type Mutation {
     type: String
     content: String
   ): String
-
   updateUserAchievement(userID: String, title: String, content: String): String
 
   createUserEvent(
@@ -161,7 +238,7 @@ type Team {
   teamName: String
   teamDescription: String
   teamType: String
-  #teamCreateDate: String # 修正
+  teamCreateTime: String 
   teamMember: [User]
   teamGallery: [Gallery]
   teamPost: [Post]
@@ -230,6 +307,7 @@ type Vote {
   voteLimit: Int
   voteCreator: User
   voteOption: [VoteOption]
+  voteCreateTime: String
 }
 
 type VoteOption {
@@ -246,14 +324,23 @@ type Event {
   eventEnd: String
   eventLocation: String
   eventCreator: User
-  eventPosttime: String
+  eventPostTime: String
+  eventReply: [EventReply]
+}
+
+type EventReply {
+  eventReplyID: String
+  eventReplyMemeber: User
+  eventReplyOption: EventReplyOption
+  eventReplyContent: String
+  eventReplyTime: String
 }
 
 input CreateGalleryInput {
   galleryTitle: String!
 }
 
-enum EventReply {
+enum EventReplyOption {
   Yes
   No
   Unsure
