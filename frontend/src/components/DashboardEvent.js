@@ -24,10 +24,10 @@ function DashboardEvent(props) {
       eventData.push({
         title: i.eventTitle,
         description: i.eventDescription,
-        start: i.eventStart,
-        end: i.eventEnd,
+        start: new Date(i.eventStart),
+        end: new Date(i.eventEnd),
         location: i.eventLocation,
-        posttime: i.eventPostTime,
+        posttime: new Date(i.eventPostTime),
       })
     );
   }
@@ -44,7 +44,9 @@ function DashboardEvent(props) {
       <List className="dashboard-event-list">
         {eventData.map((event) => (
           <ListItem button key={event.id}>
-            <ListItemText primary={event.title} secondary={event.start} />
+            <ListItemText 
+              primary={event.title} 
+              secondary={event.start.toDateString()} />
           </ListItem>
         ))}
       </List>

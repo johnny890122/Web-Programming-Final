@@ -31,8 +31,8 @@ const UserDashboard = (props) => {
       data.initUserEvent.map( 
         i=>EventData.push(
           {
-            "title": i.eventTitle, "description": i.eventDescription, "start": i.eventStart,
-            "end": i.eventEnd, "location": i.eventLocation, "posttime": i.eventPostTime
+            "title": i.eventTitle, "description": i.eventDescription, "start": new Date(i.eventStart),
+            "end": new Date(i.eventEnd), "location": i.eventLocation, "posttime": new Date(i.eventPostTime)
           }
         )
       )
@@ -99,7 +99,7 @@ const UserDashboard = (props) => {
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
-                <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
+                <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start.toDateString()}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
@@ -120,8 +120,6 @@ const UserDashboard = (props) => {
 
   const eventlist = (
   <div className = "user-event">
-      <h1>Test</h1>  
-
       <div className = "user-event-filtertoggle">
           <ToggleButtonGroup color="primary" value={filtermode} exclusive
               onChange={handleFilterChange} 
@@ -131,14 +129,14 @@ const UserDashboard = (props) => {
               <ToggleButton value="upcoming">Upcoming</ToggleButton>
               <ToggleButton value="past">Past</ToggleButton>
               <ToggleButton value="unrespond">Unrespond</ToggleButton>
-              <Button 
+          </ToggleButtonGroup>
+          <Button 
                 variant="outlined" color="success" sx={{ m: 1 }} 
                 onClick={ () => setIsModalVisible(true) & setComponentInModal("CreateEvent") }
                 // href = '/user/CreateUserEvent'
               >
                   Create
-              </Button>
-          </ToggleButtonGroup>
+          </Button>
       </div> 
                                                
       <ViewBox >
