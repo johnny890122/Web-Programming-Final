@@ -99,6 +99,7 @@ const Mutation = {
 
     const event = await new db.DashboardEventModel({
       userID: eventCreator,
+      eventType: "Personal",
       eventID: eventID,
       eventTitle: eventTitle,
       eventDescription: eventDescription,

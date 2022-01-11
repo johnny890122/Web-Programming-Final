@@ -19,6 +19,7 @@ export const CREATE_USER = gql`
 export const CREATE_USER_EVENT = gql`
   mutation createUserEvent(
     $eventCreator: String
+    $eventType: String
     $eventTitle: String
     $eventDescription: String
     $eventStart: Float
@@ -27,6 +28,7 @@ export const CREATE_USER_EVENT = gql`
   ) {
     createUserEvent(
       eventCreator: $eventCreator
+      eventType: $eventType
       eventTitle: $eventTitle
       eventDescription: $eventDescription
       eventStart: $eventStart
