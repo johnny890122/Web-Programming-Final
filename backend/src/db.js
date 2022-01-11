@@ -11,6 +11,7 @@ const UserSchema = new Schema({
   userStatus: { type: String, required: false },
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
+  manageTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
   userNotification: [
     { type: Schema.Types.ObjectId, ref: "DashboardNotification" },
@@ -105,11 +106,6 @@ const DashboardEventSchema = new Schema({
   eventPostTime: { type: String, required: true },
 });
 
-const MemberSchema = new Schema({
-  teamID: { type: String, required: true },
-  teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
-});
-
 const ScoreSchema = new Schema({
   teamID: { type: String, required: true },
   contestID: { type: String, required: true },
@@ -170,7 +166,6 @@ const DashboardEventModel = mongoose.model(
   DashboardEventSchema
 );
 const ScoreModel = mongoose.model("Score", ScoreSchema);
-const MemberModel = mongoose.model("Member", MemberSchema);
 // const ScoreDetailModel = mongoose.model("ScoreDetail", ScoreDetailSchema);
 
 export {
@@ -188,6 +183,5 @@ export {
   AchievementModel,
   DashboardEventModel,
   ScoreModel,
-  MemberModel,
   // ScoreDetailModel,
 };

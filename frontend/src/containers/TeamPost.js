@@ -64,8 +64,7 @@ function TeamPost() {
   )
 
   const postForm = (
-    <Form name="basic"
-          labelCol={{ span: 8 }}
+    <Form labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           initialValues={
             modalMode === 'edit' ? 

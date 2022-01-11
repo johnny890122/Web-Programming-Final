@@ -211,7 +211,7 @@ const Mutation = {
   },
 
 
-   //---------- Team ----------//
+   //---------- Team, Member, Manager ----------//
 
   createTeam: async (parent, args, { db, pubSub }) => {
     const { teamName, teamDescription, teamType, creatorID } = args;
@@ -242,10 +242,62 @@ const Mutation = {
     }).save();
     const newAllTeams = await db.UserModel.findOneAndUpdate(
       {_id: Creator._id}, {$push: {"allTeams": team._id}})
-    // user.allteams 更新
+    const newManageTeams = await db.UserModel.findOneAndUpdate(
+      {_id: Creator._id}, {$push: {"manageTeams": team._id}})
+    
     console.log("New Team Saved!");
     return team;
   }, 
+
+  addMember: async (parent, args, { db, pubSub }) => {
+    const { teamID, memberID } = args;
+    const Member = await db.UserModel.findOne({ userID: memberID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    
+    const MemberToTeam = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$push: {"teamMember": Member._id} 
+    })
+    const TeamToMember = await db.UserModel.findOneAndUpdate(
+      {_id: Member._id}, {$push: {"allTeams": Team._id} 
+    })
+    console.log("Add Member Success!");
+    return Member;
+  },
+  addManager: async (parent, args, { db, pubSub }) => {
+    const { teamID, memberID } = args;
+    const Member = await db.UserModel.findOne({ userID: memberID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    
+    const MemberToTeam = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$push: {"teamManager": Member._id} 
+    })
+    const TeamToMember = await db.UserModel.findOneAndUpdate(
+      {_id: Member._id}, {$push: {"manageTeams": Team._id} 
+    })
+    console.log("Add Manager Success!");
+    return Member;
+  },
+  
+  deleteMember: async (parent, args, { db, pubSub }) => {
+    const { teamID, memberID } = args;
+    const Member = await db.UserModel.findOne({ userID: memberID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    
+    const MemberToTeam = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$pull: {"teamMember": Member._id} 
+    })
+    const ManagerToTeam = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$pull: {"teamManager": Member._id} 
+    })
+    const TeamToMember = await db.UserModel.findOneAndUpdate(
+      {_id: Member._id}, {$pull: {"allTeams": Team._id} 
+    })
+    const TeamToManager = await db.UserModel.findOneAndUpdate(
+      {_id: Member._id}, {$pull: {"manageTeams": Team._id} 
+    })
+    console.log("Delete Member Success!");
+    return Member;
+  },
 
   deleteTeam: async (parent, args, { db, pubSub }) => {
     const { teamID, memberID } = args;
@@ -412,7 +464,6 @@ const Mutation = {
     console.log("Event Reply Deleted!");
     return ReplyEvent;
   },
-
   deleteEvent: async (parent, args, { db, pubSub }) => {
     const { eventID, teamID } = args;
     const Team = await db.TeamModel.findOne({ teamID: teamID });

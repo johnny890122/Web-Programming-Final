@@ -43,6 +43,11 @@ type Mutation {
     creatorID: String! # ** 修正= > User?
   ): Team
 
+  addMember( teamID: String memberID: String ): User
+  addManager( teamID: String memberID: String ): User
+
+  deleteMember( teamID: String memberID: String ): User
+  #deleteManager( teamID: String memberID: String ): User
   deleteTeam(teamID: String!, memberID: String!): Team
 
   ##---------- Team Event, Reply (完成) ----------##
@@ -146,7 +151,6 @@ type Subscription {
 }
 
 type User {
-  _id: ID!
   userID: String
   userAccount: String
   userPassword: String
@@ -156,6 +160,7 @@ type User {
   userStatus: String
   userProfile: String
   allTeams: [Team]
+  manageTeams: [Team]
   userTodo: [Todo]
   # userEvent: [DashboardEvent]!
   # userTodo: [Todo!]!
