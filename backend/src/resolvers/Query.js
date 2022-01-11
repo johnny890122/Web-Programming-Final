@@ -1,7 +1,6 @@
 import { UserModel } from "../db";
 
 const Query = {
-  
   myUserAccount: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
 
@@ -135,15 +134,21 @@ const Query = {
     return gallery;
   },
 
-  initTeam: async (parent, args, { db, pubSub }) => {    
+  initTeam: async (parent, args, { db, pubSub }) => {
     const { userID } = args;
     const User = await db.UserModel.findOne({ userID: userID });
 
     if (!User) {
       throw new Error("This user doesn't exist!");
     }
-
-    return User.allTeams;
+    let allTeams = [];
+    if (User.allTeams.length !== 0) {
+      for (let i = 0; i < User.allTeams.length; i++) {
+        let Team = await db.TeamModel.findOne({ _id: User.allTeams[i] });
+        allTeams.push(Team);
+      }
+    }
+    return allTeams;
   },
   initTeamEvent: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
@@ -152,7 +157,7 @@ const Query = {
     if (!Team) {
       throw new Error("This team doesn't exist!");
     }
-    
+
     return Team.teamEvent;
   },
   initTeamPost: async (parent, args, { db, pubSub }) => {
@@ -162,7 +167,7 @@ const Query = {
     if (!Team) {
       throw new Error("This team doesn't exist!");
     }
-    
+
     return Team.teamPost;
   },
   initVote: async (parent, args, { db, pubSub }) => {
@@ -172,15 +177,19 @@ const Query = {
     if (!Team) {
       throw new Error("This team doesn't exist!");
     }
-    
+
     return Team.teamVote;
   },
 
   /* ------------- Query one, all------------- */
 
-  users: async (parent, args, { db, pubSub }) => {return db.UserModel.find();},
-  teams: async (parent, args, { db, pubSub }) => {return db.TeamModel.find();},
-  
+  users: async (parent, args, { db, pubSub }) => {
+    return db.UserModel.find();
+  },
+  teams: async (parent, args, { db, pubSub }) => {
+    return db.TeamModel.find();
+  },
+
   user: async (parent, args, { db, pubSub }) => {
     const { userID } = args;
     const User = await db.UserModel.findOne({ userID: userID });

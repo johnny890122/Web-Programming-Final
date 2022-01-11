@@ -3,62 +3,77 @@ import { TeamData } from "../components/ListData";
 import { Typography, Box, Card, Button, CardContent } from "@mui/material";
 import { CardActionArea, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { TEAM_INIT } from "../graphql";
+import { useQuery } from "@apollo/client";
 
-function UserTeam() {
+const cardStyle = {
+  width: "95%",
+  margin: "1em",
+  padding: "1rem",
+  display: "inline-block",
+};
+
+function UserTeam(props) {
+  const { data, error, loading, subscribeToMore } = useQuery(TEAM_INIT, {
+    variables: { userID: props.me },
+  });
+
+  const AllTeamData = [];
+  if (!loading) {
+    data.initTeam.map((i) =>
+      AllTeamData.push({
+        id: i.teamID,
+        name: i.teamName,
+        description: i.teamDescription,
+        type: i.teamType,
+      })
+    );
+  }
+
+  const TEAM_KEY = "nowTeam";
+  const [nowTeam, setNowTeam] = useState("");
   /*
     連結創建隊伍頁面、隊伍頁面 (下面改 href)
   */
-  const cardStyle = {
-    width: "95%",
-    margin: "1em",
-    padding: "1rem",
-    display: "inline-block",
-  };
-
-  const submitTeam = () => {};
+  const chooseTeam = () => {};
 
   const teamlist = (
     <div className="user-team-list">
       <div
         className="createBox-container"
-        style={{ display: "flex", width: "80vw" }}
+        style={{ display: "flex", width: "80vw", marginLeft: "1rem" }}
       >
         <Link to="/team/Create">
-          <Card style={cardStyle} key="0">
-            <CardActionArea sx={{ width: 450, height: 100, display: "inline" }}>
-              {/* 連結創建隊伍頁面 */}
-              <CardContent sx={{ p: 4 }}>
-                <Typography gutterBottom variant="h5" component="div">
-                  Create New Team
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <Button variant="outlined" color="success">
+            Create
+          </Button>
         </Link>
       </div>
 
       <div
         className="teamBox-container"
-        style={{ display: "flex", width: "80vw" }}
+        style={{ display: "flex", width: "80vw", marginTop: "1rem" }}
       >
-        {TeamData.map((team) => (
-          <Link to={{ pathname: `/team/${team.teamname}/Home` }}>
-            <Card style={cardStyle} key={team.id} onClick={submitTeam}>
+        {AllTeamData.map((team) => (
+          <Link to={{ pathname: `/team/${team.name}/Home` }}>
+            <Card style={cardStyle} key={team.id} onClick={chooseTeam}>
               <CardActionArea
-                sx={{ width: 450, height: 200, display: "inline" }}
+                sx={{ width: 300, height: 150, display: "inline" }}
               >
                 {/* 連結隊伍頁面 */}
-
-                <CardContent sx={{ p: 4 }}>
-                  <Typography gutterBottom variant="h4" component="div">
-                    {team.teamname}
-                  </Typography>
-                  <Typography variant="p" color="text.secondary">
+                <CardContent>
+                  <Typography variant="h4">{team.name}</Typography>
+                  {/* <Typography variant="p" color="text.secondary">
                     身份 : {team.status}
-                  </Typography>
-                  <Typography variant="h6" color="text.secondary">
-                    -- {team.description}
-                  </Typography>
+                  </Typography> */}
+                  <br />
+                  <p style={{ color: "#24367D" }}>
+                    {team.description}
+                    <br />
+                    {team.type}
+                  </p>
+                  {/* <p style={{ color: "#24367D" }}>{team.type}</p> */}
                 </CardContent>
               </CardActionArea>
             </Card>

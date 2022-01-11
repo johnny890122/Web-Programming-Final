@@ -38,6 +38,24 @@ export const CREATE_USER_EVENT = gql`
   }
 `;
 
+export const CREATE_TEAM = gql`
+  mutation createTeam(
+    $teamName: String
+    $teamDescription: String
+    $teamType: String
+    $creatorID: String
+  ) {
+    createTeam(
+      teamName: $teamName
+      teamDescription: $teamDescription
+      teamType: $teamType
+      creatorID: $creatorID
+    ) {
+      teamID
+    }
+  }
+`;
+
 export const CREATE_TEAM_SCORE = gql`
   mutation createScore(
     $teamID: String

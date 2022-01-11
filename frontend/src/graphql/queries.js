@@ -67,22 +67,38 @@ export const USER_EVENT_INIT = gql`
 `;
 
 export const EVENT_DETAIL = gql`
-query eventDetail (
-  $eventID: String
-  ){
-  eventDetail(eventID: $eventID)
-  {
-    eventTitle
-    eventStart
-    eventEnd
-    eventDescription
-    eventLocation
-    eventPostTime
+  query eventDetail($eventID: String) {
+    eventDetail(eventID: $eventID) {
+      eventTitle
+      eventStart
+      eventEnd
+      eventDescription
+      eventLocation
+      eventPostTime
+    }
   }
-}
-`
+`;
 
-// export const TEAM_MEMBER_INIT = gql``;
+export const TEAM_THIS_INIT = gql`
+  query team($teamID: String) {
+    team(teamID: $teamID) {
+      teamID
+      teamName
+      teamDescription
+    }
+  }
+`;
+
+export const TEAM_INIT = gql`
+  query initTeam($userID: String) {
+    initTeam(userID: $userID) {
+      teamID
+      teamName
+      teamDescription
+      teamType
+    }
+  }
+`;
 
 export const TEAM_SCORE_INIT = gql`
   query initScore($teamID: String) {
