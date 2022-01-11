@@ -12,8 +12,12 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
-  userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" }],
-  userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" }],
+  userNotification: [
+    { type: Schema.Types.ObjectId, ref: "DashboardNotification" },
+  ],
+  userAchievement: [
+    { type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },
+  ],
   userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
   userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
@@ -31,7 +35,7 @@ const TeamSchema = new Schema({
   teamName: { type: String, required: true },
   teamDescription: { type: String, required: false },
   teamType: { type: String, required: false },
-  teamCreateTime: {type: String, required: false},
+  teamCreateTime: { type: String, required: false },
   teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
@@ -54,11 +58,11 @@ const EventSchema = new Schema({
 });
 
 const EventReplySchema = new Schema({
-	eventReplyID: { type: String, required: true},
-	eventReplyMemeber: {type: Schema.Types.ObjectId, ref: "User"},
-	eventReplyOption: {type: String, required: false},
-	eventReplyContent: {type: String, required: false}
-})
+  eventReplyID: { type: String, required: true },
+  eventReplyMemeber: { type: Schema.Types.ObjectId, ref: "User" },
+  eventReplyOption: { type: String, required: false },
+  eventReplyContent: { type: String, required: false },
+});
 
 const GallerySchema = new Schema({
   teamID: { type: String, required: true },
@@ -101,6 +105,11 @@ const DashboardEventSchema = new Schema({
   eventPostTime: { type: String, required: true },
 });
 
+const MemberSchema = new Schema({
+  teamID: { type: String, required: true },
+  teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
+});
+
 const ScoreSchema = new Schema({
   teamID: { type: String, required: true },
   contestID: { type: String, required: true },
@@ -111,29 +120,29 @@ const ScoreSchema = new Schema({
 });
 
 const PostSchema = new Schema({
-	postID: { type: String, required: true },
-	postTitle: { type: String, required: true },
-	postContent: { type: String, required: true },
-	postAuthor: { type: Schema.Types.ObjectId, ref: "User" },
-	postTime: { type: String, required:true },
-})
+  postID: { type: String, required: true },
+  postTitle: { type: String, required: true },
+  postContent: { type: String, required: true },
+  postAuthor: { type: Schema.Types.ObjectId, ref: "User" },
+  postTime: { type: String, required: true },
+});
 
 const VoteSchema = new Schema({
-	voteID: {type: String, required: true},
-	voteTitle: {type: String, required: true},
-	voteDescription: {type: String, required: true},   
-	voteEnd: {type: String, required: true},
-	voteLimit: {type: Number, required: false},
-	voteCreator: {type: Schema.Types.ObjectId, ref: "User"},
-	voteOption: [{ type: Schema.Types.ObjectId, ref: "VoteOption" }],
+  voteID: { type: String, required: true },
+  voteTitle: { type: String, required: true },
+  voteDescription: { type: String, required: true },
+  voteEnd: { type: String, required: true },
+  voteLimit: { type: Number, required: false },
+  voteCreator: { type: Schema.Types.ObjectId, ref: "User" },
+  voteOption: [{ type: Schema.Types.ObjectId, ref: "VoteOption" }],
   voteCreateTime: { type: String, required: true },
-})
+});
 
 const VoteOptionSchema = new Schema({
-	voteOptionID: {type: String, required: true},
-	voteOptionName: {type: String, required: true},
-	votedUser: [{type: Schema.Types.ObjectId, ref: "User"}],
-})
+  voteOptionID: { type: String, required: true },
+  voteOptionName: { type: String, required: true },
+  votedUser: [{ type: Schema.Types.ObjectId, ref: "User" }],
+});
 
 // const ScoreDetailSchema = new Schema({
 //   contestScoreSetID: { type: String, required: true },
@@ -161,6 +170,7 @@ const DashboardEventModel = mongoose.model(
   DashboardEventSchema
 );
 const ScoreModel = mongoose.model("Score", ScoreSchema);
+const MemberModel = mongoose.model("Member", MemberSchema);
 // const ScoreDetailModel = mongoose.model("ScoreDetail", ScoreDetailSchema);
 
 export {
@@ -178,5 +188,6 @@ export {
   AchievementModel,
   DashboardEventModel,
   ScoreModel,
+  MemberModel,
   // ScoreDetailModel,
 };

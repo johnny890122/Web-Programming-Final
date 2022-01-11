@@ -65,12 +65,31 @@ export const USER_EVENT_INIT = gql`
   }
 `;
 
+// export const TEAM_MEMBER_INIT = gql``;
+
 export const TEAM_SCORE_INIT = gql`
   query initScore($teamID: String) {
     initScore(teamID: $teamID) {
       teamID
       contestID
       contestTitle
+    }
+  }
+`;
+
+export const TEAM_GALLERY_INIT = gql`
+  query initGallery($teamID: String) {
+    initGallery(teamID: $teamID) {
+      galleryID
+    }
+  }
+`;
+
+export const TEAM_GANTT_INIT = gql`
+  query initGantt($teamID: String) {
+    initGantt(teamID: $teamID) {
+      ganttID
+      ganttTitle
     }
   }
 `;

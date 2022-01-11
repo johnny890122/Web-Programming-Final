@@ -4,7 +4,7 @@ type Query {
   initUserAchievement(userID: String): [userAchievement]
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
-  initMember(_id: ID): [User]!
+  initMember(teamID: String): [User]!
   initScore(teamID: String): [Contest]!
   initGallery(teamID: String): [Gallery]!
   initGantt(teamID: String): [Gantt]!
@@ -34,9 +34,8 @@ type Mutation {
   ): ContestScoreSet!
   createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
   createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
-  
   ## --------- Team ----------##
-  
+
   createTeam(
     teamName: String!
     teamDescription: String!
@@ -44,10 +43,7 @@ type Mutation {
     creatorID: String! # ** 修正= > User?
   ): Team
 
-  deleteTeam(
-    teamID: String!
-    memberID: String!
-  ): Team
+  deleteTeam(teamID: String!, memberID: String!): Team
 
   ##---------- Team Event, Reply (完成) ----------##
 
@@ -81,14 +77,8 @@ type Mutation {
     eventReplyID: String
   ): EventReply
 
-  deleteEventReply(
-    eventReplyID: String
-    eventID: String
-  ): Event
-  deleteEvent(
-    eventID: String
-    teamID: String
-  ): Team
+  deleteEventReply(eventReplyID: String, eventID: String): Event
+  deleteEvent(eventID: String, teamID: String): Team
 
   ##---------- Team Post (完成) ----------##
 
@@ -99,16 +89,9 @@ type Mutation {
     creatorID: String!
   ): Post
 
-  updatePost(
-    postTitle: String
-    postContent: String
-    postID: String
-  ): Post
+  updatePost(postTitle: String, postContent: String, postID: String): Post
 
-  deletePost(
-    postID: String
-    teamID: String
-  ): Team
+  deletePost(postID: String, teamID: String): Team
 
   ##---------- Team Vote, Option (完成) ----------##
 
@@ -120,10 +103,7 @@ type Mutation {
     teamID: String!
     creatorID: String!
   ): Vote
-  createVoteOption(
-    voteOptionName: String!, 
-    voteID: String!
-  ): VoteOption
+  createVoteOption(voteOptionName: String!, voteID: String!): VoteOption
 
   updateVote(
     voteTitle: String
@@ -132,24 +112,12 @@ type Mutation {
     voteLimit: Int
     voteID: String
   ): Vote
-  updateVoteOption(
-    voteOptionName: String
-    voteOptionID: String
-  ): VoteOption
+  updateVoteOption(voteOptionName: String, voteOptionID: String): VoteOption
 
-  replyVote(
-    voteOptionID: String
-    voterID: String
-  ): VoteOption
-  
-  deleteVoteOption(
-    voteOptionID: String
-    voteID: String
-  ): Vote
-  deleteVote(
-    voteID: String
-    teamID: String    
-  ): Team
+  replyVote(voteOptionID: String, voterID: String): VoteOption
+
+  deleteVoteOption(voteOptionID: String, voteID: String): Vote
+  deleteVote(voteID: String, teamID: String): Team
 
   ##------------------------------##
 
@@ -238,7 +206,7 @@ type Team {
   teamName: String
   teamDescription: String
   teamType: String
-  teamCreateTime: String 
+  teamCreateTime: String
   teamMember: [User]
   teamGallery: [Gallery]
   teamPost: [Post]
