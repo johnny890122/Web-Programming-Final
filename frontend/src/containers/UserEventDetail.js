@@ -69,32 +69,12 @@ function UserEventDetail(props) {
 	        	<PersonOutlineOutlinedIcon sx={{ fontSize: "large" }} /> Personal
 	        </Typography>
 
-	        <Typography variant="subtitle1" color="text.secondary">
-
-		     </Typography>
-
-	       	{/*<Modal
-	          
-	          style={{ zIndex: 1200 }}
-	          footer={[
-	             
-
-	              <Button key="Delete" onClick={() => console.log("Delete")}>
-	                Delete
-	              </Button>,
-	            ]}>
-	          Are you sure? 
-	    	</Modal>*/}
-
 	    </CardContent>
-
-
 	)
 
 	return (
 		isEditMode ? <CreateUserEvent / > : viewMode
     )
 }
-
 
 export default UserEventDetail;
