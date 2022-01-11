@@ -11,9 +11,9 @@ type Query {
   users(query: String): [User]
   teams(query: String): [Team]
   initTeam(userID: String): [Team]!
-  initTeamEvent(_id: ID): [Event]!
-  initTeamPost(_id: ID): [Post]!
-  initVote(_id: ID): [Vote]!
+  initTeamEvent(teamID: String): [Event]!
+  initTeamPost(teamID: String): [Post]!
+  initVote(teamID: String): [Vote]!
   myUserAccount(userID: String): User
 }
 
@@ -211,7 +211,7 @@ type NotificationTask {
 }
 
 type DashboardEvent {
-  eventID: ID!
+  eventID: String!
   eventTitle: String!
   eventDescription: String
   eventStart: Float!
@@ -221,7 +221,7 @@ type DashboardEvent {
 }
 
 type UserPlaySet {
-  userPlaySetID: ID!
+  userPlaySetID: String!
   playSetUser: User!
   scoreDetail: [Int!]!
 }
@@ -246,11 +246,12 @@ type Team {
   teamScore: [Contest]
   teamVote: [Vote]
   teamEvent: [Event]
+  teamManager: [User]
 }
 
 type Gallery {
   teamID: String!
-  galleryID: ID!
+  galleryID: String!
   galleryTitle: String!
   original_url: [String!]!
   thumbnail_url: [String!]!
@@ -266,13 +267,13 @@ type Post {
 
 type Gantt {
   teamID: String!
-  ganttID: ID!
+  ganttID: String!
   ganttTitle: String!
   ganttTaskID: [GanttTask]!
 }
 
 type GanttTask {
-  ganttTaskID: ID!
+  ganttTaskID: String
   dateStart: Int!
   dateEnd: Int!
   duration: Int!

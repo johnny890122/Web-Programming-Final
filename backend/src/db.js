@@ -38,6 +38,7 @@ const TeamSchema = new Schema({
   teamScore: [{ type: Schema.Types.ObjectId, ref: "Score" }],
   teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
   teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
+  teamManager: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 const EventSchema = new Schema({
@@ -71,7 +72,7 @@ const GanttSchema = new Schema({
   teamID: { type: String, required: true },
   ganttID: { type: String, required: true },
   ganttTitle: { type: String, required: true },
-  ganttTaskID: [{ type: mongoose.Types.ObjectId, ref: "GanttTask" }],
+  ganttTaskID: [{ type: Schema.Types.ObjectId, ref: "GanttTask" }],
 });
 
 const NotificationTaskSchema = new Schema({

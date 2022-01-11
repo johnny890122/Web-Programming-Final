@@ -64,25 +64,19 @@ function TeamPost() {
   )
 
   const postForm = (
-    <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={modalMode === 'edit' ? { title: postNow.title, content: postNow.content } : {}}
-      onFinish={onSubmit}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="Title"
-        name="title"
-      >
+    <Form name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={
+            modalMode === 'edit' ? 
+            { title: postNow.title, content: postNow.content } : {}}
+          onFinish={onSubmit}
+          autoComplete="off">
+      <Form.Item label="Title" name="title">
         <Input />
       </Form.Item>
 
-      <Form.Item
-        label="Content"
-        name="content"
-      >
+      <Form.Item label="Content" name="content">
         <Input.TextArea size="large"/>
       </Form.Item>
 

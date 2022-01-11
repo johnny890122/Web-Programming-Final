@@ -14,6 +14,10 @@ const Team = {
     teamVote: async (parent, args, { db, pubSub }) => {
         return await db.VoteModel.find({_id: { $in : parent.teamVote }})
     },
+    teamManager: async (parent, args, { db, pubSub }) => {
+        //console.log(parent.teamManager)
+        return await db.UserModel.find({_id: { $in : parent.teamManager }})
+    },
 
     //teamGallery: async (parent, args, { db, pubSub }) => {},
     //teamGantt: async (parent, args, { db, pubSub }) => {},

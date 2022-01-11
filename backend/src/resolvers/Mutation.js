@@ -237,7 +237,8 @@ const Mutation = {
       "teamGantt": [],
       "teamScore": [],
       "teamVote": [],
-      "teamEvent": []
+      "teamEvent": [], 
+      "teamManager": teamMember
     }).save();
     const newAllTeams = await db.UserModel.findOneAndUpdate(
       {_id: Creator._id}, {$push: {"allTeams": team._id}})
@@ -427,7 +428,6 @@ const Mutation = {
     console.log("Event Deleted!");
     return EventTeam;
   },
-  //deleteEvent(): Team
 
   //---------- Team Vote, Option ----------//
 
