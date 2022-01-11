@@ -131,7 +131,7 @@ const Query = {
   },
 
   initTeam: async (parent, { userID }, { db, pubSub }) => {
-    const user = await db.UserModel.findOne({ _id: userID });
+    const user = await db.UserModel.findOne({ userID: userID });
     if (!user) throw new Error("User not found!");
     if (user.allTeams.length !== 0) return user.allTeams;
     else return [];

@@ -23,12 +23,12 @@ import UserSettings from "./UserSettings";
 
 function App() {
   const ME_KEY = "me";
+  const TEAM_KEY = "nowTeam";
 
   return (
     <>
       <Routes>
         {/* login and signup */}
-
         <Route path="/" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route
@@ -49,7 +49,10 @@ function App() {
           path="/user/CreateUserEvent"
           element={<CreateUserEvent me={localStorage.getItem(ME_KEY)} />}
         />
-        <Route path="/user/Team" element={<UserTeam />} />
+        <Route
+          path="/user/Team"
+          element={<UserTeam nowTeam={localStorage.getItem(TEAM_KEY)} />}
+        />
         <Route
           path="/user/Achievement"
           element={<UserAchievement me={localStorage.getItem(ME_KEY)} />}

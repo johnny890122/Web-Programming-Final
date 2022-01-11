@@ -72,7 +72,7 @@ const UserSettings = (props) => {
                 </Tag>
                 <Input
                   disabled="true"
-                  defaultValue={loading ? "" : data.myUserAccount.userAccount}
+                  defaultValue={data ? data.myUserAccount.userAccount : null}
                   style={{ width: "70%" }}
                   size="small"
                 />
@@ -84,7 +84,7 @@ const UserSettings = (props) => {
                 </Tag>
                 <Input
                   disabled="true"
-                  defaultValue={loading ? "" : data.myUserAccount.userEmail}
+                  defaultValue={data ? data.myUserAccount.userEmail : null}
                   style={{ width: "76%" }}
                   size="small"
                 />
@@ -95,7 +95,7 @@ const UserSettings = (props) => {
                   <Typography>Display Name</Typography>
                 </Tag>
                 <Input
-                  defaultValue={loading ? "" : data.myUserAccount.userName}
+                  defaultValue={data ? data.myUserAccount.userName : null}
                   style={{ width: "58%" }}
                   size="small"
                 />

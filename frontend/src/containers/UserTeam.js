@@ -15,6 +15,8 @@ function UserTeam() {
     display: "inline-block",
   };
 
+  const submitTeam = () => {};
+
   const teamlist = (
     <div className="user-team-list">
       <div
@@ -41,7 +43,7 @@ function UserTeam() {
       >
         {TeamData.map((team) => (
           <Link to={{ pathname: `/team/${team.teamname}/Home` }}>
-            <Card style={cardStyle} key={team.id}>
+            <Card style={cardStyle} key={team.id} onClick={submitTeam}>
               <CardActionArea
                 sx={{ width: 450, height: 200, display: "inline" }}
               >
