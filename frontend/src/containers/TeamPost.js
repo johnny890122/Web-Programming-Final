@@ -25,26 +25,26 @@ function TeamPost() {
   const posts = PostData;
   const [postNow, setPostNow] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMode, setMedalMode] = useState('new'); //new, detail, edit
   const [isEdit, setIsEdit] = useState(false)
 
-  const showModal = (post) => {
-    setPostNow(post)
+  const showModal = (mode, post) => {
+    if (mode === 'detail') {
+      setPostNow(post)}
+    setMedalMode(mode)
     setIsModalVisible(true);
   };
-
   const handleOk = () => {
     setIsModalVisible(false);
-    setIsEdit(false);
+    setMedalMode('new');
   };
-
   const handleEdit = () => {
-    setIsEdit(true);
+    setMedalMode('edit')
   };
-
   const handleBack = () => {
-    setIsEdit(false);
+    setMedalMode('detail')
   };
-
+  const handleNew = () => {}
   const onSubmit = () => {
     console.log('Success');
   };
@@ -68,7 +68,7 @@ function TeamPost() {
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      initialValues={{ title: postNow.title, content: postNow.content }}
+      initialValues={modalMode === 'edit' ? { title: postNow.title, content: postNow.content } : {}}
       onFinish={onSubmit}
       autoComplete="off"
     >
@@ -98,14 +98,18 @@ function TeamPost() {
     <Modal title="Post" visible={isModalVisible}
            onOk={handleOk} onCancel={handleOk}
            confirmLoading={isEdit}
-           footer={isEdit? [
+           footer={modalMode === 'new'?
+           [
+            <Button key="ok" onClick={handleOk}>Cancel</Button>
+           ]
+            : (modalMode === 'edit'? [
               <Button key="back" onClick={handleBack}>Back</Button>,
               <Button key="ok" onClick={handleOk}>OK</Button>
             ] : [
               <Button key="edit" onClick={handleEdit}>Edit</Button>,
               <Button key="ok" onClick={handleOk}>OK</Button>
-            ]}>
-      {isEdit ? postForm : postDetail}     
+            ])}>
+      {modalMode === 'new' ? postForm : (modalMode === 'edit' ? postForm : postDetail)}     
     </Modal>
   )
 
@@ -117,10 +121,10 @@ function TeamPost() {
       </Typography>
       {postModal}
       <List className = "team-post-list" sx={{ p:1, width: '100%' }}>
-          <ListItem button key = "0">
+          <ListItem key = "0">
               <Card sx={{ m: 1, p:1, width: '100%' }}>
                   <CardActionArea sx={{ width: '100%' }}
-                                        href={`#post-detail`}>
+                                  onClick = {() => showModal('new', null)}>
                     <CardContent sx={{ p: 2 }}>
                       <Box sx={{ m:1, p: 1 }}>
                         <Typography gutterBottom variant="h4" component="div" >
@@ -133,7 +137,7 @@ function TeamPost() {
           </ListItem>
           {posts.map(post => <ListItem key = {post.id}>
                               <Card sx={{ m: 1, p:1, width: '100%' }}>
-                                    <CardActionArea sx={{ width: '100%' }} onClick={() => {showModal(post)}}
+                                    <CardActionArea sx={{ width: '100%' }} onClick={() => {showModal("detail", post)}}
                                                     >
                                       <CardContent sx={{ p: 2 }}>
                                         <Box sx={{ m:1, p: 1 }}>
