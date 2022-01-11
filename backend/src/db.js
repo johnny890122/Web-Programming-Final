@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema({
   userID: { type: String, required: false },
@@ -12,15 +11,11 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   manageTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
-  userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
-  userNotification: [
-    { type: Schema.Types.ObjectId, ref: "DashboardNotification" },
-  ],
-  userAchievement: [
-    { type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },
-  ],
+  //userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
+  userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" },],
+  userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },],
   userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
-  userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
+  //userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
 
 const TodoSchema = new Schema({
@@ -112,10 +107,42 @@ const ContestSchema = new Schema({
   contestDate: { type: String, required: false },
   contestMyTeam: { type: Schema.Types.ObjectId, ref: "Team" },
   contestOpponent: { type: String, required: false },
-  contestIsWin: { type: String, required: false },
-  contestMySet: { type: Number, required: false },
+  contestIsWin: { type: String, required: false }, // win, lose, tie
+  contestMySet: { type: Number, required: false }, 
   contestOppoSet: { type: Number, required: false },
+  contestSetDetail: [{ type: Schema.Types.ObjectId, ref: "SetDetail" }]
 });
+
+const SetDetailSchema = new Schema({
+  setID: { type: String, required: false },
+  setNumber: { type: Number, required: false }, // 局數
+  setScore: [{ type: String, required: false }], // 得分紀錄: "o"= 我方、"x"= 對面
+  setMyPoint: { type: Number, required: false }, // 我方得分
+  setOppoPoint: { type: Number, required: false }, // 對方得分
+  setOppoErrServe: { type: Number, required: false }, // 對方發球失誤
+  setOppoErrAttack: { type: Number, required: false }, // 對方攻擊失誤
+  setOppoErrOther: { type: Number, required: false }, // 對方處理失誤
+  setPlayerDetail: [{ type: Schema.Types.ObjectId, ref: "DetailPlayer" }], // 個人數據
+})
+
+const DetailPlayerSchema = new Schema({
+  detailID: { type: String, required: false },
+  detailPlayer: { type: Schema.Types.ObjectId, ref: "User" },
+  detailPointServe: { type: Number, required: false }, // 發球得分
+  detailPointAttack: { type: Number, required: false }, // 攻擊得分
+  detailPointTip: { type: Number, required: false }, // 吊球得分
+  detailTimeAttack: { type: Number, required: false }, // 攻擊次數
+  detailTimePass: { type: Number, required: false }, // 一傳/舉球到位次數
+  detailTimeNoPass: { type: Number, required: false }, // 一傳/舉球不到位次數  
+  detailErrPassS: { type: Number, required: false }, // 接發失分
+  detailErrPassA: { type: Number, required: false }, // 接扣失分
+  detailErrPass1: { type: Number, required: false }, // 一傳失分
+  detailErrSet: { type: Number, required: false }, // 二傳失分
+  detailErrOther: { type: Number, required: false }, // 處理失分
+  detailErrAttack: { type: Number, required: false }, // 攻擊失分
+  detailErrServe: { type: Number, required: false }, // 發球失分
+  detailComboServe: [{ type: Number, required: false }], // 連續發球次數
+})
 
 const PostSchema = new Schema({
   postID: { type: String, required: true },
@@ -142,12 +169,6 @@ const VoteOptionSchema = new Schema({
   votedUser: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
-// const ScoreDetailSchema = new Schema({
-//   contestScoreSetID: { type: String, required: true },
-//   contestScoreSet: { type: String, required: true },
-//   contestScoreItem: [{ type: String, required: true }],
-// });
-
 const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
@@ -158,17 +179,12 @@ const VoteModel = mongoose.model("Vote", VoteSchema);
 const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
 const GalleryModel = mongoose.model("Gallery", GallerySchema);
 const GanttModel = mongoose.model("Gantt", GanttSchema);
-const NotificationTaskModel = mongoose.model(
-  "NotificationTask",
-  NotificationTaskSchema
-);
+const NotificationTaskModel = mongoose.model("NotificationTask", NotificationTaskSchema);
 const AchievementModel = mongoose.model("Achievement", AchievementSchema);
-const DashboardEventModel = mongoose.model(
-  "DashboardEvent",
-  DashboardEventSchema
-);
+const DashboardEventModel = mongoose.model("DashboardEvent",DashboardEventSchema);
 const ContestModel = mongoose.model("Contest", ContestSchema);
-// const ScoreDetailModel = mongoose.model("ScoreDetail", ScoreDetailSchema);
+const SetDetailModel = mongoose.model("SetDetail", SetDetailSchema);
+const DetailPlayerModel = mongoose.model("DetailPlayer", DetailPlayerSchema);
 
 export {
   UserModel,
@@ -185,5 +201,6 @@ export {
   AchievementModel,
   DashboardEventModel,
   ContestModel,
-  // ScoreDetailModel,
+  SetDetailModel,
+  DetailPlayerModel
 };

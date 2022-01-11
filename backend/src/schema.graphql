@@ -129,14 +129,42 @@ type Mutation {
   ##---------- Team Contest, Detail ----------##
 
   createContest( # ok
-    teamID: String
-    contestDate: String
+    teamID: String!
+    contestDate: String!
     contestOpponent: String
-    contestIsWin: ContestWinOption
+    contestIsWin: ContestWinOption!
     contestTitle: String
     contestMySet: Int
     contestOppoSet: Int
-  ): Contest!
+  ): Contest
+  createSetDetail(
+    contestID: String!
+    setNumber: Int
+    setScore: String
+    setOppoErrServe: Int
+    setOppoErrAttack: Int
+    setOppoErrOther: Int
+  ): SetDetail
+  createDetailPlayer (
+    setID: String
+    playerID: String
+    detailPointServe: Int
+    detailPointAttack: Int
+    detailPointTip: Int
+    detailTimeAttack: Int
+    detailTimePass: Int
+    detailTimeNoPass: Int
+    detailErrPassS: Int
+    detailErrPassA: Int
+    detailErrPass1: Int
+    detailErrSet: Int
+    detailErrOther: Int
+    detailErrAttack: Int
+    detailErrServe: Int
+    detailComboServe: [Int]
+  ): DetailPlayer
+
+  ##------------------------------##
 
   updateUserNotification(
     userID: String
@@ -161,6 +189,8 @@ type Mutation {
 type Subscription {
   testSubscription: String
 }
+
+##---------- Type ----------#
 
 type User {
   userID: String
@@ -267,24 +297,46 @@ type GanttTask {
 }
 
 type Contest {
-  teamID: String
   contestID: String
   contestTitle: String
   contestDate: String
   contestMyTeam: Team
   contestOpponent: String
-  contestIsWin: ContestWinOption
+  contestIsWin: ContestWinOption!
   contestMySet: Int
   contestOppoSet: Int
-  #contestScoreSet: [ContestScoreSet]
-  #contestScoreItem: [String]
+  contestSetDetail: [SetDetail]
 }
 
-type ContestScoreSet {
-  contestScoreID: String
-  myTeamScore: Int
-  opponentScore: Int
-  userPlaySet: [UserPlaySet]
+type SetDetail {
+  setID: String
+  setNumber: Int
+  setScore: [String]
+  setMyPoint: Int
+  setOppoPoint: Int
+  setOppoErrServe: Int
+  setOppoErrAttack: Int
+  setOppoErrOther: Int
+  setPlayerDetail: [DetailPlayer]
+}
+
+type DetailPlayer {
+  detailID: String!
+  detailPlayer: User!
+  detailPointServe: Int
+  detailPointAttack: Int
+  detailPointTip: Int
+  detailTimeAttack: Int
+  detailTimePass: Int
+  detailTimeNoPass: Int
+  detailErrPassS: Int
+  detailErrPassA: Int
+  detailErrPass1: Int
+  detailErrSet: Int
+  detailErrOther: Int
+  detailErrAttack: Int
+  detailErrServe: Int
+  detailComboServe: [Int]
 }
 
 type Vote {

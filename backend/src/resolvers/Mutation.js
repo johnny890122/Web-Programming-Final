@@ -155,21 +155,6 @@ const Mutation = {
     return eventID;
   }, 
 
-  // createScoreDetail: async (
-  //   parent,
-  //   { contestScoreSet, contestScoreSetItem },
-  //   { db, pubSub }
-  // ) => {
-  //   const contestScoreSetID = uuidv4();
-  //   const newScoreDetail = new db.ScoreDetailModel({
-  //     contestScoreSetID,
-  //     contestScoreSet,
-  //     contestScoreSetItem,
-  //   });
-  //   await newScoreDetail.save();
-  //   return newScoreDetail;
-  // },
-
   createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
     const galleryID = uuidv4();
     const newGallery = new db.GalleryModel({
@@ -631,13 +616,14 @@ const Mutation = {
     const contest = await new db.ContestModel({
       "_id": OBID,
       "contestID": uuidv4(),
-      "contestDate" : contestDate, 
-      "contestOpponent" : contestOpponent, 
-      "contestIsWin" : contestIsWin, 
-      "contestTitle" : contestTitle,
+      "contestTitle" : contestTitle || "Unnamed",
+      "contestDate" : contestDate,
       "contestMyTeam" : Team._id,
-      "contestMySet": contestMySet,
-      "contestOppoSet": contestOppoSet
+      "contestOpponent" : contestOpponent || "unknown", 
+      "contestIsWin" : contestIsWin, 
+      "contestMySet": contestMySet || 0,
+      "contestOppoSet": contestOppoSet || 0,
+      "contestSetDetail": []
     }).save();
     
     const newContest = await db.TeamModel.findOneAndUpdate(
@@ -646,6 +632,69 @@ const Mutation = {
     console.log("New Contest Saved!");
     return contest;
   },
+  createSetDetail: async (parent, args, { db, pubSub }) => {
+    const { contestID, setNumber, setScore, setMyPoint, setOppoPoint,
+            setOppoErrServe, setOppoErrAttack, setOppoErrOther } = args;
+    const Contest = await db.ContestModel.findOne({ contestID: contestID });
+
+    if (!setScore) {
+      const setScore = []}
+
+    const OBID = ObjectId();
+    const setDetail = await new db.SetDetailModel({
+      "_id": OBID,
+      "setID": uuidv4(),
+      "setNumber": setNumber || 1,
+      "setScore": setScore || [],
+      "setMyPoint": setMyPoint || setScore.filter(x => x === "o").length,
+      "setOppoPoint": setOppoPoint || setScore.filter(x => x === "x").length, 
+      "setOppoErrServe": setOppoErrServe || 0,
+      "setOppoErrAttack": setOppoErrAttack || 0, 
+      "setOppoErrOther": setOppoErrOther || 0, 
+      "setPlayerDetail": [],
+    }).save();
+    
+    const setToContest = await db.ContestModel.findOneAndUpdate(
+      {_id: Contest._id}, {$push: {"contestSetDetail": setDetail._id} 
+    })
+    console.log("New Set Detail Saved!");
+    return setDetail;
+  },
+  createDetailPlayer: async (parent, args, { db, pubSub }) => {
+    const { setID, playerID, detailPointServe, detailPointAttack, 
+            detailPointTip, detailTimeAttack, detailTimePass, detailTimeNoPass, 
+            detailErrPassS, detailErrPassA, detailErrPass1, detailErrSet, 
+            detailErrOther, detailErrAttack, detailErrServe, detailComboServe } = args;
+    const Set = await db.SetDetailModel.findOne({ setID: setID });
+    const Player = await db.UserModel.findOne({ userID: playerID });
+
+    const OBID = ObjectId();
+    const detailPlayer = await new db.DetailPlayerModel({
+      "_id": OBID,
+      "detailID": uuidv4(),
+      "detailPlayer": Player._id,
+      "detailPointServe": detailPointServe || 0,
+      "detailPointAttack": detailPointAttack || 0,
+      "detailPointTip": detailPointTip || 0, 
+      "detailTimeAttack": detailTimeAttack || 0,
+      "detailTimePass": detailTimePass || 0, 
+      "detailTimeNoPass": detailTimeNoPass || 0, 
+      "detailErrPassS": detailErrPassS || 0,
+      "detailErrPassA": detailErrPassA || 0,
+      "detailErrPass1": detailErrPass1 || 0,
+      "detailErrSet": detailErrSet || 0,
+      "detailErrOther": detailErrOther || 0,
+      "detailErrAttack": detailErrAttack || 0,
+      "detailErrServe": detailErrServe || 0,
+      "detailComboServe": detailComboServe || [],
+    }).save();
+    
+    const playerToSet = await db.SetDetailModel.findOneAndUpdate(
+      {_id: Set._id}, {$push: {"setPlayerDetail": detailPlayer._id} 
+    })
+    console.log("New Set Player Saved!");
+    return detailPlayer;
+  },  
 };
 
 export default Mutation;
