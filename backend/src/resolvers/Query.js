@@ -80,9 +80,12 @@ const Query = {
   },
 
   initMember: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ _id: teamID });
-    if (!team) throw new Error("Team not found!");
-    if (team.teamMember.length !== 0) return team.teamMember;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const members = await db.MemberModel.findOne({ teamID: teamID });
+    if (members.length !== 0) return members;
     else return [];
   },
 
