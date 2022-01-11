@@ -23,6 +23,7 @@ type Query {
   initVote(teamID: String): [Vote]
   
   myUserAccount(userID: String): User
+  eventDetail(eventID: String): Event
 }
 
 type Mutation {
