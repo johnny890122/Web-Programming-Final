@@ -22,6 +22,15 @@ const Query = {
     return user;
   },
 
+  eventDetail: async (parent, { eventID }, { db, pubSub }) => {
+    const event = await db.DashboardEventModel.findOne({ eventID });
+
+    if (!event) {
+      throw new Error("Event not found!");
+    }
+    return event;
+  },
+
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
 

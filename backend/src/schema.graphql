@@ -15,6 +15,7 @@ type Query {
   initTeamPost(teamID: String): [Post]!
   initVote(teamID: String): [Vote]!
   myUserAccount(userID: String): User
+  eventDetail(eventID: String): Event
 }
 
 type Mutation {
