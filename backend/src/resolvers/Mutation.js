@@ -155,24 +155,6 @@ const Mutation = {
     return eventID;
   }, 
 
-  createScore: async (
-    parent,
-    { teamID, contestDate, contestOpponent, contestIsWin, contestTitle },
-    { db, pubSub }
-  ) => {
-    const contestID = uuidv4();
-    const newScore = new db.ScoreModel({
-      teamID,
-      contestID,
-      contestDate,
-      contestOpponent,
-      contestIsWin,
-      contestTitle,
-    });
-    await newScore.save();
-    return newScore;
-  },
-
   // createScoreDetail: async (
   //   parent,
   //   { contestScoreSet, contestScoreSetItem },
@@ -235,7 +217,7 @@ const Mutation = {
       "teamMember": teamMember,
       "teamPost": [],
       "teamGantt": [],
-      "teamScore": [],
+      "teamContest": [],
       "teamVote": [],
       "teamEvent": [], 
       "teamManager": teamMember
@@ -248,12 +230,16 @@ const Mutation = {
     console.log("New Team Saved!");
     return team;
   }, 
-
   addMember: async (parent, args, { db, pubSub }) => {
     const { teamID, memberID } = args;
     const Member = await db.UserModel.findOne({ userID: memberID });
     const Team = await db.TeamModel.findOne({ teamID: teamID });
     
+    const MemberExists = await Team.teamMember.includes(Member._id);
+    if (MemberExists) {
+      throw new Error("This member has existed!");
+    }
+
     const MemberToTeam = await db.TeamModel.findOneAndUpdate(
       {_id: Team._id}, {$push: {"teamMember": Member._id} 
     })
@@ -268,6 +254,15 @@ const Mutation = {
     const Member = await db.UserModel.findOne({ userID: memberID });
     const Team = await db.TeamModel.findOne({ teamID: teamID });
     
+    const MemberExists = await Team.teamMember.includes(Member._id);
+    if (!MemberExists) {
+      throw new Error("This member doesn't exist!");
+    }
+    const ManagerExists = await Team.teamManager.includes(Member._id);
+    if (ManagerExists) {
+      throw new Error("This manager has existed!");
+    }
+
     const MemberToTeam = await db.TeamModel.findOneAndUpdate(
       {_id: Team._id}, {$push: {"teamManager": Member._id} 
     })
@@ -298,12 +293,31 @@ const Mutation = {
     console.log("Delete Member Success!");
     return Member;
   },
-
+  deleteManager: async (parent, args, { db, pubSub }) => {
+    const { teamID, memberID } = args;
+    const Member = await db.UserModel.findOne({ userID: memberID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    
+    const ManagerToTeam = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$pull: {"teamManager": Member._id} 
+    })
+    const TeamToManager = await db.UserModel.findOneAndUpdate(
+      {_id: Member._id}, {$pull: {"manageTeams": Team._id} 
+    })
+    console.log("Delete Manager Success!");
+    return Member;
+  },
   deleteTeam: async (parent, args, { db, pubSub }) => {
     const { teamID, memberID } = args;
     const Deleter = await db.UserModel.findOne({ userID: memberID });
-    const Team = await db.UserModel.findOne({ teamID: teamID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
     
+    const ManagerExists = await Team.teamManager.includes(Deleter._id);
+    if (!ManagerExists) {
+      throw new Error("This member is not a manager!");
+    }
+
+    //Team.Post.map (post => console.log(memberID))
     //const deleteTeamPost = await db.PostModel.deleteMany({_id: { $in : parent.teamMember }});
     //const deleteTeamEvent = await db.EventModel.deleteMany({_id: { $in : parent.teamEvent }});
     //const deleteTeamEventReply = await db.EventReplyModel.deleteMany({_id: { $in : parent.teamMember }});
@@ -313,7 +327,7 @@ const Mutation = {
     
     console.log("Team Deleted!");
     return Team;
-  },
+  },// 未完成
 
   //---------- Team Post ----------//
 
@@ -606,6 +620,32 @@ const Mutation = {
     return VoteTeam;
   },
 
+  //---------- Team Contest, Detail ----------//
+
+  createContest: async (parent, args, { db, pubSub }) => {
+    const { teamID, contestDate, contestIsWin, contestTitle,
+            contestOpponent, contestMySet, contestOppoSet } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+
+    const OBID = ObjectId();
+    const contest = await new db.ContestModel({
+      "_id": OBID,
+      "contestID": uuidv4(),
+      "contestDate" : contestDate, 
+      "contestOpponent" : contestOpponent, 
+      "contestIsWin" : contestIsWin, 
+      "contestTitle" : contestTitle,
+      "contestMyTeam" : Team._id,
+      "contestMySet": contestMySet,
+      "contestOppoSet": contestOppoSet
+    }).save();
+    
+    const newContest = await db.TeamModel.findOneAndUpdate(
+      {_id: Team._id}, {$push: {"teamContest": contest._id} 
+    })
+    console.log("New Contest Saved!");
+    return contest;
+  },
 };
 
 export default Mutation;

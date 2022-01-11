@@ -18,10 +18,14 @@ const Team = {
         //console.log(parent.teamManager)
         return await db.UserModel.find({_id: { $in : parent.teamManager }})
     },
+    teamContest: async (parent, args, { db, pubSub }) => {
+        //console.log(parent.teamContest)
+        return await db.ContestModel.find({_id: { $in : parent.teamContest }})
+    },
 
     //teamGallery: async (parent, args, { db, pubSub }) => {},
     //teamGantt: async (parent, args, { db, pubSub }) => {},
-    //teamScore: async (parent, args, { db, pubSub }) => {},
+    
 }
   
 export default Team;

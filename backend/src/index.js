@@ -11,6 +11,7 @@ import Event from "./resolvers/Event";
 import EventReply from "./resolvers/EventReply";
 import Vote from "./resolvers/Vote";
 import VoteOption from "./resolvers/VoteOption";
+import Contest from "./resolvers/Contest";
 // import Subscription from "./resolvers/Subscription";
 // db
 import * as db from "./db";
@@ -27,7 +28,8 @@ const server = new GraphQLServer({
     Event,
     EventReply,
     Vote,
-    VoteOption
+    VoteOption,
+    Contest
     // Subscription,
   },
   context: {

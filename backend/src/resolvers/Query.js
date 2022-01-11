@@ -1,6 +1,7 @@
 import { UserModel } from "../db";
 
 const Query = {
+  
   myUserAccount: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
 
@@ -89,16 +90,16 @@ const Query = {
     else return [];
   },
 
-  initScore: async (parent, { teamID }, { db, pubSub }) => {
+  initContest: async (parent, { teamID }, { db, pubSub }) => {
     const team = await db.TeamModel.findOne({ teamID: teamID });
     if (!team) {
       throw new Error("Team not found!");
     }
-    const score = await db.ScoreModel.find({ teamID });
-    if (!score) {
+    const contest = await db.ContestModel.find({ teamID });
+    if (!contest) {
       return [];
     }
-    return score;
+    return contest;
   },
 
   initGallery: async (parent, { teamID }, { db, pubSub }) => {
@@ -124,44 +125,97 @@ const Query = {
     }
     return gallery;
   },
-  /* --------------------------------------- */
-  users: async (parent, args, { db, pubSub }) => {
-    return db.UserModel.find();
-  },
 
-  teams: async (parent, args, { db, pubSub }) => {
-    return db.TeamModel.find({}, {}, { lean: true });
-  },
+  initTeam: async (parent, args, { db, pubSub }) => {    
+    const { userID } = args;
+    const User = await db.UserModel.findOne({ userID: userID });
 
-  initTeam: async (parent, { userID }, { db, pubSub }) => {
-    const user = await db.UserModel.findOne({ userID: userID });
-    if (!user) throw new Error("User not found!");
-    if (user.allTeams.length !== 0) return user.allTeams;
-    else return [];
-  },
+    if (!User) {
+      throw new Error("This user doesn't exist!");
+    }
 
+    return User.allTeams;
+  },
   initTeamEvent: async (parent, args, { db, pubSub }) => {
-    const { _id } = args;
-    const Team = await db.TeamModel.findOne({ _id: _id });
-    if (!Team) throw new Error("Team not found!");
-    if (Team.teamEvent.length !== 0) return Team.teamEvent;
-    else return [];
-  },
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
 
+    if (!Team) {
+      throw new Error("This team doesn't exist!");
+    }
+    
+    return Team.teamEvent;
+  },
   initTeamPost: async (parent, args, { db, pubSub }) => {
-    const { _id } = args;
-    const Team = await db.TeamModel.findOne({ _id: _id });
-    if (!Team) throw new Error("Team not found!");
-    if (Team.teamPost.length !== 0) return Team.teamPost;
-    else return [];
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+
+    if (!Team) {
+      throw new Error("This team doesn't exist!");
+    }
+    
+    return Team.teamPost;
+  },
+  initVote: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+
+    if (!Team) {
+      throw new Error("This team doesn't exist!");
+    }
+    
+    return Team.teamVote;
   },
 
-  initVote: async (parent, args, { db, pubSub }) => {
-    const { _id } = args;
-    const Team = await db.TeamModel.findOne({ _id: _id });
-    if (!Team) throw new Error("Team not found!");
-    if (Team.teamVote.length !== 0) return Team.teamVote;
-    else return [];
+  /* ------------- Query one, all------------- */
+
+  users: async (parent, args, { db, pubSub }) => {return db.UserModel.find();},
+  teams: async (parent, args, { db, pubSub }) => {return db.TeamModel.find();},
+  
+  user: async (parent, args, { db, pubSub }) => {
+    const { userID } = args;
+    const User = await db.UserModel.findOne({ userID: userID });
+
+    if (!User) {
+      throw new Error("This user doesn't exist!");
+    }
+    return User;
+  },
+  team: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+
+    if (!Team) {
+      throw new Error("This team doesn't exist!");
+    }
+    return Team;
+  },
+  post: async (parent, args, { db, pubSub }) => {
+    const { postID } = args;
+    const Post = await db.PostModel.findOne({ postID: postID });
+
+    if (!Post) {
+      throw new Error("This post doesn't exist!");
+    }
+    return Post;
+  },
+  teamEvent: async (parent, args, { db, pubSub }) => {
+    const { eventID } = args;
+    const Event = await db.EventModel.findOne({ eventID: eventID });
+
+    if (!Event) {
+      throw new Error("This event doesn't exist!");
+    }
+    return Event;
+  },
+  vote: async (parent, args, { db, pubSub }) => {
+    const { voteID } = args;
+    const Vote = await db.VoteModel.findOne({ voteID: voteID });
+
+    if (!Vote) {
+      throw new Error("This vote doesn't exist!");
+    }
+    return Vote;
   },
 };
 

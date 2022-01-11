@@ -5,15 +5,23 @@ type Query {
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
   initMember(teamID: String): [User]!
-  initScore(teamID: String): [Contest]!
+  initContest(teamID: String): [Contest]!
   initGallery(teamID: String): [Gallery]!
   initGantt(teamID: String): [Gantt]!
+  
   users(query: String): [User]
   teams(query: String): [Team]
-  initTeam(userID: String): [Team]!
-  initTeamEvent(teamID: String): [Event]!
-  initTeamPost(teamID: String): [Post]!
-  initVote(teamID: String): [Vote]!
+  user(usreID: String) : User
+  team(teamID: String): Team
+  post(postID: String): Post
+  teamEvent(eventID: String): Event
+  vote(voteID: String): Vote
+
+  initTeam(userID: String): [Team]
+  initTeamEvent(teamID: String): [Event]
+  initTeamPost(teamID: String): [Post]
+  initVote(teamID: String): [Vote]
+  
   myUserAccount(userID: String): User
 }
 
@@ -21,17 +29,10 @@ type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
   createUserTodo(userID: String, todoContent: String): Todo
 
-  createScore( # ok
-    teamID: String
-    contestDate: Int!
-    contestOpponent: String!
-    contestIsWin: Boolean!
-    contestTitle: String!
-  ): Contest!
-  createScoreDetail(
-    contestScoreSet: ID!
-    contestScoreItem: [String!]!
-  ): ContestScoreSet!
+  #createContestDetail(
+  #  contestContestSet: ID!
+  #  contestContestItem: [String!]!
+  #): ContestContestSet!
   createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
   createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
   ## --------- Team ----------##
@@ -47,7 +48,7 @@ type Mutation {
   addManager( teamID: String memberID: String ): User
 
   deleteMember( teamID: String memberID: String ): User
-  #deleteManager( teamID: String memberID: String ): User
+  deleteManager( teamID: String memberID: String ): User
   deleteTeam(teamID: String!, memberID: String!): Team
 
   ##---------- Team Event, Reply (完成) ----------##
@@ -124,7 +125,17 @@ type Mutation {
   deleteVoteOption(voteOptionID: String, voteID: String): Vote
   deleteVote(voteID: String, teamID: String): Team
 
-  ##------------------------------##
+  ##---------- Team Contest, Detail ----------##
+
+  createContest( # ok
+    teamID: String
+    contestDate: String
+    contestOpponent: String
+    contestIsWin: ContestWinOption
+    contestTitle: String
+    contestMySet: Int
+    contestOppoSet: Int
+  ): Contest!
 
   updateUserNotification(
     userID: String
@@ -216,7 +227,7 @@ type Team {
   teamGallery: [Gallery]
   teamPost: [Post]
   teamGantt: [Gantt]
-  teamScore: [Contest]
+  teamContest: [Contest]
   teamVote: [Vote]
   teamEvent: [Event]
   teamManager: [User]
@@ -255,22 +266,24 @@ type GanttTask {
 }
 
 type Contest {
-  teamID: String!
-  contestID: String!
-  contestTitle: String!
-  contestMyTeamID: String!
-  contestDate: Int!
-  contestOpponent: String!
-  contestIsWin: Boolean!
-  contestScoreSet: [ContestScoreSet!]
-  contestScoreItem: [String!]
+  teamID: String
+  contestID: String
+  contestTitle: String
+  contestDate: String
+  contestMyTeam: Team
+  contestOpponent: String
+  contestIsWin: ContestWinOption
+  contestMySet: Int
+  contestOppoSet: Int
+  #contestScoreSet: [ContestScoreSet]
+  #contestScoreItem: [String]
 }
 
 type ContestScoreSet {
-  contestScoreID: String!
-  myTeamScore: Int!
-  opponentScore: Int!
-  userPlaySet: [UserPlaySet!]
+  contestScoreID: String
+  myTeamScore: Int
+  opponentScore: Int
+  userPlaySet: [UserPlaySet]
 }
 
 type Vote {
@@ -319,3 +332,10 @@ enum EventReplyOption {
   No
   Unsure
 }
+
+enum ContestWinOption {
+  win
+  lose
+  tie
+}
+

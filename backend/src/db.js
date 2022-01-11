@@ -40,7 +40,7 @@ const TeamSchema = new Schema({
   teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
-  teamScore: [{ type: Schema.Types.ObjectId, ref: "Score" }],
+  teamContest: [{ type: Schema.Types.ObjectId, ref: "Contest" }],
   teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
   teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   teamManager: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -106,13 +106,15 @@ const DashboardEventSchema = new Schema({
   eventPostTime: { type: String, required: true },
 });
 
-const ScoreSchema = new Schema({
-  teamID: { type: String, required: true },
-  contestID: { type: String, required: true },
-  contestDate: { type: Number, required: true },
-  contestOpponent: { type: String, required: true },
-  contestIsWin: { type: Boolean, required: true },
-  contestTitle: { type: String, required: true },
+const ContestSchema = new Schema({
+  contestID: { type: String, required: false },
+  contestTitle: { type: String, required: false },
+  contestDate: { type: String, required: false },
+  contestMyTeam: { type: Schema.Types.ObjectId, ref: "Team" },
+  contestOpponent: { type: String, required: false },
+  contestIsWin: { type: String, required: false },
+  contestMySet: { type: Number, required: false },
+  contestOppoSet: { type: Number, required: false },
 });
 
 const PostSchema = new Schema({
@@ -165,7 +167,7 @@ const DashboardEventModel = mongoose.model(
   "DashboardEvent",
   DashboardEventSchema
 );
-const ScoreModel = mongoose.model("Score", ScoreSchema);
+const ContestModel = mongoose.model("Contest", ContestSchema);
 // const ScoreDetailModel = mongoose.model("ScoreDetail", ScoreDetailSchema);
 
 export {
@@ -182,6 +184,6 @@ export {
   NotificationTaskModel,
   AchievementModel,
   DashboardEventModel,
-  ScoreModel,
+  ContestModel,
   // ScoreDetailModel,
 };
