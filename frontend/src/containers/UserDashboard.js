@@ -6,7 +6,7 @@ import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 import DashboardEvent from "../components/DashboardEvent";
-import UserEventDetail from "./UserEventDetail";
+import EventDetail from "./UserEventDetail";
 import { Modal } from "antd";
 import {
   Box,
@@ -40,7 +40,6 @@ const ViewBox = styled.div`
 const UserDashboard = (props) => {
   const today = new Date();
   const [events, setEvents] = useState(null); // 所有活動資料
-  const [firstInit, setFirstInit] = useState(true);
   const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
@@ -145,7 +144,7 @@ const UserDashboard = (props) => {
                 onClick={(e) =>
                   setIsModalVisible(true) &
                   setComponentInModal(
-                    <UserEventDetail id={e.target.getAttribute("data-index")} />
+                    <EventDetail type="user" id={e.target.getAttribute("data-index")} />
                   )
                 }
               >

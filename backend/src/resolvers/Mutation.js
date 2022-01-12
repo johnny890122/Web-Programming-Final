@@ -404,30 +404,43 @@ const Mutation = {
       teamID,
       creatorID,
     } = args;
+
     const Creator = await db.UserModel.findOne({ userID: creatorID });
 
+    if (!Creator) {
+      throw new Error("Creator not found!");
+    }
     const timeNow = await new Date();
-    const OBID = ObjectId();
+    const eventID = uuidv4()
     const event = await new db.EventModel({
-      _id: OBID,
-      eventID: uuidv4(),
+      teamID: teamID,
+      eventID: eventID,
       eventTitle: eventTitle,
       eventDescription: eventDescription,
       eventStart: eventStart,
       eventEnd: eventEnd,
       eventLocation: eventLocation,
-      eventCreator: Creator._id,
+      eventCreator: creatorID,
       eventPostTime: timeNow,
       eventReply: [],
     }).save();
 
-    const newEvent = await db.TeamModel.findOneAndUpdate(
-      { teamID: teamID },
-      { $push: { teamEvent: event.id } }
-    );
     console.log("New Team Event Saved!");
-    return event;
+    return eventID;
   },
+
+  deleteTeamEvent: async (parent, { eventID }, { db, pubSub }) => {
+    const event = await db.EventModel.findOne({ eventID });
+
+    if (!event) {
+      throw new Error("Event not found!");
+    }
+
+    await db.EventModel.deleteOne( { eventID } );
+
+    return eventID;
+  },
+
   replyTeamEvent: async (parent, args, { db, pubSub }) => {
     const { eventReplyOption, eventReplyContent, memberID, eventID } = args;
     const Member = await db.UserModel.findOne({ userID: memberID });

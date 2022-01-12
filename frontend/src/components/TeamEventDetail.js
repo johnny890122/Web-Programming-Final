@@ -1,51 +1,113 @@
-import { useState, useEffect } from 'react';
-import { EventData } from './ListData';
-import { InputLabel, Select, FormControl, MenuItem, Button } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShortTextIcon from '@mui/icons-material/ShortText';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-function TeamEventDetail(id) {
+import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
+import {useState} from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { TEAM_EVENT_DETAIL, DELETE_TEAM_EVENT } from "../graphql";
+import CreateUserEvent from "../containers/CreateUserEvent"
+import { Modal } from "antd";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import PeopleIcon from "@mui/icons-material/People";
 
-    const event = EventData.find(e => e.id === "4")
-    const [attend, setAttend] = useState(null)
+function TeamEventDetail(props) {
 
-    return(
-        <div className='team-event-detail'>
-            <div>
-                <h2>{event.title}</h2>
-                <p>{event.author.name} create at {event.posttime}</p>
-            </div>
-            <div>   
-                <span>{event.description}</span>
-            </div> 
-            <div>
-                <h4>{event.start}</h4>
-                <h4>at {event.location}</h4>
-            </div>
+    const { data, error, loading, subscribeToMore } = 
+    useQuery(TEAM_EVENT_DETAIL, {
+        variables: { eventID: props.id },
+    });
 
-            <FormControl sx={{ m: 1 }} variant="standard" className='team-event-detail-reply'>
-                <InputLabel id="team-event-detail-reply-label">Attend</InputLabel>
-                <Select
-                 labelId="team-event-detail-reply-label"
-                 id="team-event-detail-reply-select"
-                 value={attend}
-                 //onChange={handleChange}
-                 //input={<BootstrapInput />}
-                 >
-                    <MenuItem value={null}>
-                        <em>Unknown</em>
-                    </MenuItem>
-                    <MenuItem value={true}>Yes</MenuItem>
-                    <MenuItem value={false}>No</MenuItem>
-                </Select>
-                <Button variant="outlined" color="success">
-                    Submit
+    const [deleteEvent] = useMutation(DELETE_TEAM_EVENT);
+    
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [isDeletedMode, setIsDeletedMode] = useState(false);
+
+    const handelEventDeleted = async () => {
+        await deleteEvent({
+            variables: {
+                eventID: props.id
+            }
+        });
+        setIsDeletedMode(false);
+    }
+
+    const viewMode = (
+        <CardContent 
+            // sx={{ p: 5 }}
+          >
+            <Typography gutterBottom variant="h4" component="div">
+            {
+                isEditMode 
+                ? <Button
+                    onClick={ () => setIsEditMode(false) & setIsDeletedMode(false) } 
+                    startIcon={<ArrowBackIosIcon sx={{ fontSize: "large" }}/> } />
+                :<Button
+                    onClick={ () => setIsEditMode(true) & setIsDeletedMode(false) } 
+                    startIcon={<EditIcon sx={{ fontSize: "large" }}/> } />
+            }
+                <Button 
+                    color= { isDeletedMode ? "error" : "primary"}
+                    onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelEventDeleted() } 
+                    startIcon={<DeleteOutlineOutlinedIcon sx={{ fontSize: "large" }}/> }>
+                        {!isDeletedMode ? "" : "Are you sure?" }
                 </Button>
-            </FormControl>
 
-            {/* 公布回應人數與回應情形 */}
+                <Button 
+                    color="success"
+                    style={{display: isDeletedMode ? "inline": "none" }} 
+                    key="Cancel" 
+                    onClick={() => setIsDeletedMode(false)} >
+                        Cancel
+                </Button>
+            </Typography>
 
+            {
+                isEditMode 
+                ? <CreateUserEvent 
+                    title={data.teamEventDetail.eventTitle}
+                    description={data.teamEventDetail.eventDescription}
+                    location={data.teamEventDetail.eventLocation}
+                    sDate={data.teamEventDetail.eventStart}
+                    sTime={data.teamEventDetail.eventStart}
+                    eDate={data.teamEventDetail.eventEnd}
+                    eTime={data.teamEventDetail.eventEnd}
+                    eventID={props.id}
+                    mode="edit"
+                / > 
+                : <>
+                    {!loading & !isEditMode ? data.teamEventDetail.eventTitle: ""}
+                    <Typography variant="subtitle1" color="text.secondary">
+                        <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventStart: ""}
+                    </Typography>
 
-        </div>
+                    <Typography variant="subtitle1" color="text.secondary">
+                        <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventEnd: ""}
+                    </Typography>
+
+                    <Typography variant="subtitle1" color="text.secondary"> 
+                        <LocationOnIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventLocation: ""}
+                    </Typography>
+
+                    <Typography variant="subtitle1" color="text.secondary">
+                        <ShortTextIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventDescription: ""}
+                    </Typography>
+
+                    <Typography variant="subtitle1" color="text.secondary">
+                        <PeopleIcon sx={{ fontSize: "large" }} /> Team
+                    </Typography>
+                </>
+            }
+        </CardContent>
+    )
+
+    return (
+        viewMode
     )
 }
 

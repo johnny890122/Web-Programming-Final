@@ -37,20 +37,21 @@ const TeamSchema = new Schema({
   teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
   teamContest: [{ type: Schema.Types.ObjectId, ref: "Contest" }],
   teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
-  teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
+  teamEvent: [{ type: String, ref: "Event" }],
   teamManager: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 const EventSchema = new Schema({
+  teamID: { type: String, required: true },
   eventID: { type: String, required: true },
   eventTitle: { type: String, required: true },
   eventDescription: { type: String, required: true },
-  eventStart: { type: String, required: true },
-  eventEnd: { type: String, required: false },
+  eventStart: { type: Number, required: true },
+  eventEnd: { type: Number, required: false },
   eventLocation: { type: String, required: false },
-  eventCreator: { type: Schema.Types.ObjectId, ref: "User" },
+  eventCreator: { type: String, ref: "User" },
   eventPostTime: { type: String, required: true },
-  eventReply: [{ type: Schema.Types.ObjectId, ref: "EventReply" }],
+  eventReply: [{ type: String, ref: "EventReply" }],
 });
 
 const EventReplySchema = new Schema({
