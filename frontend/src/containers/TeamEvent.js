@@ -1,9 +1,19 @@
 import Template from "../components/Template";
-import { EventData } from '../components/ListData';
-import { Button, Chip, List, ListItem, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
-import { CardActionArea, CardMedia, Box } from '@mui/material';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { useState, useEffect } from 'react';
+import { EventData } from "../components/ListData";
+import {
+  Button,
+  Chip,
+  List,
+  ListItem,
+  ToggleButtonGroup,
+  ToggleButton,
+  Typography,
+  Card,
+  CardContent,
+} from "@mui/material";
+import { CardActionArea, CardMedia, Box } from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -24,69 +34,86 @@ event, createEvent, editEvent, deleteEvent
 連結活動頁面
 */
 
-// 
+//
 
 function TeamEvent(props) {
+  const [viewmode, setViewmode] = useState("list"); // 預覽模式
+  const [filtermode, setFiltermode] = useState("upcoming"); // 活動篩選模式
+  const [events, setEvents] = useState([]); // 所有團隊活動資料
 
-    const [viewmode, setViewmode] = useState("list"); // 預覽模式
-    const [filtermode, setFiltermode] = useState("upcoming"); // 活動篩選模式
-    const [events, setEvents ] = useState([]) // 所有團隊活動資料
+  const today = new Date();
 
-    const today = new Date();
-    
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const handleViewChange = (view, newView) => {
-        setViewmode(newView);
-    };
-    const [componentInModal, setComponentInModal] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleViewChange = (view, newView) => {
+    setViewmode(newView);
+  };
+  const [componentInModal, setComponentInModal] = useState("");
 
-    const handleFilterChange = (filter, newFilter) => {
-      setFiltermode(newFilter);
-      if (newFilter === 'upcoming') {
-        setEvents(data.initTeamEvent.filter(event => new Date(event.start) > today))
-      } else if (newFilter === 'past') {
-        setEvents(data.initTeamEvent.filter(event => new Date(event.start) <= today))
-      } else if (newFilter === 'unrespond') {
-        setEvents(data.initTeamEvent.filter(event => event.reply === false && new Date(event.start) > today))
-      } else setEvents(data.initTeamEvent)
-      /* 篩選並排序符合條件的活動 */
-    };
+  const handleFilterChange = (filter, newFilter) => {
+    setFiltermode(newFilter);
+    if (newFilter === "upcoming") {
+      setEvents(
+        data.initTeamEvent.filter((event) => new Date(event.start) > today)
+      );
+    } else if (newFilter === "past") {
+      setEvents(
+        data.initTeamEvent.filter((event) => new Date(event.start) <= today)
+      );
+    } else if (newFilter === "unrespond") {
+      setEvents(
+        data.initTeamEvent.filter(
+          (event) => event.reply === false && new Date(event.start) > today
+        )
+      );
+    } else setEvents(data.initTeamEvent);
+    /* 篩選並排序符合條件的活動 */
+  };
   const handleClose = () => {
     setIsModalVisible(false);
     setComponentInModal(null);
   };
 
   const { data, error, loading, subscribeToMore } = useQuery(TEAM_EVENT_INIT, {
-    variables: { teamID: "a44054e9-640a-4b29-80b6-063ac9979a96" },
+    variables: { teamID: props.nowTeam },
   });
+  const EventData = [];
+  if (!loading) {
+    data.initTeamEvent.map((i) =>
+      EventData.push({
+        id: i.eventID,
+        title: i.eventTitle,
+        description: i.eventDescription,
+        start: i.eventStart,
+        end: i.eventEnd,
+        location: i.eventLocation,
+        posttime: i.eventPostTime,
+      })
+    );
+  }
 
   const ListView = () => (
     /* 點擊event進入detail頁面 */
-    <List
-      className="user-event-list"
-      style={{ display: "flex" }}
-    >
-      {events.map((event) => (
+    <List className="user-event-list" style={{ display: "flex" }}>
+      {EventData.map((event) => (
         <Card
           style={{ width: "325px", flexDirection: "row" }}
           className="user-event-item"
           sx={{ m: 2 }}
-          key={events.id}
+          key={event.id}
         >
           <CardContent sx={{ p: 4 }}>
             <Typography gutterBottom variant="h4" component="div">
-              {event.eventTitle}
+              {event.title}
               <PeopleIcon sx={{ mx: 1 }} />
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
               <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
-              {new Date(event.eventStart).toDateString()}
+              {new Date(event.start).toDateString()}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
-              <LocationOnIcon sx={{ fontSize: "small" }} />{" "}
-              {event.eventLocation}
+              <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
             </Typography>
 
             {new Date(event.eventStart) <= today ? (
@@ -108,10 +135,14 @@ function TeamEvent(props) {
                 key={event.eventID}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  console.log(e.target.getAttribute("data-index")) & 
+                  console.log(e.target.getAttribute("data-index")) &
                   setComponentInModal(
-                    <EventDetail type="team" id={e.target.getAttribute("data-index")} /> )
-                  } 
+                    <EventDetail
+                      type="team"
+                      id={e.target.getAttribute("data-index")}
+                    />
+                  )
+                }
               >
                 More
               </Button>
@@ -122,79 +153,99 @@ function TeamEvent(props) {
     </List>
   );
 
+  const CalendarView = () => (
+    <FullCalendar
+      className="team-event-calendar"
+      plugins={[dayGridPlugin, interactionPlugin]}
+      initialView="dayGridMonth"
+      locale="zh-tw" // 中文化
+      events={events}
 
-    const CalendarView = (() =>      
-            <FullCalendar
-                className = "team-event-calendar"
-                plugins={[dayGridPlugin, interactionPlugin]}
-                initialView='dayGridMonth'
-                locale="zh-tw" // 中文化
-                events={events}
+      /* 點擊date顯示當日event的list(或是空list: 本日無活動) */
 
-                /* 點擊date顯示當日event的list(或是空list: 本日無活動) */
-                
-                // dateClick={handleDateClick}
-            />      
-    )
+      // dateClick={handleDateClick}
+    />
+  );
 
-    const eventlist = (
+  const eventlist = (
+    <div className="team-event">
+      <h1>Events</h1>
 
-        <div className = "team-event">
-          <h1>Events</h1>
-          
-          <div className = "team-event-viewtoggle">  
-            <ToggleButtonGroup color="primary" value={viewmode} exclusive
-                onChange={handleViewChange} // 切換預覽模式(列表、日曆)
-                >
-                <ToggleButton size ="small" value="list">List</ToggleButton>         
-                <ToggleButton size ="small" value="calendar">Calendar</ToggleButton>
-            </ToggleButtonGroup>
-            <Button variant="outlined" color="success" sx={{ m: 1 }} 
-                onClick={() => setIsModalVisible(true) & setComponentInModal(
-                  <CreateTeamEvent me={props.me} mode="create" />)
-                }
-            >
-                Create
-            </Button> 
-          </div> 
-
-          {(viewmode === 'list') ? 
-            <div className = "team-event-filtertoggle">
-                <ToggleButtonGroup color="primary" value={filtermode} exclusive
-                    onChange={handleFilterChange} 
-                    // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
-                    >
-                    <ToggleButton value="all">All</ToggleButton>
-                    <ToggleButton value="upcoming">Upcoming</ToggleButton>
-                    <ToggleButton value="past">Past</ToggleButton>
-                    <ToggleButton value="unrespond">Unrespond</ToggleButton>
-                </ToggleButtonGroup>
-            </div> : 
-            <></>}
-                                                   
-          {(viewmode === 'list') ? <ListView/> : <CalendarView/>}
-
-          <Modal
-            visible={isModalVisible}
-            onCancel={handleClose}
-            onOk={handleClose}
-            style={{ zIndex: 1200 }}
-            footer={[
-              <Button key="close" onClick={handleClose}>
-                Close
-              </Button>,
-            ]}
-          >
-            {componentInModal}
-          </Modal>
+      <div className="team-event-viewtoggle">
+        <ToggleButtonGroup
+          color="primary"
+          value={viewmode}
+          exclusive
+          onChange={handleViewChange} // 切換預覽模式(列表、日曆)
+        >
+          <ToggleButton size="small" value="list">
+            List
+          </ToggleButton>
+          <ToggleButton size="small" value="calendar">
+            Calendar
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <Button
+          variant="outlined"
+          color="success"
+          sx={{ m: 1 }}
+          onClick={() =>
+            setIsModalVisible(true) &
+            setComponentInModal(
+              <CreateTeamEvent
+                me={props.me}
+                nowTeam={props.nowTeam}
+                mode="create"
+              />
+            )
+          }
+        >
+          Create
+        </Button>
       </div>
-    )
-    
-    return(
-        <div className="Wrapper">
-            <Template content={eventlist} />
-        </div>        
-    )
+
+      {viewmode === "list" ? (
+        <div className="team-event-filtertoggle">
+          <ToggleButtonGroup
+            color="primary"
+            value={filtermode}
+            exclusive
+            onChange={handleFilterChange}
+            // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
+          >
+            <ToggleButton value="all">All</ToggleButton>
+            <ToggleButton value="upcoming">Upcoming</ToggleButton>
+            <ToggleButton value="past">Past</ToggleButton>
+            <ToggleButton value="unrespond">Unrespond</ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {viewmode === "list" ? <ListView /> : <CalendarView />}
+
+      <Modal
+        visible={isModalVisible}
+        onCancel={handleClose}
+        onOk={handleClose}
+        style={{ zIndex: 1200 }}
+        footer={[
+          <Button key="close" onClick={handleClose}>
+            Close
+          </Button>,
+        ]}
+      >
+        {componentInModal}
+      </Modal>
+    </div>
+  );
+
+  return (
+    <div className="Wrapper">
+      <Template content={eventlist} />
+    </div>
+  );
 }
 
 export default TeamEvent;

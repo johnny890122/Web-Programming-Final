@@ -24,12 +24,11 @@ const Query = {
 
   userEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
-    
 
-    if (!event ) {
+    if (!event) {
       throw new Error("Event not found!");
     }
-    return event ;
+    return event;
   },
 
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
@@ -67,7 +66,6 @@ const Query = {
       throw new Error("User not found!");
     }
 
-
     const event = await db.DashboardEventModel.find({ userID });
 
     if (!event) {
@@ -83,11 +81,11 @@ const Query = {
       throw new Error("User not found!");
     }
 
-    const userTeamEvent = []
+    const userTeamEvent = [];
     for (var i of user.allTeams) {
-      const team = await db.TeamModel.findOne({ _id: user.allTeams})
+      const team = await db.TeamModel.findOne({ _id: user.allTeams });
       const events = await db.EventModel.find({ teamID: team.teamID });
-      events.map( i=> userTeamEvent.push(i))
+      events.map((i) => userTeamEvent.push(i));
     }
 
     return userTeamEvent;
@@ -153,6 +151,15 @@ const Query = {
     return gallery;
   },
 
+  findTeamName: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!Team) {
+      throw new Error("Team not found!");
+    }
+    return Team.teamName;
+  },
+
   initTeam: async (parent, args, { db, pubSub }) => {
     const { userID } = args;
     const User = await db.UserModel.findOne({ userID: userID });
@@ -177,7 +184,7 @@ const Query = {
       throw new Error("This team doesn't exist!");
     }
 
-    const teamEvent = await db.EventModel.find({ teamID: teamID })
+    const teamEvent = await db.EventModel.find({ teamID: teamID });
 
     return teamEvent;
   },
@@ -188,8 +195,10 @@ const Query = {
     if (!Team) {
       throw new Error("This team doesn't exist!");
     }
+    const posts = await db.PostModel.find({ teamID });
+    if (!posts) return [];
 
-    return Team.teamPost;
+    return posts;
   },
   initVote: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;

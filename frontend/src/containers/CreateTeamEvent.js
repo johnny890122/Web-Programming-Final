@@ -1,11 +1,11 @@
 import Template from "../components/Template";
-import { useState, useEffect, useRef } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import TimePicker from '@mui/lab/TimePicker';
-import DateFnsUtils from '@date-io/date-fns'; 
+import { useState, useEffect, useRef } from "react";
+import { Box, TextField, Button, Typography } from "@mui/material";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import TimePicker from "@mui/lab/TimePicker";
+import DateFnsUtils from "@date-io/date-fns";
 import moment from "moment";
 
 import { Event } from "@mui/icons-material";
@@ -13,176 +13,193 @@ import { useMutation } from "@apollo/client";
 import { CREATE_TEAM_EVENT, UPDATE_USER_EVENT } from "../graphql";
 
 function CreateTeamEvent(props) {
+  let now = new Date(),
+    twoHoursLater = new Date(now);
+  twoHoursLater.setHours(now.getHours() + 2);
 
-    let now = new Date(), twoHoursLater = new Date(now);
-    twoHoursLater.setHours ( now.getHours() + 2 )
+  let initTitle = props.title ? props.title : null;
+  let initDescription = props.description ? props.description : null;
+  let initLocation = props.location ? props.location : null;
 
-    let initTitle = props.title ? props.title : null;
-    let initDescription = props.description ? props.description : null;
-    let initLocation = props.location ? props.location : null;
+  let initSDate = props.sDate ? new Date(parseInt(props.sDate)) : now;
+  let initSTime = props.sTime ? new Date(parseInt(props.sTime)) : now;
+  let initEDate = props.eDate ? new Date(parseInt(props.eDate)) : twoHoursLater;
+  let initETime = props.eTime ? new Date(parseInt(props.eTime)) : twoHoursLater;
 
-    let initSDate = props.sDate ? new Date(parseInt(props.sDate)) : now;
-    let initSTime = props.sTime ? new Date(parseInt(props.sTime)) : now;
-    let initEDate = props.eDate ? new Date(parseInt(props.eDate)) : twoHoursLater;
-    let initETime = props.eTime ? new Date(parseInt(props.eTime)) : twoHoursLater;
+  const [title, setTitle] = useState(initTitle);
+  const [description, setDescription] = useState(initDescription);
+  const [location, setLocation] = useState(initLocation);
 
-    const [title, setTitle] = useState(initTitle);
-    const [description, setDescription] = useState(initDescription);
-    const [location, setLocation] = useState(initLocation);
+  const [sDate, setSDate] = useState(null);
+  const [sTime, setSTime] = useState(null);
+  const [eDate, setEDate] = useState(null);
+  const [eTime, setETime] = useState(null);
 
-    const [sDate, setSDate] = useState(null);
-    const [sTime, setSTime] = useState(null);
-    const [eDate, setEDate] = useState(null);
-    const [eTime, setETime] = useState(null);
+  const [addEvent] = useMutation(CREATE_TEAM_EVENT);
+  // const [updateEvent] = useMutation(UPDATE_USER_EVENT);
 
-    const [addEvent] = useMutation(CREATE_TEAM_EVENT);
-    // const [updateEvent] = useMutation(UPDATE_USER_EVENT);
+  const submitCreateEvent = async () => {
+    await addEvent({
+      variables: {
+        teamID: props.nowTeam,
+        creatorID: props.me,
+        eventTitle: title,
+        eventDescription: description,
+        eventStart: sDate || initSDate.getTime(),
+        eventEnd: eDate || initEDate.getTime(),
+        eventLocation: location,
+      },
+    });
 
-    const submitCreateEvent = async () => {
-        await addEvent({
-            variables: {
-                teamID: "a44054e9-640a-4b29-80b6-063ac9979a96",
-                creatorID: props.me,
-                eventTitle: title,
-                eventDescription: description,
-                eventStart: sDate || initSDate.getTime(),
-                eventEnd: eDate || initEDate.getTime(),
-                eventLocation: location
-          }
-        });
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setSDate(null);
+    setSTime(null);
+    setEDate(null);
+    setETime(null);
+  };
 
-        setTitle("");
-        setDescription("");
-        setLocation("");
-        setSDate(null);
-        setSTime(null);
-        setEDate(null);
-        setETime(null);
-    }
+  const submitUpdateEvent = async () => {
+    // await updateEvent({
+    //     variables: {
+    //         eventID: props.eventID,
+    //         eventTitle: title,
+    //         eventDescription: description,
+    //         eventStart: sDate || initSDate.getTime(),
+    //         eventEnd: eDate || initEDate.getTime(),
+    //         eventLocation: location
+    //   }
+    // });
+    // setTitle("");
+    // setDescription("");
+    // setLocation("");
+    // setSDate(null);
+    // setSTime(null);
+    // setEDate(null);
+    // setETime(null);
+  };
 
-    const submitUpdateEvent = async () => {
-        // await updateEvent({
-        //     variables: {
-        //         eventID: props.eventID,
-        //         eventTitle: title,
-        //         eventDescription: description,
-        //         eventStart: sDate || initSDate.getTime(),
-        //         eventEnd: eDate || initEDate.getTime(),
-        //         eventLocation: location
-        //   }
-        // });
-        // setTitle("");
-        // setDescription("");
-        // setLocation("");
-        // setSDate(null);
-        // setSTime(null);
-        // setEDate(null);
-        // setETime(null);
-    }
+  const CreatePage = (
+    <div className="create-event-page">
+      <h2> {props.mode === "create" ? "Create" : "Edit"} </h2>
+      <Box component="form" noValidate autoComplete="off">
+        <div>
+          <TextField
+            id="create-event-title"
+            sx={{ m: 2 }}
+            required
+            label="活動名稱"
+            placeholder="Title"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+          />
+        </div>
+        <div>
+          <TextField
+            id="create-event-description"
+            value={description}
+            sx={{ m: 2 }}
+            label="活動內容"
+            placeholder="Description"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <Box sx={{ m: 2 }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker
+                id="create-event-sDate"
+                label="開始日期 *"
+                value={sDate || initSDate}
+                required
+                onChange={(newValue) => {
+                  setSDate(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <TimePicker
+                id="create-event-sTime"
+                sx={{ m: 5 }}
+                label="開始時間 *"
+                value={sTime || initSTime}
+                required
+                onChange={(newValue) => {
+                  setSTime(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </Box>
+        </div>
+        <div>
+          <Box sx={{ m: 2 }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker
+                id="create-event-eDate"
+                sx={{ m: 5 }}
+                label="結束日期 *"
+                value={eDate || initEDate}
+                required
+                onChange={(newValue) => {
+                  setEDate(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <TimePicker
+                id="create-event-eDime"
+                sx={{ m: 5 }}
+                label="結束時間 *"
+                value={eTime | initETime}
+                required
+                onChange={(newValue) => {
+                  setETime(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </Box>
+        </div>
+        <div>
+          <TextField
+            id="create-event-location"
+            sx={{ m: 2 }}
+            label="活動地點"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </div>
+        <div>
+          {props.mode === "create" ? (
+            <Button
+              sx={{ m: 2 }}
+              color="success"
+              variant="contained"
+              size="large"
+              onClick={submitCreateEvent}
+            >
+              Create{" "}
+            </Button>
+          ) : (
+            <>
+              <Button
+                sx={{ m: 2 }}
+                color="error"
+                variant="contained"
+                size="large"
+                onClick={submitUpdateEvent}
+              >
+                Save{" "}
+              </Button>
+            </>
+          )}
+        </div>
+      </Box>
+    </div>
+  );
 
-    const CreatePage = ( 
-      <div className = "create-event-page">
-        <h2> {props.mode === "create" ? "Create" : "Edit" } </h2>
-        <Box component="form"
-                noValidate
-                autoComplete="off">
-
-            <div>
-                <TextField id="create-event-title"
-                        sx={{ m: 2 }}
-                        required
-                        label="活動名稱"
-                        placeholder="Title" 
-                        onChange={e => setTitle(e.target.value)}
-                        value ={title}
-                        />
-            </div>
-            <div>
-                <TextField id="create-event-description"
-                        value ={description}
-                        sx={{ m: 2 }}
-                        label="活動內容"
-                        placeholder="Description" 
-                        onChange={e => setDescription(e.target.value)}/>
-            </div>
-            <div>
-                <Box sx={{ m: 2 }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns} >
-                        <MobileDatePicker
-                            id="create-event-sDate"
-                            label="開始日期 *"
-                            value={sDate || initSDate}
-                            required
-                            onChange={(newValue) => {setSDate(newValue) }}
-
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                        <TimePicker
-                            id="create-event-sTime"
-                            sx={{ m: 5 }}
-                            label="開始時間 *"
-                            value={ sTime || initSTime}
-                            required
-                            onChange={(newValue) => {setSTime(newValue)} }
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                </Box>
-            </div>
-            <div>
-            <Box sx={{ m: 2 }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <MobileDatePicker
-                            id="create-event-eDate"
-                            sx={{ m: 5 }}
-                            label="結束日期 *"
-                            value={eDate || initEDate}
-                            required
-                            onChange={(newValue) => {setEDate(newValue)}}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                        <TimePicker
-                            id="create-event-eDime"
-                            sx={{ m: 5 }}
-                            label="結束時間 *"
-                            value={eTime | initETime}
-                            required
-                            onChange={(newValue) => {setETime(newValue)}}
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
-                </Box>
-            </div>
-            <div>
-                <TextField id="create-event-location"
-                        sx={{ m: 2 }}
-                        label="活動地點"
-                        placeholder="Location" 
-                        value={location}
-                        onChange={e => setLocation(e.target.value)}/>
-            </div>    
-            <div>
-                {
-                    props.mode === "create" 
-                    ? <Button sx={{ m: 2 }} color= "success" variant="contained" size="large"
-                        onClick={submitCreateEvent}>
-                        Create </Button >
-                    : 
-                    <>
-                        <Button sx={{ m: 2 }} color= "error" variant="contained" size="large"
-                        onClick={submitUpdateEvent}>
-                        Save </Button >
-                    </>
-                }
-                
-            </div>
-        </Box>
-      </div>
-    )
-    
-    return(
-        CreatePage
-    )
+  return CreatePage;
 }
 
 export default CreateTeamEvent;

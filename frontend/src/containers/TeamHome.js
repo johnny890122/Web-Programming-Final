@@ -20,18 +20,57 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import {
-  EventData,
+  // EventData,
   ScoreData,
   VoteData,
-  PostData,
+  // PostData,
 } from "../components/ListData";
+import { TEAM_EVENT_INIT, TEAM_POST_INIT, FIND_TEAM_NAME } from "../graphql";
+import { useQuery } from "@apollo/client";
 
 function TeamHome(props) {
-  const events = EventData.filter((event) => event.type === "team").slice(0, 3);
+  // const events = EventData.filter((event) => event.type === "team").slice(0, 3);
   const scores = ScoreData.slice(0, 3);
   const votes = VoteData.slice(0, 3);
-  const posts = PostData.slice(0, 2);
-  console.log(props);
+  // const posts = PostData.slice(0, 2);
+
+  const findTeamName = useQuery(FIND_TEAM_NAME, {
+    variables: { teamID: props.nowTeam },
+  });
+
+  const teamEvent = useQuery(TEAM_EVENT_INIT, {
+    variables: { teamID: props.nowTeam },
+  });
+  const teamPost = useQuery(TEAM_POST_INIT, {
+    variables: { teamID: props.nowTeam },
+  });
+
+  const EventData = [];
+  if (!teamEvent.loading) {
+    teamEvent.data.initTeamEvent.map((i) =>
+      EventData.push({
+        id: i.eventID,
+        title: i.eventTitle,
+        description: i.eventDescription,
+        start: i.eventStart,
+        end: i.eventEnd,
+        location: i.eventLocation,
+        posttime: i.eventPostTime,
+      })
+    );
+  }
+  const PostData = [];
+  if (!teamPost.loading) {
+    teamPost.data.initTeamPost.map((i) =>
+      PostData.push({
+        id: i.postID,
+        time: i.postTime,
+        title: i.postTitle,
+        author: i.postAuthor.userID,
+        content: i.postContent,
+      })
+    );
+  }
 
   const homepage = (
     <div className="team-home" style={{ display: "flex", flexWrap: "wrap" }}>
@@ -44,34 +83,36 @@ function TeamHome(props) {
             <EventNoteIcon sx={{ mx: 1, my: 0 }} /> Event
           </Typography>
         </Box>
-        {events
-          .filter((event) => event.type === "team")
-          .map((event) => (
-            <Card
-              sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
-              key={event.id}
+        {EventData.map((event) => (
+          <Card
+            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
+            key={event.id}
+          >
+            <CardActionArea
+              sx={{ width: 150, height: 180 }}
+              href={`#event-detail`}
             >
-              <CardActionArea
-                sx={{ width: 150, height: 180 }}
-                href={`#event-detail`}
-              >
-                <CardContent sx={{ p: 2 }}>
-                  <Typography gutterBottom variant="h6" component="div">
-                    {event.title}
-                  </Typography>
-                  <Typography gutterBottom variant="subtitle2" component="div">
-                    <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
+              <CardContent sx={{ p: 2 }}>
+                <Typography gutterBottom variant="h6" component="div">
+                  {event.title}
+                </Typography>
+                <Typography gutterBottom variant="subtitle2" component="div">
+                  <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
         <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
           <Button
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Calendar"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Calendar"
+            }
           >
             View All
           </Button>
@@ -80,20 +121,20 @@ function TeamHome(props) {
 
       <Card
         className="teamHp-post"
-        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
-        <Box sx={{ width: "100%", maxWidth: 540 }}>
+        <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
             <PostAddIcon sx={{ mx: 1, my: 0 }} /> Post
           </Typography>
         </Box>
-        {posts.map((post) => (
+        {PostData.map((post) => (
           <Card
-            sx={{ m: 1.5, width: 490, height: 85, display: "block" }}
+            sx={{ m: 1.5, width: 410, height: 85, display: "block" }}
             key={post.id}
           >
             <CardActionArea
-              sx={{ width: 500, height: 85 }}
+              sx={{ width: 400, height: 85 }}
               href={`#post-detail`}
             >
               <CardContent sx={{ p: 0.5 }}>
@@ -111,12 +152,16 @@ function TeamHome(props) {
             </CardActionArea>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
+        <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
           <Button
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Posts"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Posts"
+            }
           >
             View All
           </Button>
@@ -125,20 +170,20 @@ function TeamHome(props) {
 
       <Card
         className="teamHp-score"
-        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
-        <Box sx={{ width: "100%", maxWidth: 540 }}>
+        <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
             <SportsScoreIcon sx={{ mx: 1, my: 0 }} /> Score
           </Typography>
         </Box>
         {scores.map((score) => (
           <Card
-            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
+            sx={{ m: 1, width: 128, height: 180, display: "inline-block" }}
             key={score.id}
           >
             <CardActionArea
-              sx={{ width: 150, height: 180 }}
+              sx={{ width: 128, height: 180 }}
               href={`#score-detail`}
             >
               <CardContent sx={{ p: 2 }}>
@@ -155,12 +200,16 @@ function TeamHome(props) {
             </CardActionArea>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
+        <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
           <Button
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Score"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Score"
+            }
           >
             View All
           </Button>
@@ -211,7 +260,11 @@ function TeamHome(props) {
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Vote"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Vote"
+            }
           >
             View All
           </Button>
@@ -219,9 +272,9 @@ function TeamHome(props) {
       </Card>
       <Card
         className="teamHp-gallery"
-        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
-        <Box sx={{ width: "100%", maxWidth: 540 }}>
+        <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
             <PhotoLibraryIcon sx={{ mx: 1, my: 0 }} /> Gallery
           </Typography>
@@ -232,7 +285,11 @@ function TeamHome(props) {
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Gallery"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Gallery"
+            }
           >
             View All
           </Button>
@@ -253,7 +310,11 @@ function TeamHome(props) {
             variant="outlined"
             color="success"
             sx={{ m: 1 }}
-            href="/team/Gantt"
+            href={
+              "/team/" +
+              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+              "/Gantt"
+            }
           >
             View All
           </Button>

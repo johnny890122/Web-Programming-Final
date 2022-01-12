@@ -19,6 +19,7 @@ type Query {
   teamEvent(eventID: String): Event
   vote(voteID: String): Vote
 
+  findTeamName(teamID: String): String
   initTeam(userID: String): [Team]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
@@ -27,7 +28,6 @@ type Query {
   myUserAccount(userID: String): User
   userEventDetail(eventID: String): Event
   teamEventDetail(eventID: String): Event
-
 }
 
 type Mutation {
@@ -61,7 +61,7 @@ type Mutation {
   createTeamEvent(
     eventTitle: String
     eventDescription: String
-    eventStart:Float
+    eventStart: Float
     eventEnd: Float
     eventLocation: String
     teamID: String
@@ -191,12 +191,12 @@ type Mutation {
   ): String
 
   updateUserEvent(
-    eventID: String    
+    eventID: String
     eventTitle: String
     eventDescription: String
     eventStart: Float
     eventEnd: Float
-    eventLocation: String 
+    eventLocation: String
   ): String
 
   deleteUserEvent(eventID: String): String
