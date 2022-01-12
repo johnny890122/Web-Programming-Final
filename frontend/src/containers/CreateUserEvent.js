@@ -20,24 +20,21 @@ function CreateUserEvent(props) {
     let initTitle = props.title ? props.title : null;
     let initDescription = props.description ? props.description : null;
     let initLocation = props.location ? props.location : null;
+
     let initSDate = props.sDate ? new Date(parseInt(props.sDate)) : now;
     let initSTime = props.sTime ? new Date(parseInt(props.sTime)) : now;
     let initEDate = props.eDate ? new Date(parseInt(props.eDate)) : twoHoursLater;
     let initETime = props.eTime ? new Date(parseInt(props.eTime)) : twoHoursLater;
 
-
-    let clickedDate = props.date ? props.date.dateStr : null;
-
     const [title, setTitle] = useState(initTitle);
     const [description, setDescription] = useState(initDescription);
     const [location, setLocation] = useState(initLocation);
 
-    // const [props.mode, setMode] = useState("edit");
-    const [sDate, setSDate] = useState(initSDate);
-    const [sTime, setSTime] = useState(initSTime);
-    const [eDate, setEDate] = useState(initEDate);
-    const [eTime, setETime] = useState(initETime);
-    
+    const [sDate, setSDate] = useState(null);
+    const [sTime, setSTime] = useState(null);
+    const [eDate, setEDate] = useState(null);
+    const [eTime, setETime] = useState(null);
+
     const [addEvent] = useMutation(CREATE_USER_EVENT);
     const [updateEvent] = useMutation(UPDATE_USER_EVENT);
 
@@ -61,8 +58,6 @@ function CreateUserEvent(props) {
         setEDate(null);
         setETime(null);
     }
-
-    console.log(typeof Date.parse(sDate));
 
     const submitUpdateEvent = async () => {
         await updateEvent({
@@ -115,10 +110,9 @@ function CreateUserEvent(props) {
                         <MobileDatePicker
                             id="create-event-sDate"
                             label="開始日期 *"
-                            value={sDate}
+                            value={sDate || initSDate}
                             required
                             onChange={(newValue) => {setSDate(newValue) }}
-                            // onChange={(newValue) =>  console.log(newValue) }
 
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -126,7 +120,7 @@ function CreateUserEvent(props) {
                             id="create-event-sTime"
                             sx={{ m: 5 }}
                             label="開始時間 *"
-                            value={ sTime }
+                            value={ sTime || initSTime}
                             required
                             onChange={(newValue) => {setSTime(newValue)} }
                             renderInput={(params) => <TextField {...params} />}
@@ -141,7 +135,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDate"
                             sx={{ m: 5 }}
                             label="結束日期 *"
-                            value={eDate}
+                            value={eDate || initEDate}
                             required
                             onChange={(newValue) => {setEDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -150,7 +144,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDime"
                             sx={{ m: 5 }}
                             label="結束時間 *"
-                            value={eTime}
+                            value={eTime | initETime}
                             required
                             onChange={(newValue) => {setETime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}

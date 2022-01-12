@@ -60,12 +60,15 @@ function UserEvent(props) {
             locale="zh-tw" // 中文化
             events= {EventData}
             selectable= {true}
-            dateClick={(info) => setDateClicked(info) & setIsModalVisible(true)}
+            dateClick={(info) => setDateClicked(info.date.getTime().toString()) & setIsModalVisible(true)}
         />      
     )
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dateClicked, setDateClicked] = useState(null);
+    console.log(typeof dateClicked);
+
+    let createEvent = < CreateUserEvent me={props.me} sDate={dateClicked} eDate={dateClicked} mode={"create"} />;
 
     const eventlist = (
         <div className = "user-event">
@@ -82,9 +85,7 @@ function UserEvent(props) {
                 style={{ zIndex: 1200 }}
                 footer={ [<Button key="ok" onClick={() => setIsModalVisible(false) }> Ok </Button>] }
             >   
-
-
-                < CreateUserEvent me={props.me} date={dateClicked} />
+                {createEvent}
             </Modal>
 
         </div>
