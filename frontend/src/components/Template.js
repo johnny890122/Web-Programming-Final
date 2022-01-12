@@ -192,7 +192,7 @@ export default function Template({ content }) {
   breadItem.shift();
 
   React.useEffect(() => {
-    if (breadItem[0] === "team") {
+    if (breadItem[0] === "team" && breadItem[1] !== "Create") {
       setIsTeam(true);
     } else {
       setIsTeam(false);

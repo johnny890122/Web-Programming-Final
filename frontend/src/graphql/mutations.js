@@ -38,10 +38,10 @@ export const CREATE_USER_EVENT = gql`
 
 export const CREATE_TEAM = gql`
   mutation createTeam(
-    $teamName: String
-    $teamDescription: String
-    $teamType: String
-    $creatorID: String
+    $teamName: String!
+    $teamDescription: String!
+    $teamType: String!
+    $creatorID: String!
   ) {
     createTeam(
       teamName: $teamName
@@ -53,13 +53,12 @@ export const CREATE_TEAM = gql`
     }
   }
 `;
+
 export const DELETE_USER_EVENT = gql`
-mutation deleteUserEvent (
-  $eventID: String
-){
-  deleteUserEvent(eventID: $eventID)
-}
-`
+  mutation deleteUserEvent($eventID: String) {
+    deleteUserEvent(eventID: $eventID)
+  }
+`;
 
 export const CREATE_TEAM_SCORE = gql`
   mutation createScore(

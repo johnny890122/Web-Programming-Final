@@ -37,8 +37,7 @@ function TeamHome() {
   const posts = PostData.slice(0, 2);
 
   const homepage = (
-    <div className="team-home">
-      <h1>Home</h1>
+    <div className="team-home" style={{ display: "flex", flexWrap: "wrap" }}>
       <Card
         className="teamHp-event"
         sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}

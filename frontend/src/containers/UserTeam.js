@@ -42,7 +42,11 @@ function UserTeam(props) {
     <div className="user-team-list">
       <div
         className="createBox-container"
-        style={{ display: "flex", width: "80vw", marginLeft: "1rem" }}
+        style={{
+          display: "flex",
+          width: "80vw",
+          marginLeft: "1rem",
+        }}
       >
         <Link to="/team/Create">
           <Button variant="outlined" color="success">
@@ -53,7 +57,12 @@ function UserTeam(props) {
 
       <div
         className="teamBox-container"
-        style={{ display: "flex", width: "80vw", marginTop: "1rem" }}
+        style={{
+          display: "flex",
+          width: "90vw",
+          marginTop: "1rem",
+          flexWrap: "wrap",
+        }}
       >
         {AllTeamData.map((team) => (
           <Link to={{ pathname: `/team/${team.name}/Home` }}>
@@ -68,12 +77,11 @@ function UserTeam(props) {
                     身份 : {team.status}
                   </Typography> */}
                   <br />
-                  <p style={{ color: "#24367D" }}>
+                  <p style={{ color: "#808080" }}>
                     {team.description}
                     <br />
                     {team.type}
                   </p>
-                  {/* <p style={{ color: "#24367D" }}>{team.type}</p> */}
                 </CardContent>
               </CardActionArea>
             </Card>

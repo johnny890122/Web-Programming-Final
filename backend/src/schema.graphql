@@ -8,10 +8,10 @@ type Query {
   initContest(teamID: String): [Contest]!
   initGallery(teamID: String): [Gallery]!
   initGantt(teamID: String): [Gantt]!
-  
+
   users(query: String): [User]
   teams(query: String): [Team]
-  user(usreID: String) : User
+  user(usreID: String): User
   team(teamID: String): Team
   post(postID: String): Post
   teamEvent(eventID: String): Event
@@ -21,7 +21,7 @@ type Query {
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
-  
+
   myUserAccount(userID: String): User
   eventDetail(eventID: String): Event
 }
@@ -42,14 +42,14 @@ type Mutation {
     teamName: String!
     teamDescription: String!
     teamType: String!
-    creatorID: String! # ** 修正= > User?
+    creatorID: String!
   ): Team
 
-  addMember( teamID: String memberID: String ): User
-  addManager( teamID: String memberID: String ): User
+  addMember(teamID: String, memberID: String): User
+  addManager(teamID: String, memberID: String): User
 
-  deleteMember( teamID: String memberID: String ): User
-  deleteManager( teamID: String memberID: String ): User
+  deleteMember(teamID: String, memberID: String): User
+  deleteManager(teamID: String, memberID: String): User
   deleteTeam(teamID: String!, memberID: String!): Team
 
   ##---------- Team Event, Reply (完成) ----------##
@@ -145,7 +145,7 @@ type Mutation {
     setOppoErrAttack: Int
     setOppoErrOther: Int
   ): SetDetail
-  createDetailPlayer (
+  createDetailPlayer(
     setID: String
     playerID: String
     detailPointServe: Int
@@ -252,9 +252,9 @@ type userAchievement {
 
 type Team {
   teamID: String!
-  teamName: String
-  teamDescription: String
-  teamType: String
+  teamName: String!
+  teamDescription: String!
+  teamType: String!
   teamCreateTime: String
   teamMember: [User]
   teamGallery: [Gallery]
@@ -264,6 +264,7 @@ type Team {
   teamVote: [Vote]
   teamEvent: [Event]
   teamManager: [User]
+  creatorID: String!
 }
 
 type Gallery {
@@ -393,4 +394,3 @@ enum ContestWinOption {
   lose
   tie
 }
-

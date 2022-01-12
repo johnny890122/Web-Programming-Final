@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import { CREATE_TEAM } from "../graphql";
 import { useMutation } from "@apollo/client";
+import { mergeDeepArray } from "@apollo/client/utilities";
 
 function TeamForm(props) {
   const { TextArea } = Input;
@@ -85,14 +86,14 @@ function TeamForm(props) {
       </Form.Item>
 
       {/*成立日期*/}
-      <Form.Item
+      {/* <Form.Item
         label="成立日期"
         tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
       >
         <Input.Group compact>
           <DatePicker onChange={(dateString) => handleDateInput(dateString)} />
         </Input.Group>
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 }
@@ -136,7 +137,7 @@ function Invite() {
   );
 }
 
-function CreateTeam(props) {
+function CreateTeam({ me }) {
   const [name, setTeamName] = useState("");
   const [des, setTeamDes] = useState("");
   const [selectedTeamType, setSelectedTeamType] = useState("---");
@@ -157,6 +158,8 @@ function CreateTeam(props) {
   const [currentStep, setCurrentStep] = useState(0);
   const [stepText, setStepText] = useState("");
   const [title, setTitle] = useState("0");
+  const [addTeam, { data, loading, error }] = useMutation(CREATE_TEAM);
+  if (error) console.log(error.message);
 
   const handleNext = () => {
     currentStep < totalStep - 1
@@ -174,17 +177,21 @@ function CreateTeam(props) {
     setCurrentStep(e);
   };
 
-  const [addTeam] = useMutation(CREATE_TEAM);
   const handleSubmit = async () => {
+    console.log(name, typeof name);
+    console.log(des, typeof des);
+    console.log(selectedTeamType, typeof selectedTeamType);
+    console.log(me, typeof me);
     await addTeam({
       variables: {
         teamName: name,
         teamDescription: des,
         // teamCreateTime: startDate,
         teamType: selectedTeamType,
-        creatorID: props.me,
+        creatorID: me,
       },
     });
+
     setTeamName("");
     setTeamDes("");
   };
@@ -261,10 +268,10 @@ function CreateTeam(props) {
   );
 }
 
-const TeamCreate = () => {
+const TeamCreate = ({ me }) => {
   return (
     <div className="Wrapper">
-      <Template content={<CreateTeam />} />
+      <Template content={<CreateTeam me={me} />} />
     </div>
   );
 };
