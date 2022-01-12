@@ -66,7 +66,9 @@ const Query = {
       throw new Error("User not found!");
     }
 
+
     const event = await db.DashboardEventModel.find({ userID });
+
     if (!event) {
       return [];
     }

@@ -95,8 +95,6 @@ const Mutation = {
     }
 
     const eventID = uuidv4();
-    const eventPostTime = await new Date();
-
     const event = await new db.DashboardEventModel({
       userID: eventCreator,
       eventType: "Personal",
@@ -106,7 +104,7 @@ const Mutation = {
       eventStart: eventStart,
       eventEnd: eventEnd,
       eventLocation: eventLocation,
-      eventPostTime: eventPostTime,
+      eventPostTime: Date.now(),
     }).save();
 
     const newEvent = await db.UserModel.findOneAndUpdate(
@@ -117,41 +115,14 @@ const Mutation = {
     return eventID;
   },
 
-  createUserEvent: async (
-    parent,
-    {
-      eventCreator,
-      eventTitle,
-      eventDescription,
-      eventStart,
-      eventEnd,
-      eventLocation,
-    },
-    { db, pubSub }
-  ) => {
-    const user = await db.UserModel.findOne({ userID: eventCreator });
-    if (!user) {
-      throw new Error("User not found!");
+  deleteUserEvent: async (parent, { eventID }, { db, pubSub }) => {
+    const event = await db.DashboardEventModel.findOne({ eventID });
+
+    if (!event) {
+      throw new Error("Event not found!");
     }
 
-    const eventID = uuidv4();
-    const eventPostTime = await new Date();
-
-    const event = await new db.DashboardEventModel({
-      userID: eventCreator,
-      eventID: eventID,
-      eventTitle: eventTitle,
-      eventDescription: eventDescription,
-      eventStart: eventStart,
-      eventEnd: eventEnd,
-      eventLocation: eventLocation,
-      eventPostTime: eventPostTime,
-    }).save();
-
-    const newEvent = await db.UserModel.findOneAndUpdate(
-      { userID: eventCreator },
-      { $push: { userEvent: event } }
-    );
+    await db.DashboardEventModel.deleteOne( { eventID } );
 
     return eventID;
   },

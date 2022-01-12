@@ -9,8 +9,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import {useState} from "react";
-import { useQuery } from "@apollo/client";
-import { EVENT_DETAIL } from "../graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import { EVENT_DETAIL, DELETE_USER_EVENT } from "../graphql";
 import CreateUserEvent from "../containers/CreateUserEvent"
 import { Modal } from "antd";
 
@@ -18,9 +18,19 @@ function UserEventDetail(props) {
 	const { data, error, loading, subscribeToMore } = useQuery(EVENT_DETAIL, {
 	variables: { eventID: props.id },
 	});
+	const [deleteEvent] = useMutation(DELETE_USER_EVENT);
 
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isDeletedMode, setIsDeletedMode] = useState(false);
+
+	const handelEventDeleted = async () => {
+		await deleteEvent({
+			variables: {
+				eventID: props.id
+			}
+		});
+		setIsDeletedMode(false);
+	}
 
 	const viewMode = (
 		<CardContent 
@@ -35,7 +45,7 @@ function UserEventDetail(props) {
 
 	          	<Button 
 		          	color= { isDeletedMode ? "error" : "primary"}
-		          	onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : setIsDeletedMode(false) } 
+		          	onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelEventDeleted() } 
 		          	// variant="outlined" 
 		          	startIcon={<DeleteOutlineOutlinedIcon sx={{ fontSize: "large" }}/> }>
 		          		{!isDeletedMode ? "" : "Are you sure?" }
