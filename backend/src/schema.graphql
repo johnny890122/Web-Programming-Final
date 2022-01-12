@@ -23,7 +23,9 @@ type Query {
   initVote(teamID: String): [Vote]
 
   myUserAccount(userID: String): User
-  eventDetail(eventID: String): Event
+  userEventDetail(eventID: String): Event
+  teamEventDetail(eventID: String): Event
+
 }
 
 type Mutation {
@@ -55,14 +57,15 @@ type Mutation {
   ##---------- Team Event, Reply (完成) ----------##
 
   createTeamEvent(
-    eventTitle: String!
-    eventDescription: String!
-    eventStart: String!
-    eventEnd: String
+    eventTitle: String
+    eventDescription: String
+    eventStart:Float
+    eventEnd: Float
     eventLocation: String
-    teamID: String!
-    creatorID: String!
-  ): Event!
+    teamID: String
+    creatorID: String
+  ): String
+
   replyTeamEvent(
     eventReplyOption: String!
     eventReplyContent: String
@@ -195,6 +198,7 @@ type Mutation {
   ): String
 
   deleteUserEvent(eventID: String): String
+  deleteTeamEvent(eventID: String): String
 }
 
 type Subscription {

@@ -1,14 +1,21 @@
 import Template from "../components/Template";
 import { EventData } from '../components/ListData';
 import { Button, Chip, List, ListItem, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
-import { CardActionArea, CardMedia } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { CardActionArea, CardMedia, Box } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useState, useEffect } from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
+import PersonIcon from "@mui/icons-material/Person";
+import PeopleIcon from "@mui/icons-material/People";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Modal } from "antd";
+import EventDetail from "../components/TeamEventDetail";
+import CreateTeamEvent from "../containers/CreateTeamEvent";
+import { useQuery } from "@apollo/client";
+import { TEAM_EVENT_INIT } from "../graphql";
 
 /*
 讀取、回傳 event資料
@@ -17,71 +24,104 @@ event, createEvent, editEvent, deleteEvent
 連結活動頁面
 */
 
-function TeamEvent() {
+// 
 
-    const ViewBox = styled.div`
-        max-width: 800px;
-    `;
+function TeamEvent(props) {
 
-    const teamevents = EventData.filter(event => event.type === 'team');
     const [viewmode, setViewmode] = useState("list"); // 預覽模式
     const [filtermode, setFiltermode] = useState("upcoming"); // 活動篩選模式
-    const [events, setEvents ] = useState(teamevents) // 所有團隊活動資料
+    const [events, setEvents ] = useState([]) // 所有團隊活動資料
+
     const today = new Date();
     
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const handleViewChange = (view, newView) => {
         setViewmode(newView);
     };
+    const [componentInModal, setComponentInModal] = useState("");
 
     const handleFilterChange = (filter, newFilter) => {
       setFiltermode(newFilter);
       if (newFilter === 'upcoming') {
-        setEvents(teamevents.filter(event => new Date(event.start) > today))
+        setEvents(data.initTeamEvent.filter(event => new Date(event.start) > today))
       } else if (newFilter === 'past') {
-        setEvents(teamevents.filter(event => new Date(event.start) <= today))
+        setEvents(data.initTeamEvent.filter(event => new Date(event.start) <= today))
       } else if (newFilter === 'unrespond') {
-        setEvents(teamevents.filter(event => event.reply === false && new Date(event.start) > today))
-      } else setEvents(teamevents)
+        setEvents(data.initTeamEvent.filter(event => event.reply === false && new Date(event.start) > today))
+      } else setEvents(data.initTeamEvent)
       /* 篩選並排序符合條件的活動 */
     };
+  const handleClose = () => {
+    setIsModalVisible(false);
+    setComponentInModal(null);
+  };
 
+  const { data, error, loading, subscribeToMore } = useQuery(TEAM_EVENT_INIT, {
+    variables: { teamID: "a44054e9-640a-4b29-80b6-063ac9979a96" },
+  });
 
-    const ListView = (() =>
+  const ListView = () => (
+    /* 點擊event進入detail頁面 */
+    <List
+      className="user-event-list"
+      style={{ display: "flex" }}
+    >
+      {events.map((event) => (
+        <Card
+          style={{ width: "325px", flexDirection: "row" }}
+          className="user-event-item"
+          sx={{ m: 2 }}
+          key={events.id}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Typography gutterBottom variant="h4" component="div">
+              {event.eventTitle}
+              <PeopleIcon sx={{ mx: 1 }} />
+            </Typography>
 
-        /* 點擊event進入detail頁面 */
+            <Typography variant="subtitle1" color="text.secondary">
+              <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
+              {new Date(event.eventStart).toDateString()}
+            </Typography>
 
-        <List className = "team-event-list">
-              {events.map(event => 
-                    <ListItem className = "team-event-item" key = {event.id}
-                              sx={{ m: 2, width: 450, height: 200 }}>
-                        <Card sx={{ width: '100%' }}>
-                            <CardActionArea sx={{ width: '100%', display: 'block' }}
-                                                    
-                                            href={`#${event.id}`}> 
-                                            {/* 連結活動頁面 */}
-        
-                                <CardContent sx={{ p: 4 }}>
-                                    <Typography gutterBottom variant="h4" component="div">
-                                        {event.title}
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="text.secondary">
-                                        <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="text.secondary">
-                                        <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
-                                    </Typography>
-                                    {new Date(event.start) <= today ? 
-                                        <Chip label="Finished" sx={{ my : 1 }} /> :
-                                        (event.reply ? <Chip label="Replied" color='success' sx={{ my : 1 }} /> :
-                                                       <Chip label="Ureplied" color='error' sx={{ my : 1 }} />)}
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </ListItem>
-                         )}
-          </List>
-    )
+            <Typography variant="subtitle1" color="text.secondary">
+              <LocationOnIcon sx={{ fontSize: "small" }} />{" "}
+              {event.eventLocation}
+            </Typography>
+
+            {new Date(event.eventStart) <= today ? (
+              <Chip label="Finished" sx={{ my: 1 }} />
+            ) : event.type === "team" ? (
+              event.reply ? (
+                <Chip label="Replied" color="success" sx={{ my: 1 }} />
+              ) : (
+                <Chip label="Unreplied" color="error" sx={{ my: 1 }} />
+              )
+            ) : (
+              <></>
+            )}
+
+            <Box sx={{ textAlign: "right" }}>
+              <Button
+                size="large"
+                data-index={event.eventID}
+                key={event.eventID}
+                onClick={(e) =>
+                  setIsModalVisible(true) &
+                  console.log(e.target.getAttribute("data-index")) & 
+                  setComponentInModal(
+                    <EventDetail type="team" id={e.target.getAttribute("data-index")} /> )
+                  } 
+              >
+                More
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      ))}
+    </List>
+  );
+
 
     const CalendarView = (() =>      
             <FullCalendar
@@ -109,7 +149,11 @@ function TeamEvent() {
                 <ToggleButton size ="small" value="list">List</ToggleButton>         
                 <ToggleButton size ="small" value="calendar">Calendar</ToggleButton>
             </ToggleButtonGroup>
-            <Button variant="outlined" color="success" sx={{ m: 1 }} href = '/team/CreateTeamEvent'>
+            <Button variant="outlined" color="success" sx={{ m: 1 }} 
+                onClick={() => setIsModalVisible(true) & setComponentInModal(
+                  <CreateTeamEvent me={props.me} mode="create" />)
+                }
+            >
                 Create
             </Button> 
           </div> 
@@ -128,10 +172,21 @@ function TeamEvent() {
             </div> : 
             <></>}
                                                    
+          {(viewmode === 'list') ? <ListView/> : <CalendarView/>}
 
-          <ViewBox >
-              {(viewmode === 'list') ? <ListView/> : <CalendarView/>}
-          </ViewBox>
+          <Modal
+            visible={isModalVisible}
+            onCancel={handleClose}
+            onOk={handleClose}
+            style={{ zIndex: 1200 }}
+            footer={[
+              <Button key="close" onClick={handleClose}>
+                Close
+              </Button>,
+            ]}
+          >
+            {componentInModal}
+          </Modal>
       </div>
     )
     

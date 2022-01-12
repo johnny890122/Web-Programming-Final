@@ -10,13 +10,13 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import {useState} from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { EVENT_DETAIL, DELETE_USER_EVENT } from "../graphql";
+import { USER_EVENT_DETAIL, DELETE_USER_EVENT } from "../graphql";
 import CreateUserEvent from "../containers/CreateUserEvent"
 import { Modal } from "antd";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 function UserEventDetail(props) {
-	const { data, error, loading, subscribeToMore } = useQuery(EVENT_DETAIL, {
+	const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_DETAIL, {
 	variables: { eventID: props.id },
 	});
 	const [deleteEvent] = useMutation(DELETE_USER_EVENT);
@@ -66,32 +66,32 @@ function UserEventDetail(props) {
 	        {
 	        	isEditMode 
 	        	? <CreateUserEvent 
-	        		title={data.eventDetail.eventTitle}
-	        		description={data.eventDetail.eventDescription}
-	        		location={data.eventDetail.eventLocation}
-	        		sDate={data.eventDetail.eventStart}
-	        		sTime={data.eventDetail.eventStart}
-	        		eDate={data.eventDetail.eventEnd}
-	        		eTime={data.eventDetail.eventEnd}
+	        		title={data.userEventDetail.eventTitle}
+	        		description={data.userEventDetail.eventDescription}
+	        		location={data.userEventDetail.eventLocation}
+	        		sDate={data.userEventDetail.eventStart}
+	        		sTime={data.userEventDetail.eventStart}
+	        		eDate={data.userEventDetail.eventEnd}
+	        		eTime={data.userEventDetail.eventEnd}
 	        		eventID={props.id}
 	        		mode="edit"
 	        	/ > 
 	        	: <>
-	        		{!loading & !isEditMode ? data.eventDetail.eventTitle: ""}
+	        		{!loading & !isEditMode ? data.userEventDetail.eventTitle: ""}
 			        <Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? data.eventDetail.eventStart: ""}
+			            <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventStart: ""}
 			        </Typography>
 
 			       	<Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? data.eventDetail.eventEnd: ""}
+			            <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventEnd: ""}
 			        </Typography>
 
 			        <Typography variant="subtitle1" color="text.secondary"> 
-			            <LocationOnIcon sx={{ fontSize: "large" }} /> {!loading ? data.eventDetail.eventLocation: ""}
+			            <LocationOnIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventLocation: ""}
 			        </Typography>
 
 			        <Typography variant="subtitle1" color="text.secondary">
-			            <ShortTextIcon sx={{ fontSize: "large" }} /> {!loading ? data.eventDetail.eventDescription: ""}
+			            <ShortTextIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventDescription: ""}
 			        </Typography>
 
 			        <Typography variant="subtitle1" color="text.secondary">

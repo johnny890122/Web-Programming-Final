@@ -22,13 +22,14 @@ const Query = {
     return user;
   },
 
-  eventDetail: async (parent, { eventID }, { db, pubSub }) => {
+  userEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
+    
 
-    if (!event) {
+    if (!event ) {
       throw new Error("Event not found!");
     }
-    return event;
+    return event ;
   },
 
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
@@ -160,7 +161,9 @@ const Query = {
       throw new Error("This team doesn't exist!");
     }
 
-    return Team.teamEvent;
+    const teamEvent = await db.EventModel.find({ teamID: teamID })
+
+    return teamEvent;
   },
   initTeamPost: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
@@ -181,6 +184,15 @@ const Query = {
     }
 
     return Team.teamVote;
+  },
+
+  teamEventDetail: async (parent, { eventID }, { db, pubSub }) => {
+    const teamEvent = await db.EventModel.findOne({ eventID });
+
+    if (!teamEvent) {
+      throw new Error("Event not found!");
+    }
+    return teamEvent;
   },
 
   /* ------------- Query one, all------------- */

@@ -63,22 +63,18 @@ function App() {
           path="/team/Create"
           element={<TeamCreate me={localStorage.getItem(ME_KEY)} />}
         />
-        <Route
-          path="/team/:teamname/Home"
-          element={<TeamHome nowTeam={localStorage.getItem(TEAM_KEY)} />}
-        />
-        <Route path="/team/:teamname/Member" element={<TeamMember />} />
-        <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
-        <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
-        <Route path="/team/:teamname/Posts" element={<TeamPost />} />
-        <Route path="/team/:teamname/Score" element={<TeamScore />} />
-        <Route path="/team/:teamname/Vote" element={<TeamVote />} />
-        <Route path="/team/:teamname/Gantt" element={<TeamGantt />} />
+        <Route path="/team/:teamname/Home" element={<TeamHome me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Member" element={<TeamMember me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Calendar" element={<TeamEvent me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Posts" element={<TeamPost me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Score" element={<TeamScore me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Vote" element={<TeamVote me={localStorage.getItem(ME_KEY)} />} />} />
+        <Route path="/team/:teamname/Gantt" element={<TeamGantt me={localStorage.getItem(ME_KEY)} />} />} />
         <Route
           path="/team/:teamname/Score/:id/detail"
-          element={<TeamScoreDetail />}
+          element={<TeamScoreDetail me={localStorage.getItem(ME_KEY)} />} />}
         />
-        <Route path="/team/:teamname/Gallery" element={<TeamGallery />} />
+        <Route path="/team/:teamname/Gallery" element={<TeamGallery me={localStorage.getItem(ME_KEY)} />} />} />
 
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>

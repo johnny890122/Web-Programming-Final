@@ -17,6 +17,7 @@ import { Modal } from "antd";
 import CreateUserEvent from "../containers/CreateUserEvent";
 import KeyboardReturnTwoToneIcon from '@mui/icons-material/KeyboardReturnTwoTone';
 
+
 /*
 讀取、回傳 event資料
 event, createEvent, editEvent, deleteEvent
@@ -66,7 +67,6 @@ function UserEvent(props) {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dateClicked, setDateClicked] = useState(null);
-    console.log(typeof dateClicked);
 
     let createEvent = < CreateUserEvent me={props.me} sDate={dateClicked} eDate={dateClicked} mode={"create"} />;
 
