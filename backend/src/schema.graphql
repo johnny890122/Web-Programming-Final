@@ -185,6 +185,15 @@ type Mutation {
     eventPostTime: String
   ): String
 
+  updateUserEvent(
+    eventID: String    
+    eventTitle: String
+    eventDescription: String
+    eventStart: Float
+    eventEnd: Float
+    eventLocation: String 
+  ): String
+
   deleteUserEvent(eventID: String): String
 }
 

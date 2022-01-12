@@ -31,6 +31,7 @@ import styled from "styled-components";
 import { Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import CreateUserEvent from "../containers/CreateUserEvent";
+import KeyboardReturnTwoToneIcon from '@mui/icons-material/KeyboardReturnTwoTone';
 
 const ViewBox = styled.div`
   max-width: 800px;
@@ -44,70 +45,6 @@ const UserDashboard = (props) => {
     variables: { userID: props.me },
   });
 
-<<<<<<< HEAD
-  const EventData = [];
-  if (!loading) {
-    data.initUserEvent.map((i) =>
-      EventData.push({
-        id: i.eventID,
-        title: i.eventTitle,
-        description: i.eventDescription,
-        start: new Date(i.eventStart),
-        end: new Date(i.eventEnd),
-        location: i.eventLocation,
-        posttime: new Date(i.eventPostTime),
-      })
-    );
-
-    // 這邊不能這樣寫，會 too many re-render
-    // if (events.length === 0) {
-    //   setEvents(EventData);
-    // }
-  }
-
-  // console.log(events);
-
-  const [filtermode, setFiltermode] = useState("all"); // 活動篩選模式
-  const handleFilterChange = (filter, newFilter) => {
-    setFiltermode(newFilter);
-    if (newFilter === "upcoming") {
-      setEvents(EventData.filter((event) => new Date(event.start) > today));
-    } else if (newFilter === "past") {
-      setEvents(EventData.filter((event) => new Date(event.start) <= today));
-    } else if (newFilter === "unrespond") {
-      setEvents(
-        EventData.filter(
-          (event) => event.reply === false && new Date(event.start) > today
-        )
-      );
-    } else {
-      setEvents(EventData);
-    }
-    /* 篩選並排序符合條件的活動 */
-  };
-=======
-  // const EventData = [];
-
-  // if (!loading & ) {
-  //     setEvents(data.initUserEvent);
-  //     // data.initUserEvent.map(
-  //     //   i=>EventData.push(
-  //     //     {
-  //     //       "id": i.eventID,
-  //     //       "title": i.eventTitle, "description": i.eventDescription, "eventStart": new Date(i.eventStart),
-  //     //       "end": new Date(i.eventEnd), "location": i.eventLocation, "posttime": new Date(i.eventPostTime)
-  //     //     }
-  //     //   )
-  //     // )
-  // }
-  //   if (firstInit === true) {
-  //     setEvents(EventData)
-  //   }
-      
-  //     setFirstInit(false);
-  // }
-
-  // console.log(events);
 
   const ViewBox = styled.div`max-width: 800px;`;
 
@@ -126,8 +63,6 @@ const UserDashboard = (props) => {
       /* 篩選並排序符合條件的活動 */
     };
 
->>>>>>> Johnny
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const showModalWithNotification = () => {
@@ -140,124 +75,31 @@ const UserDashboard = (props) => {
     setComponentInModal(<DashboardEvent me={props.me} />);
   };
 
-  const handleOk = () => {
+  const handleClose = () => {
     setIsModalVisible(false);
     setComponentInModal(null);
   };
 
-<<<<<<< HEAD
-  const ListView = () => (
-    /* 點擊event進入detail頁面 */
-    <List className="user-event-list">
-      {events.map((event) => (
-        <Card
-          className="user-event-item"
-          sx={{ m: 2, width: 450, height: 200 }}
-          key={events.id}
-        >
-          <CardContent sx={{ p: 4 }}>
-            <Typography gutterBottom variant="h4" component="div">
-              {/*{event.id}*/}
-              {event.title}
-              {event.type === "team" ? (
-                <PeopleIcon sx={{ mx: 1 }} />
-              ) : (
-                <PersonIcon sx={{ mx: 1 }} />
-              )}
-            </Typography>
-
-            <Typography variant="subtitle1" color="text.secondary">
-              <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
-              {event.start.toDateString()}
-            </Typography>
-
-            <Typography variant="subtitle1" color="text.secondary">
-              <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
-            </Typography>
-
-            {new Date(event.start) <= today ? (
-              <Chip label="Finished" sx={{ my: 1 }} />
-            ) : event.type === "team" ? (
-              event.reply ? (
-                <Chip label="Replied" color="success" sx={{ my: 1 }} />
-              ) : (
-                <Chip label="Unreplied" color="error" sx={{ my: 1 }} />
-              )
-            ) : (
-              <></>
-            )}
-            <Box sx={{ textAlign: "right" }}>
-              <Button
-                size="large"
-                data-index={event.id}
-                key={event.id}
-                onClick={(e) =>
-                  setIsModalVisible(true) &
-                  setComponentInModal(
-                    <UserEventDetail id={e.target.getAttribute("data-index")} />
-                  ) &
-                  console.log(e.target.getAttribute("data-index"))
-                }
-              >
-                More
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
-    </List>
-  );
-
-  const eventlist = (
-    <div className="user-event">
-      <div className="user-event-filtertoggle">
-        <ToggleButtonGroup
-          color="primary"
-          value={filtermode}
-          exclusive
-          onChange={handleFilterChange}
-          // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
-        >
-          <ToggleButton value="all">All</ToggleButton>
-          <ToggleButton value="upcoming">Upcoming</ToggleButton>
-          <ToggleButton value="past">Past</ToggleButton>
-          <ToggleButton value="unrespond">Unrespond</ToggleButton>
-        </ToggleButtonGroup>
-        <Button
-          variant="outlined"
-          color="success"
-          sx={{ m: 1 }}
-          onClick={() =>
-            setIsModalVisible(true) &
-            setComponentInModal(<CreateUserEvent me={props.me} />)
-          }
-        >
-          Create
-        </Button>
-      </div>
-
-      <ViewBox>
-        <ListView />
-=======
   const ListView = (() => /* 點擊event進入detail頁面 */
-    <List className = "user-event-list">
-      {events.map(event => 
-      <Card 
+    <List className = "user-event-list" style={{ display: "flex" }}>
+      {events.map(event =>
+      <Card
+        style={{flexDirection: "row"}}
         className = "user-event-item"
         sx={{ m: 2, width: 450, height: 200 }}
         key={events.id}>
-                
-      <CardContent 
+
+      <CardContent
         sx={{ p: 4 }}
       >
         <Typography gutterBottom variant="h4" component="div">
           {/*{event.id}*/}
-          {event.eventTitle}   
+          {event.eventTitle}
           {
               event.type === "team"
-              ? <PeopleIcon sx={{ mx : 1 }} /> 
+              ? <PeopleIcon sx={{ mx : 1 }} />
               : <PersonIcon sx={{ mx : 1 }} />
-          } 
+          }
         </Typography>
 
         <Typography variant="subtitle1" color="text.secondary">
@@ -270,22 +112,22 @@ const UserDashboard = (props) => {
         </Typography>
 
           {
-              new Date(event.eventStart) <= today 
-              ? <Chip label="Finished" sx={{ my : 1 }} /> 
-              : (event.type === 'team' ? (event.reply 
-                                    ? <Chip label="Replied" color='success' sx={{ my : 1 }} /> 
+              new Date(event.eventStart) <= today
+              ? <Chip label="Finished" sx={{ my : 1 }} />
+              : (event.type === 'team' ? (event.reply
+                                    ? <Chip label="Replied" color='success' sx={{ my : 1 }} />
                                     : <Chip label="Unreplied" color='error' sx={{ my : 1 }} />) : (<></>))
           }
           <Box sx ={{textAlign: "right"}}>
-            <Button 
+            <Button
               size="large"
               data-index= {event.eventID}
               key={event.eventID}
-              onClick={(e) => setIsModalVisible(true) & 
-                              setComponentInModal(<UserEventDetail id={e.target.getAttribute("data-index")}/>) 
+              onClick={(e) => setIsModalVisible(true) &
+                              setComponentInModal(<UserEventDetail id={e.target.getAttribute("data-index")}/>)
                               & console.log(e.target.getAttribute("data-index"))
                       }
-              > 
+              >
                               More
             </Button>
           </Box>
@@ -298,7 +140,7 @@ const UserDashboard = (props) => {
   <div className = "user-event">
       <div className = "user-event-filtertoggle">
           <ToggleButtonGroup color="primary" value={filtermode} exclusive
-              onChange={handleFilterChange} 
+              onChange={handleFilterChange}
               // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
               >
               <ToggleButton value="all">All</ToggleButton>
@@ -306,22 +148,22 @@ const UserDashboard = (props) => {
               <ToggleButton value="past">Past</ToggleButton>
               <ToggleButton value="unrespond">Unrespond</ToggleButton>
           </ToggleButtonGroup>
-          <Button 
-                variant="outlined" color="success" sx={{ m: 1 }} 
-                onClick={ () => setIsModalVisible(true) & setComponentInModal(< CreateUserEvent me={props.me} />) }
+          <Button
+                variant="outlined" color="success" sx={{ m: 1 }}
+                onClick={ () => setIsModalVisible(true) & setComponentInModal(< CreateUserEvent me={props.me} mode="create" />) }
               >
                   Create
           </Button>
-      </div> 
-                                               
+      </div>
+
       <ViewBox >
           {events ? <ListView/> : []}
->>>>>>> Johnny
       </ViewBox>
     </div>
   );
 
   const dashboard = (
+    <>
     <div style={{ display: "flex" }}>
       <div style={{ width: "70vw", height: "70vh", flexDirection: "row" }}>
         {eventlist}
@@ -339,22 +181,23 @@ const UserDashboard = (props) => {
           component={<Notification me={props.me} />}
           fullscreen={isModalVisible}
         />
-
-        <Modal
-          title="Testing"
-          visible={isModalVisible}
-          onOk={handleOk}
-          style={{ zIndex: 1200 }}
-          footer={[
-            <Button key="ok" onClick={handleOk}>
-              Ok
-            </Button>,
-          ]}
-        >
-          {componentInModal}
-        </Modal>
       </div>
     </div>
+
+    <Modal
+      visible={isModalVisible}
+      onCancel={handleClose}
+      onOk={handleClose}
+      style={{ zIndex: 1200 }}
+      footer={[
+        <Button key="close" onClick={handleClose}>
+          Close
+        </Button>,
+      ]}
+    >
+      {componentInModal}
+    </Modal>
+    </>
   );
 
   return (

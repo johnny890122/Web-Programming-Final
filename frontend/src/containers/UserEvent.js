@@ -15,6 +15,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
 import { Modal } from "antd";
 import CreateUserEvent from "../containers/CreateUserEvent";
+import KeyboardReturnTwoToneIcon from '@mui/icons-material/KeyboardReturnTwoTone';
 
 /*
 讀取、回傳 event資料
@@ -51,8 +52,6 @@ function UserEvent(props) {
         }
     }
 
-    console.log(EventData);
-
     const CalendarView = (() =>      
         <FullCalendar
             className = "user-event-calendar"
@@ -82,8 +81,10 @@ function UserEvent(props) {
                 onOk={() => setIsModalVisible(false) }
                 style={{ zIndex: 1200 }}
                 footer={ [<Button key="ok" onClick={() => setIsModalVisible(false) }> Ok </Button>] }
-            >
-                 < CreateUserEvent me={props.me} date={dateClicked} />
+            >   
+
+
+                < CreateUserEvent me={props.me} date={dateClicked} />
             </Modal>
 
         </div>
