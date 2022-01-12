@@ -30,13 +30,9 @@ function UserTeam(props) {
       })
     );
   }
-
-  const TEAM_KEY = "nowTeam";
-  const [nowTeam, setNowTeam] = useState("");
   /*
     連結創建隊伍頁面、隊伍頁面 (下面改 href)
   */
-  const chooseTeam = () => {};
 
   const teamlist = (
     <div className="user-team-list">
@@ -66,7 +62,7 @@ function UserTeam(props) {
       >
         {AllTeamData.map((team) => (
           <Link to={{ pathname: `/team/${team.name}/Home` }}>
-            <Card style={cardStyle} key={team.id} onClick={chooseTeam}>
+            <Card style={cardStyle} key={team.id}>
               <CardActionArea
                 sx={{ width: 300, height: 150, display: "inline" }}
               >

@@ -51,12 +51,7 @@ function App() {
         />
         <Route
           path="/user/Team"
-          element={
-            <UserTeam
-              me={localStorage.getItem(ME_KEY)}
-              nowTeam={localStorage.getItem(TEAM_KEY)}
-            />
-          }
+          element={<UserTeam me={localStorage.getItem(ME_KEY)} />}
         />
         <Route
           path="/user/Achievement"
@@ -68,10 +63,7 @@ function App() {
           path="/team/Create"
           element={<TeamCreate me={localStorage.getItem(ME_KEY)} />}
         />
-        <Route
-          path="/team/:teamname/Home"
-          element={<TeamHome nowTeam={localStorage.getItem(TEAM_KEY)} />}
-        />
+        <Route path="/team/:teamname/Home" element={<TeamHome />} />
         <Route path="/team/:teamname/Member" element={<TeamMember />} />
         <Route path="/team/:teamname/Calendar" element={<TeamEvent />} />
         <Route path="/team/CreateTeamEvent" element={<CreateTeamEvent />} />
