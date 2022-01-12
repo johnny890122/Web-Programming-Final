@@ -81,13 +81,13 @@ const UserDashboard = (props) => {
   };
 
   const ListView = (() => /* 點擊event進入detail頁面 */
-    <List className = "user-event-list" style={{ display: "flex" }}>
+    <List className = "user-event-list" style={{ display: "flex", flexWrap: "wrap", width: "750px"}}>
       {events.map(event =>
       <Card
-        style={{flexDirection: "row"}}
+        style={{width: "325px", flexDirection: "row", }}
         className = "user-event-item"
-        sx={{ m: 2, width: 450, height: 200 }}
-        key={events.id}>
+        sx={{ m: 2}}
+        key={events.id} >
 
       <CardContent
         sx={{ p: 4 }}
@@ -104,7 +104,6 @@ const UserDashboard = (props) => {
 
         <Typography variant="subtitle1" color="text.secondary">
             <AccessTimeIcon sx={{ fontSize: "small" }} /> {new Date(event.eventStart).toDateString()}
-            {/*{event.eventStart.toDateString()}*/}
         </Typography>
 
         <Typography variant="subtitle1" color="text.secondary">
@@ -118,6 +117,7 @@ const UserDashboard = (props) => {
                                     ? <Chip label="Replied" color='success' sx={{ my : 1 }} />
                                     : <Chip label="Unreplied" color='error' sx={{ my : 1 }} />) : (<></>))
           }
+
           <Box sx ={{textAlign: "right"}}>
             <Button
               size="large"
@@ -125,10 +125,8 @@ const UserDashboard = (props) => {
               key={event.eventID}
               onClick={(e) => setIsModalVisible(true) &
                               setComponentInModal(<UserEventDetail id={e.target.getAttribute("data-index")}/>)
-                              & console.log(e.target.getAttribute("data-index"))
                       }
-              >
-                              More
+              > More
             </Button>
           </Box>
 
@@ -165,16 +163,18 @@ const UserDashboard = (props) => {
   const dashboard = (
     <>
     <div style={{ display: "flex" }}>
-      <div style={{ width: "70vw", height: "70vh", flexDirection: "row" }}>
+      <div style={{ width: "70vw", flexDirection: "row"}}>
         {eventlist}
       </div>
 
-      <div style={{ width: "30vw", height: "70vh", flexDirection: "row" }}>
+      <div style={{ width: "30vw", flexDirection: "row" }}>
         <Block
+          style={{height: "100vh"}}
           enlarge={showModalWithEvent}
           component={<DashboardEvent me={props.me} />}
           fullscreen={isModalVisible}
-        />
+        >
+        </Block>
 
         <Block
           enlarge={showModalWithNotification}

@@ -1,13 +1,13 @@
 import Draggable from "react-draggable";
-import { Card, Button} from 'antd';
+import { Card } from 'antd';
+import { Button } from "@mui/material";
+
 import { DragOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 
 function Block(props) {
   const { Meta } = Card;
-  
+            
   return (
-  /*<Draggable handle="Button">*/
-    
     <Card
       // hoverable
       style={{ width: 500  }}
@@ -24,10 +24,11 @@ function Block(props) {
     {/*<Meta title={props.title} description={props.description} />*/}
 
     {props.component}
-    <Button onClick={props.enlarge} 
+    <Button size="large" type="primary" onClick={props.enlarge}> More </Button>
+    {/*<Button onClick={props.enlarge} 
             type="primary" 
-            icon={ props.fullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />} 
-    / >
+            icon={ button } 
+    / >*/}
 
     </Card>
   // </Draggable>
