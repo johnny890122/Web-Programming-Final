@@ -44,8 +44,8 @@ function CreateUserEvent(props) {
                 eventCreator: props.me,
                 eventTitle: title,
                 eventDescription: description,
-                eventStart: Date.parse(sDate) + Date.parse(sTime),
-                eventEnd: Date.parse(eDate) + Date.parse(eTime),
+                eventStart: sDate || initSDate.getTime(),
+                eventEnd: eDate || initEDate.getTime(),
                 eventLocation: location
           }
         });
@@ -65,8 +65,8 @@ function CreateUserEvent(props) {
                 eventID: props.eventID,
                 eventTitle: title,
                 eventDescription: description,
-                eventStart: Date.parse(sDate),
-                eventEnd: Date.parse(eDate),
+                eventStart: sDate || initSDate.getTime(),
+                eventEnd: eDate || initEDate.getTime(),
                 eventLocation: location
           }
         });

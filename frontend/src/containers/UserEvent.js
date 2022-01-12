@@ -72,8 +72,6 @@ function UserEvent(props) {
 
     const eventlist = (
         <div className = "user-event">
-            <h1>日曆</h1>  
-
             <ViewBox >
                 <CalendarView/>           
             </ViewBox>
