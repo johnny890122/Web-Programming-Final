@@ -28,11 +28,14 @@ function Notification(props) {
   }
 
   return (
-    <List
-      itemLayout="horizontal"
-      dataSource={input}
-      renderItem={(e) => <NotificationItem time={e.time} task={e.task} />}
-    />
+    <div style={{height: "250px"}}>
+      <h2 style={{ display: "inline-block" }}>Recent Notification</h2>
+      <List
+        itemLayout="horizontal"
+        dataSource={input}
+        renderItem={(e) => <NotificationItem time={e.time} task={e.task} />}
+      />
+    </div> 
   );
 }
 

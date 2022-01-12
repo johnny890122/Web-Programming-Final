@@ -10,30 +10,42 @@ import moment from "moment";
 import { EventData } from '../components/ListData';
 import { Event } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER_EVENT } from "../graphql";
+import { CREATE_USER_EVENT, UPDATE_USER_EVENT } from "../graphql";
 
 function CreateUserEvent(props) {
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [location, setLocation] = useState("");
-    let clickedDate = props.date ? props.date.dateStr : null;
-    let now = new Date();
+    let now = new Date(), twoHoursLater = new Date(now);
+    twoHoursLater.setHours ( now.getHours() + 2 )
+
+    let initTitle = props.title ? props.title : null;
+    let initDescription = props.description ? props.description : null;
+    let initLocation = props.location ? props.location : null;
+
+    let initSDate = props.sDate ? new Date(parseInt(props.sDate)) : now;
+    let initSTime = props.sTime ? new Date(parseInt(props.sTime)) : now;
+    let initEDate = props.eDate ? new Date(parseInt(props.eDate)) : twoHoursLater;
+    let initETime = props.eTime ? new Date(parseInt(props.eTime)) : twoHoursLater;
+
+    const [title, setTitle] = useState(initTitle);
+    const [description, setDescription] = useState(initDescription);
+    const [location, setLocation] = useState(initLocation);
+
     const [sDate, setSDate] = useState(null);
     const [sTime, setSTime] = useState(null);
     const [eDate, setEDate] = useState(null);
     const [eTime, setETime] = useState(null);
 
     const [addEvent] = useMutation(CREATE_USER_EVENT);
+    const [updateEvent] = useMutation(UPDATE_USER_EVENT);
 
-    const subbmitEvent = async () => {
+    const submitCreateEvent = async () => {
         await addEvent({
             variables: {
                 eventCreator: props.me,
                 eventTitle: title,
                 eventDescription: description,
-                eventStart: Date.parse(sDate) + Date.parse(sTime),
-                eventEnd: Date.parse(eDate) + Date.parse(eTime),
+                eventStart: sDate || initSDate.getTime(),
+                eventEnd: eDate || initEDate.getTime(),
                 eventLocation: location
           }
         });
@@ -45,12 +57,31 @@ function CreateUserEvent(props) {
         setSTime(null);
         setEDate(null);
         setETime(null);
+    }
 
+    const submitUpdateEvent = async () => {
+        await updateEvent({
+            variables: {
+                eventID: props.eventID,
+                eventTitle: title,
+                eventDescription: description,
+                eventStart: sDate || initSDate.getTime(),
+                eventEnd: eDate || initEDate.getTime(),
+                eventLocation: location
+          }
+        });
+        setTitle("");
+        setDescription("");
+        setLocation("");
+        setSDate(null);
+        setSTime(null);
+        setEDate(null);
+        setETime(null);
     }
 
     const CreatePage = ( 
       <div className = "create-event-page">
-        <h2>Create My Event</h2>
+        <h2> {props.mode === "create" ? "Create" : "Edit" } </h2>
         <Box component="form"
                 noValidate
                 autoComplete="off">
@@ -79,18 +110,19 @@ function CreateUserEvent(props) {
                         <MobileDatePicker
                             id="create-event-sDate"
                             label="開始日期 *"
-                            value={sDate || clickedDate}
+                            value={sDate || initSDate}
                             required
-                            onChange={(newValue) => {setSDate(newValue)}}
+                            onChange={(newValue) => {setSDate(newValue) }}
+
                             renderInput={(params) => <TextField {...params} />}
                         />
                         <TimePicker
                             id="create-event-sTime"
                             sx={{ m: 5 }}
                             label="開始時間 *"
-                            value={ sTime || now.getHours() }
+                            value={ sTime || initSTime}
                             required
-                            onChange={(newValue) => {setSTime(newValue)}}
+                            onChange={(newValue) => {setSTime(newValue)} }
                             renderInput={(params) => <TextField {...params} />}
                         />
                     </LocalizationProvider>
@@ -103,7 +135,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDate"
                             sx={{ m: 5 }}
                             label="結束日期 *"
-                            value={eDate || clickedDate}
+                            value={eDate || initEDate}
                             required
                             onChange={(newValue) => {setEDate(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -112,7 +144,7 @@ function CreateUserEvent(props) {
                             id="create-event-eDime"
                             sx={{ m: 5 }}
                             label="結束時間 *"
-                            value={eTime || now.getHours()}
+                            value={eTime | initETime}
                             required
                             onChange={(newValue) => {setETime(newValue)}}
                             renderInput={(params) => <TextField {...params} />}
@@ -129,10 +161,19 @@ function CreateUserEvent(props) {
                         onChange={e => setLocation(e.target.value)}/>
             </div>    
             <div>
-                <Button sx={{ m: 2 }} color= "success" variant="contained" size="large"
-                        onClick={subbmitEvent}>
-                    Create!
-                </Button >
+                {
+                    props.mode === "create" 
+                    ? <Button sx={{ m: 2 }} color= "success" variant="contained" size="large"
+                        onClick={submitCreateEvent}>
+                        Create </Button >
+                    : 
+                    <>
+                        <Button sx={{ m: 2 }} color= "error" variant="contained" size="large"
+                        onClick={submitUpdateEvent}>
+                        Save </Button >
+                    </>
+                }
+                
             </div>
         </Box>
       </div>
@@ -140,9 +181,6 @@ function CreateUserEvent(props) {
     
     return(
         CreatePage
-        // <div className="Wrapper">
-        //     <Template content= />
-        // </div>
     )
 }
 

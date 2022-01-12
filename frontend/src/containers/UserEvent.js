@@ -15,6 +15,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
 import { Modal } from "antd";
 import CreateUserEvent from "../containers/CreateUserEvent";
+import KeyboardReturnTwoToneIcon from '@mui/icons-material/KeyboardReturnTwoTone';
 
 /*
 讀取、回傳 event資料
@@ -51,8 +52,6 @@ function UserEvent(props) {
         }
     }
 
-    console.log(EventData);
-
     const CalendarView = (() =>      
         <FullCalendar
             className = "user-event-calendar"
@@ -61,17 +60,18 @@ function UserEvent(props) {
             locale="zh-tw" // 中文化
             events= {EventData}
             selectable= {true}
-            dateClick={(info) => setDateClicked(info) & setIsModalVisible(true)}
+            dateClick={(info) => setDateClicked(info.date.getTime().toString()) & setIsModalVisible(true)}
         />      
     )
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [dateClicked, setDateClicked] = useState(null);
+    console.log(typeof dateClicked);
+
+    let createEvent = < CreateUserEvent me={props.me} sDate={dateClicked} eDate={dateClicked} mode={"create"} />;
 
     const eventlist = (
         <div className = "user-event">
-            <h1>日曆</h1>  
-
             <ViewBox >
                 <CalendarView/>           
             </ViewBox>
@@ -82,8 +82,8 @@ function UserEvent(props) {
                 onOk={() => setIsModalVisible(false) }
                 style={{ zIndex: 1200 }}
                 footer={ [<Button key="ok" onClick={() => setIsModalVisible(false) }> Ok </Button>] }
-            >
-                 < CreateUserEvent me={props.me} date={dateClicked} />
+            >   
+                {createEvent}
             </Modal>
 
         </div>

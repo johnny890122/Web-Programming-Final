@@ -31,6 +31,7 @@ import styled from "styled-components";
 import { Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import CreateUserEvent from "../containers/CreateUserEvent";
+import KeyboardReturnTwoToneIcon from "@mui/icons-material/KeyboardReturnTwoTone";
 
 const ViewBox = styled.div`
   max-width: 800px;
@@ -43,29 +44,6 @@ const UserDashboard = (props) => {
   const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
-
-  // const EventData = [];
-
-  // if (!loading & ) {
-  //     setEvents(data.initUserEvent);
-  //     // data.initUserEvent.map(
-  //     //   i=>EventData.push(
-  //     //     {
-  //     //       "id": i.eventID,
-  //     //       "title": i.eventTitle, "description": i.eventDescription, "eventStart": new Date(i.eventStart),
-  //     //       "end": new Date(i.eventEnd), "location": i.eventLocation, "posttime": new Date(i.eventPostTime)
-  //     //     }
-  //     //   )
-  //     // )
-  // }
-  //   if (firstInit === true) {
-  //     setEvents(EventData)
-  //   }
-
-  //     setFirstInit(false);
-  // }
-
-  // console.log(events);
 
   const ViewBox = styled.div`
     max-width: 800px;
@@ -108,18 +86,22 @@ const UserDashboard = (props) => {
     setComponentInModal(<DashboardEvent me={props.me} />);
   };
 
-  const handleOk = () => {
+  const handleClose = () => {
     setIsModalVisible(false);
     setComponentInModal(null);
   };
 
   const ListView = () => (
     /* 點擊event進入detail頁面 */
-    <List className="user-event-list">
+    <List
+      className="user-event-list"
+      style={{ display: "flex", flexWrap: "wrap", width: "750px" }}
+    >
       {events.map((event) => (
         <Card
+          style={{ width: "325px", flexDirection: "row" }}
           className="user-event-item"
-          sx={{ m: 2, width: 450, height: 200 }}
+          sx={{ m: 2 }}
           key={events.id}
         >
           <CardContent sx={{ p: 4 }}>
@@ -136,7 +118,6 @@ const UserDashboard = (props) => {
             <Typography variant="subtitle1" color="text.secondary">
               <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
               {new Date(event.eventStart).toDateString()}
-              {/*{event.eventStart.toDateString()}*/}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
@@ -155,6 +136,7 @@ const UserDashboard = (props) => {
             ) : (
               <></>
             )}
+
             <Box sx={{ textAlign: "right" }}>
               <Button
                 size="large"
@@ -164,10 +146,10 @@ const UserDashboard = (props) => {
                   setIsModalVisible(true) &
                   setComponentInModal(
                     <UserEventDetail id={e.target.getAttribute("data-index")} />
-                  ) &
-                  console.log(e.target.getAttribute("data-index"))
+                  )
                 }
               >
+                {" "}
                 More
               </Button>
             </Box>
@@ -198,7 +180,7 @@ const UserDashboard = (props) => {
           sx={{ m: 1 }}
           onClick={() =>
             setIsModalVisible(true) &
-            setComponentInModal(<CreateUserEvent me={props.me} />)
+            setComponentInModal(<CreateUserEvent me={props.me} mode="create" />)
           }
         >
           Create
@@ -210,39 +192,40 @@ const UserDashboard = (props) => {
   );
 
   const dashboard = (
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "70vw", height: "70vh", flexDirection: "row" }}>
-        {eventlist}
+    <>
+      <div style={{ display: "flex" }}>
+        <div style={{ width: "70vw", flexDirection: "row" }}>{eventlist}</div>
+
+        <div style={{ width: "30vw", flexDirection: "row" }}>
+          <Block
+            style={{ height: "100vh" }}
+            enlarge={showModalWithEvent}
+            component={<DashboardEvent me={props.me} />}
+            fullscreen={isModalVisible}
+          ></Block>
+
+          <Block
+            enlarge={showModalWithNotification}
+            component={<Notification me={props.me} />}
+            fullscreen={isModalVisible}
+          />
+        </div>
       </div>
 
-      <div style={{ width: "30vw", height: "70vh", flexDirection: "row" }}>
-        <Block
-          enlarge={showModalWithEvent}
-          component={<DashboardEvent me={props.me} />}
-          fullscreen={isModalVisible}
-        />
-
-        <Block
-          enlarge={showModalWithNotification}
-          component={<Notification me={props.me} />}
-          fullscreen={isModalVisible}
-        />
-
-        <Modal
-          title="Testing"
-          visible={isModalVisible}
-          onOk={handleOk}
-          style={{ zIndex: 1200 }}
-          footer={[
-            <Button key="ok" onClick={handleOk}>
-              Ok
-            </Button>,
-          ]}
-        >
-          {componentInModal}
-        </Modal>
-      </div>
-    </div>
+      <Modal
+        visible={isModalVisible}
+        onCancel={handleClose}
+        onOk={handleClose}
+        style={{ zIndex: 1200 }}
+        footer={[
+          <Button key="close" onClick={handleClose}>
+            Close
+          </Button>,
+        ]}
+      >
+        {componentInModal}
+      </Modal>
+    </>
   );
 
   return (

@@ -16,8 +16,6 @@ function DashboardEvent(props) {
   const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
-  
-  console.log(data);
 
   const eventData = [];
 
@@ -36,13 +34,8 @@ function DashboardEvent(props) {
   }
 
   return (
-    <div className="dashboard-event">
+    <div className="dashboard-event" style={{height: "250px"}}>
       <h2 style={{ display: "inline-block" }}>Upcoming Events</h2>
-      {/*<Button 
-      variant="outlined" color="success" sx={{ m: 1 }} href = '/user/CreateUserEvent' 
-      style={{ display: "inline-block" }}>
-                Create
-      </Button>*/}
 
       <List className="dashboard-event-list">
         {eventData.map((event) => (

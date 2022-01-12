@@ -115,6 +115,37 @@ const Mutation = {
     return eventID;
   },
 
+  updateUserEvent: async (parent, {
+      eventID,    
+      eventTitle,
+      eventDescription,
+      eventStart,
+      eventEnd,
+      eventLocation, }, 
+      { db, pubSub }
+    ) => {
+    const event = await db.DashboardEventModel.findOne({ eventID });
+
+    if (!event) {
+      throw new Error("Event not found!");
+    }
+
+    console.log(event)
+
+    const updatedEvent = await db.DashboardEventModel.findOneAndUpdate(
+      {eventID: eventID},
+      {
+        eventTitle: eventTitle,
+        eventDescription: eventDescription,
+        eventStart: eventStart,
+        eventEnd: eventEnd,
+        eventLocation: eventLocation
+      }
+    )
+
+    return eventID;
+  },
+
   deleteUserEvent: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
 
