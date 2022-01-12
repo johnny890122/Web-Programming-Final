@@ -1,6 +1,7 @@
 import Template from "../components/Template";
 import { TeamData } from "../components/ListData";
 import { Typography, Box, Card, Button, CardContent } from "@mui/material";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import { CardActionArea, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -30,9 +31,8 @@ function UserTeam(props) {
       })
     );
   }
-  /*
-    連結創建隊伍頁面、隊伍頁面 (下面改 href)
-  */
+
+  const TEAM_KEY = "nowTeam";
 
   const teamlist = (
     <div className="user-team-list">
@@ -61,7 +61,13 @@ function UserTeam(props) {
         }}
       >
         {AllTeamData.map((team) => (
-          <Link to={{ pathname: `/team/${team.name}/Home` }}>
+          <Link
+            to={{ pathname: `/team/${team.name}/Home` }}
+            onClick={() => {
+              console.log("now in team:", team.id);
+              localStorage.setItem(TEAM_KEY, team.id);
+            }}
+          >
             <Card style={cardStyle} key={team.id}>
               <CardActionArea
                 sx={{ width: 300, height: 150, display: "inline" }}
