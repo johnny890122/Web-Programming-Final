@@ -182,8 +182,10 @@ type Mutation {
     eventStart: Float
     eventEnd: Float
     eventLocation: String
-    eventPostTime: Int
+    eventPostTime: String
   ): String
+
+  deleteUserEvent(eventID: String): String
 }
 
 type Subscription {
@@ -232,7 +234,7 @@ type DashboardEvent {
   eventStart: Float!
   eventEnd: Float!
   eventLocation: String
-  eventPostTime: Float
+  eventPostTime: String
 }
 
 type UserPlaySet {

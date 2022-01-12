@@ -24,29 +24,34 @@ import CreateUserEvent from "../containers/CreateUserEvent"
 
 const UserDashboard = (props) => {
   const today = new Date();
-  const [events, setEvents] = useState([]); // 所有活動資料
+  const [events, setEvents] = useState(null); // 所有活動資料
+  const [firstInit, setFirstInit] = useState(true);
   const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
 
-  const EventData = [];
-  if (!loading) {
-      data.initUserEvent.map(
-        i=>EventData.push(
-          {
-            "id": i.eventID,
-            "title": i.eventTitle, "description": i.eventDescription, "start": new Date(i.eventStart),
-            "end": new Date(i.eventEnd), "location": i.eventLocation, "posttime": new Date(i.eventPostTime)
-          }
-        )
-      )
+  // const EventData = [];
 
-      if (events.length === 0) {
-          setEvents(EventData)
-      }
-  }
+  // if (!loading & ) {
+  //     setEvents(data.initUserEvent);
+  //     // data.initUserEvent.map(
+  //     //   i=>EventData.push(
+  //     //     {
+  //     //       "id": i.eventID,
+  //     //       "title": i.eventTitle, "description": i.eventDescription, "eventStart": new Date(i.eventStart),
+  //     //       "end": new Date(i.eventEnd), "location": i.eventLocation, "posttime": new Date(i.eventPostTime)
+  //     //     }
+  //     //   )
+  //     // )
+  // }
+  //   if (firstInit === true) {
+  //     setEvents(EventData)
+  //   }
+      
+  //     setFirstInit(false);
+  // }
 
-  console.log(events);
+  // console.log(events);
 
   const ViewBox = styled.div`max-width: 800px;`;
 
@@ -54,13 +59,13 @@ const UserDashboard = (props) => {
   const handleFilterChange = (filter, newFilter) => {
       setFiltermode(newFilter);
       if (newFilter === 'upcoming') {
-        setEvents(EventData.filter(event => new Date(event.start) > today))
+        setEvents(data.initUserEvent.filter(event => new Date(event.eventStart) > today))
       } else if (newFilter === 'past') {
-        setEvents(EventData.filter(event => new Date(event.start) <= today))
+        setEvents(data.initUserEvent.filter(event => new Date(event.eventStart) <= today))
       } else if (newFilter === 'unrespond') {
-        setEvents(EventData.filter(event => event.reply === false && new Date(event.start) > today))
+        setEvents(data.initUserEvent.filter(event => event.reply === false && new Date(event.eventStart) > today))
       } else {
-        setEvents(EventData);
+        setEvents(data.initUserEvent);
       }
       /* 篩選並排序符合條件的活動 */
     };
@@ -96,7 +101,7 @@ const UserDashboard = (props) => {
       >
         <Typography gutterBottom variant="h4" component="div">
           {/*{event.id}*/}
-          {event.title}   
+          {event.eventTitle}   
           {
               event.type === "team"
               ? <PeopleIcon sx={{ mx : 1 }} /> 
@@ -105,15 +110,16 @@ const UserDashboard = (props) => {
         </Typography>
 
         <Typography variant="subtitle1" color="text.secondary">
-            <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start.toDateString()}
+            <AccessTimeIcon sx={{ fontSize: "small" }} /> {new Date(event.eventStart).toDateString()}
+            {/*{event.eventStart.toDateString()}*/}
         </Typography>
 
         <Typography variant="subtitle1" color="text.secondary">
-            <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
+            <LocationOnIcon sx={{ fontSize: "small" }} /> {event.eventLocation}
         </Typography>
 
           {
-              new Date(event.start) <= today 
+              new Date(event.eventStart) <= today 
               ? <Chip label="Finished" sx={{ my : 1 }} /> 
               : (event.type === 'team' ? (event.reply 
                                     ? <Chip label="Replied" color='success' sx={{ my : 1 }} /> 
@@ -122,8 +128,8 @@ const UserDashboard = (props) => {
           <Box sx ={{textAlign: "right"}}>
             <Button 
               size="large"
-              data-index= {event.id}
-              key={event.id}
+              data-index= {event.eventID}
+              key={event.eventID}
               onClick={(e) => setIsModalVisible(true) & 
                               setComponentInModal(<UserEventDetail id={e.target.getAttribute("data-index")}/>) 
                               & console.log(e.target.getAttribute("data-index"))
@@ -158,7 +164,7 @@ const UserDashboard = (props) => {
       </div> 
                                                
       <ViewBox >
-          <ListView/>
+          {events ? <ListView/> : []}
       </ViewBox>
   </div>)
 

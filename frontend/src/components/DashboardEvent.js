@@ -16,11 +16,14 @@ function DashboardEvent(props) {
   const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
+  
+  console.log(data);
 
   const eventData = [];
 
   if (!loading) {
-    data.initUserEvent.map((i) =>
+    data.initUserEvent.map(
+      (i) =>
       eventData.push({
         title: i.eventTitle,
         description: i.eventDescription,
@@ -29,7 +32,7 @@ function DashboardEvent(props) {
         location: i.eventLocation,
         posttime: new Date(i.eventPostTime),
       })
-    );
+    )
   }
 
   return (
