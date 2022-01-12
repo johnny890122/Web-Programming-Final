@@ -1,9 +1,6 @@
 import React from "react";
 import Template from "../components/Template";
 import {
-  List,
-  ListItem,
-  ListItemText,
   Typography,
   Box,
   Card,
@@ -11,7 +8,7 @@ import {
   Chip,
   CardContent,
 } from "@mui/material";
-import { CardActionArea, CardMedia } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -22,7 +19,6 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
-import styled from "styled-components";
 import {
   EventData,
   ScoreData,
@@ -30,11 +26,12 @@ import {
   PostData,
 } from "../components/ListData";
 
-function TeamHome() {
+function TeamHome(props) {
   const events = EventData.filter((event) => event.type === "team").slice(0, 3);
   const scores = ScoreData.slice(0, 3);
   const votes = VoteData.slice(0, 3);
   const posts = PostData.slice(0, 2);
+  console.log(props);
 
   const homepage = (
     <div className="team-home" style={{ display: "flex", flexWrap: "wrap" }}>
