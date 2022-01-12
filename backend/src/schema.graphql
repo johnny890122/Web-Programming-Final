@@ -4,6 +4,8 @@ type Query {
   initUserAchievement(userID: String): [userAchievement]
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
+  initUserTeamEvent(userID: String): [Event]
+
   initMember(teamID: String): [User]!
   initContest(teamID: String): [Contest]!
   initGallery(teamID: String): [Gallery]!
@@ -373,13 +375,14 @@ type VoteOption {
 }
 
 type Event {
+  teamID: String
   eventID: String
   eventTitle: String
   eventDescription: String
   eventStart: String
   eventEnd: String
   eventLocation: String
-  eventCreator: User
+  eventCreator: String
   eventPostTime: String
   eventReply: [EventReply]
 }

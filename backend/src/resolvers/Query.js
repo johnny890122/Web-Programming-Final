@@ -77,6 +77,22 @@ const Query = {
     return event;
   },
 
+  initUserTeamEvent: async (parent, { userID }, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    const userTeamEvent = []
+    for (var i of user.allTeams) {
+      const team = await db.TeamModel.findOne({ _id: user.allTeams})
+      const events = await db.EventModel.find({ teamID: team.teamID });
+      events.map( i=> userTeamEvent.push(i))
+    }
+
+    return userTeamEvent;
+  },
+
   initUserTodo: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
 

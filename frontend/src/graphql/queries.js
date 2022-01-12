@@ -66,6 +66,26 @@ export const USER_EVENT_INIT = gql`
   }
 `;
 
+export const USER_TEAM_EVENT_INIT = gql`
+query initUserTeamEvent ($userID: String) {
+  initUserTeamEvent (userID: $userID)
+  {
+    teamID
+    eventTitle
+    eventID
+    eventTitle
+    eventDescription
+    eventStart
+    eventEnd
+    eventLocation
+    eventPostTime
+    eventReply {
+      eventReplyID
+    }
+  }
+}
+`
+
 export const TEAM_EVENT_INIT = gql`
   query initTeamEvent ($teamID: String){
 

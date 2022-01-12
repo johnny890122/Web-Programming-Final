@@ -26,7 +26,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useQuery } from "@apollo/client";
-import { USER_EVENT_INIT } from "../graphql";
+import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
 import styled from "styled-components";
 import { Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -40,41 +40,48 @@ const ViewBox = styled.div`
 const UserDashboard = (props) => {
   const today = new Date();
   const [events, setEvents] = useState(null); // 所有活動資料
-  const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
+  const [filtermode, setFiltermode] = useState("all"); // 活動篩選模式
+
+  const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
 
-  const ViewBox = styled.div`
-    max-width: 800px;
-  `;
+  const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
+    variables: { userID: props.me  }
+  });
 
-  const [filtermode, setFiltermode] = useState("all"); // 活動篩選模式
+  let data = [];
+  if (!userEvent.loading && !teamEvent.loading) {
+      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+  }
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [componentInModal, setComponentInModal] = useState("");
+
   const handleFilterChange = (filter, newFilter) => {
     setFiltermode(newFilter);
     if (newFilter === "upcoming") {
       setEvents(
-        data.initUserEvent.filter((event) => new Date(event.eventStart) > today)
+        data.filter((event) => new Date(event.eventStart) > today)
       );
     } else if (newFilter === "past") {
       setEvents(
-        data.initUserEvent.filter(
+        data.filter(
           (event) => new Date(event.eventStart) <= today
         )
       );
     } else if (newFilter === "unrespond") {
       setEvents(
-        data.initUserEvent.filter(
+        data.filter(
           (event) => event.reply === false && new Date(event.eventStart) > today
         )
       );
     } else {
-      setEvents(data.initUserEvent);
+      setEvents(data);
     }
     /* 篩選並排序符合條件的活動 */
   };
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [componentInModal, setComponentInModal] = useState("");
+  
   const showModalWithNotification = () => {
     setIsModalVisible(true);
     setComponentInModal(<Notification me={props.me} />);
@@ -101,7 +108,7 @@ const UserDashboard = (props) => {
           style={{ width: "325px", flexDirection: "row" }}
           className="user-event-item"
           sx={{ m: 2 }}
-          key={events.id}
+          key={event.id}
         >
           <CardContent sx={{ p: 4 }}>
             <Typography gutterBottom variant="h4" component="div">
@@ -144,7 +151,7 @@ const UserDashboard = (props) => {
                 onClick={(e) =>
                   setIsModalVisible(true) &
                   setComponentInModal(
-                    <EventDetail type="user" id={e.target.getAttribute("data-index")} />
+                    <EventDetail id={e.target.getAttribute("data-index")} />
                   )
                 }
               >
