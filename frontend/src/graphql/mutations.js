@@ -16,6 +16,22 @@ export const CREATE_USER = gql`
   }
 `;
 
+export const UPDATE_USER = gql`
+  mutation updateUser(
+    $userID: String
+    $userName: String
+    $userBirthday: Float
+  ) {
+    updateUser(
+      userID: $userID
+      userName: $userName
+      userBirthday: $userBirthday
+    ) {
+      userID
+    }
+  }
+`;
+
 export const CREATE_USER_EVENT = gql`
   mutation createUserEvent(
     $eventCreator: String
