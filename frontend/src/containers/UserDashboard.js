@@ -56,6 +56,9 @@ const UserDashboard = (props) => {
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
       data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+      if (!events) {
+         setEvents(data);
+      }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
