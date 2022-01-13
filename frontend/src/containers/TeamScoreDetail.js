@@ -30,6 +30,54 @@ const TeamScoreDetail = () => {
         setPlayerDetail: [
           {
             setID: "1",
+            playerID: "Yooga",
+            detailPointServe: 1,
+            detailPointAttack: 2,
+            detailPointTip: 3,
+            detailTimeAttack: 4,
+            detailTimePass: 4,
+            detailTimeNoPass: 4,
+            detailErrPassS: 2,
+            detailErrPassA: 2,
+            detailErrPass1: 2,
+            detailErrSet: 1,
+            detailErrOther: 1,
+            detailErrAttack: 2,
+            detailErrServe: 1,
+            detailComboServe: [3, 4, 5]
+          },
+          {
+            setID: "1",
+            playerID: "$$",
+            detailPointServe: 1,
+            detailPointAttack: 2,
+            detailPointTip: 3,
+            detailTimeAttack: 4,
+            detailTimePass: 4,
+            detailTimeNoPass: 4,
+            detailErrPassS: 2,
+            detailErrPassA: 2,
+            detailErrPass1: 2,
+            detailErrSet: 1,
+            detailErrOther: 1,
+            detailErrAttack: 2,
+            detailErrServe: 1,
+            detailComboServe: [3, 4]
+          }
+        ]
+      },
+      {
+        setID: "2",
+        setNumber: 2,
+        setScore: "xoxoxooxxoooxxooxoxoxxxxxxoxxoooxxoxxoxxxx",
+        setMyPoint: 21,
+        setOppoPoint: 25,
+        setOppoErrServe: 4,
+        setOppoErrAttack: 5,
+        setOppoErrOther: 6,
+        setPlayerDetail: [
+          {
+            setID: "1",
             playerID: "57",
             detailPointServe: 1,
             detailPointAttack: 2,
@@ -65,17 +113,6 @@ const TeamScoreDetail = () => {
             detailComboServe: [3, 4]
           }
         ]
-      },
-      {
-        setID: "2",
-        setNumber: 2,
-        setScore: "xoxoxooxxoooxxooxoxoxxxxxxoxxoooxxoxxoxxxx",
-        setMyPoint: 21,
-        setOppoPoint: 25,
-        setOppoErrServe: 4,
-        setOppoErrAttack: 5,
-        setOppoErrOther: 6,
-        setPlayerDetail: []
       }
     ],
   }
@@ -84,7 +121,7 @@ const TeamScoreDetail = () => {
   const [setNow, setSetNow] = useState(null);
 
   const showModal = (set) => {
-    console.log("show");
+    console.log(set.setPlayerDetail);
     setSetNow(set);
     setIsModalVisible(true);
   };
@@ -94,54 +131,76 @@ const TeamScoreDetail = () => {
     setIsModalVisible(false);
   }
   
-  const SetModal = (set) => {
-    return (
-      <Modal
-        title="Set Detail"
-        visible={isModalVisible}
-        //confirmLoading={isEdit}
-        onOk={handleCancel}
-        onCancel={handleCancel}>
-          <Typography display="inline" variant="h5" component="div">
-            {set? set.setID : ""}
-          </Typography>
-      </Modal>
-    )
-  }
-
-  const PlayerTable = ({ set }) => {
-    return (
-      <>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 350 }} aria-label="simple table">
-            <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
-              <TableRow>
-                <TableCell align="left" key = 'setNumber'>局數</TableCell>
-                <TableCell align="left" key = 'myteam'>{data.contestMyTeam}</TableCell>
-                <TableCell align="left" key = 'opponent'>{data.contestOpponent}</TableCell>
-                <TableCell align="left" key = 'button'>詳細記錄</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.contestSetDetail.map(set => (
-                <TableRow key={(set.setNumber)} 
-                          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell align="left">第 {set.setNumber} 局</TableCell>
-                  <TableCell align="left">{set.setMyPoint}</TableCell>
-                  <TableCell align="left">{set.setOppoPoint}</TableCell>
-                  <TableCell align="left">
-                    <Button onClick = {() => showModal(set)}>Detail</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
-  };
 
   const SetTable = ({ data }) => {
+
+    const SetModal = (set) => {
+
+      const PlayerTable = (set) => {
+        return (
+          <>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 1300 }} aria-label="simple table">
+                <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
+                  <TableRow>
+                    <TableCell align="center" key = 'player'>球員</TableCell>
+                    <TableCell align="center" key = 'pointServe'>發球得分</TableCell>
+                    <TableCell align="center" key = 'pointAttack'>攻擊得分</TableCell>
+                    <TableCell align="center" key = 'pointTip'>吊球得分</TableCell>
+                    <TableCell align="center" key = 'timeAttack'>攻擊次數</TableCell>
+                    <TableCell align="center" key = 'timePass'>傳球到位次數</TableCell>
+                    <TableCell align="center" key = 'timeNoPass'>傳球不到位次數</TableCell>
+                    <TableCell align="center" key = 'errPassS'>接發失誤</TableCell>
+                    <TableCell align="center" key = 'errPassA'>接扣失誤</TableCell>
+                    <TableCell align="center" key = 'errPass1'>一傳失誤</TableCell>
+                    <TableCell align="center" key = 'errSet'>二傳失誤</TableCell>
+                    <TableCell align="center" key = 'errOther'>處理失誤</TableCell>
+                    <TableCell align="center" key = 'errAttack'>攻擊失誤</TableCell>
+                    <TableCell align="center" key = 'errServe'>發球失誤</TableCell>
+                    <TableCell align="center" key = 'comboServe'>連續發球數</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {set.setPlayerDetail.map((player) => (
+                    <TableRow key={(player.playerID)} 
+                              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                      <TableCell align="center" key = 'player'>{player.playerID}</TableCell>
+                      <TableCell align="center" key = 'pointServe'>{player.detailPointServe}</TableCell>
+                      <TableCell align="center" key = 'pointAttack'>{player.detailPointAttack}</TableCell>
+                      <TableCell align="center" key = 'pointTip'>{player.detailPointTip}</TableCell>
+                      <TableCell align="center" key = 'timeAttack'>{player.detailTimeAttack}</TableCell>
+                      <TableCell align="center" key = 'timePass'>{player.detailTimePass}</TableCell>
+                      <TableCell align="center" key = 'timeNoPass'>{player.detailTimeNoPass}</TableCell>
+                      <TableCell align="center" key = 'errPassS'>{player.detailErrPassS}</TableCell>
+                      <TableCell align="center" key = 'errPassA'>{player.detailErrPassA}</TableCell>
+                      <TableCell align="center" key = 'errPass1'>{player.detailErrPass1}</TableCell>
+                      <TableCell align="center" key = 'errSet'>{player.detailErrSet}</TableCell>
+                      <TableCell align="center" key = 'errOther'>{player.detailErrOther}</TableCell>
+                      <TableCell align="center" key = 'errAttack'>{player.detailErrAttack}</TableCell>
+                      <TableCell align="center" key = 'errServe'>{player.detailErrServe}</TableCell>
+                      <TableCell align="center" key = 'comboServe'>{player.detailComboServe.map(combo => `${combo} `)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        );
+      };
+
+      return (
+        <Modal
+          title="Set Detail"
+          visible={isModalVisible}
+          //confirmLoading={isEdit}
+          onOk={handleCancel}
+          onCancel={handleCancel}
+          width={1400}>
+            {set? PlayerTable(set) :'null'}
+        </Modal>
+      )
+    }
+
     return (
       <>
         {SetModal(setNow)}
