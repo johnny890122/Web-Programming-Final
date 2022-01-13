@@ -270,6 +270,7 @@ const UserDashboard = (props) => {
         visible={isModalVisible}
         onCancel={handleClose}
         onOk={handleClose}
+        width= "600px"
         style={{ zIndex: 1200 }}
         footer={[
           <Button key="close" onClick={handleClose}>
