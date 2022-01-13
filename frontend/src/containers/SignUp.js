@@ -75,7 +75,7 @@ const SignUp = () => {
     } else {
       setAlertVisibility("inline-block");
       setAlertSeverity("error");
-      setAlertMessageBody("有資訊未填！");
+      setAlertMessageBody("請完整填寫正確格式的資訊！");
     }
   };
 
