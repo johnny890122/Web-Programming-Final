@@ -10,8 +10,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import {useState} from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { TEAM_EVENT_DETAIL, DELETE_TEAM_EVENT } from "../graphql";
-import CreateUserEvent from "../containers/CreateUserEvent"
+import { TEAM_EVENT_DETAIL, DELETE_TEAM_EVENT, UPDATE_TEAM_EVENT } from "../graphql";
+import CreateTeamEvent  from "../containers/CreateTeamEvent"
 import { Modal } from "antd";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import PeopleIcon from "@mui/icons-material/People";
@@ -38,38 +38,46 @@ function TeamEventDetail(props) {
     }
 
     const viewMode = (
-        <CardContent 
-            // sx={{ p: 5 }}
-          >
-{/*            <Typography gutterBottom variant="h4" component="div">
+        <CardContent>
+        {
+            !loading 
+            ? 
+            (
+                props.me === data.teamEventDetail.eventCreator.userID 
+                ? 
+                    <Typography gutterBottom variant="h4" component="div">
+                    {
+                        isEditMode 
+                        ? <Button
+                            onClick={ () => setIsEditMode(false) & setIsDeletedMode(false) } 
+                            startIcon={<ArrowBackIosIcon sx={{ fontSize: "large" }}/> } />
+                        :<Button
+                            onClick={ () => setIsEditMode(true) & setIsDeletedMode(false) } 
+                            startIcon={<EditIcon sx={{ fontSize: "large" }}/> } />
+                    }
+                        <Button 
+                            color= { isDeletedMode ? "error" : "primary"}
+                            onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelEventDeleted() } 
+                            startIcon={<DeleteOutlineOutlinedIcon sx={{ fontSize: "large" }}/> }>
+                                {!isDeletedMode ? "" : "Are you sure?" }
+                        </Button>
+
+                        <Button 
+                            color="success"
+                            style={{display: isDeletedMode ? "inline": "none" }} 
+                            key="Cancel" 
+                            onClick={() => setIsDeletedMode(false)} >
+                                Cancel
+                        </Button>
+                    </Typography>
+                : <></>
+                )
+            :  <></> 
+        }
+
             {
                 isEditMode 
-                ? <Button
-                    onClick={ () => setIsEditMode(false) & setIsDeletedMode(false) } 
-                    startIcon={<ArrowBackIosIcon sx={{ fontSize: "large" }}/> } />
-                :<Button
-                    onClick={ () => setIsEditMode(true) & setIsDeletedMode(false) } 
-                    startIcon={<EditIcon sx={{ fontSize: "large" }}/> } />
-            }
-                <Button 
-                    color= { isDeletedMode ? "error" : "primary"}
-                    onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelEventDeleted() } 
-                    startIcon={<DeleteOutlineOutlinedIcon sx={{ fontSize: "large" }}/> }>
-                        {!isDeletedMode ? "" : "Are you sure?" }
-                </Button>
-
-                <Button 
-                    color="success"
-                    style={{display: isDeletedMode ? "inline": "none" }} 
-                    key="Cancel" 
-                    onClick={() => setIsDeletedMode(false)} >
-                        Cancel
-                </Button>
-            </Typography>*/}
-
-            {
-                isEditMode 
-                ? <CreateUserEvent 
+                ? <CreateTeamEvent 
                     title={data.teamEventDetail.eventTitle}
                     description={data.teamEventDetail.eventDescription}
                     location={data.teamEventDetail.eventLocation}
@@ -101,6 +109,10 @@ function TeamEventDetail(props) {
                     <Typography variant="subtitle1" color="text.secondary">
                         <PeopleIcon sx={{ fontSize: "large" }} /> Team
                     </Typography>
+
+                    Poster: 
+                    {!loading ? data.teamEventDetail.eventCreator.userAccount: ""}
+
                 </>
             }
         </CardContent>

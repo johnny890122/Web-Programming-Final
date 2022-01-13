@@ -75,6 +75,8 @@ function TeamEvent(props) {
     variables: { teamID: props.nowTeam },
   });
 
+  console.log(data);
+
   const EventData = [];
   if (!loading) {
     data.initTeamEvent.map((i) =>
@@ -135,9 +137,9 @@ function TeamEvent(props) {
                 key={event.id}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  console.log(event) & 
                   setComponentInModal(
                     <TeamEventDetail
+                      me={props.me}
                       type="team"
                       id={e.target.getAttribute("data-index")}
                     />

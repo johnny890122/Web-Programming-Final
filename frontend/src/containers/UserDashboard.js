@@ -243,7 +243,7 @@ const UserDashboard = (props) => {
 
         <div style={{ width: "30vw", flexDirection: "row" }}>
           <Block
-            style={{ height: "100vh" }}
+            style={{ height: "100vh", overflow: "auto" }}
             enlarge={showModalWithEvent}
             component={<DashboardEvent me={props.me} />}
             fullscreen={isModalVisible}

@@ -24,61 +24,48 @@ const About = (props) => {
 
   const about = (
     <>
-    <Typography style={{textAlign: "center"}} mt={4} variant="h3"> About App </Typography>
+    <div className="box-container" style={{width: "80vw"}}>
+      <Typography style={{textAlign: "center"}} mt={4} variant="h5"> 管東管西，管好你的球隊大小事！ </Typography>
+    </div>
 
-    <div>Some 描述</div> 
-
-    <Typography style={{textAlign: "center"}} mt={4} variant="h3"> About Us </Typography>
+    <Typography mt={4} variant="h4"> About Us </Typography>
 
     <div className="box-container" style={{ display: "flex", width: "80vw", alignItems:'center',justifyContent:'center' }}>
         <List className="card-content" style={{margin: "2em"}}>
             <ListItem button>
-              <Avatar src="https://joeschmoe.io/api/v1/random" size={150} />
+              <Avatar src="https://joeschmoe.io/api/v1/Johnny" size={160} />
             </ListItem>
-            <ListItemText primary={123} secondary={123}/>
+            <Typography style={{textAlign: "center"}} mt={4} variant="h5"> Johnny </Typography>
         </List>
 
         <List className="card-content" style={{margin: "2em"}}>
             <ListItem button>
-              <Avatar src="https://joeschmoe.io/api/v1/random" size={150} />
+              <Avatar src="https://joeschmoe.io/api/v1/Yogo" size={160} />
             </ListItem>
-            <ListItemText primary={123} secondary={123}/>
+            <Typography style={{textAlign: "center"}} mt={4} variant="h5"> Yoga </Typography>
         </List>
 
         <List className="card-content" style={{margin: "2em"}}>
             <ListItem button>
-              <Avatar src="https://joeschmoe.io/api/v1/random" size={150} />
+              <Avatar src="https://joeschmoe.io/api/v1/jeri" size={160} />
             </ListItem>
-            <ListItemText primary={123} secondary={123}/>
+            <Typography style={{textAlign: "center"}} mt={4} variant="h5"> Money </Typography>
         </List>
     </div>
 
-    <Typography style={{textAlign: "center"}} mt={4} variant="h3"> Powered by </Typography>
 
-    <div style={{ display: "flex"}}>
-          <ListItem className="card-content">
-            <FaReact size={40} />
-          </ListItem >
-          <ListItem className="card-content">
-            <SiMongodb size={40} />
-          </ListItem>
-          <ListItem className="card-content">
-            <GrGraphQl size={40} />
-          </ListItem>
-          <ListItem className="card-content">
-           <DiNodejs size={40} / >
-          </ListItem>
-    </div>
+    <Typography mt={4} variant="h4"> Powered By </Typography>
+          <DiNodejs size={90} style={{display: "block"}} />
+
+          <FaReact size={40} style={{margin: "1em"}}/>
+          <GrGraphQl size={40} style={{margin: "1em"}} />
+          <SiMongodb size={40} style={{margin: "1em"}} />
     </>
   );
-
-
 
   return (
     <div className="Wrapper">
       <Template content={about} />
-
-
     </div>
   );
 };

@@ -10,7 +10,7 @@ import moment from "moment";
 
 import { Event } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
-import { CREATE_TEAM_EVENT, UPDATE_USER_EVENT } from "../graphql";
+import { CREATE_TEAM_EVENT, UPDATE_TEAM_EVENT } from "../graphql";
 
 function CreateTeamEvent(props) {
   let now = new Date(),
@@ -36,7 +36,7 @@ function CreateTeamEvent(props) {
   const [eTime, setETime] = useState(null);
 
   const [addEvent] = useMutation(CREATE_TEAM_EVENT);
-  // const [updateEvent] = useMutation(UPDATE_USER_EVENT);
+  const [updateEvent] = useMutation(UPDATE_TEAM_EVENT);
 
   const submitCreateEvent = async () => {
     await addEvent({
@@ -45,8 +45,8 @@ function CreateTeamEvent(props) {
         creatorID: props.me,
         eventTitle: title,
         eventDescription: description,
-        eventStart: sDate.getTime() || initSDate.getTime(),
-        eventEnd: eDate.getTime() || initEDate.getTime(),
+        eventStart: sDate === null ? initSDate.getTime() : sDate.getTime(),
+        eventEnd: eDate === null ? initEDate.getTime() : eDate.getTime(),
         eventLocation: location,
       },
     });
@@ -61,23 +61,23 @@ function CreateTeamEvent(props) {
   };
 
   const submitUpdateEvent = async () => {
-    // await updateEvent({
-    //     variables: {
-    //         eventID: props.eventID,
-    //         eventTitle: title,
-    //         eventDescription: description,
-    //         eventStart: sDate || initSDate.getTime(),
-    //         eventEnd: eDate || initEDate.getTime(),
-    //         eventLocation: location
-    //   }
-    // });
-    // setTitle("");
-    // setDescription("");
-    // setLocation("");
-    // setSDate(null);
-    // setSTime(null);
-    // setEDate(null);
-    // setETime(null);
+    await updateEvent({
+        variables: {
+            eventID: props.eventID,
+            eventTitle: title,
+            eventDescription: description,
+            eventStart: sDate || initSDate.getTime(),
+            eventEnd: eDate || initEDate.getTime(),
+            eventLocation: location
+      }
+    });
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setSDate(null);
+    setSTime(null);
+    setEDate(null);
+    setETime(null);
   };
 
   const CreatePage = (

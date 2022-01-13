@@ -179,28 +179,6 @@ const Mutation = {
     return eventID;
   },
 
-  createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
-    const galleryID = uuidv4();
-    const newGallery = new db.GalleryModel({
-      teamID,
-      galleryID,
-      galleryTitle,
-    });
-    await newGallery.save();
-    return newGallery;
-  },
-
-  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
-    const ganttID = uuidv4();
-    const newGantt = new db.GanttModel({
-      teamID,
-      ganttID,
-      ganttTitle,
-    });
-    await newGantt.save();
-    return newGantt;
-  },
-
   //---------- Team, Member, Manager ----------//
 
   createTeam: async (parent, args, { db, pubSub }) => {
@@ -448,7 +426,7 @@ const Mutation = {
     }).save();
 
     console.log("New Team Event Saved!");
-    return event;
+    return event.eventID;
   },
 
   deleteTeamEvent: async (parent, { eventID }, { db, pubSub }) => {
@@ -510,7 +488,7 @@ const Mutation = {
       }
     );
     console.log("Event Updated!");
-    return eventUpdate;
+    return eventID;
   },
   updateEventReply: async (parent, args, { db, pubSub }) => {
     const { eventReplyOption, eventReplyContent, eventReplyID } = args;
@@ -866,3 +844,28 @@ const Mutation = {
 };
 
 export default Mutation;
+
+
+/*
+createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
+    const galleryID = uuidv4();
+    const newGallery = new db.GalleryModel({
+      teamID,
+      galleryID,
+      galleryTitle,
+    });
+    await newGallery.save();
+    return newGallery;
+  },
+
+  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
+    const ganttID = uuidv4();
+    const newGantt = new db.GanttModel({
+      teamID,
+      ganttID,
+      ganttTitle,
+    });
+    await newGantt.save();
+    return newGantt;
+  },
+*/
