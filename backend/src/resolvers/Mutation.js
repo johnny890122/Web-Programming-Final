@@ -27,6 +27,25 @@ const Mutation = {
     return newUser;
   },
 
+  updateUser: async (parent, args, { db, pubSub }) => {
+    const { userID, userName, userBirthday } = args;
+    const User = await db.UserModel.findOne({ userID });
+
+    if (!User) {
+      throw new Error("User not found!");
+    }
+
+    const updatedUser = await db.UserModel.findOneAndUpdate(
+      { userID: userID },
+      {
+        userName: userName,
+        userBirthday: userBirthday,
+      }
+    );
+
+    return User;
+  },
+
   createUserTodo: async (parent, { userID, todoContent }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
     if (!user) {
@@ -115,15 +134,18 @@ const Mutation = {
     return eventID;
   },
 
-  updateUserEvent: async (parent, {
-      eventID,    
+  updateUserEvent: async (
+    parent,
+    {
+      eventID,
       eventTitle,
       eventDescription,
       eventStart,
       eventEnd,
-      eventLocation, }, 
-      { db, pubSub }
-    ) => {
+      eventLocation,
+    },
+    { db, pubSub }
+  ) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
@@ -131,16 +153,16 @@ const Mutation = {
     }
 
     const updatedEvent = await db.DashboardEventModel.findOneAndUpdate(
-      {eventID: eventID},
+      { eventID: eventID },
       {
         type: "user",
         eventTitle: eventTitle,
         eventDescription: eventDescription,
         eventStart: eventStart,
         eventEnd: eventEnd,
-        eventLocation: eventLocation
+        eventLocation: eventLocation,
       }
-    )
+    );
 
     return eventID;
   },
@@ -152,7 +174,7 @@ const Mutation = {
       throw new Error("Event not found!");
     }
 
-    await db.DashboardEventModel.deleteOne( { eventID } );
+    await db.DashboardEventModel.deleteOne({ eventID });
 
     return eventID;
   },
@@ -388,7 +410,7 @@ const Mutation = {
       throw new Error("Creator not found!");
     }
     const timeNow = await new Date();
-    const eventID = uuidv4()
+    const eventID = uuidv4();
     const event = await new db.EventModel({
       type: "team",
       teamID: teamID,
@@ -414,7 +436,7 @@ const Mutation = {
       throw new Error("Event not found!");
     }
 
-    await db.EventModel.deleteOne( { eventID } );
+    await db.EventModel.deleteOne({ eventID });
 
     return eventID;
   },

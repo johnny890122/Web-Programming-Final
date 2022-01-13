@@ -98,6 +98,10 @@ export const TEAM_EVENT_INIT = gql`
       eventEnd
       eventLocation
       eventPostTime
+      eventCreator {
+        userID
+        userAccount
+      }
     }
   }
 `;

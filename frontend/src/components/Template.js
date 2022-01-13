@@ -23,6 +23,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+
 import { makeStyles } from "@material-ui/core";
 import {
   DashboardCustomizeOutlined,
@@ -158,13 +160,15 @@ export default function Template({ content }) {
     setAnchorElUser(null);
   };
 
-  const pages = ["Dashboard", "Calendar", "Achievement", "Team"];
+  const pages = ["Dashboard", "Calendar", "Achievement", "Team", "About"];
   const iconList = [
     <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    <TipsAndUpdatesIcon sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />
   ];
+
   const teamPages = [
     "Home",
     "Calendar",

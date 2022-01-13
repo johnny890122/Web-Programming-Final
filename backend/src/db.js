@@ -58,7 +58,7 @@ const EventSchema = new Schema({
 
 const EventReplySchema = new Schema({
   eventReplyID: { type: String, required: true },
-  eventReplyMemeber: { type: Schema.Types.ObjectId, ref: "User" },
+  eventReplyMemeber: { type: String, ref: "User" },
   eventReplyOption: { type: String, required: false },
   eventReplyContent: { type: String, required: false },
   eventReplyTime: { type: String, required: false },

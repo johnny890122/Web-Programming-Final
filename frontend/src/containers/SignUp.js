@@ -20,8 +20,10 @@ import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
+// import bcrypt from "bcrypt";
 
 const SignUp = () => {
+  
   // 後端的訊息
   const [alert, setAlert] = useState(null);
 

@@ -22,7 +22,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PeopleIcon from "@mui/icons-material/People";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Modal } from "antd";
-import EventDetail from "../components/TeamEventDetail";
+import TeamEventDetail from "../components/TeamEventDetail";
 import CreateTeamEvent from "../containers/CreateTeamEvent";
 import { useQuery } from "@apollo/client";
 import { TEAM_EVENT_INIT } from "../graphql";
@@ -74,6 +74,7 @@ function TeamEvent(props) {
   const { data, error, loading, subscribeToMore } = useQuery(TEAM_EVENT_INIT, {
     variables: { teamID: props.nowTeam },
   });
+
   const EventData = [];
   if (!loading) {
     data.initTeamEvent.map((i) =>
@@ -85,6 +86,7 @@ function TeamEvent(props) {
         end: i.eventEnd,
         location: i.eventLocation,
         posttime: i.eventPostTime,
+        creator: i.eventCreator
       })
     );
   }
@@ -129,13 +131,13 @@ function TeamEvent(props) {
             <Box sx={{ textAlign: "right" }}>
               <Button
                 size="large"
-                data-index={event.eventID}
-                key={event.eventID}
+                data-index={event.id}
+                key={event.id}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  console.log(e.target.getAttribute("data-index")) &
+                  console.log(event) & 
                   setComponentInModal(
-                    <EventDetail
+                    <TeamEventDetail
                       type="team"
                       id={e.target.getAttribute("data-index")}
                     />
@@ -180,7 +182,7 @@ function TeamEvent(props) {
 
               <Button variant="outlined" color="success" sx={{ m: 1 }} 
                   onClick={() => setIsModalVisible(true) & setComponentInModal(
-                    <CreateTeamEvent me={props.me} mode="create" />)
+                    <CreateTeamEvent nowTeam={props.nowTeam} me={props.me} mode="create" />)
                   }
               >
                   Create

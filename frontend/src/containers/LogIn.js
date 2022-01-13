@@ -15,7 +15,7 @@ import { NavLink, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
 
-const LogIn = (props) => {
+const LogIn = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
@@ -28,12 +28,12 @@ const LogIn = (props) => {
   const [errorMessageTitle, setErrorMessageTitle] = useState("");
   const [errorMessageBody, setErrorMessageBody] = useState("");
 
-  const { data, error, loading, subscribeToMore } = useQuery(USER_LOGIN, {
+  const userLogin = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
   });
 
   const submitLogin = () => {
-    if (error === "Error: Account not existed!") {
+    if (userLogin.error === "Error: Account not existed!") {
       localStorage.setItem(ME_KEY, "");
     } else if (dataCorrect) {
     }
@@ -45,8 +45,8 @@ const LogIn = (props) => {
   };
 
   useEffect(() => {
-    if (data) {
-      setMe(data.userLogin.userID);
+    if (userLogin.data) {
+      setMe(userLogin.data.userLogin.userID);
       setDataCorrect(true);
     }
   });
@@ -55,8 +55,8 @@ const LogIn = (props) => {
     setErrorVisibility("none");
   }, [account, password]);
 
-  const errorBlock = error
-    ? error.graphQLErrors.map((i) => (
+  const errorBlock = userLogin.error
+    ? userLogin.error.graphQLErrors.map((i) => (
         <Alert
           severity="error"
           style={{ display: errorVisibility, width: "20%" }}
@@ -119,14 +119,15 @@ const LogIn = (props) => {
 
           {errorBlock}
           <Link
-            to={
-              dataCorrect
-                ? data.userLogin.userBirthday
-                  ? "/user/Dashboard"
-                  : "/user/Settings"
-                : "/"
-            }
-            state={{ me: localStorage.getItem(ME_KEY) }}
+            // to={
+            //   dataCorrect
+            //     ? userLogin.data.userLogin.userBirthday
+            //       ? "/user/Dashboard"
+            //       : "/user/Settings"
+            //     : "/"
+            // }
+            to={dataCorrect ? "/user/Dashboard" : "/"}
+            // params={{ me: me }}
             style={{ width: "20%" }}
           >
             <Button
