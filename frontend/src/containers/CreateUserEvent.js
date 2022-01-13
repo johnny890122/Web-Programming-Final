@@ -36,7 +36,7 @@ function CreateUserEvent(props) {
     const [eTime, setETime] = useState(null);
 
     const [addEvent] = useMutation(CREATE_USER_EVENT);
-    const [updateEvent] = useMutation(UPDATE_USER_EVENT);
+    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT);
 
     const submitCreateEvent = async () => {
         await addEvent({
@@ -59,8 +59,8 @@ function CreateUserEvent(props) {
         setETime(null);
     }
 
-    const submitUpdateEvent = async () => {
-        await updateEvent({
+    const submitUpdateUserEvent = async () => {
+        await updateUserEvent({
             variables: {
                 eventID: props.eventID,
                 eventTitle: title,
@@ -169,7 +169,7 @@ function CreateUserEvent(props) {
                     : 
                     <>
                         <Button sx={{ m: 2 }} color= "error" variant="contained" size="large"
-                        onClick={submitUpdateEvent}>
+                        onClick={submitUpdateUserEvent}>
                         Save </Button >
                     </>
                 }

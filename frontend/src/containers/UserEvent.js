@@ -1,6 +1,6 @@
 import Template from "../components/Template";
 import { useQuery } from "@apollo/client";
-import { USER_EVENT_INIT } from "../graphql";
+import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
 
 import { Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import { CardActionArea, CardMedia } from '@mui/material';
@@ -32,19 +32,31 @@ function UserEvent(props) {
     const [events, setEvents] = useState(); // 所有活動資料
     const today = new Date();
 
-    const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
-      variables: { userID: props.me },
+    const userEvent = useQuery(USER_EVENT_INIT, {
+        variables: { userID: props.me },
     });
 
+    const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
+        variables: { userID: props.me  }
+    });
+
+    let data = [];
+    if (!userEvent.loading && !teamEvent.loading) {
+      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+    }
+
+    console.log(data)
+
     const EventData = [];
-    if (!loading) {
-        data.initUserEvent.map( 
+    if (!userEvent.loading && !teamEvent.loading) {
+        data.map( 
           i=>EventData.push(
             {
               "title": i.eventTitle, 
               "description": i.eventDescription, 
               "start": parseInt(i.eventStart),
-              "end": parseInt(i.eventEnd), "location": i.eventLocation, "posttime": i.eventPostTime
+              "end": parseInt(i.eventEnd), "location": i.eventLocation, "posttime": i.eventPostTime,
+              "color": i.type === "user" ? "#378006" : "#12345"
             }
           )
         )

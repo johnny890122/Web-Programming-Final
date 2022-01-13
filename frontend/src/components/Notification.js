@@ -28,7 +28,7 @@ function Notification(props) {
   }
 
   return (
-    <div style={{height: "250px"}}>
+    <div style={{height: "250px", overflow: "auto"}}>
       <h2 style={{ display: "inline-block" }}>Recent Notification</h2>
       <List
         itemLayout="horizontal"
