@@ -202,41 +202,6 @@ function TeamEvent(props) {
           >
             {componentInModal}
           </Modal>
-
-      {viewmode === "list" ? (
-        <div className="team-event-filtertoggle">
-          <ToggleButtonGroup
-            color="primary"
-            value={filtermode}
-            exclusive
-            onChange={handleFilterChange}
-            // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
-          >
-            <ToggleButton value="all">All</ToggleButton>
-            <ToggleButton value="upcoming">Upcoming</ToggleButton>
-            <ToggleButton value="past">Past</ToggleButton>
-            <ToggleButton value="unrespond">Unrespond</ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      ) : (
-        <></>
-      )}
-
-      {viewmode === "list" ? <ListView /> : <CalendarView />}
-
-      <Modal
-        visible={isModalVisible}
-        onCancel={handleClose}
-        onOk={handleClose}
-        style={{ zIndex: 1200 }}
-        footer={[
-          <Button key="close" onClick={handleClose}>
-            Close
-          </Button>,
-        ]}
-      >
-        {componentInModal}
-      </Modal>
     </div>
   );
 
