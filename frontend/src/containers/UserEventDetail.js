@@ -10,7 +10,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import {useState} from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_EVENT_DETAIL, DELETE_USER_EVENT } from "../graphql";
+import { USER_EVENT_DETAIL, DELETE_USER_EVENT, USER_EVENT_INIT, UPDATE_USER_EVENT } from "../graphql";
 import CreateUserEvent from "../containers/CreateUserEvent"
 import { Modal } from "antd";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -19,8 +19,9 @@ function UserEventDetail(props) {
 	const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_DETAIL, {
 	variables: { eventID: props.id },
 	});
-	const [deleteEvent] = useMutation(DELETE_USER_EVENT);
-	
+	const [deleteEvent] = useMutation(DELETE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]});
+    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]});
+
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isDeletedMode, setIsDeletedMode] = useState(false);
 

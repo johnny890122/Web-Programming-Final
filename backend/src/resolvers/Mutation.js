@@ -131,6 +131,10 @@ const Mutation = {
       { $push: { userEvent: event } }
     );
 
+    pubSub.publish("USER_EVENT_CRATE", {
+      createUserEventSubscription: eventID,
+    });
+
     return eventID;
   },
 
@@ -146,10 +150,13 @@ const Mutation = {
     },
     { db, pubSub }
   ) => {
+
+    console.log(eventID);
+
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
-      throw new Error("Event not found!");
+      throw new Error("Event not found!22");
     }
 
     const updatedEvent = await db.DashboardEventModel.findOneAndUpdate(

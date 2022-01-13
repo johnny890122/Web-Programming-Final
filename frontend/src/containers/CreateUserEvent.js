@@ -10,7 +10,7 @@ import moment from "moment";
 import { EventData } from '../components/ListData';
 import { Event } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER_EVENT, UPDATE_USER_EVENT } from "../graphql";
+import { CREATE_USER_EVENT, UPDATE_USER_EVENT, USER_EVENT_INIT } from "../graphql";
 
 function CreateUserEvent(props) {
 
@@ -35,8 +35,9 @@ function CreateUserEvent(props) {
     const [eDate, setEDate] = useState(null);
     const [eTime, setETime] = useState(null);
 
-    const [addEvent] = useMutation(CREATE_USER_EVENT);
-    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT);
+    const [addEvent] = useMutation(CREATE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]} );
+    
+    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]});
 
     const submitCreateEvent = async () => {
         await addEvent({

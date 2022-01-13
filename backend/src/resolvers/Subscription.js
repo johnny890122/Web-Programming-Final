@@ -1,29 +1,12 @@
 const Subscription = {
-  /**
-   * Subscribe for task creation
-   */
-  taskCreated: {
+  
+  userEventCreate: {
     subscribe: (parent, args, { pubSub }) => {
-      return pubSub.asyncIterator("TASK_CREATED");
+      console.log("hi")
+      return pubSub.asyncIterator("USER_EVENT_CRATE");
     },
   },
-  /**
-   * Subscribe for task update
-   */
-  taskUpdated: {
-    subscribe: (parent, args, { pubSub }) => {
-      return pubSub.asyncIterator("TASK_UPDATED");
-    },
-  },
-  /**
-   * Subscribe for task deletion
-   */
-  // TODO 6.2 Add taskDeleted resolver
-  taskDeleted: {
-    subscribe: (parent, args, { pubSub }) => {
-      return pubSub.asyncIterator("TASK_DELETED");
-    },
-  },
+
 };
 
 export default Subscription;

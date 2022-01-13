@@ -56,7 +56,7 @@ const UserDashboard = (props) => {
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
       data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
-      if (!events) {
+      if (!events || data.length != events.length) {
          setEvents(data);
       }
   }
@@ -176,7 +176,7 @@ const UserDashboard = (props) => {
                         id={e.target.getAttribute("data-index")} />
                     : <UserEventDetail 
                         onDelete={()=> setIsModalVisible(false)}
-                        onEdit={()=> setIsModalVisible(false)} 
+                        onEdit={() => setIsModalVisible(false) } 
                         id={e.target.getAttribute("data-index")} />
                   )
                 }

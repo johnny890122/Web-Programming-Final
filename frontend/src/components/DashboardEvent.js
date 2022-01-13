@@ -1,6 +1,7 @@
 import { EventData } from "./ListData";
 import { useQuery } from "@apollo/client";
 import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
+import {useState} from "react";
 
 import {
   List,
@@ -22,9 +23,11 @@ function DashboardEvent(props) {
     variables: { userID: props.me  }
   });
 
+  const [events, setEvents] = useState(); // 所有活動資料
+
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
-      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent)
   }
 
   const eventData = [];
@@ -41,13 +44,14 @@ function DashboardEvent(props) {
     )
   }
 
+
   return (
     <div className="dashboard-event" style={{height: "250px", overflow: "auto"}}>
       <h2 style={{ display: "inline-block" }}>Upcoming Events</h2>
 
       <List className="dashboard-event-list">
         {eventData.map((event) => (
-          <ListItem button key={event.id}>
+          <ListItem>
             <ListItemText 
               primary={event.title} 
               secondary={ event.start.toDateString()} />
