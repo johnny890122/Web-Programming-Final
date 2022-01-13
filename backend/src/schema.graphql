@@ -10,8 +10,6 @@ type Query {
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
   initContest(teamID: String): [Contest]
-  initGallery(teamID: String): [Gallery]
-  initGantt(teamID: String): [Gantt]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
@@ -36,12 +34,6 @@ type Mutation {
   updateUser(userID: String, userName: String, userBirthday: Int): User
   createUserTodo(userID: String, todoContent: String): Todo
 
-  #createContestDetail(
-  #  contestContestSet: ID!
-  #  contestContestItem: [String!]!
-  #): ContestContestSet!
-  createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
-  createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
   ## --------- Team ----------##
 
   createTeam(
@@ -276,22 +268,14 @@ type Team {
   teamType: String!
   teamCreateTime: String
   teamMember: [User]
-  teamGallery: [Gallery]
   teamPost: [Post]
-  teamGantt: [Gantt]
   teamContest: [Contest]
   teamVote: [Vote]
   teamEvent: [Event]
   teamManager: [User]
+  #teamGallery: [Gallery]
+  #teamGantt: [Gantt]
   #creator: User
-}
-
-type Gallery {
-  teamID: String!
-  galleryID: String!
-  galleryTitle: String!
-  original_url: [String!]!
-  thumbnail_url: [String!]!
 }
 
 type Post {
@@ -300,22 +284,6 @@ type Post {
   postContent: String
   postAuthor: User
   postTime: String
-}
-
-type Gantt {
-  teamID: String!
-  ganttID: String!
-  ganttTitle: String!
-  ganttTaskID: [GanttTask]!
-}
-
-type GanttTask {
-  ganttTaskID: String
-  dateStart: Int!
-  dateEnd: Int!
-  duration: Int!
-  percComplete: Float!
-  dependencies: String!
 }
 
 type Contest {
@@ -400,9 +368,6 @@ type EventReply {
   eventReplyTime: String
 }
 
-input CreateGalleryInput {
-  galleryTitle: String!
-}
 
 enum EventReplyOption {
   Yes
@@ -415,3 +380,13 @@ enum ContestWinOption {
   lose
   tie
 }
+
+# type Gallery { teamID: String! galleryID: String! galleryTitle: String! original_url: [String!]! thumbnail_url: [String!]!}
+# type Gantt { teamID: String! ganttID: String! ganttTitle: String! ganttTaskID: [GanttTask]!}
+# type GanttTask { ganttTaskID: String dateStart: Int! dateEnd: Int! duration: Int! percComplete: Float! dependencies: String!}
+# input CreateGalleryInput { galleryTitle: String }
+#initGallery(teamID: String): [Gallery]
+#initGantt(teamID: String): [Gantt]
+#createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
+#createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
+  
