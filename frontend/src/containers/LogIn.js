@@ -14,6 +14,9 @@ import { InputLabel } from "@mui/material";
 import { NavLink, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
 
 const LogIn = () => {
   const [account, setAccount] = useState("");
@@ -27,6 +30,7 @@ const LogIn = () => {
   const [errorSeverity, setErrorSeverity] = useState("");
   const [errorMessageTitle, setErrorMessageTitle] = useState("");
   const [errorMessageBody, setErrorMessageBody] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const userLogin = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
@@ -42,6 +46,14 @@ const LogIn = () => {
       localStorage.setItem(ME_KEY, me);
     }
     setErrorVisibility("block");
+  };
+
+  const handleClickShowPassword = () => {
+    showPassword ? setShowPassword(false) : setShowPassword(true);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -77,9 +89,12 @@ const LogIn = () => {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+          <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+
+          <Typography 
+          variant="h6" component="div" sx={{ flexGrow: 1 }}
+          >
             LogIn
           </Typography>
         </Toolbar>
@@ -108,6 +123,7 @@ const LogIn = () => {
             color="primary"
             focused
             style={{ margin: "0.75rem", width: "20%" }}
+
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
@@ -115,6 +131,20 @@ const LogIn = () => {
             color="primary"
             focused
             style={{ margin: "0.75rem", width: "20%" }}
+            type={showPassword ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           {errorBlock}
