@@ -13,13 +13,17 @@ function Notification(props) {
     }
   );
 
+  console.log(data);
+
   if (!loading) {
     const tmp = {};
     for (var i of data.initUserNotification) {
-      if (!tmp[i.taskTime]) {
-        tmp[i.taskTime] = [];
+      const dateString = new Date(i.taskTime).toDateString()
+
+      if (!tmp[dateString]) {
+        tmp[dateString] = [];
       }
-      tmp[i.taskTime].push({ type: i.taskType, content: i.taskContent });
+      tmp[dateString].push({ type: i.taskType, content: i.taskContent });
     }
 
     for (var i of Object.keys(tmp)) {

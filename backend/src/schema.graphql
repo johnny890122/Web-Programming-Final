@@ -233,7 +233,7 @@ type Todo {
 
 type NotificationTask {
   taskID: String
-  taskTime: Int
+  taskTime: Float
   taskType: String
   taskContent: String
 }
