@@ -69,6 +69,10 @@ function Score(props) {
     setIsModalVisible(true);
   };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  }
+
   const scoreForm = (
     <Form
       labelCol={{ span: 8 }}
@@ -93,21 +97,10 @@ function Score(props) {
   );
 
   const scoreModal = (
-    <Modal
-      title="Score"
-      visible={isModalVisible}
-      // onOk={handleOk}
-      // onCancel={handleOk}
-      // confirmLoading={isEdit}
-      footer={
-        <Button
-          key="ok"
-          // onClick={handleOk}
-        >
-          OK
-        </Button>
-      }
-    >
+    <Modal title="Score" visible={isModalVisible} onCancel={handleCancel} 
+           footer={<Button key="ok" onClick={handleCancel}>
+                      Cancel
+                   </Button>}>
       {scoreForm}
     </Modal>
   );
@@ -115,30 +108,16 @@ function Score(props) {
   return (
     <Box className="team-score" style={{ marginLeft: "1rem" }}>
       {scoreModal}
-      <div
-        className="createBox-container"
-        style={{
-          display: "flex",
-          width: "80vw",
-          marginLeft: "1rem",
-        }}
-      >
+      <div className="createBox-container" 
+           style={{ display: "flex", width: "80vw", marginLeft: "1rem"}}>
         <Button variant="outlined" color="success" onClick={showModal}>
           Create
         </Button>
       </div>
-      <div
-        className="teamScore-container"
-        style={{
-          marginTop: "1rem",
-        }}
-      >
+      <div className="teamScore-container" 
+           style={{ marginTop: "1rem", }}>
         {ScoreData.map((score) => (
-          <Link
-            to={{
-              pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`,
-            }}
-          >
+          <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}>
             <ListItem button key={score.id} sx={{ width: 700 }}>
               <Card>
                 <CardActionArea sx={{ width: 700 }}>
@@ -163,15 +142,8 @@ function Score(props) {
                       <Typography display="inline" variant="h5" component="div">
                         {score.opponent}
                       </Typography>
-                      <Typography
-                        display="inline"
-                        variant="subtitle1"
-                        component="div"
-                        style={{
-                          position: "absolute",
-                          right: "2rem",
-                        }}
-                      >
+                      <Typography display="inline" variant="subtitle1" component="div"
+                                  style={{position: "absolute",right: "2rem"}}>
                         {/* <EventNoteIcon sx={{ mx: 1, my: 0 }} />  */}
                         {score.date}
                       </Typography>
