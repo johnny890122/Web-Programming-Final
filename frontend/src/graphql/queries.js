@@ -138,6 +138,10 @@ export const TEAM_EVENT_DETAIL = gql`
       eventDescription
       eventLocation
       eventPostTime
+      eventCreator {
+        userID
+        userAccount
+      }
     }
   }
 `;

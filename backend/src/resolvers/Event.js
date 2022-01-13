@@ -1,7 +1,7 @@
 const Event = {
     eventCreator: async (parent, args, { db, pubSub }) => {
         //console.log(parent.eventCreator)
-        return parent.eventCreator
+        return await db.UserModel.findById(parent.eventCreator)
     },
     eventReply: async (parent, args, { db, pubSub }) => {
         //console.log(parent.eventCreator)
