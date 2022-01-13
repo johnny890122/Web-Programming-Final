@@ -43,16 +43,17 @@ const TeamSchema = new Schema({
 });
 
 const EventSchema = new Schema({
-  teamID: { type: String, required: true },
-  eventID: { type: String, required: true },
-  eventTitle: { type: String, required: true },
-  eventDescription: { type: String, required: true },
-  eventStart: { type: Number, required: true },
+  //teamID: { type: String, required: true },
+  eventID: { type: String, required: false },
+  eventTitle: { type: String, required: false },
+  eventDescription: { type: String, required: false },
+  eventStart: { type: Number, required: false },
   eventEnd: { type: Number, required: false },
   eventLocation: { type: String, required: false },
-  eventCreator: { type: String, ref: "User" },
-  eventPostTime: { type: String, required: true },
-  eventReply: [{ type: String, ref: "EventReply" }],
+  eventCreator: { type: Schema.Types.ObjectId, ref: "User" },
+  eventPostTime: { type: String, required: false },
+  eventReply: [{ type: Schema.Types.ObjectId, ref: "EventReply" }],
+  type: { type: String, required: false },
 });
 
 const EventReplySchema = new Schema({
@@ -60,6 +61,7 @@ const EventReplySchema = new Schema({
   eventReplyMemeber: { type: Schema.Types.ObjectId, ref: "User" },
   eventReplyOption: { type: String, required: false },
   eventReplyContent: { type: String, required: false },
+  eventReplyTime: { type: String, required: false },
 });
 
 const GallerySchema = new Schema({
@@ -93,14 +95,15 @@ const AchievementSchema = new Schema({
 });
 
 const DashboardEventSchema = new Schema({
-  userID: { type: String, ref: "User" },
-  eventID: { type: String, required: true },
-  eventTitle: { type: String, required: true },
-  eventDescription: { type: String, required: true },
-  eventStart: { type: Number, required: true },
-  eventEnd: { type: Number, required: true },
-  eventLocation: { type: String, required: true },
-  eventPostTime: { type: String, required: true },
+  //userID: { type: String, ref: "User" },
+  eventID: { type: String, required: false },
+  eventTitle: { type: String, required: false },
+  eventDescription: { type: String, required: false },
+  eventStart: { type: Number, required: false },
+  eventEnd: { type: Number, required: false },
+  eventLocation: { type: String, required: false },
+  eventPostTime: { type: String, required: false },
+  type: { type: String, required: false },
 });
 
 const ContestSchema = new Schema({

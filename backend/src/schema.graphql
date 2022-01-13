@@ -281,7 +281,7 @@ type Team {
   teamVote: [Vote]
   teamEvent: [Event]
   teamManager: [User]
-  creatorID: String!
+  #creator: User
 }
 
 type Gallery {
