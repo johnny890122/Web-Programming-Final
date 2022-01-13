@@ -167,11 +167,14 @@ export const FIND_TEAM_NAME = gql`
 `;
 
 export const TEAM_SCORE_INIT = gql`
-  query initScore($teamID: String) {
-    initScore(teamID: $teamID) {
-      teamID
+  query initContest($teamID: String) {
+    initContest(teamID: $teamID) {
       contestID
       contestTitle
+      contestOpponent
+      contestDate
+      contestMySet
+      contestOppoSet
     }
   }
 `;

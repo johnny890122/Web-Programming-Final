@@ -21,16 +21,21 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import {
   // EventData,
-  ScoreData,
+  // ScoreData,
   VoteData,
   // PostData,
 } from "../components/ListData";
-import { TEAM_EVENT_INIT, TEAM_POST_INIT, FIND_TEAM_NAME } from "../graphql";
+import {
+  TEAM_EVENT_INIT,
+  TEAM_POST_INIT,
+  TEAM_SCORE_INIT,
+  FIND_TEAM_NAME,
+} from "../graphql";
 import { useQuery } from "@apollo/client";
 
 function TeamHome(props) {
   // const events = EventData.filter((event) => event.type === "team").slice(0, 3);
-  const scores = ScoreData.slice(0, 3);
+  // const scores = ScoreData.slice(0, 3);
   const votes = VoteData.slice(0, 3);
   // const posts = PostData.slice(0, 2);
 
@@ -42,6 +47,9 @@ function TeamHome(props) {
     variables: { teamID: props.nowTeam },
   });
   const teamPost = useQuery(TEAM_POST_INIT, {
+    variables: { teamID: props.nowTeam },
+  });
+  const teamScore = useQuery(TEAM_SCORE_INIT, {
     variables: { teamID: props.nowTeam },
   });
 
@@ -68,6 +76,19 @@ function TeamHome(props) {
         title: i.postTitle,
         author: i.postAuthor.userID,
         content: i.postContent,
+      })
+    );
+  }
+  const ScoreData = [];
+  if (!teamScore.loading) {
+    teamScore.data.initContest.map((i) =>
+      ScoreData.push({
+        id: i.contestID,
+        title: i.contestTitle,
+        opponent: i.contestOpponent,
+        date: i.contestDate,
+        mySet: i.contestMySet,
+        oppoSet: i.contestOppoSet,
       })
     );
   }
@@ -177,7 +198,7 @@ function TeamHome(props) {
             <SportsScoreIcon sx={{ mx: 1, my: 0 }} /> Score
           </Typography>
         </Box>
-        {scores.map((score) => (
+        {ScoreData.map((score) => (
           <Card
             sx={{ m: 1, width: 128, height: 180, display: "inline-block" }}
             key={score.id}
@@ -194,7 +215,7 @@ function TeamHome(props) {
                   <CalendarTodayIcon sx={{ fontSize: "small" }} /> {score.date}
                 </Typography>
                 <Typography gutterBottom variant="h6" component="div">
-                  {score.teamSet} : {score.oppoSet}
+                  {score.mySet} : {score.oppoSet}
                 </Typography>
               </CardContent>
             </CardActionArea>

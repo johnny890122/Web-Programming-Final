@@ -96,7 +96,12 @@ function App() {
         />
         <Route
           path="/team/:teamname/Score"
-          element={<TeamScore me={localStorage.getItem(ME_KEY)} />}
+          element={
+            <TeamScore
+              me={localStorage.getItem(ME_KEY)}
+              nowTeam={localStorage.getItem(TEAM_KEY)}
+            />
+          }
         />
         <Route
           path="/team/:teamname/Vote"

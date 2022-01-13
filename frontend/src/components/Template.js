@@ -387,13 +387,21 @@ export default function Template({ content }) {
           aria-label="breadcrumb"
           separator={<NavigateNext fontSize="small" />}
         >
-          {breadItem.map((item) => (
-            <NavLink to={concatBread(item)}>
-              <Typography sx={{ color: "black" }}>
+          {breadItem.map((item) =>
+            item !== "user" &&
+            item !== "team" &&
+            (pages.includes(item) || teamPages.includes(item)) ? (
+              <NavLink to={concatBread(item)}>
+                <Typography sx={{ color: "black" }}>
+                  {decodeURI(item).toUpperCase()}
+                </Typography>
+              </NavLink>
+            ) : (
+              <Typography sx={{ color: "#727272" }}>
                 {decodeURI(item).toUpperCase()}
               </Typography>
-            </NavLink>
-          ))}
+            )
+          )}
         </Breadcrumbs>
         <br />
         <div className="main" style={{ width: "95%" }}>
