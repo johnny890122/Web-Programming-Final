@@ -157,28 +157,6 @@ const Mutation = {
     return eventID;
   },
 
-  createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
-    const galleryID = uuidv4();
-    const newGallery = new db.GalleryModel({
-      teamID,
-      galleryID,
-      galleryTitle,
-    });
-    await newGallery.save();
-    return newGallery;
-  },
-
-  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
-    const ganttID = uuidv4();
-    const newGantt = new db.GanttModel({
-      teamID,
-      ganttID,
-      ganttTitle,
-    });
-    await newGantt.save();
-    return newGantt;
-  },
-
   //---------- Team, Member, Manager ----------//
 
   createTeam: async (parent, args, { db, pubSub }) => {
@@ -844,3 +822,28 @@ const Mutation = {
 };
 
 export default Mutation;
+
+
+/*
+createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
+    const galleryID = uuidv4();
+    const newGallery = new db.GalleryModel({
+      teamID,
+      galleryID,
+      galleryTitle,
+    });
+    await newGallery.save();
+    return newGallery;
+  },
+
+  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
+    const ganttID = uuidv4();
+    const newGantt = new db.GanttModel({
+      teamID,
+      ganttID,
+      ganttTitle,
+    });
+    await newGantt.save();
+    return newGantt;
+  },
+*/

@@ -11,10 +11,10 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   manageTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
-  //userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
   userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" },],
   userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },],
   userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
+  //userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
   //userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
 });
 
@@ -34,12 +34,12 @@ const TeamSchema = new Schema({
   teamCreateTime: { type: String, required: false },
   teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-  teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
-  teamGallery: [{ type: Schema.Types.ObjectId, ref: "Gallery" }],
   teamContest: [{ type: Schema.Types.ObjectId, ref: "Contest" }],
   teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
   teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   teamManager: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  //teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
+  //teamGallery: [{ type: Schema.Types.ObjectId, ref: "Gallery" }],
 });
 
 const EventSchema = new Schema({
@@ -64,20 +64,6 @@ const EventReplySchema = new Schema({
   eventReplyTime: { type: String, required: false },
 });
 
-const GallerySchema = new Schema({
-  teamID: { type: String, required: true },
-  galleryID: { type: String, required: true },
-  galleryTitle: { type: String, required: true },
-  originalUrl: [{ type: String }],
-  thumbnailUrl: [{ type: String }],
-});
-
-const GanttSchema = new Schema({
-  teamID: { type: String, required: true },
-  ganttID: { type: String, required: true },
-  ganttTitle: { type: String, required: true },
-  ganttTaskID: [{ type: Schema.Types.ObjectId, ref: "GanttTask" }],
-});
 
 const NotificationTaskSchema = new Schema({
   userID: { type: String, required: true },
@@ -182,8 +168,6 @@ const EventReplyModel = mongoose.model("EventReply", EventReplySchema);
 const PostModel = mongoose.model("Post", PostSchema);
 const VoteModel = mongoose.model("Vote", VoteSchema);
 const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
-const GalleryModel = mongoose.model("Gallery", GallerySchema);
-const GanttModel = mongoose.model("Gantt", GanttSchema);
 const NotificationTaskModel = mongoose.model("NotificationTask", NotificationTaskSchema);
 const AchievementModel = mongoose.model("Achievement", AchievementSchema);
 const DashboardEventModel = mongoose.model("DashboardEvent",DashboardEventSchema);
@@ -199,9 +183,7 @@ export {
   EventReplyModel,
   PostModel,
   VoteModel,
-  VoteOptionModel,
-  GalleryModel,
-  GanttModel,
+  VoteOptionModel,  
   NotificationTaskModel,
   AchievementModel,
   DashboardEventModel,
@@ -209,3 +191,10 @@ export {
   SetDetailModel,
   DetailPlayerModel
 };
+
+//GalleryModel,
+//GanttModel,
+//const GalleryModel = mongoose.model("Gallery", GallerySchema);
+//const GanttModel = mongoose.model("Gantt", GanttSchema);
+//const GallerySchema = new Schema({ teamID: { type: String, required: true }, galleryID: { type: String, required: true }, galleryTitle: { type: String, required: true }, originalUrl: [{ type: String }], thumbnailUrl: [{ type: String }], });
+//const GanttSchema = new Schema({ teamID: { type: String, required: true }, ganttID: { type: String, required: true }, ganttTitle: { type: String, required: true }, ganttTaskID: [{ type: Schema.Types.ObjectId, ref: "GanttTask" }], });
