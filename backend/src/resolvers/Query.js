@@ -24,7 +24,7 @@ const Query = {
 
   userEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
-    
+
 
     if (!event ) {
       throw new Error("Event not found!");
@@ -262,8 +262,8 @@ const Query = {
     }
     return Team;
   },
-  
-  
+
+
 };
 
 export default Query;
