@@ -55,16 +55,11 @@ const UserDashboard = (props) => {
 
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
-
-      console.log(userEvent.data.initUserEvent);
-      console.log(teamEvent.data.initUserTeamEvent);
       data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
       if (!events) {
          setEvents(data);
       }
   }
-
-  
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
@@ -146,7 +141,7 @@ const UserDashboard = (props) => {
 
             <Typography variant="subtitle1" color="text.secondary">
               <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
-              {new Date(event.eventStart).toDateString()}
+              {new Date(parseInt(event.eventStart)).toDateString()}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">

@@ -86,7 +86,6 @@ function UserEvent(props) {
             </ViewBox>
 
             <Modal
-                title="Testing"
                 visible={isModalVisible}
                 onOk={() => setIsModalVisible(false) }
                 style={{ zIndex: 1200 }}

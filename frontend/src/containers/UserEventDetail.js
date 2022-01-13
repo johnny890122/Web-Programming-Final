@@ -3,7 +3,7 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-
+import TopicIcon from '@mui/icons-material/Topic';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
@@ -78,26 +78,28 @@ function UserEventDetail(props) {
 	        		onEdit={ ()=>props.onEdit() }
 	        	/ > 
 	        	: <>
-	        		{!loading & !isEditMode ? data.userEventDetail.eventTitle: ""}
-			        <Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.userEventDetail.eventStart)).toDateString(): ""}
+
+			        <Typography style={{margin: "0.5em"}} variant="h3" color="textPrimary">
+			            {!loading ? data.userEventDetail.eventTitle: ""}
 			        </Typography>
 
-			       	<Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.userEventDetail.eventEnd)).toDateString(): ""}
+			        <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary">
+			        	<PersonOutlineOutlinedIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> Personal
 			        </Typography>
 
-			        <Typography variant="subtitle1" color="text.secondary"> 
-			            <LocationOnIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventLocation: ""}
+			       	<Typography style={{margin: "0.5em"}} variant="h5" color="text.secondary">
+			            <AccessTimeFilledIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.userEventDetail.eventEnd)).toDateString(): ""}
 			        </Typography>
 
-			        <Typography variant="subtitle1" color="text.secondary">
-			            <ShortTextIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventDescription: ""}
+			        <Typography style={{margin: "0.5em"}} variant="h5" color="text.secondary"> 
+			            <LocationOnIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventLocation: ""}
 			        </Typography>
 
-			        <Typography variant="subtitle1" color="text.secondary">
-			        	<PersonOutlineOutlinedIcon sx={{ fontSize: "large" }} /> Personal
+			        <Typography style={{margin: "0.5em"}} variant="h5" color="text.secondary">
+			            <ShortTextIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventDescription: ""}
 			        </Typography>
+
+
 			    </>
 			}
 	    </CardContent>

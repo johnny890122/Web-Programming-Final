@@ -13,8 +13,6 @@ function Notification(props) {
     }
   );
 
-  console.log(data);
-
   if (!loading) {
     const tmp = {};
     for (var i of data.initUserNotification) {
