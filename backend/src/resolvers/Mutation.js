@@ -763,24 +763,22 @@ const Mutation = {
       setOppoErrServe,
       setOppoErrAttack,
       setOppoErrOther,
+      setNote
     } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
-
-    if (!setScore) {
-      const setScore = [];
-    }
 
     const OBID = ObjectId();
     const setDetail = await new db.SetDetailModel({
       _id: OBID,
       setID: uuidv4(),
       setNumber: setNumber || 1,
-      setScore: setScore || [],
-      setMyPoint: setMyPoint || setScore.filter((x) => x === "o").length,
-      setOppoPoint: setOppoPoint || setScore.filter((x) => x === "x").length,
+      setScore: setScore || "",
+      setMyPoint: setMyPoint,
+      setOppoPoint: setOppoPoint,
       setOppoErrServe: setOppoErrServe || 0,
       setOppoErrAttack: setOppoErrAttack || 0,
       setOppoErrOther: setOppoErrOther || 0,
+      setNote: setNote || "",
       setPlayerDetail: [],
     }).save();
 

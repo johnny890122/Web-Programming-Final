@@ -107,12 +107,13 @@ const ContestSchema = new Schema({
 const SetDetailSchema = new Schema({
   setID: { type: String, required: false },
   setNumber: { type: Number, required: false }, // 局數
-  setScore: [{ type: String, required: false }], // 得分紀錄: "o"= 我方、"x"= 對面
+  setScore: { type: String, required: false }, // 得分紀錄: "o"= 我方、"x"= 對面
   setMyPoint: { type: Number, required: false }, // 我方得分
   setOppoPoint: { type: Number, required: false }, // 對方得分
   setOppoErrServe: { type: Number, required: false }, // 對方發球失誤
   setOppoErrAttack: { type: Number, required: false }, // 對方攻擊失誤
   setOppoErrOther: { type: Number, required: false }, // 對方處理失誤
+  setNote: { type: String, required: false }, // 備註
   setPlayerDetail: [{ type: Schema.Types.ObjectId, ref: "DetailPlayer" }], // 個人數據
 })
 

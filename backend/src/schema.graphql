@@ -144,6 +144,7 @@ type Mutation {
     setOppoErrServe: Int
     setOppoErrAttack: Int
     setOppoErrOther: Int
+    setNote: String
   ): SetDetail
   createDetailPlayer(
     setID: String
@@ -307,6 +308,7 @@ type SetDetail {
   setOppoErrServe: Int
   setOppoErrAttack: Int
   setOppoErrOther: Int
+  setNote: String
   setPlayerDetail: [DetailPlayer]
 }
 
