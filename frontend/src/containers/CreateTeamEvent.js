@@ -45,8 +45,8 @@ function CreateTeamEvent(props) {
         creatorID: props.me,
         eventTitle: title,
         eventDescription: description,
-        eventStart: sDate || initSDate.getTime(),
-        eventEnd: eDate || initEDate.getTime(),
+        eventStart: sDate.getTime() || initSDate.getTime(),
+        eventEnd: eDate.getTime() || initEDate.getTime(),
         eventLocation: location,
       },
     });

@@ -44,8 +44,8 @@ function CreateUserEvent(props) {
                 eventCreator: props.me,
                 eventTitle: title,
                 eventDescription: description,
-                eventStart: sDate || initSDate.getTime(),
-                eventEnd: eDate || initEDate.getTime(),
+                eventStart: sDate === null ? initSDate.getTime() : sDate.getTime(),
+                eventEnd: eDate === null ? initEDate.getTime() : eDate.getTime(),
                 eventLocation: location
           }
         });

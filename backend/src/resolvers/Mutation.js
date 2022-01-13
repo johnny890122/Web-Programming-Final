@@ -442,13 +442,13 @@ const Mutation = {
       eventStart: eventStart,
       eventEnd: eventEnd,
       eventLocation: eventLocation,
-      eventCreator: creatorID,
+      eventCreator: Creator._id,
       eventPostTime: timeNow,
       eventReply: [],
     }).save();
 
     console.log("New Team Event Saved!");
-    return eventID;
+    return event;
   },
 
   deleteTeamEvent: async (parent, { eventID }, { db, pubSub }) => {

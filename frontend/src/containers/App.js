@@ -20,6 +20,7 @@ import TeamCreate from "./TeamCreate";
 import CreateUserEvent from "./CreateUserEvent";
 import CreateTeamEvent from "./CreateTeamEvent";
 import UserSettings from "./UserSettings";
+import About from "./About";
 
 function App() {
   const ME_KEY = "me";
@@ -56,6 +57,11 @@ function App() {
         <Route
           path="/user/Achievement"
           element={<UserAchievement me={localStorage.getItem(ME_KEY)} />}
+        />
+
+        <Route
+          path="/user/About"
+          element={<About me={localStorage.getItem(ME_KEY)} />}
         />
 
         {/* team part */}
