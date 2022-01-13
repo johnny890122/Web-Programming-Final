@@ -35,14 +35,14 @@ const TeamSchema = new Schema({
   teamMember: [{ type: Schema.Types.ObjectId, ref: "User" }],
   teamPost: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   teamGantt: [{ type: Schema.Types.ObjectId, ref: "Gantt" }],
+  teamGallery: [{ type: Schema.Types.ObjectId, ref: "Gallery" }],
   teamContest: [{ type: Schema.Types.ObjectId, ref: "Contest" }],
   teamVote: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
-  teamEvent: [{ type: String, ref: "Event" }],
+  teamEvent: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   teamManager: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 const EventSchema = new Schema({
-  type: {type: String, required: true},
   teamID: { type: String, required: true },
   eventID: { type: String, required: true },
   eventTitle: { type: String, required: true },
@@ -93,7 +93,6 @@ const AchievementSchema = new Schema({
 });
 
 const DashboardEventSchema = new Schema({
-  type: { type: String, required: true },
   userID: { type: String, ref: "User" },
   eventID: { type: String, required: true },
   eventTitle: { type: String, required: true },

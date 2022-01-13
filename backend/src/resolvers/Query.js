@@ -24,11 +24,12 @@ const Query = {
 
   userEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
+    
 
-    if (!event) {
+    if (!event ) {
       throw new Error("Event not found!");
     }
-    return event;
+    return event ;
   },
 
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
@@ -66,6 +67,7 @@ const Query = {
       throw new Error("User not found!");
     }
 
+
     const event = await db.DashboardEventModel.find({ userID });
 
     if (!event) {
@@ -81,11 +83,11 @@ const Query = {
       throw new Error("User not found!");
     }
 
-    const userTeamEvent = [];
+    const userTeamEvent = []
     for (var i of user.allTeams) {
-      const team = await db.TeamModel.findOne({ _id: user.allTeams });
+      const team = await db.TeamModel.findOne({ _id: user.allTeams})
       const events = await db.EventModel.find({ teamID: team.teamID });
-      events.map((i) => userTeamEvent.push(i));
+      events.map( i=> userTeamEvent.push(i))
     }
 
     return userTeamEvent;
@@ -105,61 +107,6 @@ const Query = {
     }
   },
 
-  initMember: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const members = await db.MemberModel.findOne({ teamID: teamID });
-    if (members.length !== 0) return members;
-    else return [];
-  },
-
-  initContest: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const contest = await db.ContestModel.find({ teamID });
-    if (!contest) {
-      return [];
-    }
-    return contest;
-  },
-
-  initGallery: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const gantt = await db.GanttModel.find({ teamID });
-    if (!gantt) {
-      return [];
-    }
-    return gantt;
-  },
-
-  initGantt: async (parent, { teamID }, { db, pubSub }) => {
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const gallery = await db.GalleryModel.find({ teamID });
-    if (!gallery) {
-      return [];
-    }
-    return gallery;
-  },
-
-  findTeamName: async (parent, args, { db, pubSub }) => {
-    const { teamID } = args;
-    const Team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!Team) {
-      throw new Error("Team not found!");
-    }
-    return Team.teamName;
-  },
-
   initTeam: async (parent, args, { db, pubSub }) => {
     const { userID } = args;
     const User = await db.UserModel.findOne({ userID: userID });
@@ -167,57 +114,104 @@ const Query = {
     if (!User) {
       throw new Error("This user doesn't exist!");
     }
-    let allTeams = [];
-    if (User.allTeams.length !== 0) {
-      for (let i = 0; i < User.allTeams.length; i++) {
-        let Team = await db.TeamModel.findOne({ _id: User.allTeams[i] });
-        allTeams.push(Team);
-      }
-    }
-    return allTeams;
+    const Teams = await User.allTeams;
+    if (!Teams) {return []}
+    return Teams;
   },
+
+  //---------- Team ----------//
+
+  initMember: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const members = await team.teamMember;
+    if(!members) {return []}
+    else return members;
+  },
+
+  initContest: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const contest = await team.teamContest;
+    if (!contest) {return []}
+    return contest;
+  },
+
+  initGallery: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const gallery = team.teamGallery;
+    if (!gallery) {return []}
+    return gallery;
+  },
+
+  initGantt: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const gantt = await team.teamGantt;
+    if (!gantt) {return []}
+    return gantt;
+  },
+
   initTeamEvent: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
-    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    const team = await db.TeamModel.findOne({ teamID: teamID });
 
-    if (!Team) {
+    if (!team) {
       throw new Error("This team doesn't exist!");
     }
 
-    const teamEvent = await db.EventModel.find({ teamID: teamID });
-
+    const teamEvent = await team.teamEvent;
+    if (!teamEvent) {return []}
     return teamEvent;
   },
+
   initTeamPost: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
-    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    const team = await db.TeamModel.findOne({ teamID: teamID });
 
-    if (!Team) {
+    if (!team) {
       throw new Error("This team doesn't exist!");
     }
-    const posts = await db.PostModel.find({ teamID });
-    if (!posts) return [];
 
-    return posts;
+    const teamPost = await team.teamPost;
+    if (!teamPost) {return []}
+    return teamPost;
   },
+
   initVote: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
-    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    const team = await db.TeamModel.findOne({ teamID: teamID });
 
-    if (!Team) {
+    if (!team) {
       throw new Error("This team doesn't exist!");
     }
 
-    return Team.teamVote;
+    const teamVote = await team.teamVote;
+    if (!teamVote) {return []}
+    return teamVote;
   },
 
-  teamEventDetail: async (parent, { eventID }, { db, pubSub }) => {
-    const teamEvent = await db.EventModel.findOne({ eventID });
-    console.log(eventID)
-    if (!teamEvent) {
+  teamEventDetail: async (parent, args, { db, pubSub }) => {
+    const { eventID } = args;
+    const event = await db.EventModel.findOne({ eventID: eventID });
+
+    if (!event) {
       throw new Error("Event not found!");
     }
-    return teamEvent;
+    return event;
   },
 
   /* ------------- Query one, all------------- */
