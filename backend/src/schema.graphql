@@ -68,7 +68,7 @@ type Mutation {
     eventLocation: String
     teamID: String
     creatorID: String
-  ): Event
+  ): String
 
   replyTeamEvent(
     eventReplyOption: String!
@@ -80,11 +80,12 @@ type Mutation {
   updateTeamEvent(
     eventTitle: String
     eventDescription: String
-    eventStart: String
-    eventEnd: String
+    eventStart: Float
+    eventEnd: Float
     eventLocation: String
     eventID: String
-  ): Event
+  ): String
+
   updateEventReply(
     eventReplyOption: String
     eventReplyContent: String
@@ -190,7 +191,7 @@ type Mutation {
     eventEnd: Float
     eventLocation: String
     eventPostTime: String
-  ): Event
+  ): String
 
   updateUserEvent(
     eventID: String

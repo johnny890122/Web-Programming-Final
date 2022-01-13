@@ -448,7 +448,7 @@ const Mutation = {
     }).save();
 
     console.log("New Team Event Saved!");
-    return event;
+    return event.eventID;
   },
 
   deleteTeamEvent: async (parent, { eventID }, { db, pubSub }) => {
@@ -510,7 +510,7 @@ const Mutation = {
       }
     );
     console.log("Event Updated!");
-    return eventUpdate;
+    return eventID;
   },
   updateEventReply: async (parent, args, { db, pubSub }) => {
     const { eventReplyOption, eventReplyContent, eventReplyID } = args;

@@ -56,6 +56,27 @@ export const UPDATE_USER_EVENT = gql`
   }
 `;
 
+
+export const UPDATE_TEAM_EVENT = gql`
+  mutation updateTeamEvent(
+      $eventTitle: String
+      $eventDescription: String
+      $eventStart: Float
+      $eventEnd: Float
+      $eventLocation: String
+      $eventID: String
+  ) {
+    updateTeamEvent(
+      eventTitle: $eventTitle
+      eventDescription: $eventDescription
+      eventStart: $eventStart
+      eventEnd: $eventEnd
+      eventLocation: $eventLocation
+      eventID: $eventID
+    )
+  }
+`
+
 export const DELETE_USER_EVENT = gql`
   mutation deleteUserEvent($eventID: String) {
     deleteUserEvent(eventID: $eventID)
