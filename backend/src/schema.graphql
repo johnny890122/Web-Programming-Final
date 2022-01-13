@@ -243,6 +243,7 @@ type NotificationTask {
 }
 
 type DashboardEvent {
+  type: String
   eventID: String!
   eventTitle: String!
   eventDescription: String
@@ -375,6 +376,7 @@ type VoteOption {
 }
 
 type Event {
+  type: String
   teamID: String
   eventID: String
   eventTitle: String

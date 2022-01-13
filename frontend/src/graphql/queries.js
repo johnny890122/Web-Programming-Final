@@ -55,6 +55,7 @@ export const USER_ACHEIEVEMENT_INIT = gql`
 export const USER_EVENT_INIT = gql`
   query initUserEvent($userID: String) {
     initUserEvent(userID: $userID) {
+      type
       eventID
       eventTitle
       eventDescription
@@ -67,23 +68,25 @@ export const USER_EVENT_INIT = gql`
 `;
 
 export const USER_TEAM_EVENT_INIT = gql`
-  query initUserTeamEvent($userID: String) {
-    initUserTeamEvent(userID: $userID) {
-      teamID
-      eventTitle
-      eventID
-      eventTitle
-      eventDescription
-      eventStart
-      eventEnd
-      eventLocation
-      eventPostTime
-      eventReply {
-        eventReplyID
-      }
+query initUserTeamEvent ($userID: String) {
+  initUserTeamEvent (userID: $userID)
+  {
+    type
+    teamID
+    eventTitle
+    eventID
+    eventTitle
+    eventDescription
+    eventStart
+    eventEnd
+    eventLocation
+    eventPostTime
+    eventReply {
+      eventReplyID
     }
   }
-`;
+}
+`
 
 export const TEAM_EVENT_INIT = gql`
   query initTeamEvent($teamID: String) {

@@ -79,11 +79,11 @@ function UserEventDetail(props) {
 	        	: <>
 	        		{!loading & !isEditMode ? data.userEventDetail.eventTitle: ""}
 			        <Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventStart: ""}
+			            <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.userEventDetail.eventStart)).toDateString(): ""}
 			        </Typography>
 
 			       	<Typography variant="subtitle1" color="text.secondary">
-			            <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? data.userEventDetail.eventEnd: ""}
+			            <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.userEventDetail.eventEnd)).toDateString(): ""}
 			        </Typography>
 
 			        <Typography variant="subtitle1" color="text.secondary"> 

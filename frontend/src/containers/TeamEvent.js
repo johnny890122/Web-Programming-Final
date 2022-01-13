@@ -34,8 +34,6 @@ event, createEvent, editEvent, deleteEvent
 連結活動頁面
 */
 
-//
-
 function TeamEvent(props) {
   const [viewmode, setViewmode] = useState("list"); // 預覽模式
   const [filtermode, setFiltermode] = useState("upcoming"); // 活動篩選模式
@@ -153,56 +151,57 @@ function TeamEvent(props) {
     </List>
   );
 
-  const CalendarView = () => (
-    <FullCalendar
-      className="team-event-calendar"
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      locale="zh-tw" // 中文化
-      events={events}
+  const CalendarView = (() =>      
+            <FullCalendar
+                className = "team-event-calendar"
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView='dayGridMonth'
+                locale="zh-tw" // 中文化
+                events={events}
 
-      /* 點擊date顯示當日event的list(或是空list: 本日無活動) */
+                /* 點擊date顯示當日event的list(或是空list: 本日無活動) */
+                
+                // dateClick={handleDateClick}
+            />      
+    )
 
-      // dateClick={handleDateClick}
-    />
-  );
+    const eventlist = (
+        <div className = "team-event">          
+          <div className = "team-event-filtertoggle">
+              <ToggleButtonGroup color="primary" value={filtermode} exclusive
+                  onChange={handleFilterChange} 
+                  // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
+                  >
+                  <ToggleButton value="all">All</ToggleButton>
+                  <ToggleButton value="upcoming">Upcoming</ToggleButton>
+                  <ToggleButton value="past">Past</ToggleButton>
+                  <ToggleButton value="unrespond">Unrespond</ToggleButton>
+              </ToggleButtonGroup>
 
-  const eventlist = (
-    <div className="team-event">
-      <h1>Events</h1>
+              <Button variant="outlined" color="success" sx={{ m: 1 }} 
+                  onClick={() => setIsModalVisible(true) & setComponentInModal(
+                    <CreateTeamEvent me={props.me} mode="create" />)
+                  }
+              >
+                  Create
+              </Button> 
+          </div>
+                                                   
+          <ListView/>
 
-      <div className="team-event-viewtoggle">
-        <ToggleButtonGroup
-          color="primary"
-          value={viewmode}
-          exclusive
-          onChange={handleViewChange} // 切換預覽模式(列表、日曆)
-        >
-          <ToggleButton size="small" value="list">
-            List
-          </ToggleButton>
-          <ToggleButton size="small" value="calendar">
-            Calendar
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <Button
-          variant="outlined"
-          color="success"
-          sx={{ m: 1 }}
-          onClick={() =>
-            setIsModalVisible(true) &
-            setComponentInModal(
-              <CreateTeamEvent
-                me={props.me}
-                nowTeam={props.nowTeam}
-                mode="create"
-              />
-            )
-          }
-        >
-          Create
-        </Button>
-      </div>
+          <Modal
+            visible={isModalVisible}
+            onCancel={handleClose}
+            onOk={handleClose}
+            style={{ zIndex: 1200 }}
+            footer={[
+              <Button key="close" onClick={handleClose}>
+                Close
+              </Button>,
+            ]}
+          >
+            {componentInModal}
+          </Modal>
 
       {viewmode === "list" ? (
         <div className="team-event-filtertoggle">

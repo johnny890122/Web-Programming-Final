@@ -61,7 +61,7 @@ function UserEvent(props) {
             locale="zh-tw" // 中文化
             events= {EventData}
             selectable= {true}
-            dateClick={(info) => setDateClicked(info.date.getTime().toString()) & setIsModalVisible(true)}
+            dateClick={ (info) => setDateClicked(info.date.getTime()) & setIsModalVisible(true)}
         />      
     )
 

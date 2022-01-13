@@ -97,7 +97,7 @@ const Mutation = {
     const eventID = uuidv4();
     const event = await new db.DashboardEventModel({
       userID: eventCreator,
-      eventType: "Personal",
+      type: "user",
       eventID: eventID,
       eventTitle: eventTitle,
       eventDescription: eventDescription,
@@ -130,11 +130,10 @@ const Mutation = {
       throw new Error("Event not found!");
     }
 
-    console.log(event)
-
     const updatedEvent = await db.DashboardEventModel.findOneAndUpdate(
       {eventID: eventID},
       {
+        type: "user",
         eventTitle: eventTitle,
         eventDescription: eventDescription,
         eventStart: eventStart,
@@ -413,6 +412,7 @@ const Mutation = {
     const timeNow = await new Date();
     const eventID = uuidv4()
     const event = await new db.EventModel({
+      type: "team",
       teamID: teamID,
       eventID: eventID,
       eventTitle: eventTitle,

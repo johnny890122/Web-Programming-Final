@@ -213,7 +213,7 @@ const Query = {
 
   teamEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const teamEvent = await db.EventModel.findOne({ eventID });
-
+    console.log(eventID)
     if (!teamEvent) {
       throw new Error("Event not found!");
     }

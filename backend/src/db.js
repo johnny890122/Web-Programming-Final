@@ -42,6 +42,7 @@ const TeamSchema = new Schema({
 });
 
 const EventSchema = new Schema({
+  type: {type: String, required: true},
   teamID: { type: String, required: true },
   eventID: { type: String, required: true },
   eventTitle: { type: String, required: true },
@@ -92,6 +93,7 @@ const AchievementSchema = new Schema({
 });
 
 const DashboardEventSchema = new Schema({
+  type: { type: String, required: true },
   userID: { type: String, ref: "User" },
   eventID: { type: String, required: true },
   eventTitle: { type: String, required: true },

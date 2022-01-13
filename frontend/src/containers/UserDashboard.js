@@ -6,7 +6,8 @@ import Notification from "../components/Notification";
 import Block from "../components/Block";
 import Todo from "../components/Todo/App";
 import DashboardEvent from "../components/DashboardEvent";
-import EventDetail from "./UserEventDetail";
+import UserEventDetail from "./UserEventDetail";
+import TeamEventDetail from "../components/TeamEventDetail";
 import { Modal } from "antd";
 import {
   Box,
@@ -32,6 +33,7 @@ import { Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import CreateUserEvent from "../containers/CreateUserEvent";
 import KeyboardReturnTwoToneIcon from "@mui/icons-material/KeyboardReturnTwoTone";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const ViewBox = styled.div`
   max-width: 800px;
@@ -41,6 +43,7 @@ const UserDashboard = (props) => {
   const today = new Date();
   const [events, setEvents] = useState(null); // 所有活動資料
   const [filtermode, setFiltermode] = useState("all"); // 活動篩選模式
+  const [filterMainMode, setFilterMainMode] = useState("Role");
 
   const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
@@ -62,18 +65,30 @@ const UserDashboard = (props) => {
     setFiltermode(newFilter);
     if (newFilter === "upcoming") {
       setEvents(
-        data.filter((event) => new Date(event.eventStart) > today)
+        data.filter((event) => new Date(parseInt(event.eventStart)) > today)
       );
     } else if (newFilter === "past") {
       setEvents(
         data.filter(
-          (event) => new Date(event.eventStart) <= today
+          (event) => new Date(parseInt(event.eventStart)) <= today
         )
       );
     } else if (newFilter === "unrespond") {
       setEvents(
         data.filter(
-          (event) => event.reply === false && new Date(event.eventStart) > today
+          (event) => event.reply === false && new Date(parseInt(event.eventStart)) > today
+        )
+      );
+    } else if (newFilter === "user") {
+      setEvents(
+        data.filter(
+          (event) => event.type === "user"
+        )
+      );
+    } else if (newFilter === "team") {
+      setEvents(
+        data.filter(
+          (event) => event.type === "team"
         )
       );
     } else {
@@ -150,8 +165,10 @@ const UserDashboard = (props) => {
                 key={event.eventID}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  setComponentInModal(
-                    <EventDetail id={e.target.getAttribute("data-index")} />
+                  setComponentInModal( 
+                    event.type === "team" 
+                    ? <TeamEventDetail id={e.target.getAttribute("data-index")} />
+                    : <UserEventDetail id={e.target.getAttribute("data-index")} />
                   )
                 }
               >
@@ -164,10 +181,31 @@ const UserDashboard = (props) => {
       ))}
     </List>
   );
-
+  const handleFilterMainModeChange = () => {
+    filterMainMode === "Role" ? setFilterMainMode("Time") : setFilterMainMode("Role")
+  }
   const eventlist = (
     <div className="user-event">
+        <Button color="primary" onClick={handleFilterMainModeChange}>
+          <FilterAltIcon sx={{ fontSize: "large" }} />
+          { filterMainMode }
+        </Button>
+      
       <div className="user-event-filtertoggle">
+        {
+        filterMainMode === "Role" 
+        ?
+        <ToggleButtonGroup
+          color="primary"
+          value={filtermode}
+          exclusive
+          onChange={handleFilterChange}
+        > 
+          <ToggleButton value="all">all</ToggleButton>
+          <ToggleButton value="user">user</ToggleButton>
+          <ToggleButton value="team">team</ToggleButton>
+        </ToggleButtonGroup>
+        : 
         <ToggleButtonGroup
           color="primary"
           value={filtermode}
@@ -175,11 +213,12 @@ const UserDashboard = (props) => {
           onChange={handleFilterChange}
           // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
         >
-          <ToggleButton value="all">All</ToggleButton>
           <ToggleButton value="upcoming">Upcoming</ToggleButton>
           <ToggleButton value="past">Past</ToggleButton>
           <ToggleButton value="unrespond">Unrespond</ToggleButton>
         </ToggleButtonGroup>
+      }
+
         <Button
           variant="outlined"
           color="success"

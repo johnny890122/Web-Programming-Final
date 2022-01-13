@@ -41,7 +41,7 @@ function TeamEventDetail(props) {
         <CardContent 
             // sx={{ p: 5 }}
           >
-            <Typography gutterBottom variant="h4" component="div">
+{/*            <Typography gutterBottom variant="h4" component="div">
             {
                 isEditMode 
                 ? <Button
@@ -65,7 +65,7 @@ function TeamEventDetail(props) {
                     onClick={() => setIsDeletedMode(false)} >
                         Cancel
                 </Button>
-            </Typography>
+            </Typography>*/}
 
             {
                 isEditMode 
@@ -83,11 +83,11 @@ function TeamEventDetail(props) {
                 : <>
                     {!loading & !isEditMode ? data.teamEventDetail.eventTitle: ""}
                     <Typography variant="subtitle1" color="text.secondary">
-                        <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventStart: ""}
+                        <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.teamEventDetail.eventStart)).toDateString(): ""}
                     </Typography>
 
                     <Typography variant="subtitle1" color="text.secondary">
-                        <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventEnd: ""}
+                        <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.teamEventDetail.eventEnd)).toDateString(): ""}
                     </Typography>
 
                     <Typography variant="subtitle1" color="text.secondary"> 
