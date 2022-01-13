@@ -24,12 +24,11 @@ const Query = {
 
   userEventDetail: async (parent, { eventID }, { db, pubSub }) => {
     const event = await db.DashboardEventModel.findOne({ eventID });
-    
 
-    if (!event ) {
+    if (!event) {
       throw new Error("Event not found!");
     }
-    return event ;
+    return event;
   },
 
   initUserNotification: async (parent, { userID }, { db, pubSub }) => {
@@ -67,7 +66,6 @@ const Query = {
       throw new Error("User not found!");
     }
 
-
     const event = await db.DashboardEventModel.find({ userID });
 
     if (!event) {
@@ -83,11 +81,11 @@ const Query = {
       throw new Error("User not found!");
     }
 
-    const userTeamEvent = []
+    const userTeamEvent = [];
     for (var i of user.allTeams) {
-      const team = await db.TeamModel.findOne({ _id: user.allTeams})
+      const team = await db.TeamModel.findOne({ _id: user.allTeams });
       const events = await db.EventModel.find({ teamID: team.teamID });
-      events.map( i=> userTeamEvent.push(i))
+      events.map((i) => userTeamEvent.push(i));
     }
 
     return userTeamEvent;
@@ -107,6 +105,15 @@ const Query = {
     }
   },
 
+  findTeamName: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!Team) {
+      throw new Error("Team not found!");
+    }
+    return Team.teamName;
+  },
+
   initTeam: async (parent, args, { db, pubSub }) => {
     const { userID } = args;
     const User = await db.UserModel.findOne({ userID: userID });
@@ -114,9 +121,14 @@ const Query = {
     if (!User) {
       throw new Error("This user doesn't exist!");
     }
-    const Teams = await User.allTeams;
-    if (!Teams) {return []}
-    return Teams;
+    let allTeams = [];
+    if (User.allTeams.length !== 0) {
+      for (let i = 0; i < User.allTeams.length; i++) {
+        let Team = await db.TeamModel.findOne({ _id: User.allTeams[i] });
+        allTeams.push(Team);
+      }
+    }
+    return allTeams;
   },
 
   //---------- Team ----------//
@@ -128,8 +140,9 @@ const Query = {
       throw new Error("Team not found!");
     }
     const members = await team.teamMember;
-    if(!members) {return []}
-    else return members;
+    if (!members) {
+      return [];
+    } else return members;
   },
 
   initContest: async (parent, args, { db, pubSub }) => {
@@ -139,7 +152,9 @@ const Query = {
       throw new Error("Team not found!");
     }
     const contest = await team.teamContest;
-    if (!contest) {return []}
+    if (!contest) {
+      return [];
+    }
     return contest;
   },
 
@@ -150,7 +165,9 @@ const Query = {
       throw new Error("Team not found!");
     }
     const gallery = team.teamGallery;
-    if (!gallery) {return []}
+    if (!gallery) {
+      return [];
+    }
     return gallery;
   },
 
@@ -161,7 +178,9 @@ const Query = {
       throw new Error("Team not found!");
     }
     const gantt = await team.teamGantt;
-    if (!gantt) {return []}
+    if (!gantt) {
+      return [];
+    }
     return gantt;
   },
 
@@ -173,8 +192,7 @@ const Query = {
       throw new Error("This team doesn't exist!");
     }
 
-    const teamEvent = await team.teamEvent;
-    if (!teamEvent) {return []}
+    const teamEvent = await db.EventModel.find({ teamID: teamID });
     return teamEvent;
   },
 
@@ -186,9 +204,9 @@ const Query = {
       throw new Error("This team doesn't exist!");
     }
 
-    const teamPost = await team.teamPost;
-    if (!teamPost) {return []}
-    return teamPost;
+    const posts = await db.PostModel.find({ teamID });
+    if (!posts) return [];
+    return posts;
   },
 
   initVote: async (parent, args, { db, pubSub }) => {
@@ -200,7 +218,9 @@ const Query = {
     }
 
     const teamVote = await team.teamVote;
-    if (!teamVote) {return []}
+    if (!teamVote) {
+      return [];
+    }
     return teamVote;
   },
 
@@ -234,7 +254,6 @@ const Query = {
     return Vote;
   },
 
-
   /* ------------- Query one, all------------- */
 
   users: async (parent, args, { db, pubSub }) => {
@@ -262,8 +281,6 @@ const Query = {
     }
     return Team;
   },
-  
-  
 };
 
 export default Query;

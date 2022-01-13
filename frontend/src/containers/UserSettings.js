@@ -14,7 +14,8 @@ import { useQuery } from "@apollo/client";
 
 const UserSettings = (props) => {
   const dateFormat = "YYYY/MM/DD";
-  let account = "";
+  const [userName, setUserName] = React.useState("");
+
   const { data, error, loading, subscribeToMore } = useQuery(USER_ACCOUNT, {
     variables: { userID: props.me },
   });
@@ -43,12 +44,14 @@ const UserSettings = (props) => {
           flexGrow: 1,
           height: "100vh",
           overflow: "auto",
-          marginLeft: "2.5rem",
-          marginTop: "10rem",
+          marginTop: "13rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <div className="title-block" style={{ marginLeft: "25rem" }}>
-          <Typography variant="h5">協助完成更多設定...</Typography>
+        <div className="title-block">
+          <Typography variant="h5">協助完成更多設定</Typography>
         </div>
         <br />
         <div
@@ -72,9 +75,7 @@ const UserSettings = (props) => {
                 </Tag>
                 <Input
                   disabled={true}
-                  defaultValue={
-                    !loading ? data.myUserAccount.userAccount : null
-                  }
+                  value={!loading ? data.myUserAccount.userAccount : ""}
                   style={{ width: "70%" }}
                   size="small"
                 />
@@ -86,7 +87,7 @@ const UserSettings = (props) => {
                 </Tag>
                 <Input
                   disabled={true}
-                  defaultValue={!loading ? data.myUserAccount.userEmail : null}
+                  value={!loading ? data.myUserAccount.userEmail : ""}
                   style={{ width: "76%" }}
                   size="small"
                 />
@@ -97,7 +98,8 @@ const UserSettings = (props) => {
                   <Typography>Display Name</Typography>
                 </Tag>
                 <Input
-                  defaultValue={!loading ? data.myUserAccount.userName : null}
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
                   style={{ width: "58%" }}
                   size="small"
                 />
@@ -109,7 +111,6 @@ const UserSettings = (props) => {
                 </Tag>
                 <DatePicker
                   addonBefore="Birthday"
-                  defaultValue={moment("2000/01/01", dateFormat)}
                   format={dateFormat}
                   style={{ width: "70%" }}
                   size="small"
@@ -120,7 +121,7 @@ const UserSettings = (props) => {
           <Link to="/user/Dashboard" style={{ width: "10%" }}>
             <Button
               variant="contained"
-              style={{ marginTop: "3rem", width: "100%" }}
+              style={{ marginTop: "2rem", width: "7rem" }}
             >
               Complete
             </Button>

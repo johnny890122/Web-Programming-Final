@@ -6,7 +6,7 @@ type Query {
   initUserEvent(userID: String): [DashboardEvent]
   initUserTeamEvent(userID: String): [Event]
   initTeam(userID: String): [Team]
-  
+
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
   initContest(teamID: String): [Contest]
@@ -20,11 +20,11 @@ type Query {
   userEventDetail(eventID: String): Event
   teamEventDetail(eventID: String): Event
   #teamEventReply(eventID: String, userID: String):  EventReply
-  
+
   teamPostDetail(postID: String): Post
   teamVoteDetail(voteID: String): Vote
   #teamVoteOption(voteOptionID: String): VoteOption
-  
+
   users(query: String): [User]
   teams(query: String): [Team]
   user(usreID: String): User
@@ -33,6 +33,7 @@ type Query {
 
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
+  updateUser(userID: String, userName: String, userBirthday: Int): User
   createUserTodo(userID: String, todoContent: String): Todo
 
   #createContestDetail(
