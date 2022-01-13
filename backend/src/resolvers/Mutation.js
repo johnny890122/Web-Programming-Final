@@ -29,7 +29,7 @@ const Mutation = {
 
   updateUser: async (parent, args, { db, pubSub }) => {
     const { userID, userName, userBirthday } = args;
-    const User = await db.UserModel.findOne({ userID });
+    const User = await db.UserModel.findOne({ userID: userID });
 
     if (!User) {
       throw new Error("User not found!");

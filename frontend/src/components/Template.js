@@ -23,7 +23,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 
 import { makeStyles } from "@material-ui/core";
 import {
@@ -44,8 +44,8 @@ import {
 } from "@mui/icons-material";
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useQuery } from "@apollo/client";
-import { USER_ACCOUNT } from "../graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import { USER_ACCOUNT, UPDATE_USER } from "../graphql";
 import moment from "moment";
 
 const drawerWidth = 210;
@@ -124,9 +124,15 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Template({ content }) {
   const ME_KEY = "me";
-  const { data, error, loading, subscribeToMore } = useQuery(USER_ACCOUNT, {
+  const userAccount = useQuery(USER_ACCOUNT, {
     variables: { userID: localStorage.getItem(ME_KEY) },
   });
+  const [updateUser] = useMutation(UPDATE_USER);
+
+  const [name, setName] = React.useState(
+    !userAccount.loading ? userAccount.data.myUserAccount.userName : ""
+  );
+  const [birthday, setBirthday] = React.useState("");
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -135,11 +141,30 @@ export default function Template({ content }) {
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
+  React.useEffect(() => {
+    if (!userAccount.loading) {
+      if (!userAccount.data.myUserAccount.userName) {
+        setIsModalVisible(true);
+      }
+    }
+  }, [userAccount.loading]);
+
+  React.useEffect(() => {
+    console.log(name, birthday);
+  }, [name, birthday]);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const submitChange = async () => {
+    await updateUser({
+      variables: {
+        userID: localStorage.getItem(ME_KEY),
+        userName: name,
+        userBirthday: birthday,
+      },
+    });
     setIsModalVisible(false);
   };
 
@@ -166,7 +191,7 @@ export default function Template({ content }) {
     <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
-    <TipsAndUpdatesIcon sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />
+    <TipsAndUpdatesIcon sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
 
   const teamPages = [
@@ -189,7 +214,6 @@ export default function Template({ content }) {
     <Collections sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
-  const settings = ["USERNAME", "2000/11/25"];
   let breadItem = window.location.href
     .replace("http://localhost:3000", "")
     .split("/");
@@ -233,7 +257,10 @@ export default function Template({ content }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Hello {loading ? "" : data.myUserAccount.userAccount}
+            Hello{" "}
+            {userAccount.loading
+              ? ""
+              : userAccount.data.myUserAccount.userAccount}
           </Typography>
           <Box
             sx={{ flexGrow: 0 }}
@@ -250,8 +277,28 @@ export default function Template({ content }) {
             <Modal
               title="User Settings"
               visible={isModalVisible}
-              onOk={handleOk}
               onCancel={handleCancel}
+              footer={[
+                <Link to="/">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    key="logout"
+                    style={{ marginRight: "0.75rem" }}
+                  >
+                    Log Out
+                  </Button>
+                </Link>,
+                <Button
+                  variant="contained"
+                  key="ok"
+                  color="primary"
+                  onClick={submitChange}
+                  style={{ marginRight: "0.5rem" }}
+                >
+                  OK
+                </Button>,
+              ]}
             >
               <div className="container" style={{ display: "flex" }}>
                 <Avatar
@@ -264,9 +311,11 @@ export default function Template({ content }) {
                       <Typography>Account</Typography>
                     </Tag>
                     <Input
-                      disabled="true"
+                      disabled={true}
                       defaultValue={
-                        loading ? "" : data.myUserAccount.userAccount
+                        userAccount.loading
+                          ? ""
+                          : userAccount.data.myUserAccount.userAccount
                       }
                       style={{ width: "70%" }}
                       size="small"
@@ -278,8 +327,12 @@ export default function Template({ content }) {
                       <Typography>Email</Typography>
                     </Tag>
                     <Input
-                      disabled="true"
-                      defaultValue={loading ? "" : data.myUserAccount.userEmail}
+                      disabled={true}
+                      defaultValue={
+                        userAccount.loading
+                          ? ""
+                          : userAccount.data.myUserAccount.userEmail
+                      }
                       style={{ width: "76%" }}
                       size="small"
                     />
@@ -290,9 +343,14 @@ export default function Template({ content }) {
                       <Typography>Display Name</Typography>
                     </Tag>
                     <Input
-                      defaultValue={loading ? "" : data.myUserAccount.userName}
+                      defaultValue={
+                        userAccount.loading
+                          ? ""
+                          : userAccount.data.myUserAccount.userName
+                      }
                       style={{ width: "58%" }}
                       size="small"
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                   <br />
@@ -302,27 +360,22 @@ export default function Template({ content }) {
                     </Tag>
                     <DatePicker
                       addonBefore="Birthday"
-                      defaultValue={moment("2000/01/01", dateFormat)}
                       format={dateFormat}
                       style={{ width: "70%" }}
                       size="small"
+                      // defaultValue={
+                      //   userAccount.loading
+                      //     ? new Date(2000, 01, 01)
+                      //     : moment(userAccount.data.myUserAccount.userBirthday)
+                      // }
+                      onChange={(value) => {
+                        let birth = new Date(value);
+                        setBirthday(birth.getTime());
+                      }}
                     />
                   </div>
                 </div>
               </div>
-              <Link to="/">
-                <Button
-                  variant="contained"
-                  color="error"
-                  style={{
-                    marginTop: "2rem",
-                    marginLeft: "13rem",
-                    width: "30%",
-                  }}
-                >
-                  Logout
-                </Button>
-              </Link>
             </Modal>
           </Box>
         </Toolbar>

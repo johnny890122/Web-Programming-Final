@@ -31,7 +31,7 @@ type Query {
 
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
-  updateUser(userID: String, userName: String, userBirthday: Int): User
+  updateUser(userID: String, userName: String, userBirthday: Float): User
   createUserTodo(userID: String, todoContent: String): Todo
 
   ## --------- Team ----------##
@@ -210,7 +210,7 @@ type User {
   userPassword: String
   userEmail: String
   userName: String
-  userBirthday: Int
+  userBirthday: Float
   userStatus: String
   userProfile: String
   allTeams: [Team]
