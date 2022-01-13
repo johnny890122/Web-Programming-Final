@@ -137,7 +137,6 @@ function TeamEvent(props) {
                 key={event.id}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  console.log(event) & 
                   setComponentInModal(
                     <TeamEventDetail
                       me={props.me}

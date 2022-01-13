@@ -53,9 +53,11 @@ const About = (props) => {
         </List>
     </div>
 
+
     <Typography mt={4} variant="h4"> Powered By </Typography>
-          <DiNodejs size={70} style={{margin: "1em"}} />
-          <FaReact size={40} style={{margin: "1em"}} color="primary" />
+          <DiNodejs size={90} style={{display: "block"}} />
+
+          <FaReact size={40} style={{margin: "1em"}}/>
           <GrGraphQl size={40} style={{margin: "1em"}} />
           <SiMongodb size={40} style={{margin: "1em"}} />
     </>

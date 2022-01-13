@@ -34,7 +34,7 @@ function DashboardEvent(props) {
   }
 
   return (
-    <div className="dashboard-event" style={{height: "250px"}}>
+    <div className="dashboard-event" style={{height: "250px", overflow: "auto"}}>
       <h2 style={{ display: "inline-block" }}>Upcoming Events</h2>
 
       <List className="dashboard-event-list">
