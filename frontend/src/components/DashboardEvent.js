@@ -1,6 +1,6 @@
 import { EventData } from "./ListData";
 import { useQuery } from "@apollo/client";
-import { USER_EVENT_INIT } from "../graphql";
+import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
 
 import {
   List,
@@ -13,16 +13,24 @@ import {
 } from "@mui/material";
 
 function DashboardEvent(props) {
-  const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
+
+  const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
 
-  const eventData = [];
+  const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
+    variables: { userID: props.me  }
+  });
 
-  if (!loading) {
-    data.initUserEvent.map(
-      (i) =>
-      eventData.push({
+  let data = [];
+  if (!userEvent.loading && !teamEvent.loading) {
+      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+  }
+
+  const eventData = [];
+  if (!userEvent.loading && !teamEvent.loading) {
+    data.map(
+      (i) => eventData.push({
         title: i.eventTitle,
         description: i.eventDescription,
         start: new Date(i.eventStart),
