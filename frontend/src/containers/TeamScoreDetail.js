@@ -5,10 +5,12 @@ import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
          Paper, Button, Typography } from "@mui/material";
 import { Modal } from "antd";
+import ContestSetDetail from "../components/ContestSetDetail";
 
 const TeamScoreDetail = () => {
 
-  const data = {
+  const data = 
+  {
     contestID: "1",
     contestTitle: "台大盃",
     contestDate: "2022/01/11",
@@ -27,10 +29,11 @@ const TeamScoreDetail = () => {
         setOppoErrServe: 3,
         setOppoErrAttack: 4,
         setOppoErrOther: 7,
+        setNote: "好厲害!",
         setPlayerDetail: [
           {
             setID: "1",
-            playerID: "57",
+            playerID: "Yooga",
             detailPointServe: 1,
             detailPointAttack: 2,
             detailPointTip: 3,
@@ -48,7 +51,7 @@ const TeamScoreDetail = () => {
           },
           {
             setID: "1",
-            playerID: "2",
+            playerID: "$$",
             detailPointServe: 1,
             detailPointAttack: 2,
             detailPointTip: 3,
@@ -69,22 +72,26 @@ const TeamScoreDetail = () => {
       {
         setID: "2",
         setNumber: 2,
-        setScore: "xoxoxooxxoooxxooxoxoxxxxxxoxxoooxxoxxoxxxx",
+        setScore: "",
         setMyPoint: 21,
         setOppoPoint: 25,
         setOppoErrServe: 4,
         setOppoErrAttack: 5,
         setOppoErrOther: 6,
-        setPlayerDetail: []
+        setNote: "",
+        setPlayerDetail: [
+          
+        ]
       }
     ],
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [componentInModal, setComponentInModal] = useState("");
   const [setNow, setSetNow] = useState(null);
 
   const showModal = (set) => {
-    console.log("show");
+    console.log(set.setPlayerDetail);
     setSetNow(set);
     setIsModalVisible(true);
   };
@@ -94,54 +101,28 @@ const TeamScoreDetail = () => {
     setIsModalVisible(false);
   }
   
-  const SetModal = (set) => {
-    return (
-      <Modal
-        title="Set Detail"
-        visible={isModalVisible}
-        //confirmLoading={isEdit}
-        onOk={handleCancel}
-        onCancel={handleCancel}>
-          <Typography display="inline" variant="h5" component="div">
-            {set? set.setID : ""}
-          </Typography>
-      </Modal>
-    )
-  }
-
-  const PlayerTable = ({ set }) => {
-    return (
-      <>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 350 }} aria-label="simple table">
-            <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
-              <TableRow>
-                <TableCell align="left" key = 'setNumber'>局數</TableCell>
-                <TableCell align="left" key = 'myteam'>{data.contestMyTeam}</TableCell>
-                <TableCell align="left" key = 'opponent'>{data.contestOpponent}</TableCell>
-                <TableCell align="left" key = 'button'>詳細記錄</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.contestSetDetail.map(set => (
-                <TableRow key={(set.setNumber)} 
-                          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell align="left">第 {set.setNumber} 局</TableCell>
-                  <TableCell align="left">{set.setMyPoint}</TableCell>
-                  <TableCell align="left">{set.setOppoPoint}</TableCell>
-                  <TableCell align="left">
-                    <Button onClick = {() => showModal(set)}>Detail</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
-  };
+  
 
   const SetTable = ({ data }) => {
+
+    const SetModal = (set) => {
+
+      return (
+        <Modal
+          title={set? `第${set.setNumber}局紀錄` : 'Create'}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="close" onClick={handleCancel}>
+              Close
+            </Button>,
+          ]}
+          width={1400}>
+            {set? ContestSetDetail(set) :'null'}
+        </Modal>
+      )
+    }
+
     return (
       <>
         {SetModal(setNow)}
@@ -149,20 +130,20 @@ const TeamScoreDetail = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
               <TableRow>
-                <TableCell align="left" key = 'setNumber'>局數</TableCell>
-                <TableCell align="left" key = 'myteam'>{data.contestMyTeam}</TableCell>
-                <TableCell align="left" key = 'opponent'>{data.contestOpponent}</TableCell>
-                <TableCell align="left" key = 'button'>詳細記錄</TableCell>
+                <TableCell align="center" style={{width: '20%'}}>局數</TableCell>
+                <TableCell align="center">{data.contestMyTeam}</TableCell>
+                <TableCell align="center">{data.contestOpponent}</TableCell>
+                <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.contestSetDetail.map(set => (
                 <TableRow key={(set.setNumber)} 
                           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell align="left">第 {set.setNumber} 局</TableCell>
-                  <TableCell align="left">{set.setMyPoint}</TableCell>
-                  <TableCell align="left">{set.setOppoPoint}</TableCell>
-                  <TableCell align="left">
+                  <TableCell align="center" style={{width: '20%'}}>第 {set.setNumber} 局</TableCell>
+                  <TableCell align="center">{set.setMyPoint}</TableCell>
+                  <TableCell align="center">{set.setOppoPoint}</TableCell>
+                  <TableCell align="center">
                     <Button onClick = {() => showModal(set)}>Detail</Button>
                   </TableCell>
                 </TableRow>
