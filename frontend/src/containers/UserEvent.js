@@ -1,7 +1,6 @@
 import Template from "../components/Template";
 import { useQuery } from "@apollo/client";
 import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
-
 import { Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import { CardActionArea, CardMedia } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -44,8 +43,6 @@ function UserEvent(props) {
     if (!userEvent.loading && !teamEvent.loading) {
       data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
     }
-
-    console.log(data)
 
     const EventData = [];
     if (!userEvent.loading && !teamEvent.loading) {
@@ -102,7 +99,6 @@ function UserEvent(props) {
     )
     
     return(
-
         <div className="Wrapper">
             <Template content={eventlist} />
         </div>        
