@@ -35,6 +35,7 @@ function TeamEventDetail(props) {
             }
         });
         setIsDeletedMode(false);
+        props.onDelete();
     }
 
     const viewMode = (
@@ -87,6 +88,7 @@ function TeamEventDetail(props) {
                     eTime={data.teamEventDetail.eventEnd}
                     eventID={props.id}
                     mode="edit"
+                    onEdit={ ()=>props.onEdit() }
                 / > 
                 : <>
                     {!loading & !isEditMode ? data.teamEventDetail.eventTitle: ""}

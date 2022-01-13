@@ -31,11 +31,11 @@ function UserEventDetail(props) {
 			}
 		});
 		setIsDeletedMode(false);
+		props.onDelete();
 	}
 
 	const viewMode = (
 		<CardContent 
-	        // sx={{ p: 5 }}
 	      >
 	        <Typography gutterBottom variant="h4" component="div">
 	        {
@@ -75,6 +75,7 @@ function UserEventDetail(props) {
 	        		eTime={data.userEventDetail.eventEnd}
 	        		eventID={props.id}
 	        		mode="edit"
+	        		onEdit={ ()=>props.onEdit() }
 	        	/ > 
 	        	: <>
 	        		{!loading & !isEditMode ? data.userEventDetail.eventTitle: ""}

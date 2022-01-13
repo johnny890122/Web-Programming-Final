@@ -170,8 +170,14 @@ const UserDashboard = (props) => {
                   setIsModalVisible(true) &
                   setComponentInModal( 
                     event.type === "team" 
-                    ? <TeamEventDetail id={e.target.getAttribute("data-index")} />
-                    : <UserEventDetail id={e.target.getAttribute("data-index")} />
+                    ? <TeamEventDetail 
+                        onDelete={()=> setIsModalVisible(false)}
+                        onEdit={()=> setIsModalVisible(false)} 
+                        id={e.target.getAttribute("data-index")} />
+                    : <UserEventDetail 
+                        onDelete={()=> setIsModalVisible(false)}
+                        onEdit={()=> setIsModalVisible(false)} 
+                        id={e.target.getAttribute("data-index")} />
                   )
                 }
               >
@@ -228,7 +234,7 @@ const UserDashboard = (props) => {
           sx={{ m: 1 }}
           onClick={() =>
             setIsModalVisible(true) &
-            setComponentInModal(<CreateUserEvent me={props.me} mode="create" />)
+            setComponentInModal(<CreateUserEvent me={props.me} mode="create" onCreate={()=>setIsModalVisible(false)} />)
           }
         >
           Create

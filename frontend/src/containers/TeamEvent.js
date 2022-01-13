@@ -142,6 +142,8 @@ function TeamEvent(props) {
                       me={props.me}
                       type="team"
                       id={e.target.getAttribute("data-index")}
+                      onDelete={()=> setIsModalVisible(false)}
+                      onEdit={()=> setIsModalVisible(false)} 
                     />
                   )
                 }
@@ -184,7 +186,8 @@ function TeamEvent(props) {
 
               <Button variant="outlined" color="success" sx={{ m: 1 }} 
                   onClick={() => setIsModalVisible(true) & setComponentInModal(
-                    <CreateTeamEvent nowTeam={props.nowTeam} me={props.me} mode="create" />)
+                    <CreateTeamEvent 
+                      nowTeam={props.nowTeam} me={props.me} mode="create" onCreate={()=>setIsModalVisible(false)} />)
                   }
               >
                   Create
