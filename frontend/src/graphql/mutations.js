@@ -56,7 +56,6 @@ export const UPDATE_USER_EVENT = gql`
   }
 `;
 
-
 export const UPDATE_TEAM_EVENT = gql`
   mutation updateTeamEvent(
       $eventTitle: String
