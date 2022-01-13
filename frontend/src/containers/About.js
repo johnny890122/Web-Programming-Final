@@ -40,7 +40,7 @@ const About = (props) => {
 
         <List className="card-content" style={{margin: "2em"}}>
             <ListItem button>
-              <Avatar src="https://joeschmoe.io/api/v1/Yoga" size={160} />
+              <Avatar src="https://joeschmoe.io/api/v1/Yogo" size={160} />
             </ListItem>
             <Typography style={{textAlign: "center"}} mt={4} variant="h5"> Yoga </Typography>
         </List>
@@ -53,14 +53,11 @@ const About = (props) => {
         </List>
     </div>
 
-    <Typography mt={1} variant="h4"> Powered By </Typography>
-      
-      <List className="card-content">
-          <DiNodejs size={180} style={{margin: "1em"}} />
-          <FaReact size={100} style={{margin: "1em"}} color="primary" />
-          <GrGraphQl size={100} style={{margin: "1em"}} />
-          <SiMongodb size={100} style={{margin: "1em"}} />
-      </List>
+    <Typography mt={4} variant="h4"> Powered By </Typography>
+          <DiNodejs size={70} style={{margin: "1em"}} />
+          <FaReact size={40} style={{margin: "1em"}} color="primary" />
+          <GrGraphQl size={40} style={{margin: "1em"}} />
+          <SiMongodb size={40} style={{margin: "1em"}} />
     </>
   );
 
