@@ -4,6 +4,7 @@ import { useState } from "react";
 import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
          Paper, Button } from "@mui/material";
+import { Modal } from "antd";
 
 const TeamScoreDetail = () => {
 
@@ -20,7 +21,7 @@ const TeamScoreDetail = () => {
       {
         setID: "1",
         setNumber: 1,
-        setScore: "",
+        setScore: "xoxoxooxxoooxxooxoxoxxxxxxoxxoooxxoxxoxxxx",
         setMyPoint: 20,
         setOppoPoint: 25,
         setOppoErrServe: 3,
@@ -31,7 +32,7 @@ const TeamScoreDetail = () => {
       {
         setID: "2",
         setNumber: 2,
-        setScore: "",
+        setScore: "xoxoxooxxoooxxooxoxoxxxxxxoxxoooxxoxxoxxxx",
         setMyPoint: 21,
         setOppoPoint: 25,
         setOppoErrServe: 4,
@@ -41,44 +42,67 @@ const TeamScoreDetail = () => {
       }
     ],
   }
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    console.log("show");
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  }
   
-  const BasicTable = ({ data }) => {
+  const SetModal = () => {
     return (
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
-            <TableRow>
-              <TableCell align="left" key = 'setNumber'>局數</TableCell>
-              <TableCell align="left" key = 'myteam'>{data.contestMyTeam}</TableCell>
-              <TableCell align="left" key = 'opponent'>{data.contestOpponent}</TableCell>
-              <TableCell align="left" key = 'button'>詳細記錄</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.contestSetDetail.map((set) => (
-              <TableRow key={(set.setNumber)} 
-                        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell align="left">第 {set.setNumber} 局</TableCell>
-                <TableCell align="left">{set.setMyPoint}</TableCell>
-                <TableCell align="left">{set.setOppoPoint}</TableCell>
-                <TableCell align="left">
-                  <Button>Detail</Button>
-                </TableCell>
+      <Modal
+        title="Set Detail"
+        visible={isModalVisible}
+        //confirmLoading={isEdit}
+        onOk={handleCancel}
+        onCancel={handleCancel}>
+      </Modal>
+    )
+  }
+
+  const SetTable = ({ data }) => {
+    return (
+      <>
+        <SetModal></SetModal>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
+              <TableRow>
+                <TableCell align="left" key = 'setNumber'>局數</TableCell>
+                <TableCell align="left" key = 'myteam'>{data.contestMyTeam}</TableCell>
+                <TableCell align="left" key = 'opponent'>{data.contestOpponent}</TableCell>
+                <TableCell align="left" key = 'button'>詳細記錄</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {data.contestSetDetail.map((set) => (
+                <TableRow key={(set.setNumber)} 
+                          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell align="left">第 {set.setNumber} 局</TableCell>
+                  <TableCell align="left">{set.setMyPoint}</TableCell>
+                  <TableCell align="left">{set.setOppoPoint}</TableCell>
+                  <TableCell align="left">
+                    <Button onClick = {showModal}>Detail</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
     );
   };
 
-
-  //let columnName = ["", "ECON (Loss)", "土木 (Win)"];
- 
-  let scoreDetail = <BasicTable data={data} />;
+  let setDetail = <SetTable data={data} />;
   return (
     <div className="Wrapper">
-      <Template content={scoreDetail} />
+      <Template content={setDetail} />
     </div>
   );
 };
