@@ -76,48 +76,15 @@ const TeamScoreDetail = () => {
         setOppoErrAttack: 5,
         setOppoErrOther: 6,
         setPlayerDetail: [
-          {
-            setID: "1",
-            playerID: "57",
-            detailPointServe: 1,
-            detailPointAttack: 2,
-            detailPointTip: 3,
-            detailTimeAttack: 4,
-            detailTimePass: 4,
-            detailTimeNoPass: 4,
-            detailErrPassS: 2,
-            detailErrPassA: 2,
-            detailErrPass1: 2,
-            detailErrSet: 1,
-            detailErrOther: 1,
-            detailErrAttack: 2,
-            detailErrServe: 1,
-            detailComboServe: [3, 4, 5]
-          },
-          {
-            setID: "1",
-            playerID: "2",
-            detailPointServe: 1,
-            detailPointAttack: 2,
-            detailPointTip: 3,
-            detailTimeAttack: 4,
-            detailTimePass: 4,
-            detailTimeNoPass: 4,
-            detailErrPassS: 2,
-            detailErrPassA: 2,
-            detailErrPass1: 2,
-            detailErrSet: 1,
-            detailErrOther: 1,
-            detailErrAttack: 2,
-            detailErrServe: 1,
-            detailComboServe: [3, 4]
-          }
+          
         ]
       }
     ],
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMode, setMedalMode] = useState("new"); //new, detail, edit
+  const [isEdit, setIsEdit] = useState(false);
   const [setNow, setSetNow] = useState(null);
 
   const showModal = (set) => {
@@ -131,12 +98,30 @@ const TeamScoreDetail = () => {
     setIsModalVisible(false);
   }
   
+  
 
   const SetTable = ({ data }) => {
 
     const SetModal = (set) => {
 
       const PlayerTable = (set) => {
+        
+        const myscore = []
+        const opposcore = []
+        var mypoint = 0;
+        var oppopoint = 0;
+
+        set.setScore.split("").map(point => {
+          if (point == "o") {
+            mypoint += 1; 
+            myscore.push(mypoint);
+            opposcore.push("-");
+          } else {
+            oppopoint += 1; 
+            opposcore.push(oppopoint);
+            myscore.push("-")}
+          });
+
         return (
           <>
             <TableContainer component={Paper}>
@@ -181,6 +166,49 @@ const TeamScoreDetail = () => {
                       <TableCell align="center" key = 'comboServe'>{player.detailComboServe.map(combo => `${combo} `)}</TableCell>
                     </TableRow>
                   ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TableContainer component={Paper}>
+              <Table sx={{ maxWidth: 1400 }} aria-label="simple table">
+                <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
+                  <TableRow>
+                    <TableCell align="center" style={{width: '7%'}}>對方失誤</TableCell>             
+                    <TableCell align="center">發球</TableCell>
+                    <TableCell align="center">處理</TableCell>
+                    <TableCell align="center">攻擊</TableCell>
+                    <TableCell align="center" style={{width: '60%'}}>備註</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" style={{width: '7%'}}></TableCell>
+                    <TableCell align="center">3</TableCell>
+                    <TableCell align="center">7</TableCell>
+                    <TableCell align="center">4</TableCell>
+                    <TableCell align="center" style={{width: '60%'}}></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TableContainer component={Paper}>
+              <Table sx={{ maxWidth: 1400 }} aria-label="simple table">
+                <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
+                  <TableRow>
+                    <TableCell align="center" colSpan={set.setScore.length}>得分紀錄</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    {myscore.map(score => (
+                        <TableCell align="center">{score}</TableCell>
+                    ))}
+                  </TableRow>
+                  <TableRow>
+                    {opposcore.map(score => (
+                        <TableCell align="center">{score}</TableCell>
+                    ))}
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
