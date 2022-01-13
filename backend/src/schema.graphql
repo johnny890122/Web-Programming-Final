@@ -1,6 +1,6 @@
 type Query {
   userLogin(userAccount: String, userPassword: String): User
-  initUserNotification(userID: String): [NotificationTask] # ok
+  initUserNotification(userID: String): [NotificationTask]
   initUserAchievement(userID: String): [userAchievement]
   initUserTodo(_id: ID): Todo
   initUserEvent(userID: String): [DashboardEvent]
@@ -16,18 +16,19 @@ type Query {
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
 
+  myUserAccount(userID: String): User
+  userEventDetail(eventID: String): Event
+  teamEventDetail(eventID: String): Event
+  #teamEventReply(eventID: String, userID: String):  EventReply
+  
+  teamPostDetail(postID: String): Post
+  teamVoteDetail(voteID: String): Vote
+  #teamVoteOption(voteOptionID: String): VoteOption
+  
   users(query: String): [User]
   teams(query: String): [Team]
   user(usreID: String): User
   team(teamID: String): Team
-  post(postID: String): Post
-  teamEvent(eventID: String): Event
-  vote(voteID: String): Vote
-
-  myUserAccount(userID: String): User
-  userEventDetail(eventID: String): Event
-  teamEventDetail(eventID: String): Event
-
 }
 
 type Mutation {

@@ -214,6 +214,27 @@ const Query = {
     return event;
   },
 
+  teamPostDetail: async (parent, args, { db, pubSub }) => {
+    const { postID } = args;
+    const Post = await db.PostModel.findOne({ postID: postID });
+
+    if (!Post) {
+      throw new Error("This post doesn't exist!");
+    }
+    return Post;
+  },
+
+  teamVoteDetail: async (parent, args, { db, pubSub }) => {
+    const { voteID } = args;
+    const Vote = await db.VoteModel.findOne({ voteID: voteID });
+
+    if (!Vote) {
+      throw new Error("This vote doesn't exist!");
+    }
+    return Vote;
+  },
+
+
   /* ------------- Query one, all------------- */
 
   users: async (parent, args, { db, pubSub }) => {
@@ -241,33 +262,8 @@ const Query = {
     }
     return Team;
   },
-  post: async (parent, args, { db, pubSub }) => {
-    const { postID } = args;
-    const Post = await db.PostModel.findOne({ postID: postID });
-
-    if (!Post) {
-      throw new Error("This post doesn't exist!");
-    }
-    return Post;
-  },
-  teamEvent: async (parent, args, { db, pubSub }) => {
-    const { eventID } = args;
-    const Event = await db.EventModel.findOne({ eventID: eventID });
-
-    if (!Event) {
-      throw new Error("This event doesn't exist!");
-    }
-    return Event;
-  },
-  vote: async (parent, args, { db, pubSub }) => {
-    const { voteID } = args;
-    const Vote = await db.VoteModel.findOne({ voteID: voteID });
-
-    if (!Vote) {
-      throw new Error("This vote doesn't exist!");
-    }
-    return Vote;
-  },
+  
+  
 };
 
 export default Query;
