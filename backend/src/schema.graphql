@@ -44,7 +44,7 @@ type Mutation {
     creatorID: String!
   ): Team
 
-  addMember(teamID: String, memberID: String): User
+  addMember(teamID: String, memberAccount: String): User
   addManager(teamID: String, memberID: String): User
 
   deleteMember(teamID: String, memberID: String): User

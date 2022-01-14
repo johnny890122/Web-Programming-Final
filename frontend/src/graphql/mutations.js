@@ -74,12 +74,12 @@ export const UPDATE_USER_EVENT = gql`
 
 export const UPDATE_TEAM_EVENT = gql`
   mutation updateTeamEvent(
-      $eventTitle: String
-      $eventDescription: String
-      $eventStart: Float
-      $eventEnd: Float
-      $eventLocation: String
-      $eventID: String
+    $eventTitle: String
+    $eventDescription: String
+    $eventStart: Float
+    $eventEnd: Float
+    $eventLocation: String
+    $eventID: String
   ) {
     updateTeamEvent(
       eventTitle: $eventTitle
@@ -90,7 +90,7 @@ export const UPDATE_TEAM_EVENT = gql`
       eventID: $eventID
     )
   }
-`
+`;
 
 export const DELETE_USER_EVENT = gql`
   mutation deleteUserEvent($eventID: String) {
@@ -171,6 +171,22 @@ export const CREATE_TEAM_SCORE = gql`
       contestOpponent: $contestOpponent
     ) {
       contestID
+    }
+  }
+`;
+
+export const DELETE_TEAM_MEMBER = gql`
+  mutation deleteMember($teamID: String, $memberID: String) {
+    deleteMember(teamID: $teamID, memberID: $memberID) {
+      userID
+    }
+  }
+`;
+
+export const ADD_TEAM_MEMBER = gql`
+  mutation addMember($teamID: String, $memberAccount: String) {
+    addMember(teamID: $teamID, memberAccount: $memberAccount) {
+      userID
     }
   }
 `;

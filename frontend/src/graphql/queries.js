@@ -155,6 +155,9 @@ export const TEAM_THIS_INIT = gql`
       teamID
       teamName
       teamDescription
+      teamManager {
+        userID
+      }
     }
   }
 `;
