@@ -133,7 +133,7 @@ const DetailPlayerSchema = new Schema({
   detailErrOther: { type: Number, required: false }, // 處理失分
   detailErrAttack: { type: Number, required: false }, // 攻擊失分
   detailErrServe: { type: Number, required: false }, // 發球失分
-  detailComboServe: [{ type: Number, required: false }], // 連續發球次數
+  detailComboServe: { type: String, required: false }, // 連續發球次數
 })
 
 const PostSchema = new Schema({

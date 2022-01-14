@@ -151,8 +151,6 @@ const Mutation = {
     { db, pubSub }
   ) => {
 
-    console.log(eventID);
-
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
@@ -189,7 +187,8 @@ const Mutation = {
   //---------- Team, Member, Manager ----------//
 
   createTeam: async (parent, args, { db, pubSub }) => {
-    const { teamName, teamDescription, teamType, creatorID } = args;
+    const { teamName, teamDescription, teamType, creatorID, memberAccount } =
+      args;
     const TeamExists = await db.TeamModel.findOne({ teamName: teamName });
     const Creator = await db.UserModel.findOne({ userID: creatorID });
 
@@ -197,8 +196,18 @@ const Mutation = {
       throw new Error("This team name has existed!");
     }
 
-    const timeNow = new Date();
     const teamMember = [Creator._id];
+    const manager = [Creator._id];
+    if (memberAccount) {
+      for (let i = 0; i < memberAccount.length; i++) {
+        let Member = await db.UserModel.findOne({
+          userAccount: memberAccount[i],
+        });
+        teamMember.push(Member._id);
+      }
+    }
+
+    const timeNow = new Date();
     const OBID = ObjectId();
     const team = await new db.TeamModel({
       _id: OBID,
@@ -213,7 +222,7 @@ const Mutation = {
       teamContest: [],
       teamVote: [],
       teamEvent: [],
-      teamManager: teamMember,
+      teamManager: manager,
     }).save();
     const newAllTeams = await db.UserModel.findOneAndUpdate(
       { _id: Creator._id },
@@ -229,8 +238,8 @@ const Mutation = {
     return team;
   },
   addMember: async (parent, args, { db, pubSub }) => {
-    const { teamID, memberID } = args;
-    const Member = await db.UserModel.findOne({ userID: memberID });
+    const { teamID, memberAccount } = args;
+    const Member = await db.UserModel.findOne({ userAccount: memberAccount });
     const Team = await db.TeamModel.findOne({ teamID: teamID });
 
     const MemberExists = await Team.teamMember.includes(Member._id);
@@ -354,6 +363,8 @@ const Mutation = {
       postTime: timeNow,
     }).save();
 
+    console.log(post)
+
     const newPost = await db.TeamModel.findOneAndUpdate(
       { teamID: teamID },
       { $push: { teamPost: post._id } }
@@ -439,23 +450,20 @@ const Mutation = {
       throw new Error("Team not found!");
     }
 
-    Team.teamMember.map(
-      async user => {
-        const User = await db.UserModel.findOne({ _id: user._id });
-        if (!User) {
-          throw new Error("User not found!");
-        }
-
-        await new db.NotificationTaskModel({
-          taskID: "1234",
-          userID: User.userID,
-          taskTime: timeNow,
-          taskType: `Team(${Team.teamName})`,
-          taskContent: `New Event: ${eventTitle}`,
-        }).save();
-
+    Team.teamMember.map(async (user) => {
+      const User = await db.UserModel.findOne({ _id: user._id });
+      if (!User) {
+        throw new Error("User not found!");
       }
-    )
+
+      await new db.NotificationTaskModel({
+        taskID: "1234",
+        userID: User.userID,
+        taskTime: timeNow,
+        taskType: `Team(${Team.teamName})`,
+        taskContent: `New Event: ${eventTitle}`,
+      }).save();
+    });
 
     return event.eventID;
   },
@@ -794,7 +802,7 @@ const Mutation = {
       setOppoErrServe,
       setOppoErrAttack,
       setOppoErrOther,
-      setNote
+      setNote,
     } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
 
@@ -860,7 +868,7 @@ const Mutation = {
       detailErrOther: detailErrOther || 0,
       detailErrAttack: detailErrAttack || 0,
       detailErrServe: detailErrServe || 0,
-      detailComboServe: detailComboServe || [],
+      detailComboServe: detailComboServe || String,
     }).save();
 
     const playerToSet = await db.SetDetailModel.findOneAndUpdate(
@@ -872,8 +880,15 @@ const Mutation = {
   },
 
   updateContest: async (parent, args, { db, pubSub }) => {
-    const { contestID, contestDate, contestOpponent, contestIsWin, 
-            contestTitle, contestMySet, contestOppoSet } = args;
+    const {
+      contestID,
+      contestDate,
+      contestOpponent,
+      contestIsWin,
+      contestTitle,
+      contestMySet,
+      contestOppoSet,
+    } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
 
     const contestUpdate = await db.ContestModel.findOneAndUpdate(
@@ -893,34 +908,59 @@ const Mutation = {
     return contestUpdate;
   },
   updateSetDetail: async (parent, args, { db, pubSub }) => {
-    const { setID, setNumber, setScore, setMyPoint, setOppoPoint, setOppoErrServe, 
-            setOppoErrAttack, setOppoErrOther, setNote} = args;
+    const {
+      setID,
+      setNumber,
+      setScore,
+      setMyPoint,
+      setOppoPoint,
+      setOppoErrServe,
+      setOppoErrAttack,
+      setOppoErrOther,
+      setNote,
+    } = args;
     const SetDetail = await db.SetDetailModel.findOne({ setID: setID });
 
     const setDetailUpdate = await db.SetDetailModel.findOneAndUpdate(
-    { _id: SetDetail._id },
-    {
-      $set: {
-        setNumber: setNumber || SetDetail.setNumber,
-        setScore: setScore || SetDetail.setScore,
-        setMyPoint: setMyPoint || SetDetail.setMyPoint,
-        setOppoPoint: setOppoPoint || SetDetail.setOppoPoint,
-        setOppoErrServe: setOppoErrServe || SetDetail.setOppoErrServe,
-        setOppoErrAttack: setOppoErrAttack || SetDetail.setOppoErrAttack,
-        setOppoErrOther: setOppoErrOther || SetDetail.setOppoErrOther,
-        setNote: setNote || SetDetail.setNote,
-      },
-    }
+      { _id: SetDetail._id },
+      {
+        $set: {
+          setNumber: setNumber || SetDetail.setNumber,
+          setScore: setScore || SetDetail.setScore,
+          setMyPoint: setMyPoint || SetDetail.setMyPoint,
+          setOppoPoint: setOppoPoint || SetDetail.setOppoPoint,
+          setOppoErrServe: setOppoErrServe || SetDetail.setOppoErrServe,
+          setOppoErrAttack: setOppoErrAttack || SetDetail.setOppoErrAttack,
+          setOppoErrOther: setOppoErrOther || SetDetail.setOppoErrOther,
+          setNote: setNote || SetDetail.setNote,
+        },
+      }
     );
     console.log("SetDetail Updated!");
     return setDetailUpdate;
-  },  
+  },
   updateDetailPlayer: async (parent, args, { db, pubSub }) => {
-    const { detailID, detailPlayer, detailPointServe, detailPointAttack, detailPointTip, 
-            detailTimeAttack, detailTimePass, detailTimeNoPass, detailErrPassS, detailErrPassA, 
-            detailErrPass1, detailErrSet, detailErrOther, detailErrAttack, detailErrServe, 
-            detailComboServe } = args;
-    const DetailPlayer = await db.DetailPlayerModel.findOne({ detailID: detailID });
+    const {
+      detailID,
+      detailPlayer,
+      detailPointServe,
+      detailPointAttack,
+      detailPointTip,
+      detailTimeAttack,
+      detailTimePass,
+      detailTimeNoPass,
+      detailErrPassS,
+      detailErrPassA,
+      detailErrPass1,
+      detailErrSet,
+      detailErrOther,
+      detailErrAttack,
+      detailErrServe,
+      detailComboServe,
+    } = args;
+    const DetailPlayer = await db.DetailPlayerModel.findOne({
+      detailID: detailID,
+    });
 
     const detailPlayerUpdate = await db.DetailPlayerModel.findOneAndUpdate(
       { _id: DetailPlayer._id },
@@ -928,7 +968,8 @@ const Mutation = {
         $set: {
           detailPlayer: detailPlayer || DetailPlayer.detailPlayer,
           detailPointServe: detailPointServe || DetailPlayer.detailPointServe,
-          detailPointAttack: detailPointAttack || DetailPlayer.detailPointAttack,
+          detailPointAttack:
+            detailPointAttack || DetailPlayer.detailPointAttack,
           detailPointTip: detailPointTip || DetailPlayer.detailPointTip,
           detailTimeAttack: detailTimeAttack || DetailPlayer.detailTimeAttack,
           detailTimePass: detailTimePass || DetailPlayer.detailTimePass,
@@ -951,7 +992,9 @@ const Mutation = {
   deleteContest: async (parent, args, { db, pubSub }) => {
     const { contestID, teamID } = args;
     const Team = await db.TeamModel.findOne({ teamID: teamID });
-    const Contest = await db.ContestOptionModel.findOne({ contestID: contestID });
+    const Contest = await db.ContestOptionModel.findOne({
+      contestID: contestID,
+    });
 
     const contestToTeam = await db.TeamModel.findOneAndUpdate(
       { _id: Team._id },
@@ -1016,33 +1059,6 @@ const Mutation = {
     console.log("Player Detail Deleted!");
     return SetDetail;
   },
-
-
 };
 
 export default Mutation;
-
-
-/*
-createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
-    const galleryID = uuidv4();
-    const newGallery = new db.GalleryModel({
-      teamID,
-      galleryID,
-      galleryTitle,
-    });
-    await newGallery.save();
-    return newGallery;
-  },
-
-  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
-    const ganttID = uuidv4();
-    const newGantt = new db.GanttModel({
-      teamID,
-      ganttID,
-      ganttTitle,
-    });
-    await newGantt.save();
-    return newGantt;
-  },
-*/

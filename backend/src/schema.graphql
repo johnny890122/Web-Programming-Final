@@ -42,9 +42,10 @@ type Mutation {
     teamDescription: String!
     teamType: String!
     creatorID: String!
+    memberAccount: [String]
   ): Team
 
-  addMember(teamID: String, memberID: String): User
+  addMember(teamID: String, memberAccount: String): User
   addManager(teamID: String, memberID: String): User
 
   deleteMember(teamID: String, memberID: String): User
@@ -91,10 +92,10 @@ type Mutation {
   ##---------- Team Post (完成) ----------##
 
   createPost(
-    postTitle: String!
-    postContent: String!
-    teamID: String!
-    creatorID: String!
+    postTitle: String
+    postContent: String
+    teamID: String
+    creatorID: String
   ): Post
 
   updatePost(postTitle: String, postContent: String, postID: String): Post
@@ -163,7 +164,7 @@ type Mutation {
     detailErrOther: Int
     detailErrAttack: Int
     detailErrServe: Int
-    detailComboServe: [Int]
+    detailComboServe: String
   ): DetailPlayer
 
   updateContest(
@@ -202,7 +203,7 @@ type Mutation {
     detailErrOther: Int
     detailErrAttack: Int
     detailErrServe: Int
-    detailComboServe: [Int]
+    detailComboServe: String
   ): DetailPlayer
 
   deleteContest(contestID: String!, teamID: String!): Team
@@ -326,7 +327,7 @@ type Team {
 }
 
 type Post {
-  postID: String!
+  postID: String
   postTitle: String
   postContent: String
   postAuthor: User

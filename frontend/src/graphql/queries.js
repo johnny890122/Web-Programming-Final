@@ -113,6 +113,7 @@ export const TEAM_POST_INIT = gql`
       postTitle
       postAuthor {
         userID
+        userAccount
       }
       postContent
     }
@@ -155,6 +156,9 @@ export const TEAM_THIS_INIT = gql`
       teamID
       teamName
       teamDescription
+      teamManager {
+        userID
+      }
     }
   }
 `;
@@ -196,6 +200,15 @@ export const TEAM_MEMBER_INIT = gql`
       userAccount
       userName
       userEmail
+    }
+  }
+`;
+
+export const TEAM_PLAYERNAME_INIT = gql`
+  query initMember($teamID: String) {
+    initMember(teamID: $teamID) {
+      userID
+      userName
     }
   }
 `;

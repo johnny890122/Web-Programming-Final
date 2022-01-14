@@ -364,9 +364,13 @@ export default function Template({ content }) {
                       style={{ width: "70%" }}
                       size="small"
                       defaultValue={
-                        userAccount.loading
-                          ? moment()
-                          : moment(userAccount.data.myUserAccount.userBirthday)
+                        !userAccount.loading
+                          ? userAccount.data.myUserAccount.userBirthday
+                            ? moment(
+                                userAccount.data.myUserAccount.userBirthday
+                              )
+                            : moment()
+                          : moment()
                       }
                       onChange={(value) => {
                         let birth = new Date(value);
