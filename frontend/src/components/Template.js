@@ -196,7 +196,7 @@ export default function Template({ content }) {
 
   const teamPages = [
     "Home",
-    "Calendar",
+    "Event",
     "Posts",
     "Member",
     "Score",
@@ -428,7 +428,6 @@ export default function Template({ content }) {
               ))
             : null}
         </List>
-        <Divider />
         <List style={{ marginTop: "auto" }}>
           <Link to="/About">
             <ListItem button key="About Us">
@@ -457,21 +456,23 @@ export default function Template({ content }) {
           aria-label="breadcrumb"
           separator={<NavigateNext fontSize="small" />}
         >
-          {breadItem.map((item) =>
-            item !== "user" &&
-            item !== "team" &&
-            (pages.includes(item) || teamPages.includes(item)) ? (
-              <NavLink to={concatBread(item)}>
-                <Typography sx={{ color: "black" }}>
-                  {decodeURI(item).toUpperCase()}
-                </Typography>
-              </NavLink>
-            ) : (
-              <Typography sx={{ color: "#727272" }}>
-                {decodeURI(item).toUpperCase()}
-              </Typography>
-            )
-          )}
+          {breadItem.length === 1
+            ? null
+            : breadItem.map((item) =>
+                item !== "user" &&
+                item !== "team" &&
+                (pages.includes(item) || teamPages.includes(item)) ? (
+                  <NavLink to={concatBread(item)}>
+                    <Typography sx={{ color: "black" }}>
+                      {decodeURI(item).toUpperCase()}
+                    </Typography>
+                  </NavLink>
+                ) : (
+                  <Typography sx={{ color: "#727272" }}>
+                    {decodeURI(item).toUpperCase()}
+                  </Typography>
+                )
+              )}
         </Breadcrumbs>
         <br />
         <div className="main" style={{ width: "95%" }}>

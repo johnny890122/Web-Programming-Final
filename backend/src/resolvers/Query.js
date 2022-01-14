@@ -80,7 +80,7 @@ const Query = {
     if (!user) {
       throw new Error("User not found!");
     }
-    
+
     const userTeamEvent = [];
 
     for (var i of user.allTeams) {
@@ -137,14 +137,37 @@ const Query = {
 
   initMember: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!Team) {
       throw new Error("Team not found!");
     }
-    const members = await team.teamMember;
-    if (!members) {
-      return [];
-    } else return members;
+    let allMembers = [];
+    if (Team.teamMember.length !== 0) {
+      for (let i = 0; i < Team.teamMember.length; i++) {
+        let User = await db.UserModel.findOne({ _id: Team.teamMember[i] });
+        allMembers.push(User);
+      }
+    }
+    return allMembers;
+  },
+
+  isManaging: async (parent, args, { db, pubSub }) => {
+    const { userID, teamID } = args;
+    const User = await db.UserModel.findOne({ userID: userID });
+    if (!User) {
+      throw new Error("User not found!");
+    }
+    let allManagingTeamID = [];
+    if (User.manageTeams.length !== 0) {
+      for (let i = 0; i < User.manageTeams.length; i++) {
+        let Team = await db.TeamModel.findOne({ _id: User.manageTeams[i] });
+        allManagingTeamID.push(Team.teamID);
+      }
+    }
+    if (allManagingTeamID.includes(teamID)) {
+      return true;
+    }
+    return false;
   },
 
   initContest: async (parent, args, { db, pubSub }) => {

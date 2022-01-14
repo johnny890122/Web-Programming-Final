@@ -132,7 +132,7 @@ function TeamHome(props) {
             href={
               "/team/" +
               (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
-              "/Calendar"
+              "/Event"
             }
           >
             View All

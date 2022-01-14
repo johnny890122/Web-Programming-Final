@@ -9,6 +9,7 @@ type Query {
 
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
+  isManaging(userID: String, teamID: String): Boolean
   initContest(teamID: String): [Contest]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
@@ -128,7 +129,7 @@ type Mutation {
 
   ##---------- Team Contest, Detail ----------##
 
-  createContest( 
+  createContest(
     teamID: String!
     contestDate: String!
     contestOpponent: String
@@ -204,18 +205,9 @@ type Mutation {
     detailComboServe: [Int]
   ): DetailPlayer
 
-  deleteContest(
-    contestID: String!
-    teamID: String!    
-  ): Team
-  deleteSetDetail(
-    setID: String!
-    contestID: String!    
-  ):  Contest
-  deleteDetailPlayer(
-    detailID: String!
-    setID: String!
-  ): SetDetail
+  deleteContest(contestID: String!, teamID: String!): Team
+  deleteSetDetail(setID: String!, contestID: String!): Contest
+  deleteDetailPlayer(detailID: String!, setID: String!): SetDetail
 
   ##------------------------------##
 
@@ -255,8 +247,6 @@ type Subscription {
   testSubscription: String
 
   userEventCreate: DashboardEvent
-
-
 }
 
 ##---------- Type ----------#
@@ -426,7 +416,6 @@ type EventReply {
   eventReplyTime: String
 }
 
-
 enum EventReplyOption {
   Yes
   No
@@ -447,4 +436,3 @@ enum ContestWinOption {
 #initGantt(teamID: String): [Gantt]
 #createGallery(teamID: String!, galleryTitle: String!): Gallery! # ok
 #createGantt(teamID: String!, ganttTitle: String!): Gantt! # ok
-  
