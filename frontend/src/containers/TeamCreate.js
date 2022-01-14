@@ -5,13 +5,14 @@ import {
   Steps,
   Divider,
   Input,
-  Button,
+  // Button,
   Tooltip,
   Form,
   DatePicker,
   Menu,
   Dropdown,
 } from "antd";
+import { TextField, Button } from "@mui/material";
 import {
   CopyOutlined,
   LeftCircleOutlined,
@@ -20,16 +21,17 @@ import {
   UserOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
+import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 import { Link } from "react-router-dom";
 import "../App.css";
-import { CREATE_TEAM } from "../graphql";
+import { CREATE_TEAM, TEAM_INIT } from "../graphql";
 import { useMutation } from "@apollo/client";
 import { mergeDeepArray } from "@apollo/client/utilities";
 
 function TeamForm(props) {
   const { TextArea } = Input;
 
-  const teamType = ["ball team", "project", "homework"];
+  const teamType = ["volleyball team", "volleyball team", "volleyball team"];
 
   const handleMenuClick = (e) => {
     props.setSelectedTeamType(e.key);
@@ -59,23 +61,21 @@ function TeamForm(props) {
   return (
     <Form>
       {/*隊名*/}
-      <Form.Item label="團隊名稱" required tooltip="This is a required field">
-        <Input onChange={(e) => handleNameInput(e)} />
+      <Form.Item label="Team Name" required>
+        <Input value={props.name} onChange={(e) => handleNameInput(e)} />
       </Form.Item>
 
       {/*球隊描述*/}
-      <Form.Item
-        label="團隊描述"
-        tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
-      >
-        <TextArea rows={4} onChange={(e) => handleDesInput(e)} />
+      <Form.Item label="Team Description">
+        <TextArea
+          value={props.des}
+          rows={4}
+          onChange={(e) => handleDesInput(e)}
+        />
       </Form.Item>
 
       {/*球隊類型*/}
-      <Form.Item
-        label="團隊類型"
-        tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
-      >
+      <Form.Item label="Team Type">
         <Dropdown.Button
           overlay={menu}
           placement="bottomCenter"
@@ -98,42 +98,42 @@ function TeamForm(props) {
   );
 }
 
-function Invite() {
-  return (
-    <Form>
-      {/* 輸入電子郵件 */}
-      <Form.Item
-        label="輸入郵件"
-        tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
-      >
-        <Input
-          defaultValue="Amy"
-          icon={<CopyOutlined />}
-          addonAfter={
-            <Tooltip title="Invite">
-              {" "}
-              <UserAddOutlined />{" "}
-            </Tooltip>
-          }
-        />
-      </Form.Item>
+function Invite(props) {
+  const handleAddBox = () => {
+    let temp = JSON.parse(JSON.stringify(props.inputBoxes));
+    temp.push(props.inputBoxes[props.inputBoxes.length - 1] + 1);
+    props.setInputBoxes(temp);
+  };
+  const handleInput = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(props.inputs));
+    temp[index] = value;
+    props.setInputs(temp);
+  };
 
-      <Form.Item
-        label="複製連結"
-        tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
-      >
-        <Input
-          defaultValue="git@github.com:ant-design/ant-design.git"
-          icon={<CopyOutlined />}
-          addonAfter={
-            <Tooltip title="copy url">
-              {" "}
-              <CopyOutlined />{" "}
-            </Tooltip>
-          }
+  return (
+    <>
+      {props.inputBoxes.map((box, index) => (
+        <TextField
+          id="invite-account"
+          value={props.inputs[index]}
+          label={"Member Account " + box}
+          size="small"
+          style={{ margin: "0.5rem 1rem" }}
+          onChange={(e) => handleInput(index, e.target.value)}
         />
-      </Form.Item>
-    </Form>
+      ))}
+      <Form style={{ marginBottom: "2rem" }}>
+        <AddCircleOutlineSharpIcon
+          style={{
+            color: "green",
+            fontSize: "2rem",
+            margin: "1rem",
+            cursor: "pointer",
+          }}
+          onClick={handleAddBox}
+        />
+      </Form>
+    </>
   );
 }
 
@@ -143,6 +143,8 @@ function CreateTeam({ me }) {
   const [selectedTeamType, setSelectedTeamType] = useState("---");
   const [startDate, setStartDate] = useState();
   const { Step } = Steps;
+  const [inputBoxes, setInputBoxes] = useState([1]);
+  const [inputs, setInputs] = useState([]);
 
   // some constant
   const totalStep = 3;
@@ -150,7 +152,7 @@ function CreateTeam({ me }) {
   // text dict
   const titleText = {
     0: "Fill in Basic Info",
-    1: "Invite People",
+    1: "Add Some Members",
     2: "Create!",
   };
 
@@ -158,7 +160,9 @@ function CreateTeam({ me }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [stepText, setStepText] = useState("");
   const [title, setTitle] = useState("0");
-  const [addTeam, { data, loading, error }] = useMutation(CREATE_TEAM);
+  const [addTeam, { data, loading, error }] = useMutation(CREATE_TEAM, {
+    refetchQueries: [TEAM_INIT, "initTeam"],
+  });
   if (error) console.log(error.message);
 
   const handleNext = () => {
@@ -178,10 +182,6 @@ function CreateTeam({ me }) {
   };
 
   const handleSubmit = async () => {
-    console.log(name, typeof name);
-    console.log(des, typeof des);
-    console.log(selectedTeamType, typeof selectedTeamType);
-    console.log(me, typeof me);
     await addTeam({
       variables: {
         teamName: name,
@@ -189,82 +189,96 @@ function CreateTeam({ me }) {
         // teamCreateTime: startDate,
         teamType: selectedTeamType,
         creatorID: me,
+        memberAccount: inputs,
       },
     });
 
     setTeamName("");
     setTeamDes("");
+    setInputBoxes([1]);
+    setInputs();
   };
 
   useEffect(() => {
     setTitle(titleText[currentStep]);
   }, [currentStep]);
   return (
-    <>
+    <div style={{ width: "80%", marginLeft: "2rem" }}>
       <Steps current={currentStep} onChange={handleClickStep}>
         <Step key="0" title="Step 1" description="Fill in Basic Info" />
-        <Step key="1" title="Step 2" description="Invite People" />
+        <Step key="1" title="Step 2" description="Add Some Members" />
         <Step key="2" title="Step 3" description="Create!" />
       </Steps>
 
       <Divider />
+      <div className="content" style={{ marginLeft: "1rem" }}>
+        {currentStep === 0 ? (
+          <TeamForm
+            name={name}
+            setTeamName={setTeamName}
+            des={des}
+            setTeamDes={setTeamDes}
+            selectedTeamType={selectedTeamType}
+            setSelectedTeamType={setSelectedTeamType}
+            setStartDate={setStartDate}
+          />
+        ) : (
+          []
+        )}
+        {currentStep === 1 ? (
+          <Invite
+            inputBoxes={inputBoxes}
+            setInputBoxes={setInputBoxes}
+            inputs={inputs}
+            setInputs={setInputs}
+          />
+        ) : (
+          []
+        )}
+        {currentStep === 2 ? [] : []}
 
-      {currentStep === 0 ? (
-        <TeamForm
-          setTeamName={setTeamName}
-          setTeamDes={setTeamDes}
-          selectedTeamType={selectedTeamType}
-          setSelectedTeamType={setSelectedTeamType}
-          setStartDate={setStartDate}
-        />
-      ) : (
-        []
-      )}
-      {currentStep === 1 ? <Invite /> : []}
-      {currentStep === 2 ? [] : []}
-
-      <div className="createTeamButtonDiv">
         <div className="createTeamButtonDiv">
-          {currentStep === 0 ? (
-            []
-          ) : (
-            <Button
-              type="primary"
-              icon={<LeftCircleOutlined />}
-              size="large"
-              onClick={handleBack}
-            >
-              {" "}
-              Back{" "}
-            </Button>
-          )}
-        </div>
-        <div className="createTeamButtonDiv">
-          {currentStep === totalStep - 1 ? (
-            <Link to="/user/Team">
+          <div className="createTeamButtonDiv">
+            {currentStep === 0 ? (
+              []
+            ) : (
               <Button
-                type="primary"
-                size="large"
-                style={{ background: "#16982B" }}
-                onClick={handleSubmit}
+                color="primary"
+                variant="outlined"
+                icon={<LeftCircleOutlined />}
+                onClick={handleBack}
               >
-                Success!
+                {" "}
+                Back{" "}
               </Button>
-            </Link>
-          ) : (
-            <Button
-              type="primary"
-              icon={<RightCircleOutlined />}
-              size="large"
-              onClick={handleNext}
-            >
-              {" "}
-              Next{" "}
-            </Button>
-          )}
+            )}
+          </div>
+          <div className="createTeamButtonDiv">
+            {currentStep === totalStep - 1 ? (
+              <Link to="/user/Team">
+                <Button
+                  color="success"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Create!
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                color="primary"
+                variant="outlined"
+                icon={<RightCircleOutlined />}
+                onClick={handleNext}
+              >
+                {" "}
+                Next{" "}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

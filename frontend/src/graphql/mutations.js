@@ -132,12 +132,14 @@ export const CREATE_TEAM = gql`
     $teamDescription: String!
     $teamType: String!
     $creatorID: String!
+    $memberAccount: [String]
   ) {
     createTeam(
       teamName: $teamName
       teamDescription: $teamDescription
       teamType: $teamType
       creatorID: $creatorID
+      memberAccount: $memberAccount
     ) {
       teamID
     }
@@ -145,13 +147,51 @@ export const CREATE_TEAM = gql`
 `;
 
 export const CREATE_TEAM_POST = gql`
-  mutation createPost(
+mutation createPost(
     $teamID: String
     $postTitle: String
     $postContent: String
     $creatorID: String
   ) {
-    postID
+    createPost(
+    teamID: $teamID
+    postTitle: $postTitle
+    postContent: $postContent
+    creatorID: $creatorID
+    ) {
+      postID
+    } 
+  }
+`;
+
+
+export const UPDATE_TEAM_POST = gql`
+  mutation updatePost(
+    $postID: String
+    $postTitle: String
+    $postContent: String
+  ) {
+    updatePost(
+    postID: $postID
+    postTitle: $postTitle
+    postContent: $postContent
+    ) {
+      postID
+    } 
+  }
+`;
+
+export const DELETE_TEAM_POST = gql`
+mutation deletePost(
+    $teamID: String
+    $postID: String
+  ) {
+    deletePost(
+      teamID: $teamID
+      postID: $postID
+    ) {
+      teamID
+    } 
   }
 `;
 

@@ -74,7 +74,7 @@ const About = (props) => {
             <Avatar src="https://joeschmoe.io/api/v1/jeri" size={160} />
           </ListItem>
           <Typography style={{ textAlign: "center" }} mt={2} variant="h6">
-            Money{" "}
+            Lynn{" "}
           </Typography>
         </List>
       </div>
