@@ -155,6 +155,9 @@ export const TEAM_THIS_INIT = gql`
       teamID
       teamName
       teamDescription
+      teamManager {
+        userID
+      }
     }
   }
 `;
@@ -197,12 +200,6 @@ export const TEAM_MEMBER_INIT = gql`
       userName
       userEmail
     }
-  }
-`;
-
-export const IS_MANAGING = gql`
-  query isManaging($userID: String, $teamID: String) {
-    isManaging(userID: $userID, teamID: $teamID)
   }
 `;
 

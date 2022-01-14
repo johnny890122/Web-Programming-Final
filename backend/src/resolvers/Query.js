@@ -151,25 +151,6 @@ const Query = {
     return allMembers;
   },
 
-  isManaging: async (parent, args, { db, pubSub }) => {
-    const { userID, teamID } = args;
-    const User = await db.UserModel.findOne({ userID: userID });
-    if (!User) {
-      throw new Error("User not found!");
-    }
-    let allManagingTeamID = [];
-    if (User.manageTeams.length !== 0) {
-      for (let i = 0; i < User.manageTeams.length; i++) {
-        let Team = await db.TeamModel.findOne({ _id: User.manageTeams[i] });
-        allManagingTeamID.push(Team.teamID);
-      }
-    }
-    if (allManagingTeamID.includes(teamID)) {
-      return true;
-    }
-    return false;
-  },
-
   initContest: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
     const team = await db.TeamModel.findOne({ teamID: teamID });
