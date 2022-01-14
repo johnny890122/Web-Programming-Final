@@ -60,7 +60,7 @@ function App() {
         />
 
         <Route
-          path="/user/About"
+          path="/About"
           element={<About me={localStorage.getItem(ME_KEY)} />}
         />
 
@@ -113,18 +113,18 @@ function App() {
           path="/team/:teamname/Vote"
           element={<TeamVote me={localStorage.getItem(ME_KEY)} />}
         />
-        <Route
+        {/* <Route
           path="/team/:teamname/Gantt"
           element={<TeamGantt me={localStorage.getItem(ME_KEY)} />}
-        />
+        /> */}
         <Route
           path="/team/:teamname/Score/:id/detail"
           element={<TeamScoreDetail me={localStorage.getItem(ME_KEY)} />}
         />
-        <Route
+        {/* <Route
           path="/team/:teamname/Gallery"
           element={<TeamGallery me={localStorage.getItem(ME_KEY)} />}
-        />
+        /> */}
 
         {/* 下面就照這個邏輯繼續加其他頁面 */}
       </Routes>

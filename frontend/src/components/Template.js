@@ -41,6 +41,7 @@ import {
   StackedLineChart,
   Edit,
   NavigateNext,
+  TipsAndUpdatesOutlined,
 } from "@mui/icons-material";
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -185,13 +186,12 @@ export default function Template({ content }) {
     setAnchorElUser(null);
   };
 
-  const pages = ["Dashboard", "Calendar", "Achievement", "Team", "About"];
+  const pages = ["Dashboard", "Calendar", "Achievement", "Team"];
   const iconList = [
     <DashboardCustomizeOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <TodayOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <EmojiEventsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <GroupsOutlined sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
-    <TipsAndUpdatesIcon sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
 
   const teamPages = [
@@ -201,8 +201,8 @@ export default function Template({ content }) {
     "Member",
     "Score",
     "Vote",
-    "Gallery",
-    "Gantt",
+    // "Gallery",
+    // "Gantt",
   ];
   const teamIconList = [
     <Cottage sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
@@ -211,8 +211,8 @@ export default function Template({ content }) {
     <PeopleAlt sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <SportsScore sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
     <HowToVote sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
-    <Collections sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
-    <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    // <Collections sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
+    // <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
   let breadItem = window.location.href
     .replace("http://localhost:3000", "")
@@ -345,7 +345,7 @@ export default function Template({ content }) {
                     <Input
                       defaultValue={
                         userAccount.loading
-                          ? ""
+                          ? name
                           : userAccount.data.myUserAccount.userName
                       }
                       style={{ width: "58%" }}
@@ -363,11 +363,11 @@ export default function Template({ content }) {
                       format={dateFormat}
                       style={{ width: "70%" }}
                       size="small"
-                      // defaultValue={
-                      //   userAccount.loading
-                      //     ? new Date(2000, 01, 01)
-                      //     : moment(userAccount.data.myUserAccount.userBirthday)
-                      // }
+                      defaultValue={
+                        userAccount.loading
+                          ? moment()
+                          : moment(userAccount.data.myUserAccount.userBirthday)
+                      }
                       onChange={(value) => {
                         let birth = new Date(value);
                         setBirthday(birth.getTime());
@@ -427,6 +427,19 @@ export default function Template({ content }) {
                 </Link>
               ))
             : null}
+        </List>
+        <Divider />
+        <List style={{ marginTop: "auto" }}>
+          <Link to="/About">
+            <ListItem button key="About Us">
+              <ListItemIcon>
+                <TipsAndUpdatesOutlined
+                  sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }}
+                />
+              </ListItemIcon>
+              <ListItemText primary="About Us" sx={{ color: "black" }} />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
       <Box
