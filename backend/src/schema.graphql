@@ -163,7 +163,7 @@ type Mutation {
     detailErrOther: Int
     detailErrAttack: Int
     detailErrServe: Int
-    detailComboServe: [Int]
+    detailComboServe: String
   ): DetailPlayer
 
   updateContest(
@@ -202,7 +202,7 @@ type Mutation {
     detailErrOther: Int
     detailErrAttack: Int
     detailErrServe: Int
-    detailComboServe: [Int]
+    detailComboServe: String
   ): DetailPlayer
 
   deleteContest(contestID: String!, teamID: String!): Team

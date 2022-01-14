@@ -200,6 +200,15 @@ export const TEAM_MEMBER_INIT = gql`
   }
 `;
 
+export const TEAM_PLAYERNAME_INIT = gql`
+  query initMember($teamID: String) {
+    initMember(teamID: $teamID) {
+      userID
+      userName
+    }
+  }
+`;
+
 export const IS_MANAGING = gql`
   query isManaging($userID: String, $teamID: String) {
     isManaging(userID: $userID, teamID: $teamID)

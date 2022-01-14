@@ -124,7 +124,11 @@ function App() {
         /> */}
         <Route
           path="/team/:teamname/Score/:id/detail"
-          element={<TeamScoreDetail me={localStorage.getItem(ME_KEY)} />}
+          element={
+            <TeamScoreDetail 
+              me={localStorage.getItem(ME_KEY)}
+              nowTeam={localStorage.getItem(TEAM_KEY)}
+            />}
         />
         {/* <Route
           path="/team/:teamname/Gallery"
