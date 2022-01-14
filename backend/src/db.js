@@ -43,7 +43,7 @@ const TeamSchema = new Schema({
 });
 
 const EventSchema = new Schema({
-  //teamID: { type: String, required: true },
+  teamID: { type: String, required: true },
   eventID: { type: String, required: false },
   eventTitle: { type: String, required: false },
   eventDescription: { type: String, required: false },
@@ -66,11 +66,11 @@ const EventReplySchema = new Schema({
 
 
 const NotificationTaskSchema = new Schema({
-  userID: { type: String, required: true },
-  taskID: { type: String, required: true },
-  taskTime: { type: Number, required: true },
-  taskType: { type: String, required: true },
-  taskContent: { type: String, required: true },
+  userID: { type: String, required: false },
+  taskID: { type: String, required: false },
+  taskTime: { type: Number, required: false },
+  taskType: { type: String, required: false },
+  taskContent: { type: String, required: false },
 });
 
 const AchievementSchema = new Schema({

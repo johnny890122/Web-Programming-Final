@@ -131,6 +131,10 @@ const Mutation = {
       { $push: { userEvent: event } }
     );
 
+    pubSub.publish("USER_EVENT_CRATE", {
+      createUserEventSubscription: eventID,
+    });
+
     return eventID;
   },
 
@@ -146,10 +150,13 @@ const Mutation = {
     },
     { db, pubSub }
   ) => {
+
+    console.log(eventID);
+
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
-      throw new Error("Event not found!");
+      throw new Error("Event not found!22");
     }
 
     const updatedEvent = await db.DashboardEventModel.findOneAndUpdate(
@@ -426,6 +433,30 @@ const Mutation = {
     }).save();
 
     console.log("New Team Event Saved!");
+
+    const Team = await db.TeamModel.findOne({ teamID });
+    if (!Team) {
+      throw new Error("Team not found!");
+    }
+
+    Team.teamMember.map(
+      async user => {
+        const User = await db.UserModel.findOne({ _id: user._id });
+        if (!User) {
+          throw new Error("User not found!");
+        }
+
+        await new db.NotificationTaskModel({
+          taskID: "1234",
+          userID: User.userID,
+          taskTime: timeNow,
+          taskType: `Team(${Team.teamName})`,
+          taskContent: `New Event: ${eventTitle}`,
+        }).save();
+
+      }
+    )
+
     return event.eventID;
   },
 

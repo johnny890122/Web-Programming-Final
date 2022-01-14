@@ -1,6 +1,7 @@
 import { EventData } from "./ListData";
 import { useQuery } from "@apollo/client";
-import { USER_EVENT_INIT } from "../graphql";
+import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
+import {useState} from "react";
 
 import {
   List,
@@ -13,25 +14,36 @@ import {
 } from "@mui/material";
 
 function DashboardEvent(props) {
-  const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_INIT, {
+
+  const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
 
-  const eventData = [];
+  const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
+    variables: { userID: props.me  }
+  });
 
-  if (!loading) {
-    data.initUserEvent.map(
-      (i) =>
-      eventData.push({
+  const [events, setEvents] = useState(); // 所有活動資料
+
+  let data = [];
+  if (!userEvent.loading && !teamEvent.loading) {
+      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent)
+  }
+
+  const eventData = [];
+  if (!userEvent.loading && !teamEvent.loading) {
+    data.map(
+      (i) => eventData.push({
         title: i.eventTitle,
         description: i.eventDescription,
-        start: new Date(i.eventStart),
-        end: new Date(i.eventEnd),
+        start: new Date(parseInt(i.eventStart)),
+        end: new Date(parseInt(i.eventEnd)),
         location: i.eventLocation,
-        posttime: new Date(i.eventPostTime),
+        posttime: new Date(parseInt(i.eventPostTime)),
       })
     )
   }
+
 
   return (
     <div className="dashboard-event" style={{height: "250px", overflow: "auto"}}>
@@ -39,10 +51,10 @@ function DashboardEvent(props) {
 
       <List className="dashboard-event-list">
         {eventData.map((event) => (
-          <ListItem button key={event.id}>
+          <ListItem>
             <ListItemText 
               primary={event.title} 
-              secondary={event.start.toDateString()} />
+              secondary={ event.start.toDateString()} />
           </ListItem>
         ))}
       </List>

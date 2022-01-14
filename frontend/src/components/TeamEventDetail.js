@@ -35,6 +35,7 @@ function TeamEventDetail(props) {
             }
         });
         setIsDeletedMode(false);
+        props.onDelete();
     }
 
     const viewMode = (
@@ -87,32 +88,32 @@ function TeamEventDetail(props) {
                     eTime={data.teamEventDetail.eventEnd}
                     eventID={props.id}
                     mode="edit"
+                    onEdit={ ()=>props.onEdit() }
                 / > 
                 : <>
-                    {!loading & !isEditMode ? data.teamEventDetail.eventTitle: ""}
-                    <Typography variant="subtitle1" color="text.secondary">
+                    <Typography style={{margin: "0.5em"}} variant="h3" color="textPrimary">
+                        {!loading & !isEditMode ? data.teamEventDetail.eventTitle: ""}
+                    </Typography>
+
+                    <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary">
+                        <PeopleIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> Team
+                    </Typography>
+
+                    <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary">
+                        <EditIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventCreator.userAccount: ""}
+                    </Typography>
+
+                    <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary">
                         <AccessTimeIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.teamEventDetail.eventStart)).toDateString(): ""}
                     </Typography>
 
-                    <Typography variant="subtitle1" color="text.secondary">
-                        <AccessTimeFilledIcon sx={{ fontSize: "large" }} /> {!loading ? new Date(parseInt(data.teamEventDetail.eventEnd)).toDateString(): ""}
+                    <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary"> 
+                        <LocationOnIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventLocation: ""}
                     </Typography>
 
-                    <Typography variant="subtitle1" color="text.secondary"> 
-                        <LocationOnIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventLocation: ""}
+                    <Typography style={{margin: "0.5em"}}  variant="h5" color="text.secondary">
+                        <ShortTextIcon style={{transform: "scale(1.2)"}} sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventDescription: ""}
                     </Typography>
-
-                    <Typography variant="subtitle1" color="text.secondary">
-                        <ShortTextIcon sx={{ fontSize: "large" }} /> {!loading ? data.teamEventDetail.eventDescription: ""}
-                    </Typography>
-
-                    <Typography variant="subtitle1" color="text.secondary">
-                        <PeopleIcon sx={{ fontSize: "large" }} /> Team
-                    </Typography>
-
-                    Poster: 
-                    {!loading ? data.teamEventDetail.eventCreator.userAccount: ""}
-
                 </>
             }
         </CardContent>

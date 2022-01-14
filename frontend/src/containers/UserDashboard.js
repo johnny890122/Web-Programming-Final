@@ -56,6 +56,9 @@ const UserDashboard = (props) => {
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
       data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
+      if (!events || data.length != events.length) {
+         setEvents(data);
+      }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -138,7 +141,7 @@ const UserDashboard = (props) => {
 
             <Typography variant="subtitle1" color="text.secondary">
               <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
-              {new Date(event.eventStart).toDateString()}
+              {new Date(parseInt(event.eventStart)).toDateString()}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
@@ -167,8 +170,14 @@ const UserDashboard = (props) => {
                   setIsModalVisible(true) &
                   setComponentInModal( 
                     event.type === "team" 
-                    ? <TeamEventDetail id={e.target.getAttribute("data-index")} />
-                    : <UserEventDetail id={e.target.getAttribute("data-index")} />
+                    ? <TeamEventDetail 
+                        onDelete={()=> setIsModalVisible(false)}
+                        onEdit={()=> setIsModalVisible(false)} 
+                        id={e.target.getAttribute("data-index")} />
+                    : <UserEventDetail 
+                        onDelete={()=> setIsModalVisible(false)}
+                        onEdit={() => setIsModalVisible(false) } 
+                        id={e.target.getAttribute("data-index")} />
                   )
                 }
               >
@@ -225,7 +234,7 @@ const UserDashboard = (props) => {
           sx={{ m: 1 }}
           onClick={() =>
             setIsModalVisible(true) &
-            setComponentInModal(<CreateUserEvent me={props.me} mode="create" />)
+            setComponentInModal(<CreateUserEvent me={props.me} mode="create" onCreate={()=>setIsModalVisible(false)} />)
           }
         >
           Create
@@ -261,6 +270,7 @@ const UserDashboard = (props) => {
         visible={isModalVisible}
         onCancel={handleClose}
         onOk={handleClose}
+        width= "600px"
         style={{ zIndex: 1200 }}
         footer={[
           <Button key="close" onClick={handleClose}>

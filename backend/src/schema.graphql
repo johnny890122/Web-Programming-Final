@@ -253,6 +253,10 @@ type Mutation {
 
 type Subscription {
   testSubscription: String
+
+  userEventCreate: DashboardEvent
+
+
 }
 
 ##---------- Type ----------#
@@ -285,7 +289,7 @@ type Todo {
 
 type NotificationTask {
   taskID: String
-  taskTime: Int
+  taskTime: Float
   taskType: String
   taskContent: String
 }

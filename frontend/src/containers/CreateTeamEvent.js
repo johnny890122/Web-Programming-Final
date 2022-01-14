@@ -58,6 +58,8 @@ function CreateTeamEvent(props) {
     setSTime(null);
     setEDate(null);
     setETime(null);
+
+    props.onCreate();
   };
 
   const submitUpdateEvent = async () => {
@@ -78,6 +80,8 @@ function CreateTeamEvent(props) {
     setSTime(null);
     setEDate(null);
     setETime(null);
+
+    props.onEdit();
   };
 
   const CreatePage = (

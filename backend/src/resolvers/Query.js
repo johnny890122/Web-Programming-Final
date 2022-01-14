@@ -80,12 +80,14 @@ const Query = {
     if (!user) {
       throw new Error("User not found!");
     }
-
+    
     const userTeamEvent = [];
+
     for (var i of user.allTeams) {
-      const team = await db.TeamModel.findOne({ _id: user.allTeams });
-      const events = await db.EventModel.find({ teamID: team.teamID });
-      events.map((i) => userTeamEvent.push(i));
+      let team = await db.TeamModel.findOne({ _id: i });
+      let events = await db.EventModel.find({ teamID: team.teamID });
+
+      events.map((j) => userTeamEvent.push(j));
     }
 
     return userTeamEvent;

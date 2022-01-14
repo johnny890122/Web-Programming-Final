@@ -1,5 +1,11 @@
 import { gql } from "@apollo/client";
 
+export const USER_EVENT_CREATE_SUBSCRIPTION = gql`
+  subscription userEventCreate {
+    createUserEventSubscription
+  }
+`;
+
 // export const TASK_CREATED_SUBSCRIPTION = gql`
 //   subscription OnTaskCreated {
 //     taskCreated {
