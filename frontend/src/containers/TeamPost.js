@@ -44,6 +44,8 @@ function TeamPost(props) {
 
   const [addPost] = useMutation(CREATE_TEAM_POST);
 
+  
+
   const showModal = (mode, post) => {
     if (mode === "detail") {
       setPostNow(post);
@@ -62,8 +64,8 @@ function TeamPost(props) {
     setMedalMode("detail");
   };
   const handleNew = () => {};
-  const onSubmit = () => {
-    console.log("Success");
+  const onSubmit = (values) => {
+    console.log('Success:', values);
   };
 
   const postDetail = (
@@ -81,32 +83,33 @@ function TeamPost(props) {
   );
 
   const postForm = (
-    <Form
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={
-        modalMode === "edit"
-          ? { title: postNow.title, content: postNow.content }
-          : {}
-      }
-      onFinish={onSubmit}
-      autoComplete="off"
-    >
-      <Form.Item label="Title" name="title">
-        <Input />
-      </Form.Item>
+      <Form
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={
+          modalMode === "edit"
+            ? { title: postNow.title, content: postNow.content }
+            : {}
+        }
+        onFinish={onSubmit}
+        autoComplete="off"
+      >
+        <Form.Item label="Title" name="title">
+          <Input />
+        </Form.Item>
 
-      <Form.Item label="Content" name="content">
-        <Input.TextArea size="large" />
-      </Form.Item>
+        <Form.Item label="Content" name="content">
+          <Input.TextArea size="large" />
+        </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmltype="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
   );
+  
 
   const postModal = (
     <Modal
