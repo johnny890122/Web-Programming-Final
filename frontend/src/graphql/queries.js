@@ -113,6 +113,7 @@ export const TEAM_POST_INIT = gql`
       postTitle
       postAuthor {
         userID
+        userAccount
       }
       postContent
     }

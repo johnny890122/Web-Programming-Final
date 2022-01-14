@@ -151,19 +151,6 @@ const Query = {
     return allMembers;
   },
 
-  initContest: async (parent, args, { db, pubSub }) => {
-    const { teamID } = args;
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const contest = await team.teamContest;
-    if (!contest) {
-      return [];
-    }
-    return contest;
-  },
-
   initTeamEvent: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
     const team = await db.TeamModel.findOne({ teamID: teamID });
@@ -256,6 +243,34 @@ const Query = {
     return Vote;
   },
 
+  /* ------------- Contest ------------- */
+  
+  initContest: async (parent, args, { db, pubSub }) => {
+    const { teamID } = args;
+    const team = await db.TeamModel.findOne({ teamID: teamID });
+    if (!team) {
+      throw new Error("Team not found!");
+    }
+    const contest = await team.teamContest;
+    if (!contest) {
+      return [];
+    }
+    return contest;
+  },
+
+  initSetDetail: async (parent, args, { db, pubSub }) => {
+    const { contestID } = args;
+    const contest = await db.ContestModel.findOne({ contestID: contestID });
+    if (!contest) {
+      throw new Error("Contest not found!");
+    }
+    const setDetail = await contest.teamContest;
+    if (!setDetail) {
+      return [];
+    }
+    return setDetail;
+  },
+
   /* ------------- Query one, all------------- */
 
   users: async (parent, args, { db, pubSub }) => {
@@ -286,27 +301,3 @@ const Query = {
 };
 
 export default Query;
-
-/*
-initGallery: async (parent, args, { db, pubSub }) => {
-    const { teamID } = args;
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const gallery = team.teamGallery;
-    if (!gallery) {return []}
-    return gallery;
-  },
-
-  initGantt: async (parent, args, { db, pubSub }) => {
-    const { teamID } = args;
-    const team = await db.TeamModel.findOne({ teamID: teamID });
-    if (!team) {
-      throw new Error("Team not found!");
-    }
-    const gantt = await team.teamGantt;
-    if (!gantt) {return []}
-    return gantt;
-  },
-   */

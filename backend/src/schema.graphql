@@ -10,7 +10,6 @@ type Query {
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
   isManaging(userID: String, teamID: String): Boolean
-  initContest(teamID: String): [Contest]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
@@ -24,6 +23,9 @@ type Query {
   teamPostDetail(postID: String): Post
   teamVoteDetail(voteID: String): Vote
   #teamVoteOption(voteOptionID: String): VoteOption
+
+  initContest(teamID: String): [Contest]
+  initSetDetail(contestID: String): [SetDetail]
 
   users(query: String): [User]
   teams(query: String): [Team]
@@ -93,10 +95,10 @@ type Mutation {
   ##---------- Team Post (完成) ----------##
 
   createPost(
-    postTitle: String!
-    postContent: String!
-    teamID: String!
-    creatorID: String!
+    postTitle: String
+    postContent: String
+    teamID: String
+    creatorID: String
   ): Post
 
   updatePost(postTitle: String, postContent: String, postID: String): Post
@@ -328,7 +330,7 @@ type Team {
 }
 
 type Post {
-  postID: String!
+  postID: String
   postTitle: String
   postContent: String
   postAuthor: User
