@@ -111,7 +111,7 @@ function TeamEvent(props) {
 
             <Typography variant="subtitle1" color="text.secondary">
               <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
-              {new Date(event.start).toDateString()}
+              {new Date(parseInt(event.start)).toDateString()}
             </Typography>
 
             <Typography variant="subtitle1" color="text.secondary">
