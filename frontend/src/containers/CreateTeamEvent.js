@@ -10,7 +10,7 @@ import moment from "moment";
 
 import { Event } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
-import { CREATE_TEAM_EVENT, UPDATE_TEAM_EVENT } from "../graphql";
+import { CREATE_TEAM_EVENT, UPDATE_TEAM_EVENT, TEAM_EVENT_INIT  } from "../graphql";
 
 function CreateTeamEvent(props) {
   let now = new Date(),
@@ -35,8 +35,8 @@ function CreateTeamEvent(props) {
   const [eDate, setEDate] = useState(null);
   const [eTime, setETime] = useState(null);
 
-  const [addEvent] = useMutation(CREATE_TEAM_EVENT);
-  const [updateEvent] = useMutation(UPDATE_TEAM_EVENT);
+  const [addEvent] = useMutation(CREATE_TEAM_EVENT, {refetchQueries: [ TEAM_EVENT_INIT, "initTeamEvent" ]} );
+  const [updateEvent] = useMutation(UPDATE_TEAM_EVENT, {refetchQueries: [ TEAM_EVENT_INIT, "initTeamEvent" ]} );
 
   const submitCreateEvent = async () => {
     await addEvent({

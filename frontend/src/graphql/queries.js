@@ -68,25 +68,24 @@ export const USER_EVENT_INIT = gql`
 `;
 
 export const USER_TEAM_EVENT_INIT = gql`
-query initUserTeamEvent ($userID: String) {
-  initUserTeamEvent (userID: $userID)
-  {
-    type
-    teamID
-    eventTitle
-    eventID
-    eventTitle
-    eventDescription
-    eventStart
-    eventEnd
-    eventLocation
-    eventPostTime
-    eventReply {
-      eventReplyID
+  query initUserTeamEvent($userID: String) {
+    initUserTeamEvent(userID: $userID) {
+      type
+      teamID
+      eventTitle
+      eventID
+      eventTitle
+      eventDescription
+      eventStart
+      eventEnd
+      eventLocation
+      eventPostTime
+      eventReply {
+        eventReplyID
+      }
     }
   }
-}
-`
+`;
 
 export const TEAM_EVENT_INIT = gql`
   query initTeamEvent($teamID: String) {
@@ -187,6 +186,23 @@ export const TEAM_SCORE_INIT = gql`
       contestMySet
       contestOppoSet
     }
+  }
+`;
+
+export const TEAM_MEMBER_INIT = gql`
+  query initMember($teamID: String) {
+    initMember(teamID: $teamID) {
+      userID
+      userAccount
+      userName
+      userEmail
+    }
+  }
+`;
+
+export const IS_MANAGING = gql`
+  query isManaging($userID: String, $teamID: String) {
+    isManaging(userID: $userID, teamID: $teamID)
   }
 `;
 

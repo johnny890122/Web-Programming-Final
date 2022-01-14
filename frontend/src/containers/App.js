@@ -80,10 +80,15 @@ function App() {
         />
         <Route
           path="/team/:teamname/Member"
-          element={<TeamMember me={localStorage.getItem(ME_KEY)} />}
+          element={
+            <TeamMember
+              me={localStorage.getItem(ME_KEY)}
+              nowTeam={localStorage.getItem(TEAM_KEY)}
+            />
+          }
         />
         <Route
-          path="/team/:teamname/Calendar"
+          path="/team/:teamname/Event"
           element={
             <TeamEvent
               me={localStorage.getItem(ME_KEY)}
