@@ -150,7 +150,6 @@ const Mutation = {
     },
     { db, pubSub }
   ) => {
-    console.log(eventID);
 
     const event = await db.DashboardEventModel.findOne({ eventID });
 
@@ -363,6 +362,8 @@ const Mutation = {
       postAuthor: Creator._id,
       postTime: timeNow,
     }).save();
+
+    console.log(post)
 
     const newPost = await db.TeamModel.findOneAndUpdate(
       { teamID: teamID },

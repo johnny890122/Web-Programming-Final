@@ -92,10 +92,10 @@ type Mutation {
   ##---------- Team Post (完成) ----------##
 
   createPost(
-    postTitle: String!
-    postContent: String!
-    teamID: String!
-    creatorID: String!
+    postTitle: String
+    postContent: String
+    teamID: String
+    creatorID: String
   ): Post
 
   updatePost(postTitle: String, postContent: String, postID: String): Post
@@ -327,7 +327,7 @@ type Team {
 }
 
 type Post {
-  postID: String!
+  postID: String
   postTitle: String
   postContent: String
   postAuthor: User
