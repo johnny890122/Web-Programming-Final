@@ -54,7 +54,7 @@ const TeamScoreDetail = (props) => {
           },
           {
             setID: "1",
-            playerID: "$$",
+            playerID: "Yoga",
             detailPointServe: 1,
             detailPointAttack: 2,
             detailPointTip: 3,
@@ -88,16 +88,22 @@ const TeamScoreDetail = (props) => {
       }
     ],
   }
-  const members = useQuery(TEAM_PLAYERNAME_INIT, {
+  const queryMembers = useQuery(TEAM_PLAYERNAME_INIT, {
     variables: { teamID: props.nowTeam },
   });
+  const players = [];
+  if (!queryMembers.loading) {
+    queryMembers.data.initMember.map((i) =>
+      players.push({
+        label: i.userName,
+        value: i.userName,
+        userID: i.userID
+      })
+    );
+    console.log(players);
+  };
 
-  const players = [ // TeamMember資料 { label: userName, value: userName}
-    { label: "Yooga", value: "Yooga" },
-    { label: "$$", value: "$$" },
-    { label: "Yoga", value: "Yoga" }
-  ];
-
+  
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const [modalMode, setModalMode] = useState("new");
@@ -105,7 +111,7 @@ const TeamScoreDetail = (props) => {
 
 
   const onCreate = values => {
-    console.log(members.data.initMember);
+    console.log('create');
   };
   const onUpdate = values => {
     console.log('save set');

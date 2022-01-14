@@ -10,7 +10,6 @@ type Query {
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
   isManaging(userID: String, teamID: String): Boolean
-  initContest(teamID: String): [Contest]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
@@ -23,6 +22,9 @@ type Query {
   teamPostDetail(postID: String): Post
   teamVoteDetail(voteID: String): Vote
   #teamVoteOption(voteOptionID: String): VoteOption
+
+  initContest(teamID: String): [Contest]
+  initSetDetail(contestID: String): [SetDetail]
 
   users(query: String): [User]
   teams(query: String): [Team]
