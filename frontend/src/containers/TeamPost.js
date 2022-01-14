@@ -119,7 +119,7 @@ function TeamPost(props) {
         modalMode === "new"
           ? [
               <Button key="ok" onClick={handleOk}>
-                Cancel
+                Close
               </Button>,
             ]
           : modalMode === "edit"
