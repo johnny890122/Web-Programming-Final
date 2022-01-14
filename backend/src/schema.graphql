@@ -128,7 +128,7 @@ type Mutation {
 
   ##---------- Team Contest, Detail ----------##
 
-  createContest( # ok
+  createContest( 
     teamID: String!
     contestDate: String!
     contestOpponent: String
@@ -164,6 +164,58 @@ type Mutation {
     detailErrServe: Int
     detailComboServe: [Int]
   ): DetailPlayer
+
+  updateContest(
+    contestID: String!
+    contestDate: String
+    contestOpponent: String
+    contestIsWin: ContestWinOption!
+    contestTitle: String
+    contestMySet: Int
+    contestOppoSet: Int
+  ): Contest
+  updateSetDetail(
+    setID: String!
+    setNumber: Int
+    setScore: String
+    setMyPoint: Int
+    setOppoPoint: Int
+    setOppoErrServe: Int
+    setOppoErrAttack: Int
+    setOppoErrOther: Int
+    setNote: String
+  ): SetDetail
+  updateDetailPlayer(
+    detailID: String!
+    detailPlayer: String!
+    detailPointServe: Int
+    detailPointAttack: Int
+    detailPointTip: Int
+    detailTimeAttack: Int
+    detailTimePass: Int
+    detailTimeNoPass: Int
+    detailErrPassS: Int
+    detailErrPassA: Int
+    detailErrPass1: Int
+    detailErrSet: Int
+    detailErrOther: Int
+    detailErrAttack: Int
+    detailErrServe: Int
+    detailComboServe: [Int]
+  ): DetailPlayer
+
+  deleteContest(
+    contestID: String!
+    teamID: String!    
+  ): Team
+  deleteSetDetail(
+    setID: String!
+    contestID: String!    
+  ):  Contest
+  deleteDetailPlayer(
+    detailID: String!
+    setID: String!
+  ): SetDetail
 
   ##------------------------------##
 

@@ -839,6 +839,154 @@ const Mutation = {
     console.log("New Set Player Saved!");
     return detailPlayer;
   },
+
+  updateContest: async (parent, args, { db, pubSub }) => {
+    const { contestID, contestDate, contestOpponent, contestIsWin, 
+            contestTitle, contestMySet, contestOppoSet } = args;
+    const Contest = await db.ContestModel.findOne({ contestID: contestID });
+
+    const contestUpdate = await db.ContestModel.findOneAndUpdate(
+      { _id: Contest._id },
+      {
+        $set: {
+          contestDate: contestDate || Contest.contestDate,
+          contestOpponent: contestOpponent || Contest.contestOpponent,
+          contestIsWin: contestIsWin || Contest.contestIsWin,
+          contestTitle: contestTitle || Contest.contestTitle,
+          contestMySet: contestMySet || Contest.contestMySet,
+          contestOppoSet: contestOppoSet || Contest.contestOppoSet,
+        },
+      }
+    );
+    console.log("Contest Updated!");
+    return contestUpdate;
+  },
+  updateSetDetail: async (parent, args, { db, pubSub }) => {
+    const { setID, setNumber, setScore, setMyPoint, setOppoPoint, setOppoErrServe, 
+            setOppoErrAttack, setOppoErrOther, setNote} = args;
+    const SetDetail = await db.SetDetailModel.findOne({ setID: setID });
+
+    const setDetailUpdate = await db.SetDetailModel.findOneAndUpdate(
+    { _id: SetDetail._id },
+    {
+      $set: {
+        setNumber: setNumber || SetDetail.setNumber,
+        setScore: setScore || SetDetail.setScore,
+        setMyPoint: setMyPoint || SetDetail.setMyPoint,
+        setOppoPoint: setOppoPoint || SetDetail.setOppoPoint,
+        setOppoErrServe: setOppoErrServe || SetDetail.setOppoErrServe,
+        setOppoErrAttack: setOppoErrAttack || SetDetail.setOppoErrAttack,
+        setOppoErrOther: setOppoErrOther || SetDetail.setOppoErrOther,
+        setNote: setNote || SetDetail.setNote,
+      },
+    }
+    );
+    console.log("SetDetail Updated!");
+    return setDetailUpdate;
+  },  
+  updateDetailPlayer: async (parent, args, { db, pubSub }) => {
+    const { detailID, detailPlayer, detailPointServe, detailPointAttack, detailPointTip, 
+            detailTimeAttack, detailTimePass, detailTimeNoPass, detailErrPassS, detailErrPassA, 
+            detailErrPass1, detailErrSet, detailErrOther, detailErrAttack, detailErrServe, 
+            detailComboServe } = args;
+    const DetailPlayer = await db.DetailPlayerModel.findOne({ detailID: detailID });
+
+    const detailPlayerUpdate = await db.DetailPlayerModel.findOneAndUpdate(
+      { _id: DetailPlayer._id },
+      {
+        $set: {
+          detailPlayer: detailPlayer || DetailPlayer.detailPlayer,
+          detailPointServe: detailPointServe || DetailPlayer.detailPointServe,
+          detailPointAttack: detailPointAttack || DetailPlayer.detailPointAttack,
+          detailPointTip: detailPointTip || DetailPlayer.detailPointTip,
+          detailTimeAttack: detailTimeAttack || DetailPlayer.detailTimeAttack,
+          detailTimePass: detailTimePass || DetailPlayer.detailTimePass,
+          detailTimeNoPass: detailTimeNoPass || DetailPlayer.detailTimeNoPass,
+          detailErrPassS: detailErrPassS || DetailPlayer.detailErrPassS,
+          detailErrPassA: detailErrPassA || DetailPlayer.detailErrPassA,
+          detailErrPass1: detailErrPass1 || DetailPlayer.detailErrPass1,
+          detailErrSet: detailErrSet || DetailPlayer.detailErrSet,
+          detailErrOther: detailErrOther || DetailPlayer.detailErrOther,
+          detailErrAttack: detailErrAttack || DetailPlayer.detailErrAttack,
+          detailErrServe: detailErrServe || DetailPlayer.detailErrServe,
+          detailComboServe: detailComboServe || DetailPlayer.detailComboServe,
+        },
+      }
+    );
+    console.log("Player Detail Updated!");
+    return detailPlayerUpdate;
+  },
+
+  deleteContest: async (parent, args, { db, pubSub }) => {
+    const { contestID, teamID } = args;
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
+    const Contest = await db.ContestOptionModel.findOne({ contestID: contestID });
+
+    const contestToTeam = await db.TeamModel.findOneAndUpdate(
+      { _id: Team._id },
+      {
+        $pull: { teamContest: Contest._id },
+      }
+    );
+    const contestToSetDetail = await db.SetDetailModel.deleteMany({
+      _id: { $in: Contest.contestSetDetail },
+    });
+    const deleteContest = await db.ContestModel.deleteOne({
+      _id: Contest._id,
+    });
+
+    console.log("Contest Deleted!");
+    return Team;
+  },
+  deleteSetDetail: async (parent, args, { db, pubSub }) => {
+    const { setID, contestID } = args;
+    const Contest = await db.ContestModel.findOne({ contestID: contestID });
+    const SetDetail = await db.SetDetailOptionModel.findOne({
+      setID: setID,
+    });
+
+    const setToContest = await db.ContestModel.findOneAndUpdate(
+      { _id: Contest._id },
+      {
+        $pull: {
+          setPlayerDetail: SetDetail._id,
+        },
+      }
+    );
+    const setToDetailPlayer = await db.DetailPlayerModel.deleteMany({
+      _id: { $in: SetDetail.setPlayerDetai },
+    });
+    const deleteSetDetail = await db.SetDetailModel.deleteOne({
+      _id: SetDetail._id,
+    });
+
+    console.log("Set Detail Deleted!");
+    return Contest;
+  },
+  deleteDetailPlayer: async (parent, args, { db, pubSub }) => {
+    const { detailID, setID } = args;
+    const SetDetail = await db.SetDetailModel.findOne({ setID: setID });
+    const DetailPlayer = await db.DetailPlayerOptionModel.findOne({
+      detailID: detailID,
+    });
+
+    const detailToSet = await db.SetDetailModel.findOneAndUpdate(
+      { _id: SetDetail._id },
+      {
+        $pull: {
+          setPlayerDetail: DetailPlayer._id,
+        },
+      }
+    );
+    const deleteDetailPlayer = await db.DetailPlayerModel.deleteOne({
+      _id: DetailPlayer._id,
+    });
+
+    console.log("Player Detail Deleted!");
+    return SetDetail;
+  },
+
+
 };
 
 export default Mutation;
