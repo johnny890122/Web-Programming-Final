@@ -3,14 +3,15 @@ import { useState } from "react";
 //import Table from "../components/Table";
 import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
-         Paper, Button, Typography } from "@mui/material";
-import { Modal } from "antd";
+         Paper, Typography } from "@mui/material";
+import { Row, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import ContestSetDetail from "../components/ContestSetDetail";
+//import CreateSetForm from "../components/CreateSetForm";
+
 
 const TeamScoreDetail = () => {
 
-  const data = 
-  {
+  const data = {
     contestID: "1",
     contestTitle: "台大盃",
     contestDate: "2022/01/11",
@@ -29,7 +30,7 @@ const TeamScoreDetail = () => {
         setOppoErrServe: 3,
         setOppoErrAttack: 4,
         setOppoErrOther: 7,
-        setNote: "好厲害!",
+        setNote: "耶!\n成功了!",
         setPlayerDetail: [
           {
             setID: "1",
@@ -90,42 +91,217 @@ const TeamScoreDetail = () => {
   const [componentInModal, setComponentInModal] = useState("");
   const [setNow, setSetNow] = useState(null);
 
+  const players = [
+    { label: 'Yoga', value: 'Yoga' },
+    { label: 'Yoga2', value: 'Yoga2' },
+  ];
+  const [form] = Form.useForm();
+  const onFinish = values => {
+    console.log('Received values of form:', values);
+  };
+  const handleChange = () => {
+    form.setFieldsValue({ detail: [] });
+  };
+
   const showModal = (set) => {
     console.log(set.setPlayerDetail);
+    setComponentInModal(ContestSetDetail(set));
     setSetNow(set);
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
+    setComponentInModal("");
     setSetNow(null);
     setIsModalVisible(false);
   }
   
+  const handleCreate = () => {
+    setComponentInModal(CreateSetForm());
+    setIsModalVisible(true);
+  }
+  
+  const CreateSetForm = () => {
+        
+    return (
+      <Form form={form} name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
+        <Row>
+          <Form.Item label="局數"
+                    name='setNumber'
+                    rules={[{ required: true, message: '必填局數' }]}
+                    onChange={handleChange} >
+                <InputNumber min={1}/>
+          </Form.Item>
+          <Form.Item label="我方得分"
+                    name='setMyPoint'
+                    rules={[{ required: true, message: '必填我方得分' }]}
+                    onChange={handleChange} >
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方得分"
+                    name='setOppoPoint'
+                    rules={[{ required: true, message: '必填對方得分' }]}
+                    onChange={handleChange} >
+          <InputNumber min={0}/>
+          </Form.Item>
+        </Row>
+        <Row>
+          <Form.Item label="對方發球失誤"
+                    name='setOppoErrServe'
+                    onChange={handleChange} >
+                <InputNumber min={1}/>
+          </Form.Item>
+          <Form.Item label="對方攻擊失誤"
+                    name='setOppoErrAttack'
+                    onChange={handleChange} >
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方處理失誤"
+                    name='setOppoErrOther'
+                    onChange={handleChange} >
+                <InputNumber min={0}/>
+          </Form.Item>
+        </Row>
+        <Form.List name="setPlayerDetails" // 球員紀錄
+                   initialValue={[{ 
+                    detailPointServe: 0, 
+                    detailPointServe: 0,
+                    detailPointAttack: 0}]}>
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ field, index, key, name, ...restField }) => ( 
+                <Space key={key} align="baseline">
+                  <Form.Item label="球員"
+                    {...restField}
+                    name={[name, 'player']}
+                    //rules={[{ required: true, message: 'Missing player' }]}
+                    >
+                    <Select options={players}/>
+                  </Form.Item>
+                  <Form.Item label="發球得分" 
+                    {...restField}
+                    name={[name, 'detailPointServe']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="攻擊得分"
+                    {...restField}
+                    name={[name, 'detailPointAttack']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="吊球得分"
+                    {...restField}                    
+                    name={[name, 'detailPointTip']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="攻擊次數"
+                    {...restField}                    
+                    name={[name, 'detailTimeAttack']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="傳球到位次數"
+                    {...restField}
+                    name={[name, 'detailTimePass']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="傳球不到位次數"
+                    {...restField}
+                    name={[name, 'detailTimeNoPass']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="接發失誤"
+                    {...restField}
+                    name={[name, 'detailErrPassS']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="接扣失誤"
+                    {...restField}
+                    name={[name, 'detailErrPassA']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="一傳失誤"
+                    {...restField}
+                    name={[name, 'detailErrPass1']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="二傳失誤"
+                    {...restField}
+                    name={[name, 'detailErrSet']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="處理失誤"
+                    {...restField}
+                    name={[name, 'detailErrOther']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="攻擊失誤"
+                    {...restField}
+                    name={[name, 'detailErrAttack']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+                  <Form.Item label="發球失誤"
+                    {...restField}
+                    name={[name, 'detailErrServe']}>
+                    <InputNumber min={0}/>
+                  </Form.Item>
+
+                  <Button onClick={() => remove(name)} >-</Button>
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block style={{ width: '40%', marginTop: '20px' }}>
+                  Add Player
+                </Button>
+              </Form.Item>
+
+
+            </>
+          )}
+        </Form.List>
+        <Form.Item label="備註"
+                   name='setNote'
+                   onChange={handleChange} >
+              <Input.TextArea rows={3} />
+        </Form.Item>
+        <Form.Item label="得分紀錄"
+                   name='setScore'
+                   onChange={handleChange} >
+              <Input placeholder="ex : oxoox ( 我方得分 : o ，對方得分 : x )"/>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      
+    )    
+  };
+
+  const SetModal = (set) => {
+
+    return (
+      <Modal
+        title={set? `第${set.setNumber}局紀錄` : '新紀錄單'}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="close" onClick={handleCancel}>
+            Close
+          </Button>,
+        ]}
+        width={1400}>
+          {componentInModal}
+      </Modal>
+    )
+  }
   
 
   const SetTable = ({ data }) => {
 
-    const SetModal = (set) => {
-
-      return (
-        <Modal
-          title={set? `第${set.setNumber}局紀錄` : 'Create'}
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          footer={[
-            <Button key="close" onClick={handleCancel}>
-              Close
-            </Button>,
-          ]}
-          width={1400}>
-            {set? ContestSetDetail(set) :'null'}
-        </Modal>
-      )
-    }
-
     return (
       <>
         {SetModal(setNow)}
+        <Button onClick={handleCreate}>Create</Button>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
