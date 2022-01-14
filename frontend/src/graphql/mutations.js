@@ -132,12 +132,14 @@ export const CREATE_TEAM = gql`
     $teamDescription: String!
     $teamType: String!
     $creatorID: String!
+    $memberAccount: [String]
   ) {
     createTeam(
       teamName: $teamName
       teamDescription: $teamDescription
       teamType: $teamType
       creatorID: $creatorID
+      memberAccount: $memberAccount
     ) {
       teamID
     }

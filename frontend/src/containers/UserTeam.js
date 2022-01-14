@@ -22,16 +22,17 @@ function UserTeam(props) {
 
   const AllTeamData = [];
   if (!loading) {
-    data.initTeam.map((i) =>
-      AllTeamData.push({
-        id: i.teamID,
-        name: i.teamName,
-        description: i.teamDescription,
-        type: i.teamType,
-      })
-    );
+    if (data) {
+      data.initTeam.map((i) =>
+        AllTeamData.push({
+          id: i.teamID,
+          name: i.teamName,
+          description: i.teamDescription,
+          type: i.teamType,
+        })
+      );
+    }
   }
-
   const TEAM_KEY = "nowTeam";
 
   const teamlist = (

@@ -188,7 +188,8 @@ const Mutation = {
   //---------- Team, Member, Manager ----------//
 
   createTeam: async (parent, args, { db, pubSub }) => {
-    const { teamName, teamDescription, teamType, creatorID } = args;
+    const { teamName, teamDescription, teamType, creatorID, memberAccount } =
+      args;
     const TeamExists = await db.TeamModel.findOne({ teamName: teamName });
     const Creator = await db.UserModel.findOne({ userID: creatorID });
 
@@ -196,8 +197,18 @@ const Mutation = {
       throw new Error("This team name has existed!");
     }
 
-    const timeNow = new Date();
     const teamMember = [Creator._id];
+    const manager = [Creator._id];
+    if (memberAccount) {
+      for (let i = 0; i < memberAccount.length; i++) {
+        let Member = await db.UserModel.findOne({
+          userAccount: memberAccount[i],
+        });
+        teamMember.push(Member._id);
+      }
+    }
+
+    const timeNow = new Date();
     const OBID = ObjectId();
     const team = await new db.TeamModel({
       _id: OBID,
@@ -212,7 +223,7 @@ const Mutation = {
       teamContest: [],
       teamVote: [],
       teamEvent: [],
-      teamManager: teamMember,
+      teamManager: manager,
     }).save();
     const newAllTeams = await db.UserModel.findOneAndUpdate(
       { _id: Creator._id },

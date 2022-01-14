@@ -42,6 +42,7 @@ type Mutation {
     teamDescription: String!
     teamType: String!
     creatorID: String!
+    memberAccount: [String]
   ): Team
 
   addMember(teamID: String, memberAccount: String): User
