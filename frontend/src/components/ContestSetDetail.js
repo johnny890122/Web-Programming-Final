@@ -46,21 +46,21 @@ const ContestSetDetail = (set) => {
               {set.setPlayerDetail.map((player) => (
                 <TableRow key={(player.playerID)} 
                           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell align="center" key = 'player'>{player.playerID}</TableCell>
-                  <TableCell align="center" key = 'pointServe'>{player.detailPointServe}</TableCell>
-                  <TableCell align="center" key = 'pointAttack'>{player.detailPointAttack}</TableCell>
-                  <TableCell align="center" key = 'pointTip'>{player.detailPointTip}</TableCell>
-                  <TableCell align="center" key = 'timeAttack'>{player.detailTimeAttack}</TableCell>
-                  <TableCell align="center" key = 'timePass'>{player.detailTimePass}</TableCell>
-                  <TableCell align="center" key = 'timeNoPass'>{player.detailTimeNoPass}</TableCell>
-                  <TableCell align="center" key = 'errPassS'>{player.detailErrPassS}</TableCell>
-                  <TableCell align="center" key = 'errPassA'>{player.detailErrPassA}</TableCell>
-                  <TableCell align="center" key = 'errPass1'>{player.detailErrPass1}</TableCell>
-                  <TableCell align="center" key = 'errSet'>{player.detailErrSet}</TableCell>
-                  <TableCell align="center" key = 'errOther'>{player.detailErrOther}</TableCell>
-                  <TableCell align="center" key = 'errAttack'>{player.detailErrAttack}</TableCell>
-                  <TableCell align="center" key = 'errServe'>{player.detailErrServe}</TableCell>
-                  <TableCell align="center" key = 'comboServe'>{player.detailComboServe.map(combo => `${combo} `)}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}player`}>{player.playerID}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}pointServe`}>{player.detailPointServe}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}pointAttack`}>{player.detailPointAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}pointTip`}>{player.detailPointTip}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}timeAttack`}>{player.detailTimeAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}timePass`}>{player.detailTimePass}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}timeNoPass`}>{player.detailTimeNoPass}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errPassS`}>{player.detailErrPassS}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errPassA`}>{player.detailErrPassA}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errPass1`}>{player.detailErrPass1}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errSet`}>{player.detailErrSet}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errOther`}>{player.detailErrOther}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errAttack`}>{player.detailErrAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}errServe`}>{player.detailErrServe}</TableCell>
+                  <TableCell align="center" key = {`${player.playerID}comboServe`}>{player.detailComboServe}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -70,20 +70,20 @@ const ContestSetDetail = (set) => {
           <Table sx={{ maxWidth: 1400 }} aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#f2f2f2" }}>
               <TableRow>
-                <TableCell align="center" style={{width: '10%'}}>對方失誤</TableCell>             
-                <TableCell align="center">發球</TableCell>
-                <TableCell align="center">處理</TableCell>
-                <TableCell align="center">攻擊</TableCell>
-                <TableCell align="center" style={{width: '60%'}}>備註</TableCell>
+                <TableCell align="center" key = "OppoErr" style={{width: '10%'}}>對方失誤</TableCell>             
+                <TableCell align="center" key = "OppoErrServe">發球</TableCell>
+                <TableCell align="center" key = "OppoErrOther">處理</TableCell>
+                <TableCell align="center" key = "OppoErrAttack">攻擊</TableCell>
+                <TableCell align="center" key = "Note" style={{width: '60%'}}>備註</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
-                <TableCell align="center" style={{width: '10%'}}></TableCell>
-                <TableCell align="center">{set.setOppoErrServe}</TableCell>
-                <TableCell align="center">{set.setOppoErrOther}</TableCell>
-                <TableCell align="center">{set.setOppoErrAttack}</TableCell>
-                <TableCell align="center" style={{width: '60%'}}>{set.setNote}</TableCell>
+                <TableCell align="center" key = "blank" style={{width: '10%'}}></TableCell>
+                <TableCell align="center" key = "setOppoErrServe">{set.setOppoErrServe}</TableCell>
+                <TableCell align="center" key = "setOppoErrOther">{set.setOppoErrOther}</TableCell>
+                <TableCell align="center" key = "setOppoErrAttack">{set.setOppoErrAttack}</TableCell>
+                <TableCell align="center" key = "setNote" style={{width: '60%'}}>{set.setNote}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -97,13 +97,13 @@ const ContestSetDetail = (set) => {
             </TableHead>
             <TableBody>
               <TableRow>
-                {myscore.map(score => (
-                    <TableCell align="center">{score}</TableCell>
+                {myscore.map((score) => (
+                    <TableCell key = {"myscore"} align="center">{score}</TableCell>
                 ))}
               </TableRow>
               <TableRow>
                 {opposcore.map(score => (
-                    <TableCell align="center">{score}</TableCell>
+                    <TableCell key = {"opposcore"} align="center">{score}</TableCell>
                 ))}
               </TableRow>
             </TableBody>

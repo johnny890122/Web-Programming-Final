@@ -1,18 +1,19 @@
 import React from "react";
 import { useState } from "react";
-//import Table from "../components/Table";
+import { useQuery } from "@apollo/client";
 import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
          Paper, Typography } from "@mui/material";
 import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import ContestSetDetail from "../components/ContestSetDetail";
-import { MinusCircleOutlined } from '@ant-design/icons';
 import CreateSetForm from "../components/CreateSetForm";
+import UpdateSetForm from "../components/UpdateSetForm";
+import { TEAM_PLAYERNAME_INIT } from "../graphql";
 
 
-const TeamScoreDetail = () => {
+const TeamScoreDetail = (props) => {
 
-  const data = {
+  const data = { // TeamContest資料
     contestID: "1",
     contestTitle: "台大盃",
     contestDate: "2022/01/11",
@@ -49,7 +50,7 @@ const TeamScoreDetail = () => {
             detailErrOther: 1,
             detailErrAttack: 2,
             detailErrServe: 1,
-            detailComboServe: [3, 4, 5]
+            detailComboServe: "3 4 5"
           },
           {
             setID: "1",
@@ -59,7 +60,7 @@ const TeamScoreDetail = () => {
             detailPointTip: 3,
             detailTimeAttack: 4,
             detailTimePass: 4,
-            detailTimeNoPass: 4,
+            detailTimeNoPass: 888,
             detailErrPassS: 2,
             detailErrPassA: 2,
             detailErrPass1: 2,
@@ -67,7 +68,7 @@ const TeamScoreDetail = () => {
             detailErrOther: 1,
             detailErrAttack: 2,
             detailErrServe: 1,
-            detailComboServe: [3, 4]
+            detailComboServe: "3 4"
           }
         ]
       },
@@ -87,62 +88,96 @@ const TeamScoreDetail = () => {
       }
     ],
   }
+  const members = useQuery(TEAM_PLAYERNAME_INIT, {
+    variables: { teamID: props.nowTeam },
+  });
+
+  const players = [ // TeamMember資料 { label: userName, value: userName}
+    { label: "Yooga", value: "Yooga" },
+    { label: "$$", value: "$$" },
+    { label: "Yoga", value: "Yoga" }
+  ];
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
-  const [setNow, setSetNow] = useState(null);
+  const [modalMode, setModalMode] = useState("new");
+  const [setNow, setSetNow] = useState({});
 
-  const players = [
-    { label: 'Yoga', value: 'Yoga' },
-    { label: 'Yoga2', value: 'Yoga2' },
-  ];
-  const [form] = Form.useForm();
-  const onFinish = values => {
-    console.log('Received values of form:', values);
-  };
-  const handleChange = () => {
-    form.setFieldsValue({ detail: [] });
-  };
 
+  const onCreate = values => {
+    console.log(members.data.initMember);
+  };
+  const onUpdate = values => {
+    console.log('save set');
+    if (values.setPlayerDetail.length > 0) {
+      console.log('save playerDetail')
+    };
+  };
   const showModal = (set) => {
-    console.log(set.setPlayerDetail);
     setComponentInModal(ContestSetDetail(set));
     setSetNow(set);
-    setIsModalVisible(true);
+    setModalMode("detail");
+    setIsModalVisible(true);    
   };
 
   const handleCancel = () => {
     setComponentInModal("");
-    setSetNow(null);
+    setSetNow({});
     setIsModalVisible(false);
-  }
-  
+  }  
   const handleCreate = () => {
-    setComponentInModal(CreateSetForm(players, form, handleChange, onFinish));
+    setComponentInModal(CreateSetForm(onCreate, players));
+    setModalMode("new");
     setIsModalVisible(true);
   }
-  
-  
+  const handleEdit = () => {
+    setModalMode("edit");
+    setComponentInModal(UpdateSetForm(setNow, onUpdate, players));
+  }   
+  const handleBack = () => {
+    setModalMode("detail");
+    setComponentInModal(ContestSetDetail(setNow));
+  } 
+
+  const detailFooter = ([
+    <Button key="edit" onClick={handleEdit}>
+      Edit
+    </Button>,
+    <Button key="close" onClick={handleCancel}>
+      Close
+    </Button>
+  ]); 
+  const editFooter = ([
+    <Button key="back" onClick={handleBack}>
+      Back
+    </Button>,
+    <Button key="close" onClick={handleCancel}>
+      Cancel
+    </Button>
+  ]);  
+  const createFooter = ([
+    <Button key="close" onClick={handleCancel}>
+      Cancel
+    </Button>
+  ]); 
+
 
   const SetModal = (set) => {
 
     return (
       <Modal
-        title={set? `第${set.setNumber}局紀錄` : '新紀錄單'}
+        title={set.setNumber ? `第${set.setNumber}局紀錄` : '新紀錄單'}
         visible={isModalVisible}
         onCancel={handleCancel}
-        footer={[
-          <Button key="close" onClick={handleCancel}>
-            Close
-          </Button>,
-        ]}
+        footer={(modalMode == 'detail' ? detailFooter: (
+                 modalMode == 'edit' ? editFooter :
+                 createFooter))}
         width={1400}>
           {componentInModal}
       </Modal>
     )
   }
   
-
   const SetTable = ({ data }) => {
 
     return (

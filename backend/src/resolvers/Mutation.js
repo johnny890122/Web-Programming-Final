@@ -867,7 +867,7 @@ const Mutation = {
       detailErrOther: detailErrOther || 0,
       detailErrAttack: detailErrAttack || 0,
       detailErrServe: detailErrServe || 0,
-      detailComboServe: detailComboServe || [],
+      detailComboServe: detailComboServe || String,
     }).save();
 
     const playerToSet = await db.SetDetailModel.findOneAndUpdate(
@@ -1061,27 +1061,3 @@ const Mutation = {
 };
 
 export default Mutation;
-
-/*
-createGallery: async (parent, { teamID, galleryTitle }, { db, pubSub }) => {
-    const galleryID = uuidv4();
-    const newGallery = new db.GalleryModel({
-      teamID,
-      galleryID,
-      galleryTitle,
-    });
-    await newGallery.save();
-    return newGallery;
-  },
-
-  createGantt: async (parent, { teamID, ganttTitle }, { db, pubSub }) => {
-    const ganttID = uuidv4();
-    const newGantt = new db.GanttModel({
-      teamID,
-      ganttID,
-      ganttTitle,
-    });
-    await newGantt.save();
-    return newGantt;
-  },
-*/

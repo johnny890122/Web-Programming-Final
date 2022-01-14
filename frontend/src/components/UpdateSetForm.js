@@ -1,10 +1,14 @@
 import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
 
-const CreateSetForm = (onCreate, players) => {
-        
+const UpdateSetForm = (set, onUpdate, players) => {
+  const playerDetails = set.setPlayerDetail;
+  console.log(playerDetails)
   return (
-    <Form name="dynamic_form_nest_item" onFinish={onCreate} autoComplete="off">
+    <Form name="dynamic_form_nest_item"
+          initialValues={set} 
+          onFinish={onUpdate} 
+          autoComplete="off">
       <Row>
         <Form.Item label="局數"
                   name='setNumber'
@@ -13,7 +17,7 @@ const CreateSetForm = (onCreate, players) => {
         </Form.Item>
         <Form.Item label="我方得分"
                   name='setMyPoint'
-                  rules={[{ required: true, message: '必填我方得分' }]}>
+                  rules={[{ required: true, message: '必填我方得分' }]} >
               <InputNumber min={0}/>
         </Form.Item>
         <Form.Item label="對方得分"
@@ -25,31 +29,31 @@ const CreateSetForm = (onCreate, players) => {
       <Row>
         <Form.Item label="對方發球失誤"
                   name='setOppoErrServe'>
-              <InputNumber min={0}/>
+              <InputNumber min={1}/>
         </Form.Item>
         <Form.Item label="對方攻擊失誤"
                   name='setOppoErrAttack'>
               <InputNumber min={0}/>
         </Form.Item>
         <Form.Item label="對方處理失誤"
-                  name='setOppoErrOther'>
+                  name='setOppoErrOther' >
               <InputNumber min={0}/>
         </Form.Item>
       </Row>
       <Form.List name="setPlayerDetail"// 球員紀錄
-      > 
+       >
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ field, index, key, name, ...restField }) => ( 
-              <Space key={key} align="baseline">
+              <Space key={index} align="baseline">
                 <Row key={index*10+1}
-                     style={{ width: 300 }}>
+                     style={{ width: 200 }}>
                   <Form.Item label="球員"
                     {...restField}
                     name={[name, 'playerID']}
-                    style={{ width: 200 }}
+                    style={{ width: 300 }}
                     rules={[{ required: true, message: '必填球員' }]}>
-                    <Select options={players}/>
+                    <Select options={players}/>     
                   </Form.Item>
                 </Row>
                 <Row key={index*10+2}
@@ -123,10 +127,9 @@ const CreateSetForm = (onCreate, players) => {
                     <InputNumber min={0}/>
                   </Form.Item>
                   <Form.Item label="連續發球"
-                            name='detailComboServe'
-                             
+                            name={[name, 'detailComboServe']}
                             style={{ width: 450 }}>
-                        <Input placeholder="ex : 2 4 1 ( 每次間隔一空格 )"/>
+                        <Input />
                   </Form.Item>
                 </Row>
 
@@ -142,13 +145,11 @@ const CreateSetForm = (onCreate, players) => {
         )}
       </Form.List>
       <Form.Item label="備註"
-                 name='setNote'
-                  >
+                 name='setNote'>
             <Input.TextArea rows={3} />
       </Form.Item>
       <Form.Item label="得分紀錄"
-                 name='setScore'
-                  >
+                 name='setScore'>
             <Input placeholder="ex : oxoox ( 我方得分 : o ，對方得分 : x )"/>
       </Form.Item>
       <Form.Item>
@@ -158,7 +159,7 @@ const CreateSetForm = (onCreate, players) => {
       </Form.Item>
     </Form>
     
-  )    
-};
+  )  
+  };
 
-export default CreateSetForm;
+export default UpdateSetForm;
