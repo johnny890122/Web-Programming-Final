@@ -225,10 +225,13 @@ const Mutation = {
       teamEvent: [],
       teamManager: manager,
     }).save();
-    const newAllTeams = await db.UserModel.findOneAndUpdate(
-      { _id: Creator._id },
-      { $push: { allTeams: team._id } }
-    );
+
+    for (let i = 0; i < teamMember.length; i++) {
+      const newAllTeams = await db.UserModel.findOneAndUpdate(
+        { _id: teamMember[i] },
+        { $push: { allTeams: team._id } }
+      );
+    }
 
     const newManageTeams = await db.UserModel.findOneAndUpdate(
       { _id: Creator._id },

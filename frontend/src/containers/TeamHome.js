@@ -291,7 +291,7 @@ function TeamHome(props) {
           </Button>
         </Box>
       </Card>
-      <Card
+      {/* <Card
         className="teamHp-gallery"
         sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
@@ -300,7 +300,6 @@ function TeamHome(props) {
             <PhotoLibraryIcon sx={{ mx: 1, my: 0 }} /> Gallery
           </Typography>
         </Box>
-        {/* gallery */}
         <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
           <Button
             variant="outlined"
@@ -315,8 +314,8 @@ function TeamHome(props) {
             View All
           </Button>
         </Box>
-      </Card>
-      <Card
+      </Card> */}
+      {/* <Card
         className="teamHp-gantt"
         sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
       >
@@ -325,7 +324,6 @@ function TeamHome(props) {
             <StackedLineChartIcon sx={{ mx: 1, my: 0 }} /> Gantt
           </Typography>
         </Box>
-        {/* gantt */}
         <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
           <Button
             variant="outlined"
@@ -340,7 +338,7 @@ function TeamHome(props) {
             View All
           </Button>
         </Box>
-      </Card>
+      </Card> */}
     </div>
   );
 
