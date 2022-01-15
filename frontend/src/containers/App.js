@@ -25,11 +25,12 @@ import About from "./About";
 function App() {
   const ME_KEY = "me";
   const TEAM_KEY = "nowTeam";
-  const CONTEST_KEY = "nowContest"
+  const CONTEST_KEY = "nowContest";
 
   return (
     <>
       <Routes>
+        <Route path="/reload" element={null} key="reload" />
         {/* login and signup */}
         <Route path="/" element={<LogIn />} />
         <Route path="/SignUp" element={<SignUp />} />

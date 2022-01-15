@@ -32,6 +32,8 @@ const LogIn = () => {
   const [errorMessageBody, setErrorMessageBody] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  localStorage.setItem(ME_KEY, "");
+
   const userLogin = useQuery(USER_LOGIN, {
     variables: { userAccount: account, userPassword: password },
   });
@@ -40,12 +42,10 @@ const LogIn = () => {
     if (userLogin.error === "Error: Account not existed!") {
       localStorage.setItem(ME_KEY, "");
     } else if (dataCorrect) {
-    }
-    {
       setLogin(true);
       localStorage.setItem(ME_KEY, me);
+      setErrorVisibility("block");
     }
-    setErrorVisibility("block");
   };
 
   const handleClickShowPassword = () => {
@@ -89,12 +89,10 @@ const LogIn = () => {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-          <MenuIcon />
+            <MenuIcon />
           </IconButton>
 
-          <Typography 
-          variant="h6" component="div" sx={{ flexGrow: 1 }}
-          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             LogIn
           </Typography>
         </Toolbar>
@@ -123,7 +121,6 @@ const LogIn = () => {
             color="primary"
             focused
             style={{ margin: "0.75rem", width: "20%" }}
-
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
