@@ -224,6 +224,7 @@ type Mutation {
     type: String
     content: String
   ): String
+  
   updateUserAchievement(userID: String, title: String, content: String): String
 
   createUserEvent(

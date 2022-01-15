@@ -12,18 +12,19 @@ import { TextField, InputLabel } from "@mui/material";
 import { NavLink, Link } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "../graphql";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
-import { useQuery } from "@apollo/client";
-import { USER_LOGIN } from "../graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import { USER_LOGIN, USER_ACHEIEVEMENT_UPDATE } from "../graphql";
 import bcryptjs from "bcryptjs";
 
 const SignUp = () => {
   
+  const [addAchievement] = useMutation(USER_ACHEIEVEMENT_UPDATE);
+
   // 後端的訊息
   const [alert, setAlert] = useState(null);
 
@@ -73,6 +74,7 @@ const SignUp = () => {
           userPassword: bcrypt.hashSync(password, salt),
           userEmail: email,
         },
+
       });
     } else {
       setAlertVisibility("inline-block");
@@ -212,6 +214,8 @@ const SignUp = () => {
       setAlertVisibility("block");
     },
   });
+
+  
 
   return (
     <Box sx={{ display: "flex" }}>

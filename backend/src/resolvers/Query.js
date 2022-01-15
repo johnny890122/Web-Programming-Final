@@ -16,12 +16,9 @@ const Query = {
     const user = await db.UserModel.findOne({ userAccount });
     const bcrypt = require('bcryptjs');
 
-    // console.log(userPassword)
-
     if (!user) {
       throw new Error("Account not existed!");
-      // 
-    } else if (bcrypt.compareSync(userPassword, user.userPassword)) {
+    } else if ( !bcrypt.compareSync(userPassword, user.userPassword)) {
       throw new Error("Password not correct!");
     }
 

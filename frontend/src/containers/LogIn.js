@@ -44,13 +44,16 @@ const LogIn = () => {
   });
 
   const submitLogin = () => {
-    if (userLogin.error === "Error: Account not existed!") {
+    if (userLogin.error) {
       localStorage.setItem(ME_KEY, "");
-    } else if (dataCorrect) {
-      setLogin(true);
-      localStorage.setItem(ME_KEY, me);
       setErrorVisibility("block");
-    }
+      return
+    } 
+
+    console.log(userLogin.error);
+    setLogin(true);
+    localStorage.setItem(ME_KEY, me);
+    
   };
 
   const handleClickShowPassword = () => {
@@ -82,6 +85,7 @@ const LogIn = () => {
         </Alert>
       ))
     : [];
+
 
   return (
     <Box sx={{ display: "flex" }}>

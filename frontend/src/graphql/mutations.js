@@ -72,6 +72,20 @@ export const UPDATE_USER_EVENT = gql`
   }
 `;
 
+export const USER_ACHEIEVEMENT_UPDATE = gql`
+  mutation updateUserAchievement(
+    $userID: String
+    $title: String
+    $content: String
+  ) {
+    updateUserAchievement(
+      userID: $userID
+      title: $title
+      content: $content
+    )
+  }
+`;
+
 export const UPDATE_TEAM_EVENT = gql`
   mutation updateTeamEvent(
     $eventTitle: String
