@@ -423,7 +423,7 @@ export default function Template({ content }) {
         <List>
           {isTeam
             ? teamPages.map((text, index) => (
-                <a href={"/user/" + breadItem[1] + "/" + text}>
+                <a href={"/team/" + breadItem[1] + "/" + text}>
                   <ListItem button key={text}>
                     <ListItemIcon>{teamIconList[index]}</ListItemIcon>
                     <ListItemText primary={text} sx={{ color: "black" }} />
