@@ -9,7 +9,8 @@ import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
 import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
-         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER } from "../graphql";
+         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER,
+         UPDATE_SET_DETAIL } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -51,8 +52,10 @@ const TeamScoreDetail = (props) => {
   const [setNow, setSetNow] = useState({});
   const [addSet] = useMutation(CREATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
   const [addPlayer] = useMutation(CREATE_DETAIL_PLAYER, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
-
+  const [updateSet] = useMutation(UPDATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
+  
   const onCreate = async(values) => {
+    setIsModalVisible(false);
     const newSet = await addSet(
       {variables: {
         contestID: props.nowContest,
@@ -65,7 +68,7 @@ const TeamScoreDetail = (props) => {
         setOppoErrOther: values.setOppoErrOther || 0,
         setNote: values.setNote || "",
       }});
-    console.log(values.setPlayerDetail)
+    //console.log(values.setPlayerDetail)
     const newSetID =  newSet.data.createSetDetail.setID
     if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
       addPlayer(
@@ -90,11 +93,20 @@ const TeamScoreDetail = (props) => {
       )}
     )}
   };
-  const onUpdate = values => {
-    console.log('save set');
-    if (values.setPlayerDetail.length > 0) {
-      console.log('save playerDetail')
-    };
+  const onUpdate = async(values) => {
+    setIsModalVisible(false);
+    const newSet = await updateSet(
+      {variables:{
+        setID: setNow.setID,
+        setNumber: values.setNumber,
+        setScore: values.setScore,
+        setMyPoint: values.setMyPoint,
+        setOppoPoint: values.setOppoPoint || 0,
+        setOppoErrServe: values.setOppoErrServe || 0,
+        setOppoErrAttack: values.setOppoErrAttack || 0,
+        setOppoErrOther: values.setOppoErrOther || 0,
+        setNote: values.setNote || "",
+      }});
   };
   const showModal = (set) => {
     setComponentInModal(ContestSetDetail(set));
