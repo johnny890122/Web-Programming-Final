@@ -189,19 +189,23 @@ export const DELETE_TEAM_POST = gql`
 `;
 
 export const CREATE_TEAM_SCORE = gql`
-  mutation createScore(
+  mutation createContest(
     $teamID: String
-    $contestData: Int
-    $contestIsWin: Boolean
-    $contestTitle: String
+    $contestDate: String
     $contestOpponent: String
+    $contestIsWin: String
+    $contestTitle: String
+    $contestMySet: Int
+    $contestOppoSet: Int
   ) {
-    createScore(
+    createContest (
       teamID: $teamID
       contestDate: $contestDate
       contestIsWin: $contestIsWin
       contestTitle: $contestTitle
       contestOpponent: $contestOpponent
+      contestMySet: $contestMySet
+      contestOppoSet: $contestOppoSet
     ) {
       contestID
     }
@@ -232,6 +236,47 @@ export const CREATE_SET_DETAIL = gql`
       setNote: $setNote
     ) {
       setID
+    }
+  }
+`;
+export const CREATE_DETAIL_PLAYER = gql`
+  mutation createDetailPlayer(
+    $setID: String
+    $playerID: String
+    $detailPointServe: Int
+    $detailPointAttack: Int
+    $detailPointTip: Int
+    $detailTimeAttack: Int
+    $detailTimePass: Int
+    $detailTimeNoPass: Int
+    $detailErrPassS: Int
+    $detailErrPassA: Int
+    $detailErrPass1: Int
+    $detailErrSet: Int
+    $detailErrOther: Int
+    $detailErrAttack: Int
+    $detailErrServe: Int
+    $detailComboServe: String
+  ) {
+    createDetailPlayer(
+      setID: $setID
+      playerID: $playerID
+      detailPointServe: $detailPointServe
+      detailPointAttack: $detailPointAttack
+      detailPointTip: $detailPointTip
+      detailTimeAttack: $detailTimeAttack
+      detailTimePass: $detailTimePass
+      detailTimeNoPass: $detailTimeNoPass
+      detailErrPassS: $detailErrPassS
+      detailErrPassA: $detailErrPassA
+      detailErrPass1: $detailErrPass1
+      detailErrSet: $detailErrSet
+      detailErrOther: $detailErrOther
+      detailErrAttack: $detailErrAttack
+      detailErrServe: $detailErrServe
+      detailComboServe: $detailComboServe
+    ) {
+      detailID
     }
   }
 `;

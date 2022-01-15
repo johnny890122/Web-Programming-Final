@@ -61,9 +61,6 @@ const UserDashboard = (props) => {
         data = data.concat(teamEvent.data.initUserTeamEvent);
       }
     }
-    if (!events || data.length != events.length) {
-      setEvents(data);
-    }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -94,8 +91,9 @@ const UserDashboard = (props) => {
     } else {
       setEvents(data);
     }
-    /* 篩選並排序符合條件的活動 */
   };
+
+  
 
   const showModalWithNotification = () => {
     setIsModalVisible(true);
@@ -146,17 +144,11 @@ const UserDashboard = (props) => {
               {event.eventLocation}
             </Typography>
 
-            {new Date(event.eventStart) <= today ? (
-              <Chip label="Finished" sx={{ my: 1 }} />
-            ) : event.type === "team" ? (
-              event.reply ? (
-                <Chip label="Replied" color="success" sx={{ my: 1 }} />
-              ) : (
-                <Chip label="Unreplied" color="error" sx={{ my: 1 }} />
-              )
-            ) : (
-              <></>
-            )}
+            {
+              new Date(event.eventStart) <= today 
+              ? <Chip label="Finished" color="success" sx={{ my: 1 }} /> 
+              : <Chip label="Ongoing" color="error" sx={{ my: 1 }} />
+            }
 
             <Box sx={{ textAlign: "right" }}>
               <Button
