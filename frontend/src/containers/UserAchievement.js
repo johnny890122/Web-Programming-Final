@@ -27,9 +27,9 @@ const UserAchievement = (props) => {
       data.initUserAchievement.map( i=> achieveContent.push(i.userAchievementContent))
   }
 
-  let cardContent = [null, null];
+  let cardContent = [];
   for (let i = 0; i < achieveTitle.length; i++) {
-    cardContent[i] = (
+    cardContent.push(
       <div className="card-content">
         <MilitaryTech sx={{ fontSize: "5rem" }} />
         <Typography variant="h4">{achieveTitle[i]}</Typography>

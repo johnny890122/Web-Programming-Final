@@ -96,6 +96,28 @@ const Mutation = {
     return itemId;
   },
 
+  updateUserAchievement: async (parent, { userID, title, content }, { db, pubSub }) => {
+    const user = await db.UserModel.findOne({ userID: userID });
+    if (!user) {
+      throw new Error("User not found!");
+    }
+    const achievementId = uuidv4();
+
+    const achievement = await new db.AchievementModel({
+      userID: userID,
+      userAchievementID: achievementId,
+      userAchievementTitle: title,
+      userAchievementContent: content,
+    }).save();
+
+    const newAchievement = await db.UserModel.findOneAndUpdate(
+      { userID },
+      { $push: { userAchievement: achievement } }
+    );
+
+    return achievementId;
+  },
+
   createUserEvent: async (
     parent,
     {

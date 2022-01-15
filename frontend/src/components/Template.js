@@ -47,7 +47,7 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_ACCOUNT, UPDATE_USER } from "../graphql";
+import { USER_ACCOUNT, UPDATE_USER, USER_ACHEIEVEMENT_UPDATE } from "../graphql";
 import moment from "moment";
 
 const drawerWidth = 210;
@@ -130,6 +130,7 @@ export default function Template({ content }) {
     variables: { userID: localStorage.getItem(ME_KEY) },
   });
   const [updateUser] = useMutation(UPDATE_USER);
+  const [addAchievement] = useMutation(USER_ACHEIEVEMENT_UPDATE);
 
   const [name, setName] = React.useState(
     !userAccount.loading ? userAccount.data.myUserAccount.userName : ""
@@ -167,6 +168,15 @@ export default function Template({ content }) {
         userBirthday: birthday,
       },
     });
+
+    await addAchievement({
+      variables: {
+        userID: localStorage.getItem(ME_KEY),
+        title: "Newbie Medal",
+        content: "Welcome!",
+      },
+    })
+
     setIsModalVisible(false);
   };
 
