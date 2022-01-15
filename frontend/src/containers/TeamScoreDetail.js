@@ -9,8 +9,7 @@ import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
 import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
-         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER,
-         UPDATE_SET_DETAIL } from "../graphql";
+         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER, UPDATE_SET_DETAIL } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -95,7 +94,7 @@ const TeamScoreDetail = (props) => {
   };
   const onUpdate = async(values) => {
     setIsModalVisible(false);
-    const newSet = await updateSet(
+    const editedSet = await updateSet(
       {variables:{
         setID: setNow.setID,
         setNumber: values.setNumber,
@@ -106,7 +105,19 @@ const TeamScoreDetail = (props) => {
         setOppoErrAttack: values.setOppoErrAttack || 0,
         setOppoErrOther: values.setOppoErrOther || 0,
         setNote: values.setNote || "",
-      }});
+     }});
+     const editedSetID =  editedSet.data.updateSetDetail.setID
+    /*console.log({
+      setID: setNow.setID,
+      setNumber: values.setNumber,
+      setScore: values.setScore,
+      setMyPoint: values.setMyPoint,
+      setOppoPoint: values.setOppoPoint || 0,
+      setOppoErrServe: values.setOppoErrServe || 0,
+      setOppoErrAttack: values.setOppoErrAttack || 0,
+      setOppoErrOther: values.setOppoErrOther || 0,
+      setNote: values.setNote || "",
+    })*/
   };
   const showModal = (set) => {
     setComponentInModal(ContestSetDetail(set));

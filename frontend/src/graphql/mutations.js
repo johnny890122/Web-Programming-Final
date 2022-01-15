@@ -281,7 +281,7 @@ export const CREATE_DETAIL_PLAYER = gql`
 `;
 
 export const UPDATE_SET_DETAIL = gql`
-  mutation updateSetDetail(
+  mutation updateSetDetail (
     $setID: String
     $setNumber: Int
     $setScore: String

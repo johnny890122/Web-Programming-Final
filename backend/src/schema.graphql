@@ -183,7 +183,7 @@ type Mutation {
     contestOppoSet: Int
   ): Contest
   updateSetDetail(
-    setID: String!
+    setID: String
     setNumber: Int
     setScore: String
     setMyPoint: Int
