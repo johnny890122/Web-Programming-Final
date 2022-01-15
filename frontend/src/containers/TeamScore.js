@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Template from "../components/Template";
 import {
   Box,
@@ -21,7 +21,7 @@ import { TEAM_SCORE_INIT } from "../graphql";
 import { useQuery } from "@apollo/client";
 
 function Score(props) {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  
   const CONTEST_KEY = "nowContest";
 
   let breadItem = window.location.href
@@ -47,8 +47,13 @@ function Score(props) {
     );
   }
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [componentInModal, setComponentInModal] = useState("");
+
+
   const showModal = () => {
     setIsModalVisible(true);
+    setComponentInModal(scoreForm)
   };
 
   const onCreate = () => {
@@ -61,49 +66,43 @@ function Score(props) {
 
   const scoreForm = () => {
 
+    const WinOption = [
+      {label: "win", value: "win"},
+      {label: "lose", value: "lose"},
+      {label: "tie", value: "tie"}
+    ]
+
     return (
-      <Form name="dynamic_form_nest_item" onFinish={onCreate} autoComplete="off">
-        <Row>
-          <Form.Item label="局數"
-                    name='setNumber'
-                    rules={[{ required: true, message: '必填局數' }]}>
-                <InputNumber min={1}/>
+      <Form name="create-contest-form" onFinish={onCreate} autoComplete="off">
+        <>
+          <Form.Item label="比賽名稱"
+                    name='contestTitle'
+                    rules={[{ required: true, message: '必填比賽名稱' }]}>
+            <Input />
           </Form.Item>
-          <Form.Item label="我方得分"
-                    name='setMyPoint'
-                    rules={[{ required: true, message: '必填我方得分' }]}>
+          <Form.Item label="比賽輸贏"
+                    name='contestIsWin'
+                    style={{ width: 200 }}
+                    rules={[{ required: true, message: '必填比賽輸贏' }]}>
+            <Select options={WinOption}/>
+          </Form.Item>
+          <Form.Item label="對手名稱"
+                    name='contestOpponent'
+                    rules={[{ required: true, message: '必填對手名稱' }]}>
+            <Input />
+          </Form.Item>
+        </>
+        <>
+          <Form.Item label="我方局數"
+                    name='contestMySet'>
                 <InputNumber min={0}/>
           </Form.Item>
-          <Form.Item label="對方得分"
-                    name='setOppoPoint'
-                    rules={[{ required: true, message: '必填對方得分' }]}>
-          <InputNumber min={0}/>
-          </Form.Item>
-        </Row>
-        <Row>
-          <Form.Item label="對方發球失誤"
-                    name='setOppoErrServe'>
+          <Form.Item label="對方局數"
+                    name='contestOppoSet'>
                 <InputNumber min={0}/>
           </Form.Item>
-          <Form.Item label="對方攻擊失誤"
-                    name='setOppoErrAttack'>
-                <InputNumber min={0}/>
-          </Form.Item>
-          <Form.Item label="對方處理失誤"
-                    name='setOppoErrOther'>
-                <InputNumber min={0}/>
-          </Form.Item>
-        </Row>
-        <Form.Item label="備註"
-                   name='setNote'
-                    >
-              <Input.TextArea rows={3} />
-        </Form.Item>
-        <Form.Item label="得分紀錄"
-                   name='setScore'
-                    >
-              <Input placeholder="ex : oxoox ( 我方得分 : o ，對方得分 : x )"/>
-        </Form.Item>
+        </>
+        
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
@@ -118,7 +117,7 @@ function Score(props) {
            footer={<Button key="ok" onClick={handleCancel}>
                       Cancel
                    </Button>}>
-      {scoreForm}
+      {componentInModal}
     </Modal>
   );
 
