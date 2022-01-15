@@ -271,7 +271,7 @@ export default function Template({ content }) {
               <IconButton onClick={showModal} sx={{ p: 0 }}>
                 <Avatar
                   size="large"
-                  src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
+                  src={`https://joeschmoe.io/api/v1/${userAccount}`}
                 />
               </IconButton>
             </Tooltip>
@@ -303,7 +303,7 @@ export default function Template({ content }) {
               <div className="container" style={{ display: "flex" }}>
                 <Avatar
                   size={150}
-                  src="https://live.staticflickr.com/65535/51540870993_055876bd65_k.jpg"
+                  src= {`https://joeschmoe.io/api/v1/${userAccount}`}
                 />
                 <div className="text-block" style={{ marginLeft: "2rem" }}>
                   <div className="row" style={{ display: "flex" }}>
