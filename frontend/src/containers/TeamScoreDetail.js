@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
          Paper, Typography } from "@mui/material";
@@ -8,7 +8,8 @@ import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from
 import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
-import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME } from "../graphql";
+import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
+         CREATE_SET_DETAIL } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -49,10 +50,23 @@ const TeamScoreDetail = (props) => {
   const [componentInModal, setComponentInModal] = useState("");
   const [modalMode, setModalMode] = useState("new");
   const [setNow, setSetNow] = useState({});
+  const [setCreate, setSetCreate] = useState({});
+  const [addSet] = useMutation(CREATE_SET_DETAIL);
+  
 
-
-  const onCreate = values => {
-    console.log('create');
+  const onCreate = async(values) => {
+    await addSet(
+      {variables: {
+        contestID: props.nowContest,
+        setNumber: values.setNumber,
+        setScore: values.setScore || "",
+        setMyPoint: values.setMyPoint,
+        setOppoPoint: values.setOppoPoint,
+        setOppoErrServe: values.setOppoErrServe || 0,
+        setOppoErrAttack: values.setOppoErrAttack || 0,
+        setOppoErrOther: values.setOppoErrOther || 0,
+        setNote: values.setNote || "",
+      }})
   };
   const onUpdate = values => {
     console.log('save set');
