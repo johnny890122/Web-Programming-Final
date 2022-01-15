@@ -282,7 +282,7 @@ export const CREATE_DETAIL_PLAYER = gql`
   }
 `;
 
-export const UPDATE_CONTEST= gql`
+export const UPDATE_CONTEST = gql`
   mutation updateContest(
     $contestID: String
     $contestDate: String

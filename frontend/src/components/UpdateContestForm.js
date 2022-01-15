@@ -11,7 +11,7 @@ const UpdateContestForm = (contest, onUpdate) => {
       ];
     
     return (
-      <Form name="update-contest-form" onFinish={(values) => onUpdate(values, contest)} 
+      <Form name="update-contest-form" onFinish={onUpdate} 
             initialValues={{ 
                 contestTitle: contest.contestTitle,
                 contestDate: moment(contest.contestDate),
