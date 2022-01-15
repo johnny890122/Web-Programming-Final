@@ -109,10 +109,6 @@ function TeamHome(props) {
             sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={event.id}
           >
-            <CardActionArea
-              sx={{ width: 150, height: 180 }}
-              href={`#event-detail`}
-            >
               <CardContent sx={{ p: 2 }}>
                 <Typography gutterBottom variant="h6" component="div">
                   {event.title}
@@ -121,7 +117,6 @@ function TeamHome(props) {
                   <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
                 </Typography>
               </CardContent>
-            </CardActionArea>
           </Card>
         ))}
         <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
@@ -154,10 +149,7 @@ function TeamHome(props) {
             sx={{ m: 1.5, width: 410, height: 85, display: "block" }}
             key={post.id}
           >
-            <CardActionArea
-              sx={{ width: 400, height: 85 }}
-              href={`#post-detail`}
-            >
+            
               <CardContent sx={{ p: 0.5 }}>
                 <Typography gutterBottom variant="subtitle1" component="div">
                   {post.title}
@@ -170,7 +162,7 @@ function TeamHome(props) {
                   {post.content.slice(0, 30)} ...
                 </Typography>
               </CardContent>
-            </CardActionArea>
+            
           </Card>
         ))}
         <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
@@ -203,10 +195,7 @@ function TeamHome(props) {
             sx={{ m: 1, width: 128, height: 180, display: "inline-block" }}
             key={score.id}
           >
-            <CardActionArea
-              sx={{ width: 128, height: 180 }}
-              href={`#score-detail`}
-            >
+            
               <CardContent sx={{ p: 2 }}>
                 <Typography gutterBottom variant="h6" component="div">
                   {score.opponent}
@@ -218,7 +207,7 @@ function TeamHome(props) {
                   {score.mySet} : {score.oppoSet}
                 </Typography>
               </CardContent>
-            </CardActionArea>
+            
           </Card>
         ))}
         <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
@@ -251,10 +240,7 @@ function TeamHome(props) {
             sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={vote.id}
           >
-            <CardActionArea
-              sx={{ width: 150, height: 180 }}
-              href={`#vote-detail`}
-            >
+            
               <CardContent sx={{ p: 2 }}>
                 <Typography gutterBottom variant="h6" component="div">
                   {vote.title}
@@ -273,7 +259,7 @@ function TeamHome(props) {
                   <Chip label="已結束" size="small" />
                 )}
               </CardContent>
-            </CardActionArea>
+            
           </Card>
         ))}
         <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
