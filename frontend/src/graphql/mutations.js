@@ -310,6 +310,34 @@ export const UPDATE_SET_DETAIL = gql`
   }
 `;
 
+export const DELETE_CONTEST = gql`
+  mutation deleteContest(
+    $contestID: String 
+    $teamID: String
+  ) {
+    deleteContest(
+      teamID: $teamID, 
+      contestID: $contestID
+    ) {
+      teamID
+    }
+  }
+`;
+export const DELETE_SET_DETAIL = gql`
+  mutation deleteSetDetail(
+    $setID: String
+    $contestID: String
+  ) {
+    deleteSetDetail(
+      setID: $setID, 
+      contestID: $contestID
+    ) {
+      contestID
+    }
+  }
+`;
+
+
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {
     deleteMember(teamID: $teamID, memberID: $memberID) {

@@ -4,12 +4,13 @@ import { useQuery, useMutation } from "@apollo/client";
 import Template from "../components/Template";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
          Paper, Typography } from "@mui/material";
-import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
+import { Row, Col, Modal, Form, Input, Button, Space, message, Select } from 'antd';
 import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
 import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
-         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER, UPDATE_SET_DETAIL } from "../graphql";
+         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER, 
+         UPDATE_SET_DETAIL, DELETE_SET_DETAIL } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -20,7 +21,7 @@ const TeamScoreDetail = (props) => {
   });
   if (!queryData.loading) {
     var data = queryData.data.teamContestDetail;
-  } else var data = {};
+  } else var data = null;
   // TeamMember資料
   const queryMembers = useQuery(TEAM_PLAYERNAME_INIT, {
     variables: { teamID: props.nowTeam },
@@ -52,6 +53,7 @@ const TeamScoreDetail = (props) => {
   const [addSet] = useMutation(CREATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
   const [addPlayer] = useMutation(CREATE_DETAIL_PLAYER, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
   const [updateSet] = useMutation(UPDATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
+  const [removeSet] = useMutation(DELETE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
   
   const onCreate = async(values) => {
     setIsModalVisible(false);
@@ -131,44 +133,42 @@ const TeamScoreDetail = (props) => {
         }}
       )
     })}
-    /*console.log({
-      setID: setNow.setID,
-      setNumber: values.setNumber,
-      setScore: values.setScore,
-      setMyPoint: values.setMyPoint,
-      setOppoPoint: values.setOppoPoint || 0,
-      setOppoErrServe: values.setOppoErrServe || 0,
-      setOppoErrAttack: values.setOppoErrAttack || 0,
-      setOppoErrOther: values.setOppoErrOther || 0,
-      setNote: values.setNote || "",
-    })*/
   };
+  const onDelete = async(set) => {    
+    setIsModalVisible(false);
+    const deleteSet = await removeSet(
+      {variables:{
+        setID: set.setID,
+        contestID: props.nowContest
+     }});
+    console.log(set);
+  };
+
   const showModal = (set) => {
     setComponentInModal(ContestSetDetail(set));
     setSetNow(set);
     setModalMode("detail");
     setIsModalVisible(true);    
   };
-
   const handleCancel = () => {
     setComponentInModal("");
     setSetNow({});
     setIsModalVisible(false);
-  }  
+  };
   const handleCreate = () => {
     setComponentInModal(CreateSetForm(onCreate, players));
     setModalMode("new");
     setIsModalVisible(true);
-  }
+  };
   const handleEdit = () => {
     console.log(setNow);
     setModalMode("edit");
-    setComponentInModal(UpdateSetForm(setNow, onUpdate, players));
-  }   
+    setComponentInModal(UpdateSetForm(setNow, onUpdate, onDelete, players));
+  };
   const handleBack = () => {
     setModalMode("detail");
     setComponentInModal(ContestSetDetail(setNow));
-  } 
+  };
 
   const detailFooter = ([
     <Button key="edit" onClick={handleEdit}>
@@ -221,11 +221,11 @@ const TeamScoreDetail = (props) => {
               <TableRow>
                 <TableCell align="center" style={{width: '20%'}}>局數</TableCell>
                 <TableCell align="center">{teamName}</TableCell>
-                <TableCell align="center">{data.contestOpponent}</TableCell>
+                <TableCell align="center">{data ? data.contestOpponent : '對手' }</TableCell>
                 <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
-            {(data.contestSetDetail) ? 
+            {(data) ? 
               <TableBody>
                 {(data.contestSetDetail).map(set => (
                   <TableRow key={(set.setNumber)} 

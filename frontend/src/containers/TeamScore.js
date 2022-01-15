@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Template from "../components/Template";
 import { Box, Grid, List, ListItem, Typography, Card, CardActionArea, CardContent,} from "@mui/material";
-import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select, DatePicker } from 'antd';
+import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select, 
+         DatePicker, Popconfirm, message } from 'antd';
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
@@ -11,7 +12,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import { Link } from "react-router-dom";
-import { TEAM_SCORE_INIT, CREATE_TEAM_SCORE } from "../graphql";
+import { TEAM_SCORE_INIT, CREATE_TEAM_SCORE, DELETE_CONTEST } from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
 
 function Score(props) {
@@ -28,15 +29,15 @@ function Score(props) {
   });
   const ScoreData = [];
   if (!teamScore.loading) {
-    console.log(teamScore.data.initContest)
+    //console.log(teamScore.data.initContest)
     teamScore.data.initContest.map((i) =>
       ScoreData.push({
-        id: i.contestID,
-        title: i.contestTitle,
-        opponent: i.contestOpponent,
-        date: i.contestDate,//new Date(i.contestDate).toDateString(),
-        mySet: i.contestMySet,
-        oppoSet: i.contestOppoSet,
+        contestID: i.contestID,
+        contestTitle: i.contestTitle,
+        contestOpponent: i.contestOpponent,
+        contestDate: i.contestDate,//new Date(i.contestDate).toDateString(),
+        contestMySet: i.contestMySet,
+        contestOppoSet: i.contestOppoSet,
       })
     );
   }
@@ -44,9 +45,8 @@ function Score(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const [addContest] = useMutation(CREATE_TEAM_SCORE, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
+  const [removeContest] = useMutation(DELETE_CONTEST, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
   
-  
-
   const handleCreate = () => {
     setIsModalVisible(true);
     setComponentInModal(scoreForm)
@@ -54,9 +54,11 @@ function Score(props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const cancel = (e) => {
+    console.log('cancel');}
 
   const onCreate = async(values) => {
-    //console.log(values.contestDate.format('YYYY/MM/DD'));
+    setIsModalVisible(false);
     const newContest = await addContest(
       {variables: {
         teamID: props.nowTeam,
@@ -69,8 +71,17 @@ function Score(props) {
       }});
     //setIsModalVisible(true);
   };
+  const onDelete = async(score) => {    
+    console.log(score.contestID);
+    const deleteContest = await removeContest(
+      {variables: {
+        teamID: props.nowTeam,
+        contestID: score.contestID 
+      }}
+    );
+  };
 
-  const scoreForm = () => {
+  const scoreForm = (set) => {
 
     const WinOption = [
       {label: "win", value: "win"},
@@ -140,16 +151,16 @@ function Score(props) {
       <div className="teamScore-container" 
            style={{ marginTop: "1rem", }}>
         {ScoreData.map((score) => (
-          <ListItem key={score.id} sx={{ width: 1400 }}>
-            <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}
+          <ListItem key={score.contestID} sx={{ width: 1400 }}>
+            <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`}}
                   onClick={() => {
-                  console.log("now in contest:", score.id);
-                  localStorage.setItem(CONTEST_KEY, score.id);}}>
+                  console.log("now in contest:", score.contestID);
+                  localStorage.setItem(CONTEST_KEY, score.contestID);}}>
                 <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
                     <Typography display="inline" variant="h5" component="div" style={{ margin: "0 1rem" }}>
-                          [ {score.title} ]
+                          [ {score.contestTitle} ]
                     </Typography>
                     <Typography display="inline" variant="h5" 
                                   component="div" style={{ margin: "0 2rem" }}>
@@ -160,25 +171,35 @@ function Score(props) {
                         variant="h5"
                         component="div"
                         style={{ margin: "0 1rem" }}>
-                        {score.mySet} - {score.oppoSet}
+                        {score.contestMySet} - {score.contestOppoSet}
                     </Typography>
                     <Typography display="inline" variant="h5" component="div" style={{ margin: "0 2rem" }}>
-                        {score.opponent}
+                        {score.contestOpponent}
                     </Typography>
                     <Typography display="inline" variant="subtitle1" component="div"
                                   style={{ margin: "0 2rem" }}>
-                        {score.date}
+                        {score.contestDate}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>
-           </Link>
-           <Button type="primary" style={{ margin: '0 8px' }}>
+            </Link>
+            
+            <Button type="primary" style={{ margin: '0 8px' }} >
               Edit
             </Button>
-            <Button type="primary" danger style={{ margin: '0 8px' }}>
-              Delete
-            </Button>
+
+            <Popconfirm
+              title="Are you sure to delete this contest?"
+              onConfirm={() => onDelete(score)}
+              onCancel={() => cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary" danger style={{ margin: '0 8px' }}>
+                Delete
+              </Button>
+            </Popconfirm>
           </ListItem>
         ))}
       </div>

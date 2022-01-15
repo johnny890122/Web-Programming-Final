@@ -212,8 +212,8 @@ type Mutation {
     detailComboServe: String
   ): DetailPlayer
 
-  deleteContest(contestID: String!, teamID: String!): Team
-  deleteSetDetail(setID: String!, contestID: String!): Contest
+  deleteContest(contestID: String, teamID: String): Team
+  deleteSetDetail(setID: String, contestID: String): Contest
   deleteDetailPlayer(detailID: String!, setID: String!): SetDetail
 
   ##------------------------------##
