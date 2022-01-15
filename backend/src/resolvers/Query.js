@@ -252,10 +252,7 @@ const Query = {
       throw new Error("Team not found!");
     }
     const contest = await db.ContestModel.find({_id: { $in : team.teamContest }})
-    if (!contest) {
-      return [];
-    }
-    return contest;
+    return contest || [];
   },
 
   teamContestDetail: async (parent, args, { db, pubSub }) => {

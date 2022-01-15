@@ -23,6 +23,7 @@ import { useQuery } from "@apollo/client";
 
 function Score(props) {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const CONTEST_KEY = "nowContest";
 
   let breadItem = window.location.href
     .replace("http://localhost:3000", "")
@@ -34,12 +35,13 @@ function Score(props) {
   });
   const ScoreData = [];
   if (!teamScore.loading) {
+    console.log(teamScore.data.initContest)
     teamScore.data.initContest.map((i) =>
       ScoreData.push({
         id: i.contestID,
         title: i.contestTitle,
         opponent: i.contestOpponent,
-        date: i.contestDate,
+        date: new Date(i.contestDate).toDateString(),
         mySet: i.contestMySet,
         oppoSet: i.contestOppoSet,
       })
@@ -117,21 +119,28 @@ function Score(props) {
       <div className="teamScore-container" 
            style={{ marginTop: "1rem", }}>
         {ScoreData.map((score) => (
-          <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}>
+          <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}
+                onClick={() => {
+                  console.log("now in contest:", score.id);
+                  localStorage.setItem(CONTEST_KEY, score.id);
+                }}>
             <ListItem button key={score.id} sx={{ width: 700 }}>
               <Card>
                 <CardActionArea sx={{ width: 700 }}>
                   <CardContent sx={{ p: 2 }}>
-                    <Box sx={{ m: 1, p: 1 }} style={{ position: "relative" }}>
-                      <Typography display="inline" variant="h5" component="div">
+                    <Box sx={{ m: 1, p: 3 }} style={{ position: "relative" }}>
+                      <Typography display="inline" variant="h5" component="div" style={{ margin: "0 1rem" }}>
+                        {score.title}
+                      </Typography>
+                      <Typography display="inline" variant="h5" 
+                                  component="div" style={{ margin: "0 2rem" }}>
                         {decodeURI(breadItem[1])}
                       </Typography>
                       <Typography
                         display="inline"
                         variant="h5"
                         component="div"
-                        style={{ margin: "0 2rem" }}
-                      >
+                        style={{ margin: "0 1rem" }}>
                         {score.mySet} - {score.oppoSet}
                       </Typography>
                       {/* {score.win === "win"
@@ -139,11 +148,11 @@ function Score(props) {
                         : score.win === "lose"
                         ? loseScore(score)
                         : tieScore(score)} */}
-                      <Typography display="inline" variant="h5" component="div">
+                      <Typography display="inline" variant="h5" component="div" style={{ margin: "0 2rem" }}>
                         {score.opponent}
                       </Typography>
                       <Typography display="inline" variant="subtitle1" component="div"
-                                  style={{position: "absolute",right: "2rem"}}>
+                                  style={{ margin: "0 2rem" }}>
                         {/* <EventNoteIcon sx={{ mx: 1, my: 0 }} />  */}
                         {score.date}
                       </Typography>
