@@ -79,7 +79,8 @@ function Score(props) {
     ];
 
     return (
-      <Form name="create-contest-form" onFinish={onCreate} autoComplete="off">
+      <Form name="create-contest-form" onFinish={onCreate} 
+            autoComplete="off" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
           <Form.Item label="比賽名稱"
                     name='contestTitle'
                     rules={[{ required: true, message: '必填比賽名稱' }]}>
@@ -139,13 +140,12 @@ function Score(props) {
       <div className="teamScore-container" 
            style={{ marginTop: "1rem", }}>
         {ScoreData.map((score) => (
-          <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}
-                onClick={() => {
+          <ListItem key={score.id} sx={{ width: 1400 }}>
+            <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`}}
+                  onClick={() => {
                   console.log("now in contest:", score.id);
-                  localStorage.setItem(CONTEST_KEY, score.id);
-                }}>
-            <ListItem key={score.id} sx={{ width: 1400 }}>
-              <Card>
+                  localStorage.setItem(CONTEST_KEY, score.id);}}>
+                <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
                     <Typography display="inline" variant="h5" component="div" style={{ margin: "0 1rem" }}>
@@ -172,14 +172,14 @@ function Score(props) {
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <Button type="primary" style={{ margin: '0 8px' }}>
-                Edit
-              </Button>
-              <Button type="primary" danger style={{ margin: '0 8px' }}>
-                Delete
-              </Button>
-            </ListItem>
-          </Link>
+           </Link>
+           <Button type="primary" style={{ margin: '0 8px' }}>
+              Edit
+            </Button>
+            <Button type="primary" danger style={{ margin: '0 8px' }}>
+              Delete
+            </Button>
+          </ListItem>
         ))}
       </div>
     </Box>
