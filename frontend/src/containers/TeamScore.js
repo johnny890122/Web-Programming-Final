@@ -48,25 +48,6 @@ function Score(props) {
     );
   }
 
-  // const winScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <CircleOutlinedIcon /> {score.mySet} - {score.oppoSet} <CircleIcon />
-  //   </Typography>
-  // );
-
-  // const loseScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <CircleIcon /> {score.mySet} - {score.oppoSet} <CircleOutlinedIcon />
-  //   </Typography>
-  // );
-
-  // const tieScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <ChangeHistoryTwoToneIcon /> {score.mySet} - {score.oppoSet}{" "}
-  //     <ChangeHistoryTwoToneIcon />
-  //   </Typography>
-  // );
-
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -75,28 +56,59 @@ function Score(props) {
     setIsModalVisible(false);
   }
 
-  const scoreForm = (
-    <Form
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      // onFinish={onSubmit}
-      autoComplete="off"
-    >
-      <Form.Item label="Title" name="title">
-        <Input />
-      </Form.Item>
+  const scoreForm = () => {
 
-      <Form.Item label="Content" name="content">
-        <Input.TextArea size="large" />
-      </Form.Item>
-
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  );
+    return (
+      <Form name="dynamic_form_nest_item" onFinish={onCreate} autoComplete="off">
+        <Row>
+          <Form.Item label="局數"
+                    name='setNumber'
+                    rules={[{ required: true, message: '必填局數' }]}>
+                <InputNumber min={1}/>
+          </Form.Item>
+          <Form.Item label="我方得分"
+                    name='setMyPoint'
+                    rules={[{ required: true, message: '必填我方得分' }]}>
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方得分"
+                    name='setOppoPoint'
+                    rules={[{ required: true, message: '必填對方得分' }]}>
+          <InputNumber min={0}/>
+          </Form.Item>
+        </Row>
+        <Row>
+          <Form.Item label="對方發球失誤"
+                    name='setOppoErrServe'>
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方攻擊失誤"
+                    name='setOppoErrAttack'>
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方處理失誤"
+                    name='setOppoErrOther'>
+                <InputNumber min={0}/>
+          </Form.Item>
+        </Row>
+        <Form.Item label="備註"
+                   name='setNote'
+                    >
+              <Input.TextArea rows={3} />
+        </Form.Item>
+        <Form.Item label="得分紀錄"
+                   name='setScore'
+                    >
+              <Input placeholder="ex : oxoox ( 我方得分 : o ，對方得分 : x )"/>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    )
+  };
 
   const scoreModal = (
     <Modal title="Score" visible={isModalVisible} onCancel={handleCancel} 

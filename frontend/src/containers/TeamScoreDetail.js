@@ -69,7 +69,6 @@ const TeamScoreDetail = (props) => {
     console.log(values.setPlayerDetail)
     const newSetID =  newSet.data.createSetDetail.setID
     if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
-      //console.log(players.filter(e => e.label === player.playerID)[0].userID) 
       addPlayer(
         {variables: {
           setID: newSetID,
