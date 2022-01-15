@@ -189,19 +189,23 @@ export const DELETE_TEAM_POST = gql`
 `;
 
 export const CREATE_TEAM_SCORE = gql`
-  mutation createScore(
+  mutation createContest(
     $teamID: String
-    $contestData: Int
-    $contestIsWin: Boolean
-    $contestTitle: String
+    $contestDate: String
     $contestOpponent: String
+    $contestIsWin: String
+    $contestTitle: String
+    $contestMySet: Int
+    $contestOppoSet: Int
   ) {
-    createScore(
+    createContest (
       teamID: $teamID
       contestDate: $contestDate
       contestIsWin: $contestIsWin
       contestTitle: $contestTitle
       contestOpponent: $contestOpponent
+      contestMySet: $contestMySet
+      contestOppoSet: $contestOppoSet
     ) {
       contestID
     }

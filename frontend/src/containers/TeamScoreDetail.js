@@ -49,7 +49,6 @@ const TeamScoreDetail = (props) => {
   const [componentInModal, setComponentInModal] = useState("");
   const [modalMode, setModalMode] = useState("new");
   const [setNow, setSetNow] = useState({});
-  const [setCreate, setSetCreate] = useState({});
   const [addSet] = useMutation(CREATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
   const [addPlayer] = useMutation(CREATE_DETAIL_PLAYER, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
 
