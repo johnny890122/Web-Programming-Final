@@ -135,20 +135,20 @@ type Mutation {
   ##---------- Team Contest, Detail ----------##
 
   createContest(
-    teamID: String!
+    teamID: String
     contestDate: String
     contestOpponent: String
-    contestIsWin: ContestWinOption!
+    contestIsWin: String
     contestTitle: String
     contestMySet: Int
     contestOppoSet: Int
   ): Contest
   createSetDetail(
-    contestID: String!
+    contestID: String
     setNumber: Int
     setScore: String
-    setMyPoint: Int !
-    setOppoPoint: Int !
+    setMyPoint: Int 
+    setOppoPoint: Int 
     setOppoErrServe: Int
     setOppoErrAttack: Int
     setOppoErrOther: Int
@@ -347,7 +347,7 @@ type Contest {
   contestDate: String
   contestMyTeam: Team
   contestOpponent: String
-  contestIsWin: ContestWinOption
+  contestIsWin: String
   contestMySet: Int
   contestOppoSet: Int
   contestSetDetail: [SetDetail]
@@ -430,12 +430,7 @@ enum EventReplyOption {
   Unsure
 }
 
-enum ContestWinOption {
-  win
-  lose
-  tie
-}
-
+# enum ContestWinOption { win  lose  tie}
 # type Gallery { teamID: String! galleryID: String! galleryTitle: String! original_url: [String!]! thumbnail_url: [String!]!}
 # type Gantt { teamID: String! ganttID: String! ganttTitle: String! ganttTaskID: [GanttTask]!}
 # type GanttTask { ganttTaskID: String dateStart: Int! dateEnd: Int! duration: Int! percComplete: Float! dependencies: String!}

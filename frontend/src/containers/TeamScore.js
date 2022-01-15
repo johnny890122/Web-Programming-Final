@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Template from "../components/Template";
 import {
   Box,
-  Button,
   Grid,
   List,
   ListItem,
@@ -11,7 +10,7 @@ import {
   CardActionArea,
   CardContent,
 } from "@mui/material";
-import { Form, Input, Modal } from "antd";
+import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
@@ -22,7 +21,7 @@ import { TEAM_SCORE_INIT } from "../graphql";
 import { useQuery } from "@apollo/client";
 
 function Score(props) {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  
   const CONTEST_KEY = "nowContest";
 
   let breadItem = window.location.href
@@ -48,26 +47,16 @@ function Score(props) {
     );
   }
 
-  // const winScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <CircleOutlinedIcon /> {score.mySet} - {score.oppoSet} <CircleIcon />
-  //   </Typography>
-  // );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [componentInModal, setComponentInModal] = useState("");
 
-  // const loseScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <CircleIcon /> {score.mySet} - {score.oppoSet} <CircleOutlinedIcon />
-  //   </Typography>
-  // );
-
-  // const tieScore = (score) => (
-  //   <Typography display="inline" variant="h5" component="div">
-  //     <ChangeHistoryTwoToneIcon /> {score.mySet} - {score.oppoSet}{" "}
-  //     <ChangeHistoryTwoToneIcon />
-  //   </Typography>
-  // );
 
   const showModal = () => {
+    setIsModalVisible(true);
+    setComponentInModal(scoreForm)
+  };
+
+  const onCreate = () => {
     setIsModalVisible(true);
   };
 
@@ -75,35 +64,60 @@ function Score(props) {
     setIsModalVisible(false);
   }
 
-  const scoreForm = (
-    <Form
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      // onFinish={onSubmit}
-      autoComplete="off"
-    >
-      <Form.Item label="Title" name="title">
-        <Input />
-      </Form.Item>
+  const scoreForm = () => {
 
-      <Form.Item label="Content" name="content">
-        <Input.TextArea size="large" />
-      </Form.Item>
+    const WinOption = [
+      {label: "win", value: "win"},
+      {label: "lose", value: "lose"},
+      {label: "tie", value: "tie"}
+    ]
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  );
+    return (
+      <Form name="create-contest-form" onFinish={onCreate} autoComplete="off">
+        <>
+          <Form.Item label="比賽名稱"
+                    name='contestTitle'
+                    rules={[{ required: true, message: '必填比賽名稱' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item label="比賽輸贏"
+                    name='contestIsWin'
+                    style={{ width: 200 }}
+                    rules={[{ required: true, message: '必填比賽輸贏' }]}>
+            <Select options={WinOption}/>
+          </Form.Item>
+          <Form.Item label="對手名稱"
+                    name='contestOpponent'
+                    rules={[{ required: true, message: '必填對手名稱' }]}>
+            <Input />
+          </Form.Item>
+        </>
+        <>
+          <Form.Item label="我方局數"
+                    name='contestMySet'>
+                <InputNumber min={0}/>
+          </Form.Item>
+          <Form.Item label="對方局數"
+                    name='contestOppoSet'>
+                <InputNumber min={0}/>
+          </Form.Item>
+        </>
+        
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    )
+  };
 
   const scoreModal = (
     <Modal title="Score" visible={isModalVisible} onCancel={handleCancel} 
            footer={<Button key="ok" onClick={handleCancel}>
                       Cancel
                    </Button>}>
-      {scoreForm}
+      {componentInModal}
     </Modal>
   );
 

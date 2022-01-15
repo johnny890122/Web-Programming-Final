@@ -147,23 +147,22 @@ export const CREATE_TEAM = gql`
 `;
 
 export const CREATE_TEAM_POST = gql`
-mutation createPost(
+  mutation createPost(
     $teamID: String
     $postTitle: String
     $postContent: String
     $creatorID: String
   ) {
     createPost(
-    teamID: $teamID
-    postTitle: $postTitle
-    postContent: $postContent
-    creatorID: $creatorID
+      teamID: $teamID
+      postTitle: $postTitle
+      postContent: $postContent
+      creatorID: $creatorID
     ) {
       postID
-    } 
+    }
   }
 `;
-
 
 export const UPDATE_TEAM_POST = gql`
   mutation updatePost(
@@ -172,26 +171,20 @@ export const UPDATE_TEAM_POST = gql`
     $postContent: String
   ) {
     updatePost(
-    postID: $postID
-    postTitle: $postTitle
-    postContent: $postContent
+      postID: $postID
+      postTitle: $postTitle
+      postContent: $postContent
     ) {
       postID
-    } 
+    }
   }
 `;
 
 export const DELETE_TEAM_POST = gql`
-mutation deletePost(
-    $teamID: String
-    $postID: String
-  ) {
-    deletePost(
-      teamID: $teamID
-      postID: $postID
-    ) {
+  mutation deletePost($teamID: String, $postID: String) {
+    deletePost(teamID: $teamID, postID: $postID) {
       teamID
-    } 
+    }
   }
 `;
 
@@ -215,6 +208,75 @@ export const CREATE_TEAM_SCORE = gql`
   }
 `;
 
+export const CREATE_SET_DETAIL = gql`
+  mutation createSetDetail(
+    $contestID: String
+    $setNumber: Int
+    $setScore: String
+    $setMyPoint: Int 
+    $setOppoPoint: Int 
+    $setOppoErrServe: Int
+    $setOppoErrAttack: Int
+    $setOppoErrOther: Int
+    $setNote: String
+  ) {
+    createSetDetail(
+      contestID: $contestID
+      setNumber: $setNumber
+      setScore: $setScore
+      setMyPoint: $setMyPoint
+      setOppoPoint: $setOppoPoint
+      setOppoErrServe: $setOppoErrServe
+      setOppoErrAttack: $setOppoErrAttack
+      setOppoErrOther: $setOppoErrOther
+      setNote: $setNote
+    ) {
+      setID
+    }
+  }
+`;
+export const CREATE_DETAIL_PLAYER = gql`
+  mutation createDetailPlayer(
+    $setID: String
+    $playerID: String
+    $detailPointServe: Int
+    $detailPointAttack: Int
+    $detailPointTip: Int
+    $detailTimeAttack: Int
+    $detailTimePass: Int
+    $detailTimeNoPass: Int
+    $detailErrPassS: Int
+    $detailErrPassA: Int
+    $detailErrPass1: Int
+    $detailErrSet: Int
+    $detailErrOther: Int
+    $detailErrAttack: Int
+    $detailErrServe: Int
+    $detailComboServe: String
+  ) {
+    createDetailPlayer(
+      setID: $setID
+      playerID: $playerID
+      detailPointServe: $detailPointServe
+      detailPointAttack: $detailPointAttack
+      detailPointTip: $detailPointTip
+      detailTimeAttack: $detailTimeAttack
+      detailTimePass: $detailTimePass
+      detailTimeNoPass: $detailTimeNoPass
+      detailErrPassS: $detailErrPassS
+      detailErrPassA: $detailErrPassA
+      detailErrPass1: $detailErrPass1
+      detailErrSet: $detailErrSet
+      detailErrOther: $detailErrOther
+      detailErrAttack: $detailErrAttack
+      detailErrServe: $detailErrServe
+      detailComboServe: $detailComboServe
+    ) {
+      detailID
+    }
+  }
+`;
+
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {
     deleteMember(teamID: $teamID, memberID: $memberID) {
@@ -227,6 +289,36 @@ export const ADD_TEAM_MEMBER = gql`
   mutation addMember($teamID: String, $memberAccount: String) {
     addMember(teamID: $teamID, memberAccount: $memberAccount) {
       userID
+    }
+  }
+`;
+
+export const CREATE_TEAM_VOTE = gql`
+  mutation createVote(
+    $voteTitle: String!
+    $voteDescription: String!
+    $voteEnd: String!
+    $voteLimit: Int
+    $teamID: String!
+    $creatorID: String!
+  ) {
+    createVote(
+      voteTitle: $voteTitle
+      voteDescription: $voteDescription
+      voteEnd: $voteEnd
+      voteLimit: $voteLimit
+      teamID: $teamID
+      creatorID: $creatorID
+    ) {
+      voteID
+    }
+  }
+`;
+
+export const CREATE_TEAM_VOTE_OPTION = gql`
+  mutation createVoteOption($voteID: String!, $voteOptionName: String!) {
+    createVoteOption(voteID: $voteID, voteOptionName: $voteOptionName) {
+      voteOptionID
     }
   }
 `;

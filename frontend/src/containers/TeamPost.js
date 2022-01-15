@@ -77,7 +77,7 @@ function TeamPost(props) {
     setMedalMode("detail");
   };
   const handleNew = () => {};
-  
+
   const handelPostDeleted = async () => {
       await deletePost({
           variables: {
@@ -158,22 +158,22 @@ function TeamPost(props) {
         autoComplete="off"
       >
         <div>
-            <TextField 
+            <TextField
               id="post_title"
               value = {postTitle}
               onChange={(e) => setPostTitle(e.target.value)}
-              
-              label="Title" 
+
+              label="Title"
               sx={{ m: 2 }}
               placeholder="Title" />
         </div>
 
         <div>
-            <TextField 
+            <TextField
               id="post_content"
               value={postContent}
               onChange={(e) => setPostContent(e.target.value)}
-              label="Content" 
+              label="Content"
               sx={{ m: 2 }}
               style={{ width: "400px" }}
               multiline
@@ -181,19 +181,23 @@ function TeamPost(props) {
               placeholder="Content" />
         </div>
 
-        <Button 
+        {
+          postTitle & postContent ? 
+          <Button
           onClick={modalMode === "edit" ? onSave : onSubmit}
-          sx={{ m: 2 }} 
+          sx={{ m: 2 }}
           color={modalMode === "edit" ? "error" : "success"}
-          variant="contained" 
-          size="large" 
+          variant="contained"
+          size="large"
           htmltype="submit"
         >
           {modalMode === "edit" ? "Save" : "Submit"}
-        </Button >
+        </Button > : <></>
+        }
+       
       </Form>
   );
-  
+
 
   const postModal = (
     <Modal
@@ -205,44 +209,44 @@ function TeamPost(props) {
       footer={[ <Button key="close" onClick={handleClose}> Close </Button> ]}
     >
     {
-      modalMode != "new" 
+      modalMode != "new"
       ?
-        <Typography 
-          gutterBottom 
-          variant="h4" 
+        <Typography
+          gutterBottom
+          variant="h4"
           component="div"
         >
           {
-            isEdit 
+            isEdit
             ? <Button
-                onClick={ () => setIsEdit(false) & setIsDeletedMode(false) & setMedalMode("detail") } 
-                startIcon={<ArrowBackIosIcon sx={{ fontSize: "large" }}/> } 
+                onClick={ () => setIsEdit(false) & setIsDeletedMode(false) & setMedalMode("detail") }
+                startIcon={<ArrowBackIosIcon sx={{ fontSize: "large" }}/> }
               />
             : <Button
-                onClick={ () => setIsEdit(true) & setIsDeletedMode(false) & handleEdit() & setPostTitle(postNow.title) & setPostContent(postNow.content) } 
-                startIcon={<EditIcon sx={{ fontSize: "large" }}/> } 
+                onClick={ () => setIsEdit(true) & setIsDeletedMode(false) & handleEdit() & setPostTitle(postNow.title) & setPostContent(postNow.content) }
+                startIcon={<EditIcon sx={{ fontSize: "large" }}/> }
               />
           }
-          <Button 
+          <Button
             color= { isDeletedMode ? "error" : "primary"}
-            onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelPostDeleted() & setIsEdit(false) } 
+            onClick={ () => !isDeletedMode ? setIsDeletedMode(true) : handelPostDeleted() & setIsEdit(false) }
             startIcon={<DeleteOutlineOutlinedIcon sx={{ fontSize: "large" }}/> }
           >
             {!isDeletedMode ? "" : "Are you sure?" }
           </Button>
 
-          <Button 
+          <Button
             color="success"
-            style={{display: isDeletedMode ? "inline": "none" }} 
-            key="Cancel" 
-            onClick={() => setIsDeletedMode(false)} 
+            style={{display: isDeletedMode ? "inline": "none" }}
+            key="Cancel"
+            onClick={() => setIsDeletedMode(false)}
           >
             Cancel
           </Button>
         </Typography>
       : <></>
     }
-        
+
       {modalMode === "new"
         ? postForm
         : modalMode === "edit"

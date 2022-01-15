@@ -11,24 +11,62 @@ import {
   Grid,
   CardContent,
   Chip,
+  TextField,
 } from "@mui/material";
-import { Modal, Tag } from "antd";
+import { Modal, Tag, Form } from "antd";
+import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
+import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import TimePicker from "@mui/lab/TimePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
-import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import { CardActionArea } from "@mui/material";
-import { TEAM_VOTE_INIT, TEAM_VOTE_OPTION_INIT } from "../graphql";
-import { useQuery } from "@apollo/client";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import {
+  TEAM_VOTE_INIT,
+  CREATE_TEAM_VOTE,
+  CREATE_TEAM_VOTE_OPTION,
+} from "../graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import moment from "moment";
+
+const cardStyle = {
+  width: "45%",
+  margin: "1em",
+  padding: "1rem",
+  display: "inline-block",
+};
 
 /* 點擊vote進入detail頁面 */
 
 function TeamVote(props) {
-  const nowTime = Date.now();
+  const dateFormat = "YYYY/MM/DD";
+  let nowTime = Date.now();
+  let now = new Date();
+  let sevenDaysLater = new Date(now);
+  sevenDaysLater.setDate(now.getDate() + 7);
+
   const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [modalTitle, setModalTitle] = React.useState("");
+  const [isCreateModal1Visible, setIsCreateModal1Visible] =
+    React.useState(false);
+  const [isCreateModal2Visible, setIsCreateModal2Visible] =
+    React.useState(false);
+
   const [modalContent, setModalContent] = React.useState();
-  const [voteToBeFetched, setVoteToBeFetched] = React.useState("");
+
+  const [newTitle, setNewTitle] = React.useState("");
+  const [newLimit, setNewLimit] = React.useState();
+  const [newDescription, setNewDescription] = React.useState("");
+  const [endDate, setEndDate] = React.useState(sevenDaysLater);
+  const [endTime, setEndTime] = React.useState(sevenDaysLater);
+  const [newVoteID, setNewVoteID] = React.useState("");
+
+  const [inputBoxes, setInputBoxes] = React.useState([1]);
+  const [inputs, setInputs] = React.useState([]);
 
   const votes = useQuery(TEAM_VOTE_INIT, {
     variables: {
@@ -45,108 +83,211 @@ function TeamVote(props) {
           description: i.voteDescription,
           end: i.voteEnd,
           limit: i.voteLimit,
+          voteOption: i.voteOption,
         })
       );
     }
   }
-  const options = useQuery(TEAM_VOTE_OPTION_INIT, {
-    variables: {
-      voteID: voteToBeFetched,
-      // voteID: "19478c9a-4489-4951-89ec-660f4ec76c97",
-    },
+
+  const [createVote] = useMutation(CREATE_TEAM_VOTE, {
+    refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+    onCompleted: (e) => setNewVoteID(e.createVote.voteID),
   });
-  let OptionData = [];
-  if (isModalVisible) {
-    if (!options.loading) {
-      if (options.data) {
-        options.data.initVoteOption.map((i) =>
-          OptionData.push({
-            optionID: i.voteOptionID,
-            optionName: i.voteOptionName,
-          })
-        );
-      }
-    }
-  }
+  const [createVoteOption] = useMutation(CREATE_TEAM_VOTE_OPTION, {
+    refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+  });
 
   const handleClose = () => {
     setIsModalVisible(false);
   };
   const handleOpen = (vote) => {
-    setVoteToBeFetched(vote.id);
     setIsModalVisible(true);
-    setModalTitle(vote.title);
     setModalContent(
       <>
         <Typography variant="h4">{vote.title}</Typography>
-        <p style={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
-          {vote.description}
-        </p>
-        <Tag color="red">due: {vote.end}</Tag>
-        <Tag color="blue">you have {vote.limit} tickets</Tag>
-        <Button variant="outlined" color="success">
-          Vote
-        </Button>
-        {OptionData.map((option) => (
-          <p>{option.optionName}</p>
-        ))}
+        <div className="tags" style={{ marginTop: "0.75rem" }}>
+          <p>{vote.description}</p>
+          <Tag color="red">due at {vote.end}</Tag>
+          <Tag color="blue">vote {vote.limit} options</Tag>
+        </div>
+        <FormGroup style={{ marginTop: "0.75rem" }}>
+          {vote.voteOption.map((option) => (
+            <FormControlLabel
+              control={<Checkbox size="medium" />}
+              label={option.voteOptionName}
+            />
+          ))}
+        </FormGroup>
       </>
     );
-    console.log(voteToBeFetched);
-    console.log(OptionData);
+  };
+  const handleOpenCreate = () => {
+    setIsCreateModal1Visible(true);
+  };
+  const handleSubmitCreate = async () => {
+    let endDay = endDate.toDateString() + " " + endTime.toTimeString();
+    await createVote({
+      variables: {
+        voteTitle: newTitle,
+        voteDescription: newDescription,
+        voteEnd: new Date(endDay).toDateString(),
+        voteLimit: newLimit,
+        teamID: props.nowTeam,
+        creatorID: props.me,
+      },
+    });
+    setNewTitle("");
+    setNewDescription("");
+    setNewLimit();
+    setEndDate(sevenDaysLater);
+    setEndTime(sevenDaysLater);
+    setIsCreateModal1Visible(false);
+    setIsCreateModal2Visible(true);
   };
 
+  const handleAddBox = () => {
+    let temp = JSON.parse(JSON.stringify(inputBoxes));
+    temp.push(inputBoxes[inputBoxes.length - 1] + 1);
+    setInputBoxes(temp);
+  };
+  const handleOptionInput = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(inputs));
+    temp[index] = value;
+    setInputs(temp);
+  };
+
+  const handleSubmitCreateOption = async () => {
+    for (let i = 0; i < inputs.length; i++) {
+      await createVoteOption({
+        variables: {
+          voteID: newVoteID,
+          voteOptionName: inputs[i],
+        },
+      });
+    }
+    setIsCreateModal2Visible(false);
+  };
+
+  const modalCreateContent = (
+    <>
+      <div className="left-right" style={{ display: "flex", flexGrow: "1" }}>
+        <div className="left" style={{ width: "15rem" }}>
+          <TextField
+            label="Title"
+            size="small"
+            style={{ margin: "0.5rem", width: "15rem" }}
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
+          <TextField
+            label="Vote Limit"
+            size="small"
+            style={{ margin: "0.5rem", width: "15rem" }}
+            onChange={(e) => setNewLimit(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="right" style={{ marginLeft: "1rem" }}>
+          <TextField
+            label="Description"
+            size="small"
+            multiline
+            rows={4}
+            style={{ margin: "0.5rem", width: "15rem" }}
+            onChange={(e) => setNewDescription(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <MobileDatePicker
+          id="end-date"
+          label="End Date"
+          value={endDate ? endDate : sevenDaysLater}
+          onChange={(newValue) => {
+            setEndDate(newValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              style={{ margin: "0.5rem", width: "15rem" }}
+            />
+          )}
+        />
+        <TimePicker
+          id="end-time"
+          label="End Time"
+          value={endTime ? endTime : sevenDaysLater}
+          onChange={(newValue) => {
+            setEndTime(newValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              style={{ margin: "0.5rem", width: "15rem" }}
+            />
+          )}
+        />
+      </LocalizationProvider>
+    </>
+  );
+
+  const modalCreateOptionContent = (
+    <>
+      <p>{newVoteID}</p>
+      {inputBoxes.map((box, index) => (
+        <TextField
+          id="options"
+          value={inputs[index]}
+          label={"Option " + box}
+          size="small"
+          style={{ margin: "0.5rem 1rem" }}
+          onChange={(e) => handleOptionInput(index, e.target.value)}
+        />
+      ))}
+      <Form style={{ marginBottom: "2rem" }}>
+        <AddCircleOutlineSharpIcon
+          style={{
+            color: "green",
+            fontSize: "2rem",
+            margin: "1rem",
+            cursor: "pointer",
+          }}
+          onClick={handleAddBox}
+        />
+      </Form>
+    </>
+  );
+
   const EndVote = (vote) => (
-    <Card sx={{ p: 1, width: "100%" }} key={vote.id}>
-      <CardActionArea sx={{ width: "100%" }}>
+    <Card style={cardStyle} onClick={() => handleOpen(vote)}>
+      <CardActionArea>
         <CardContent>
-          <Box>
-            <Typography gutterBottom variant="h4" component="div">
-              {vote.title}
-            </Typography>
-            <Chip label="已結束" size="large" />
-          </Box>
-          <Box sx={{ m: 1, mt: 2 }}>
-            {/* <Typography gutterBottom variant="subtitle1" component="div">
+          <Typography gutterBottom variant="h4" component="div">
+            {vote.title}
+          </Typography>
+          <p>{vote.description}</p>
+          <Tag color="default">Ended</Tag>
+          {/* <Typography gutterBottom variant="subtitle1" component="div">
               結果 : {vote.result.name} {vote.result.count} 票
             </Typography> */}
-            <Typography gutterBottom variant="subtitle2" component="div">
-              <AccessTimeFilledIcon sx={{ fontSize: "small" }} /> {vote.end}
-            </Typography>
-          </Box>
+          <Tag color="red">due at {vote.end}</Tag>
         </CardContent>
       </CardActionArea>
     </Card>
   );
 
   const ActVote = (vote) => (
-    <Card sx={{ p: 1, width: "100%" }}>
-      <CardActionArea sx={{ width: "100%" }}>
+    <Card style={cardStyle} onClick={() => handleOpen(vote)}>
+      <CardActionArea>
         <CardContent>
-          <Box>
-            <Typography gutterBottom variant="h4" component="div">
-              {vote.title}
-            </Typography>
-            <Chip
-              label="投票中"
-              color="success"
-              variant="outlined"
-              size="large"
-            />
-            {/* {vote.replied ? (
-              <Chip label="Replied" color="success" sx={{ m: 1 }} />
-            ) : (
-              <Chip label="Ureplied" color="error" sx={{ m: 1 }} />
-            )} */}
-          </Box>
-          <Box sx={{ m: 1 }}>
-            <Typography gutterBottom variant="subtitle1" component="div">
-              {!vote.limit ? "一人多票" : `一人${vote.limit}票`}
-            </Typography>
-            <Typography gutterBottom variant="subtitle2" component="div">
-              <AccessTimeFilledIcon sx={{ fontSize: "small" }} /> {vote.end}
-            </Typography>
-          </Box>
+          <Typography gutterBottom variant="h4" component="div">
+            {vote.title}
+          </Typography>
+          <p>{vote.description}</p>
+          <Tag color="cyan">Ongoing</Tag>
+          <Tag color="blue">vote {vote.limit} options</Tag>
+          <Tag color="red">due at {vote.end}</Tag>
           {/*<Box sx={{ m:1, p: 1 }}>
               {vote.options.map(option => 
                   <Typography gutterBottom variant="body1" component="div" key = {option.id}>
@@ -159,7 +300,7 @@ function TeamVote(props) {
   );
 
   const votelist = (
-    <div className="vote-container">
+    <div className="vote-list">
       <Modal
         visible={isModalVisible}
         onCancel={handleClose}
@@ -177,6 +318,44 @@ function TeamVote(props) {
       >
         {modalContent}
       </Modal>
+      <Modal
+        visible={isCreateModal1Visible}
+        title="Create a Vote"
+        onCancel={() => setIsCreateModal1Visible(false)}
+        style={{ zIndex: 1200 }}
+        footer={[
+          <Button
+            key="ok"
+            variant="contained"
+            color="success"
+            onClick={handleSubmitCreate}
+            style={{ margin: "0 0.5rem" }}
+          >
+            Create
+          </Button>,
+        ]}
+      >
+        {modalCreateContent}
+      </Modal>
+      <Modal
+        visible={isCreateModal2Visible}
+        title="Add Some Options"
+        onCancel={() => setIsCreateModal2Visible(false)}
+        style={{ zIndex: 1200 }}
+        footer={[
+          <Button
+            key="ok"
+            variant="contained"
+            color="success"
+            onClick={handleSubmitCreateOption}
+            style={{ margin: "0 0.5rem" }}
+          >
+            Complete
+          </Button>,
+        ]}
+      >
+        {modalCreateOptionContent}
+      </Modal>
       <div
         className="createBox-container"
         style={{
@@ -185,7 +364,7 @@ function TeamVote(props) {
           marginLeft: "1rem",
         }}
       >
-        <Button variant="outlined" color="success">
+        <Button variant="outlined" color="success" onClick={handleOpenCreate}>
           Create
         </Button>
       </div>
@@ -199,21 +378,9 @@ function TeamVote(props) {
           flexWrap: "wrap",
         }}
       >
-        <List className="team-vote-list" sx={{ width: "100%" }}>
-          {VoteData.map((vote) => (
-            <ListItem
-              button
-              key={vote.id}
-              component="div"
-              sx={{ width: "40%", maxHeight: 400 }}
-              onClick={() => handleOpen(vote)}
-            >
-              {new Date(vote.end).getTime() > nowTime
-                ? ActVote(vote)
-                : EndVote(vote)}
-            </ListItem>
-          ))}
-        </List>
+        {VoteData.map((vote) =>
+          new Date(vote.end).getTime() > nowTime ? ActVote(vote) : EndVote(vote)
+        )}
       </div>
     </div>
   );
