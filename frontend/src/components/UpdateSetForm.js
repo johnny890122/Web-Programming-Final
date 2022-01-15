@@ -152,11 +152,18 @@ const UpdateSetForm = (set, onUpdate, players) => {
                  name='setScore'>
             <Input placeholder="ex : oxoox ( 我方得分 : o ，對方得分 : x )"/>
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+      <Row>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ margin: '0 8px' }}>
+            Submit
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" danger style={{ margin: '0 8px' }}>
+            Delete
+          </Button>
+        </Form.Item>
+      </Row>
     </Form>
     
   )  
