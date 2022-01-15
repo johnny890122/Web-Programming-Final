@@ -118,17 +118,11 @@ function TeamEvent(props) {
               <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
             </Typography>
 
-            {new Date(event.eventStart) <= today ? (
-              <Chip label="Finished" sx={{ my: 1 }} />
-            ) : event.type === "team" ? (
-              event.reply ? (
-                <Chip label="Replied" color="success" sx={{ my: 1 }} />
-              ) : (
-                <Chip label="Unreplied" color="error" sx={{ my: 1 }} />
-              )
-            ) : (
-              <></>
-            )}
+            {
+              new Date(event.eventStart) <= today 
+              ? <Chip label="Finished" sx={{ my: 1 }} /> 
+              : <Chip label="Ongoing" sx={{ my: 1 }} />
+            }
 
             <Box sx={{ textAlign: "right" }}>
               <Button
@@ -199,6 +193,7 @@ function TeamEvent(props) {
           <Modal
             visible={isModalVisible}
             onCancel={handleClose}
+            width="600px"
             onOk={handleClose}
             style={{ zIndex: 1200 }}
             footer={[

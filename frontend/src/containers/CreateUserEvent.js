@@ -104,6 +104,7 @@ function CreateUserEvent(props) {
             <div>
                 <TextField id="create-event-description"
                         value ={description}
+                        required
                         sx={{ m: 2 }}
                         label="活動內容"
                         placeholder="Description" 
@@ -163,10 +164,12 @@ function CreateUserEvent(props) {
                         label="活動地點"
                         placeholder="Location" 
                         value={location}
+                        required
                         onChange={e => setLocation(e.target.value)}/>
             </div>    
             <div>
                 {
+                    title & description & location ? (
                     props.mode === "create" 
                     ? <Button sx={{ m: 2 }} color= "success" variant="contained" size="large"
                         onClick={submitCreateEvent}>
@@ -176,7 +179,7 @@ function CreateUserEvent(props) {
                         <Button sx={{ m: 2 }} color= "error" variant="contained" size="large"
                         onClick={submitUpdateUserEvent}>
                         Save </Button >
-                    </>
+                    </>) : <></>
                 }
                 
             </div>
