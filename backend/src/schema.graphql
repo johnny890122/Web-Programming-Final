@@ -10,10 +10,10 @@ type Query {
   findTeamName(teamID: String): String
   initMember(teamID: String): [User]
   isManaging(userID: String, teamID: String): Boolean
-  initContest(teamID: String): [Contest]
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
+  initVoteOption(voteID: String): [VoteOption]
 
   myUserAccount(userID: String): User
   userEventDetail(eventID: String): Event
@@ -23,6 +23,10 @@ type Query {
   teamPostDetail(postID: String): Post
   teamVoteDetail(voteID: String): Vote
   #teamVoteOption(voteOptionID: String): VoteOption
+
+  initContest(teamID: String): [Contest]
+  teamContestDetail(contestID: String): Contest
+  initSetDetail(contestID: String): [SetDetail]
 
   users(query: String): [User]
   teams(query: String): [Team]
@@ -132,7 +136,7 @@ type Mutation {
 
   createContest(
     teamID: String!
-    contestDate: String!
+    contestDate: String
     contestOpponent: String
     contestIsWin: ContestWinOption!
     contestTitle: String
@@ -143,6 +147,8 @@ type Mutation {
     contestID: String!
     setNumber: Int
     setScore: String
+    setMyPoint: Int !
+    setOppoPoint: Int !
     setOppoErrServe: Int
     setOppoErrAttack: Int
     setOppoErrOther: Int
@@ -340,7 +346,7 @@ type Contest {
   contestDate: String
   contestMyTeam: Team
   contestOpponent: String
-  contestIsWin: ContestWinOption!
+  contestIsWin: ContestWinOption
   contestMySet: Int
   contestOppoSet: Int
   contestSetDetail: [SetDetail]
@@ -349,7 +355,7 @@ type Contest {
 type SetDetail {
   setID: String
   setNumber: Int
-  setScore: [String]
+  setScore: String
   setMyPoint: Int
   setOppoPoint: Int
   setOppoErrServe: Int
@@ -360,8 +366,8 @@ type SetDetail {
 }
 
 type DetailPlayer {
-  detailID: String!
-  detailPlayer: User!
+  detailID: String
+  detailPlayer: User
   detailPointServe: Int
   detailPointAttack: Int
   detailPointTip: Int
@@ -375,7 +381,7 @@ type DetailPlayer {
   detailErrOther: Int
   detailErrAttack: Int
   detailErrServe: Int
-  detailComboServe: [Int]
+  detailComboServe: String
 }
 
 type Vote {

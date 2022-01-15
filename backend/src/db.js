@@ -115,7 +115,7 @@ const SetDetailSchema = new Schema({
   setOppoErrOther: { type: Number, required: false }, // 對方處理失誤
   setNote: { type: String, required: false }, // 備註
   setPlayerDetail: [{ type: Schema.Types.ObjectId, ref: "DetailPlayer" }], // 個人數據
-})
+});
 
 const DetailPlayerSchema = new Schema({
   detailID: { type: String, required: false },
@@ -134,7 +134,7 @@ const DetailPlayerSchema = new Schema({
   detailErrAttack: { type: Number, required: false }, // 攻擊失分
   detailErrServe: { type: Number, required: false }, // 發球失分
   detailComboServe: { type: String, required: false }, // 連續發球次數
-})
+});
 
 const PostSchema = new Schema({
   postID: { type: String, required: true },

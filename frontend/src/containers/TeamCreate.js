@@ -31,7 +31,7 @@ import { mergeDeepArray } from "@apollo/client/utilities";
 function TeamForm(props) {
   const { TextArea } = Input;
 
-  const teamType = ["volleyball team", "volleyball team", "volleyball team"];
+  const teamType = ["volleyball team"];
 
   const handleMenuClick = (e) => {
     props.setSelectedTeamType(e.key);

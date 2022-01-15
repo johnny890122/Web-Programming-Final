@@ -224,10 +224,13 @@ const Mutation = {
       teamEvent: [],
       teamManager: manager,
     }).save();
-    const newAllTeams = await db.UserModel.findOneAndUpdate(
-      { _id: Creator._id },
-      { $push: { allTeams: team._id } }
-    );
+
+    for (let i = 0; i < teamMember.length; i++) {
+      const newAllTeams = await db.UserModel.findOneAndUpdate(
+        { _id: teamMember[i] },
+        { $push: { allTeams: team._id } }
+      );
+    }
 
     const newManageTeams = await db.UserModel.findOneAndUpdate(
       { _id: Creator._id },
@@ -771,12 +774,13 @@ const Mutation = {
     } = args;
     const Team = await db.TeamModel.findOne({ teamID: teamID });
 
+    const timeNow = await new Date();
     const OBID = ObjectId();
     const contest = await new db.ContestModel({
       _id: OBID,
       contestID: uuidv4(),
       contestTitle: contestTitle || "Unnamed",
-      contestDate: contestDate,
+      contestDate: contestDate || timeNow,
       contestMyTeam: Team._id,
       contestOpponent: contestOpponent || "unknown",
       contestIsWin: contestIsWin,
@@ -868,7 +872,7 @@ const Mutation = {
       detailErrOther: detailErrOther || 0,
       detailErrAttack: detailErrAttack || 0,
       detailErrServe: detailErrServe || 0,
-      detailComboServe: detailComboServe || String,
+      detailComboServe: detailComboServe || "",
     }).save();
 
     const playerToSet = await db.SetDetailModel.findOneAndUpdate(
@@ -992,10 +996,7 @@ const Mutation = {
   deleteContest: async (parent, args, { db, pubSub }) => {
     const { contestID, teamID } = args;
     const Team = await db.TeamModel.findOne({ teamID: teamID });
-    const Contest = await db.ContestOptionModel.findOne({
-      contestID: contestID,
-    });
-
+    const Contest = await db.ContestModel.findOne({ contestID: contestID });
     const contestToTeam = await db.TeamModel.findOneAndUpdate(
       { _id: Team._id },
       {
@@ -1016,7 +1017,7 @@ const Mutation = {
     const { setID, contestID } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
     const SetDetail = await db.SetDetailOptionModel.findOne({
-      setID: setID,
+      setID: setID
     });
 
     const setToContest = await db.ContestModel.findOneAndUpdate(

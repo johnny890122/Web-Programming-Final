@@ -33,7 +33,7 @@ import { Tooltip } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import CreateUserEvent from "../containers/CreateUserEvent";
 import KeyboardReturnTwoToneIcon from "@mui/icons-material/KeyboardReturnTwoTone";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const ViewBox = styled.div`
   max-width: 800px;
@@ -50,15 +50,20 @@ const UserDashboard = (props) => {
   });
 
   const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
-    variables: { userID: props.me  }
+    variables: { userID: props.me },
   });
 
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
-      data = userEvent.data.initUserEvent.concat(teamEvent.data.initUserTeamEvent);
-      if (!events || data.length != events.length) {
-         setEvents(data);
+    if (userEvent.data) {
+      data = userEvent.data.initUserEvent;
+      if (teamEvent.data) {
+        data = data.concat(teamEvent.data.initUserTeamEvent);
       }
+    }
+    if (!events || data.length != events.length) {
+      setEvents(data);
+    }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -72,34 +77,26 @@ const UserDashboard = (props) => {
       );
     } else if (newFilter === "past") {
       setEvents(
-        data.filter(
-          (event) => new Date(parseInt(event.eventStart)) <= today
-        )
+        data.filter((event) => new Date(parseInt(event.eventStart)) <= today)
       );
     } else if (newFilter === "unrespond") {
       setEvents(
         data.filter(
-          (event) => event.reply === false && new Date(parseInt(event.eventStart)) > today
+          (event) =>
+            event.reply === false &&
+            new Date(parseInt(event.eventStart)) > today
         )
       );
     } else if (newFilter === "user") {
-      setEvents(
-        data.filter(
-          (event) => event.type === "user"
-        )
-      );
+      setEvents(data.filter((event) => event.type === "user"));
     } else if (newFilter === "team") {
-      setEvents(
-        data.filter(
-          (event) => event.type === "team"
-        )
-      );
+      setEvents(data.filter((event) => event.type === "team"));
     } else {
       setEvents(data);
     }
     /* 篩選並排序符合條件的活動 */
   };
-  
+
   const showModalWithNotification = () => {
     setIsModalVisible(true);
     setComponentInModal(<Notification me={props.me} />);
@@ -168,16 +165,20 @@ const UserDashboard = (props) => {
                 key={event.eventID}
                 onClick={(e) =>
                   setIsModalVisible(true) &
-                  setComponentInModal( 
-                    event.type === "team" 
-                    ? <TeamEventDetail 
-                        onDelete={()=> setIsModalVisible(false)}
-                        onEdit={()=> setIsModalVisible(false)} 
-                        id={e.target.getAttribute("data-index")} />
-                    : <UserEventDetail 
-                        onDelete={()=> setIsModalVisible(false)}
-                        onEdit={() => setIsModalVisible(false) } 
-                        id={e.target.getAttribute("data-index")} />
+                  setComponentInModal(
+                    event.type === "team" ? (
+                      <TeamEventDetail
+                        onDelete={() => setIsModalVisible(false)}
+                        onEdit={() => setIsModalVisible(false)}
+                        id={e.target.getAttribute("data-index")}
+                      />
+                    ) : (
+                      <UserEventDetail
+                        onDelete={() => setIsModalVisible(false)}
+                        onEdit={() => setIsModalVisible(false)}
+                        id={e.target.getAttribute("data-index")}
+                      />
+                    )
                   )
                 }
               >
@@ -191,42 +192,42 @@ const UserDashboard = (props) => {
     </List>
   );
   const handleFilterMainModeChange = () => {
-    filterMainMode === "Role" ? setFilterMainMode("Time") : setFilterMainMode("Role")
-  }
+    filterMainMode === "Role"
+      ? setFilterMainMode("Time")
+      : setFilterMainMode("Role");
+  };
   const eventlist = (
     <div className="user-event">
-        <Button color="primary" onClick={handleFilterMainModeChange}>
-          <FilterAltIcon sx={{ fontSize: "large" }} />
-          { filterMainMode }
-        </Button>
-      
+      <Button color="primary" onClick={handleFilterMainModeChange}>
+        <FilterAltIcon sx={{ fontSize: "large" }} />
+        {filterMainMode}
+      </Button>
+
       <div className="user-event-filtertoggle">
-        {
-        filterMainMode === "Role" 
-        ?
-        <ToggleButtonGroup
-          color="primary"
-          value={filtermode}
-          exclusive
-          onChange={handleFilterChange}
-        > 
-          <ToggleButton value="all">all</ToggleButton>
-          <ToggleButton value="user">user</ToggleButton>
-          <ToggleButton value="team">team</ToggleButton>
-        </ToggleButtonGroup>
-        : 
-        <ToggleButtonGroup
-          color="primary"
-          value={filtermode}
-          exclusive
-          onChange={handleFilterChange}
-          // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
-        >
-          <ToggleButton value="upcoming">Upcoming</ToggleButton>
-          <ToggleButton value="past">Past</ToggleButton>
-          <ToggleButton value="unrespond">Unrespond</ToggleButton>
-        </ToggleButtonGroup>
-      }
+        {filterMainMode === "Role" ? (
+          <ToggleButtonGroup
+            color="primary"
+            value={filtermode}
+            exclusive
+            onChange={handleFilterChange}
+          >
+            <ToggleButton value="all">all</ToggleButton>
+            <ToggleButton value="user">user</ToggleButton>
+            <ToggleButton value="team">team</ToggleButton>
+          </ToggleButtonGroup>
+        ) : (
+          <ToggleButtonGroup
+            color="primary"
+            value={filtermode}
+            exclusive
+            onChange={handleFilterChange}
+            // 切換篩選模式: All(新發布到舊)、Upcoming(時間進到遠)、Past(時間進到遠)、Unrespond(未回應, 新發布到舊)
+          >
+            <ToggleButton value="upcoming">Upcoming</ToggleButton>
+            <ToggleButton value="past">Past</ToggleButton>
+            <ToggleButton value="unrespond">Unrespond</ToggleButton>
+          </ToggleButtonGroup>
+        )}
 
         <Button
           variant="outlined"
@@ -234,7 +235,13 @@ const UserDashboard = (props) => {
           sx={{ m: 1 }}
           onClick={() =>
             setIsModalVisible(true) &
-            setComponentInModal(<CreateUserEvent me={props.me} mode="create" onCreate={()=>setIsModalVisible(false)} />)
+            setComponentInModal(
+              <CreateUserEvent
+                me={props.me}
+                mode="create"
+                onCreate={() => setIsModalVisible(false)}
+              />
+            )
           }
         >
           Create
@@ -270,7 +277,7 @@ const UserDashboard = (props) => {
         visible={isModalVisible}
         onCancel={handleClose}
         onOk={handleClose}
-        width= "600px"
+        width="600px"
         style={{ zIndex: 1200 }}
         footer={[
           <Button key="close" onClick={handleClose}>

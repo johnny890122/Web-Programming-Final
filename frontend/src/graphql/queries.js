@@ -193,6 +193,56 @@ export const TEAM_SCORE_INIT = gql`
   }
 `;
 
+export const TEAM_CONTEST_DETAIL = gql`
+  query teamContestDetail($contestID: String) {
+    teamContestDetail(contestID: $contestID) {
+      contestID
+      contestTitle
+      contestTitle
+      contestIsWin
+      contestMyTeam {
+        teamID
+        teamName
+      }
+      contestMySet
+      contestOppoSet
+      contestOpponent
+      contestSetDetail {
+        setID
+        setNumber
+        setScore
+        setMyPoint
+        setOppoPoint
+        setOppoErrServe
+        setOppoErrAttack
+        setOppoErrOther
+        setNote
+        setPlayerDetail {
+          detailID
+          detailPlayer {
+            userID
+            userName
+          }
+          detailPointServe
+          detailPointAttack
+          detailPointTip
+          detailTimeAttack
+          detailTimePass
+          detailTimeNoPass
+          detailErrPassS
+          detailErrPassA
+          detailErrPass1
+          detailErrSet
+          detailErrOther
+          detailErrAttack
+          detailErrServe
+          detailComboServe
+        }
+      }
+    }
+  }
+`;
+
 export const TEAM_MEMBER_INIT = gql`
   query initMember($teamID: String) {
     initMember(teamID: $teamID) {
@@ -213,9 +263,24 @@ export const TEAM_PLAYERNAME_INIT = gql`
   }
 `;
 
-export const IS_MANAGING = gql`
-  query isManaging($userID: String, $teamID: String) {
-    isManaging(userID: $userID, teamID: $teamID)
+export const TEAM_VOTE_INIT = gql`
+  query initVote($teamID: String) {
+    initVote(teamID: $teamID) {
+      voteID
+      voteTitle
+      voteDescription
+      voteEnd
+      voteLimit
+    }
+  }
+`;
+
+export const TEAM_VOTE_OPTION_INIT = gql`
+  query initVoteOption($voteID: String) {
+    initVoteOption(voteID: $voteID) {
+      voteOptionID
+      voteOptionName
+    }
   }
 `;
 
