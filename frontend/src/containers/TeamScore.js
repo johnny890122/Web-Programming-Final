@@ -11,9 +11,11 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { TEAM_SCORE_INIT, CREATE_TEAM_SCORE, DELETE_CONTEST } from "../graphql";
+import { TEAM_SCORE_INIT, CREATE_TEAM_SCORE, UPDATE_CONTEST, DELETE_CONTEST } from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
+import UpdateContestForm from "../components/UpdateContestForm";
 
 function Score(props) {
   
@@ -38,18 +40,30 @@ function Score(props) {
         contestDate: i.contestDate,//new Date(i.contestDate).toDateString(),
         contestMySet: i.contestMySet,
         contestOppoSet: i.contestOppoSet,
+        contestIsWin: i.contestIsWin,
       })
     );
   }
 
+  const WinOption = [
+    {label: "win", value: "win"},
+    {label: "lose", value: "lose"},
+    {label: "tie", value: "tie"}
+  ];
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const [addContest] = useMutation(CREATE_TEAM_SCORE, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
+  const [editContest] = useMutation(UPDATE_CONTEST, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
   const [removeContest] = useMutation(DELETE_CONTEST, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
   
   const handleCreate = () => {
     setIsModalVisible(true);
-    setComponentInModal(scoreForm)
+    setComponentInModal(scoreForm);
+  };
+  const handleEdit = (contest) => {
+    setIsModalVisible(true);
+    setComponentInModal(UpdateContestForm(contest, onUpdate))
   };
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -69,8 +83,20 @@ function Score(props) {
         contestMySet: values.contestMySet || 0,
         contestOppoSet: values.contestOppoSet || 0,
       }});
-    //setIsModalVisible(true);
   };
+  const onUpdate = async(values, contest) => {
+    setIsModalVisible(false);
+    const newContest = await editContest(
+      {variables: {
+        contest: contest.contestID,
+        contestDate: values.contestDate.format('YYYY/MM/DD'),
+        contestIsWin: values.contestIsWin,
+        contestTitle: values.contestTitle,
+        contestOpponent: values.contestOpponent,
+        contestMySet: values.contestMySet || 0,
+        contestOppoSet: values.contestOppoSet || 0,
+      }});
+  }
   const onDelete = async(score) => {    
     console.log(score.contestID);
     const deleteContest = await removeContest(
@@ -81,14 +107,7 @@ function Score(props) {
     );
   };
 
-  const scoreForm = (set) => {
-
-    const WinOption = [
-      {label: "win", value: "win"},
-      {label: "lose", value: "lose"},
-      {label: "tie", value: "tie"}
-    ];
-
+  const scoreForm = () => {
     return (
       <Form name="create-contest-form" onFinish={onCreate} 
             autoComplete="off" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
@@ -185,7 +204,7 @@ function Score(props) {
               </Card>
             </Link>
             
-            <Button type="primary" style={{ margin: '0 8px' }} >
+            <Button key={score.id} type="primary" style={{ margin: '0 8px' }} onClick={() => handleEdit(score)}>
               Edit
             </Button>
 
