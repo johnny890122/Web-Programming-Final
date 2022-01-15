@@ -8,8 +8,7 @@ import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from
 import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
-import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
-         CREATE_SET_DETAIL } from "../graphql";
+import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME, CREATE_SET_DETAIL } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -55,19 +54,19 @@ const TeamScoreDetail = (props) => {
   
 
   const onCreate = async(values) => {
-    /*await addSet(
+    await addSet(
       {variables: {
         contestID: props.nowContest,
-        setNumber: values.setNumber,
-        setScore: values.setScore || "",
-        setMyPoint: values.setMyPoint,
-        setOppoPoint: values.setOppoPoint,
-        setOppoErrServe: values.setOppoErrServe || 0,
-        setOppoErrAttack: values.setOppoErrAttack || 0,
-        setOppoErrOther: values.setOppoErrOther || 0,
-        setNote: values.setNote || "",
-      }})*/
-    const vars = {
+        setNumber: 5,
+        setScore: "",
+        setMyPoint: 25,
+        setOppoPoint: 0,
+        setOppoErrServe: 0,
+        setOppoErrAttack: 0,
+        setOppoErrOther: 0,
+        setNote: "",
+      }})
+    /*const vars = await {
       contestID: props.nowContest,
       setNumber: values.setNumber,
       setScore: values.setScore || "",
@@ -78,8 +77,8 @@ const TeamScoreDetail = (props) => {
       setOppoErrOther: values.setOppoErrOther || 0,
       setNote: values.setNote || "",
     };
-    await addSet(
-      {variables: vars})
+    addSet(
+      {variables: vars})*/
   };
   const onUpdate = values => {
     console.log('save set');
