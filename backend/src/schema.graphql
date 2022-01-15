@@ -286,6 +286,7 @@ type Todo {
 
 type NotificationTask {
   taskID: String
+  taskTitle: String
   taskTime: Float
   taskType: String
   taskContent: String

@@ -22,7 +22,7 @@ function Notification(props) {
         if (!tmp[dateString]) {
           tmp[dateString] = [];
         }
-        tmp[dateString].push({ type: i.taskType, content: i.taskContent });
+        tmp[dateString].push({ type: i.taskType, title: i.taskTitle, content: i.taskContent });
       }
 
       for (var i of Object.keys(tmp)) {

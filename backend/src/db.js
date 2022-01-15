@@ -69,6 +69,7 @@ const NotificationTaskSchema = new Schema({
   userID: { type: String, required: false },
   taskID: { type: String, required: false },
   taskTime: { type: Number, required: false },
+  taskTitle: {type: String, required: false},
   taskType: { type: String, required: false },
   taskContent: { type: String, required: false },
 });
