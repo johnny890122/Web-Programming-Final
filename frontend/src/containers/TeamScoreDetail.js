@@ -57,14 +57,14 @@ const TeamScoreDetail = (props) => {
     await addSet(
       {variables: {
         contestID: props.nowContest,
-        setNumber: 5,
-        setScore: "",
-        setMyPoint: 25,
-        setOppoPoint: 0,
-        setOppoErrServe: 0,
-        setOppoErrAttack: 0,
-        setOppoErrOther: 0,
-        setNote: "",
+        setNumber: values.setNumber,
+        setScore: values.setScore || "",
+        setMyPoint: values.setMyPoint,
+        setOppoPoint: values.setOppoPoint,
+        setOppoErrServe: values.setOppoErrServe || 0,
+        setOppoErrAttack: values.setOppoErrAttack || 0,
+        setOppoErrOther: values.setOppoErrOther || 0,
+        setNote: values.setNote || "",
       }})
     /*const vars = await {
       contestID: props.nowContest,

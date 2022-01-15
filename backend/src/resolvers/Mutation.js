@@ -150,7 +150,6 @@ const Mutation = {
     },
     { db, pubSub }
   ) => {
-
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
@@ -366,13 +365,35 @@ const Mutation = {
       postTime: timeNow,
     }).save();
 
-    console.log(post)
+    console.log(post);
 
     const newPost = await db.TeamModel.findOneAndUpdate(
       { teamID: teamID },
       { $push: { teamPost: post._id } }
     );
     console.log("New Post Saved!");
+
+    const Team = await db.TeamModel.findOne({ teamID });
+    if (!Team) {
+      throw new Error("Team not found!");
+    }
+
+    Team.teamMember.map(async (user) => {
+      const User = await db.UserModel.findOne({ _id: user._id });
+      if (!User) {
+        throw new Error("User not found!");
+      }
+
+      await new db.NotificationTaskModel({
+        taskID: uuidv4(),
+        userID: User.userID,
+        taskTime: timeNow,
+        taskTitle: Team.teamName,
+        taskType: "Post",
+        taskContent: postTitle,
+      }).save();
+    });
+
     return post;
   },
 
@@ -460,11 +481,12 @@ const Mutation = {
       }
 
       await new db.NotificationTaskModel({
-        taskID: "1234",
+        taskID: uuidv4(),
         userID: User.userID,
         taskTime: timeNow,
-        taskType: `Team(${Team.teamName})`,
-        taskContent: `New Event: ${eventTitle}`,
+        taskTitle: Team.teamName,
+        taskType: 'Event',
+        taskContent: eventTitle,
       }).save();
     });
 
@@ -608,7 +630,7 @@ const Mutation = {
     } = args;
     const Creator = await db.UserModel.findOne({ userID: creatorID });
 
-    const timeNow = await new Date(); //
+    const timeNow = new Date(); //
     const OBID = ObjectId();
     const vote = await new db.VoteModel({
       _id: OBID,
@@ -1017,7 +1039,7 @@ const Mutation = {
     const { setID, contestID } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
     const SetDetail = await db.SetDetailOptionModel.findOne({
-      setID: setID
+      setID: setID,
     });
 
     const setToContest = await db.ContestModel.findOneAndUpdate(

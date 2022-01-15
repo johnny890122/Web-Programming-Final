@@ -147,23 +147,22 @@ export const CREATE_TEAM = gql`
 `;
 
 export const CREATE_TEAM_POST = gql`
-mutation createPost(
+  mutation createPost(
     $teamID: String
     $postTitle: String
     $postContent: String
     $creatorID: String
   ) {
     createPost(
-    teamID: $teamID
-    postTitle: $postTitle
-    postContent: $postContent
-    creatorID: $creatorID
+      teamID: $teamID
+      postTitle: $postTitle
+      postContent: $postContent
+      creatorID: $creatorID
     ) {
       postID
-    } 
+    }
   }
 `;
-
 
 export const UPDATE_TEAM_POST = gql`
   mutation updatePost(
@@ -172,26 +171,20 @@ export const UPDATE_TEAM_POST = gql`
     $postContent: String
   ) {
     updatePost(
-    postID: $postID
-    postTitle: $postTitle
-    postContent: $postContent
+      postID: $postID
+      postTitle: $postTitle
+      postContent: $postContent
     ) {
       postID
-    } 
+    }
   }
 `;
 
 export const DELETE_TEAM_POST = gql`
-mutation deletePost(
-    $teamID: String
-    $postID: String
-  ) {
-    deletePost(
-      teamID: $teamID
-      postID: $postID
-    ) {
+  mutation deletePost($teamID: String, $postID: String) {
+    deletePost(teamID: $teamID, postID: $postID) {
       teamID
-    } 
+    }
   }
 `;
 
@@ -255,6 +248,36 @@ export const ADD_TEAM_MEMBER = gql`
   mutation addMember($teamID: String, $memberAccount: String) {
     addMember(teamID: $teamID, memberAccount: $memberAccount) {
       userID
+    }
+  }
+`;
+
+export const CREATE_TEAM_VOTE = gql`
+  mutation createVote(
+    $voteTitle: String!
+    $voteDescription: String!
+    $voteEnd: String!
+    $voteLimit: Int
+    $teamID: String!
+    $creatorID: String!
+  ) {
+    createVote(
+      voteTitle: $voteTitle
+      voteDescription: $voteDescription
+      voteEnd: $voteEnd
+      voteLimit: $voteLimit
+      teamID: $teamID
+      creatorID: $creatorID
+    ) {
+      voteID
+    }
+  }
+`;
+
+export const CREATE_TEAM_VOTE_OPTION = gql`
+  mutation createVoteOption($voteID: String!, $voteOptionName: String!) {
+    createVoteOption(voteID: $voteID, voteOptionName: $voteOptionName) {
+      voteOptionID
     }
   }
 `;

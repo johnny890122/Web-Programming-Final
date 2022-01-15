@@ -2,7 +2,7 @@ import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from
 import { MinusCircleOutlined } from '@ant-design/icons';
 
 const CreateSetForm = (onCreate, players) => {
-        
+
   return (
     <Form name="dynamic_form_nest_item" onFinish={onCreate} autoComplete="off">
       <Row>
@@ -37,10 +37,10 @@ const CreateSetForm = (onCreate, players) => {
         </Form.Item>
       </Row>
       <Form.List name="setPlayerDetail"// 球員紀錄
-      > 
+      >
         {(fields, { add, remove }) => (
           <>
-            {fields.map(({ field, index, key, name, ...restField }) => ( 
+            {fields.map(({ field, index, key, name, ...restField }) => (
               <Space key={key} align="baseline">
                 <Row key={index*10+1}
                      style={{ width: 300 }}>
@@ -54,7 +54,7 @@ const CreateSetForm = (onCreate, players) => {
                 </Row>
                 <Row key={index*10+2}
                      style={{ width: 450 }}>
-                  <Form.Item label="發球得分" 
+                  <Form.Item label="發球得分"
                     {...restField}
                     name={[name, 'detailPointServe']}>
                     <InputNumber min={0}/>
@@ -65,12 +65,12 @@ const CreateSetForm = (onCreate, players) => {
                     <InputNumber min={0}/>
                   </Form.Item>
                   <Form.Item label="吊球得分"
-                    {...restField}                    
+                    {...restField}
                     name={[name, 'detailPointTip']}>
                     <InputNumber min={0}/>
                   </Form.Item>
                   <Form.Item label="攻擊次數"
-                    {...restField}                    
+                    {...restField}
                     name={[name, 'detailTimeAttack']}>
                     <InputNumber min={0}/>
                   </Form.Item>
@@ -124,7 +124,6 @@ const CreateSetForm = (onCreate, players) => {
                   </Form.Item>
                   <Form.Item label="連續發球"
                             name='detailComboServe'
-                             
                             style={{ width: 450 }}>
                         <Input placeholder="ex : 2 4 1 ( 每次間隔一空格 )"/>
                   </Form.Item>
@@ -138,8 +137,7 @@ const CreateSetForm = (onCreate, players) => {
                 Add Player
               </Button>
             </Form.Item>
-          </>
-        )}
+          </>)}
       </Form.List>
       <Form.Item label="備註"
                  name='setNote'
@@ -157,8 +155,8 @@ const CreateSetForm = (onCreate, players) => {
         </Button>
       </Form.Item>
     </Form>
-    
-  )    
+
+  )
 };
 
 export default CreateSetForm;

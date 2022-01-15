@@ -144,11 +144,11 @@ type Mutation {
     contestOppoSet: Int
   ): Contest
   createSetDetail(
-    contestID: String!
+    contestID: String
     setNumber: Int
     setScore: String
-    setMyPoint: Int !
-    setOppoPoint: Int !
+    setMyPoint: Int 
+    setOppoPoint: Int 
     setOppoErrServe: Int
     setOppoErrAttack: Int
     setOppoErrOther: Int
@@ -286,6 +286,7 @@ type Todo {
 
 type NotificationTask {
   taskID: String
+  taskTitle: String
   taskTime: Float
   taskType: String
   taskContent: String
