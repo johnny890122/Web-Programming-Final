@@ -55,7 +55,7 @@ const TeamScoreDetail = (props) => {
   
 
   const onCreate = async(values) => {
-    await addSet(
+    /*await addSet(
       {variables: {
         contestID: props.nowContest,
         setNumber: values.setNumber,
@@ -66,7 +66,20 @@ const TeamScoreDetail = (props) => {
         setOppoErrAttack: values.setOppoErrAttack || 0,
         setOppoErrOther: values.setOppoErrOther || 0,
         setNote: values.setNote || "",
-      }})
+      }})*/
+    const vars = {
+      contestID: props.nowContest,
+      setNumber: values.setNumber,
+      setScore: values.setScore || "",
+      setMyPoint: values.setMyPoint,
+      setOppoPoint: values.setOppoPoint,
+      setOppoErrServe: values.setOppoErrServe || 0,
+      setOppoErrAttack: values.setOppoErrAttack || 0,
+      setOppoErrOther: values.setOppoErrOther || 0,
+      setNote: values.setNote || "",
+    };
+    await addSet(
+      {variables: vars})
   };
   const onUpdate = values => {
     console.log('save set');
