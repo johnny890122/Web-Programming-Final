@@ -64,9 +64,12 @@ function TeamVote(props) {
   const [endDate, setEndDate] = React.useState(sevenDaysLater);
   const [endTime, setEndTime] = React.useState(sevenDaysLater);
   const [newVoteID, setNewVoteID] = React.useState("");
+  // const [voteOptionID, setVoteOptionID] = React.useState([]);
 
   const [inputBoxes, setInputBoxes] = React.useState([1]);
   const [inputs, setInputs] = React.useState([]);
+
+  const [reply, setReply] = React.useState([]);
 
   const votes = useQuery(TEAM_VOTE_INIT, {
     variables: {
@@ -95,6 +98,7 @@ function TeamVote(props) {
   });
   const [createVoteOption] = useMutation(CREATE_TEAM_VOTE_OPTION, {
     refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+    // onCompleted: (e) => setVoteOptionID(e.createVoteOption.voteOptionID),
   });
 
   const handleClose = () => {
@@ -110,10 +114,10 @@ function TeamVote(props) {
           <Tag color="red">due at {vote.end}</Tag>
           <Tag color="blue">vote {vote.limit} options</Tag>
         </div>
-        <FormGroup style={{ marginTop: "0.75rem" }}>
-          {vote.voteOption.map((option) => (
+        <FormGroup id="reply" style={{ marginTop: "0.75rem" }}>
+          {vote.voteOption.map((option, index) => (
             <FormControlLabel
-              control={<Checkbox size="medium" />}
+              control={<Checkbox size="medium" value={index} />}
               label={option.voteOptionName}
             />
           ))}
@@ -121,6 +125,17 @@ function TeamVote(props) {
       </>
     );
   };
+
+  const handleReply = () => {
+    let options = document.querySelector("#reply").children;
+    let temp = [];
+    for (let i = 0; i < options.length; i++) {
+      console.log(options[i].control);
+      temp.push(options[i].control.checked);
+    }
+    console.log(temp);
+  };
+
   const handleOpenCreate = () => {
     setIsCreateModal1Visible(true);
   };
@@ -234,7 +249,6 @@ function TeamVote(props) {
 
   const modalCreateOptionContent = (
     <>
-      <p>{newVoteID}</p>
       {inputBoxes.map((box, index) => (
         <TextField
           id="options"
@@ -309,7 +323,7 @@ function TeamVote(props) {
           <Button
             key="ok"
             variant="contained"
-            onClick={handleClose}
+            onClick={handleReply}
             style={{ margin: "0 0.5rem" }}
           >
             OK

@@ -11,8 +11,12 @@ const UserSchema = new Schema({
   userProfile: { type: String, required: false },
   allTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
   manageTeams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
-  userNotification: [{ type: Schema.Types.ObjectId, ref: "DashboardNotification" },],
-  userAchievement: [{ type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },],
+  userNotification: [
+    { type: Schema.Types.ObjectId, ref: "DashboardNotification" },
+  ],
+  userAchievement: [
+    { type: Schema.Types.ObjectId, ref: "NotificationTaskModel" },
+  ],
   userEvent: [{ type: Schema.Types.ObjectId, ref: "DashboardEvent" }],
   //userTodo: [{ type: Schema.Types.ObjectId, ref: "DashboardTodo" }],
   //userPlaySet: [{ type: Schema.Types.ObjectId, ref: "DashboardPlaySet" }],
@@ -64,12 +68,11 @@ const EventReplySchema = new Schema({
   eventReplyTime: { type: String, required: false },
 });
 
-
 const NotificationTaskSchema = new Schema({
   userID: { type: String, required: false },
   taskID: { type: String, required: false },
   taskTime: { type: Number, required: false },
-  taskTitle: {type: String, required: false},
+  taskTitle: { type: String, required: false },
   taskType: { type: String, required: false },
   taskContent: { type: String, required: false },
 });
@@ -82,7 +85,7 @@ const AchievementSchema = new Schema({
 });
 
 const DashboardEventSchema = new Schema({
-  //userID: { type: String, ref: "User" },
+  userID: { type: String, ref: "User" },
   eventID: { type: String, required: false },
   eventTitle: { type: String, required: false },
   eventDescription: { type: String, required: false },
@@ -100,9 +103,9 @@ const ContestSchema = new Schema({
   contestMyTeam: { type: Schema.Types.ObjectId, ref: "Team" },
   contestOpponent: { type: String, required: false },
   contestIsWin: { type: String, required: false }, // win, lose, tie
-  contestMySet: { type: Number, required: false }, 
+  contestMySet: { type: Number, required: false },
   contestOppoSet: { type: Number, required: false },
-  contestSetDetail: [{ type: Schema.Types.ObjectId, ref: "SetDetail" }]
+  contestSetDetail: [{ type: Schema.Types.ObjectId, ref: "SetDetail" }],
 });
 
 const SetDetailSchema = new Schema({
@@ -126,7 +129,7 @@ const DetailPlayerSchema = new Schema({
   detailPointTip: { type: Number, required: false }, // 吊球得分
   detailTimeAttack: { type: Number, required: false }, // 攻擊次數
   detailTimePass: { type: Number, required: false }, // 一傳/舉球到位次數
-  detailTimeNoPass: { type: Number, required: false }, // 一傳/舉球不到位次數  
+  detailTimeNoPass: { type: Number, required: false }, // 一傳/舉球不到位次數
   detailErrPassS: { type: Number, required: false }, // 接發失分
   detailErrPassA: { type: Number, required: false }, // 接扣失分
   detailErrPass1: { type: Number, required: false }, // 一傳失分
@@ -170,9 +173,15 @@ const EventReplyModel = mongoose.model("EventReply", EventReplySchema);
 const PostModel = mongoose.model("Post", PostSchema);
 const VoteModel = mongoose.model("Vote", VoteSchema);
 const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
-const NotificationTaskModel = mongoose.model("NotificationTask", NotificationTaskSchema);
+const NotificationTaskModel = mongoose.model(
+  "NotificationTask",
+  NotificationTaskSchema
+);
 const AchievementModel = mongoose.model("Achievement", AchievementSchema);
-const DashboardEventModel = mongoose.model("DashboardEvent",DashboardEventSchema);
+const DashboardEventModel = mongoose.model(
+  "DashboardEvent",
+  DashboardEventSchema
+);
 const ContestModel = mongoose.model("Contest", ContestSchema);
 const SetDetailModel = mongoose.model("SetDetail", SetDetailSchema);
 const DetailPlayerModel = mongoose.model("DetailPlayer", DetailPlayerSchema);
@@ -185,13 +194,13 @@ export {
   EventReplyModel,
   PostModel,
   VoteModel,
-  VoteOptionModel,  
+  VoteOptionModel,
   NotificationTaskModel,
   AchievementModel,
   DashboardEventModel,
   ContestModel,
   SetDetailModel,
-  DetailPlayerModel
+  DetailPlayerModel,
 };
 
 //GalleryModel,
