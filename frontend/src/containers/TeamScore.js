@@ -2,7 +2,6 @@ import React from "react";
 import Template from "../components/Template";
 import {
   Box,
-  Button,
   Grid,
   List,
   ListItem,
@@ -11,7 +10,7 @@ import {
   CardActionArea,
   CardContent,
 } from "@mui/material";
-import { Form, Input, Modal } from "antd";
+import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
@@ -49,6 +48,10 @@ function Score(props) {
   }
 
   const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const onCreate = () => {
     setIsModalVisible(true);
   };
 
