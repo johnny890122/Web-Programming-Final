@@ -93,8 +93,6 @@ const UserDashboard = (props) => {
     }
   };
 
-  
-
   const showModalWithNotification = () => {
     setIsModalVisible(true);
     setComponentInModal(<Notification me={props.me} />);
@@ -144,11 +142,11 @@ const UserDashboard = (props) => {
               {event.eventLocation}
             </Typography>
 
-            {
-              new Date(event.eventStart) <= today 
-              ? <Chip label="Finished" color="success" sx={{ my: 1 }} /> 
-              : <Chip label="Ongoing" color="error" sx={{ my: 1 }} />
-            }
+            {new Date(event.eventStart) <= today ? (
+              <Chip label="Finished" color="success" sx={{ my: 1 }} />
+            ) : (
+              <Chip label="Ongoing" color="error" sx={{ my: 1 }} />
+            )}
 
             <Box sx={{ textAlign: "right" }}>
               <Button
@@ -273,7 +271,7 @@ const UserDashboard = (props) => {
         style={{ zIndex: 1200 }}
         footer={[
           <Button key="close" onClick={handleClose}>
-            Close
+            Cancel
           </Button>,
         ]}
       >

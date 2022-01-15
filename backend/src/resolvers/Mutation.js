@@ -28,7 +28,7 @@ const Mutation = {
   },
 
   updateUser: async (parent, args, { db, pubSub }) => {
-    const { userID, userName, userBirthday } = args;
+    const { userID, userName } = args;
     const User = await db.UserModel.findOne({ userID: userID });
 
     if (!User) {
@@ -39,7 +39,6 @@ const Mutation = {
       { userID: userID },
       {
         userName: userName,
-        userBirthday: userBirthday,
       }
     );
 
@@ -96,7 +95,11 @@ const Mutation = {
     return itemId;
   },
 
-  updateUserAchievement: async (parent, { userID, title, content }, { db, pubSub }) => {
+  updateUserAchievement: async (
+    parent,
+    { userID, title, content },
+    { db, pubSub }
+  ) => {
     const user = await db.UserModel.findOne({ userID: userID });
     if (!user) {
       throw new Error("User not found!");
@@ -507,7 +510,7 @@ const Mutation = {
         userID: User.userID,
         taskTime: timeNow,
         taskTitle: Team.teamName,
-        taskType: 'Event',
+        taskType: "Event",
         taskContent: eventTitle,
       }).save();
     });
@@ -956,7 +959,17 @@ const Mutation = {
     return contestUpdate;
   },
   updateSetDetail: async (parent, args, { db, pubSub }) => {
-    const { setID, setNumber, setScore, setMyPoint, setOppoPoint, setOppoErrServe, setOppoErrAttack, setOppoErrOther, setNote } = args;
+    const {
+      setID,
+      setNumber,
+      setScore,
+      setMyPoint,
+      setOppoPoint,
+      setOppoErrServe,
+      setOppoErrAttack,
+      setOppoErrOther,
+      setNote,
+    } = args;
     const SetDetail = await db.SetDetailModel.findOne({ setID: setID });
 
     const setToDetailPlayer = await db.DetailPlayerModel.deleteMany({
@@ -975,7 +988,7 @@ const Mutation = {
           setOppoErrAttack: setOppoErrAttack || SetDetail.setOppoErrAttack,
           setOppoErrOther: setOppoErrOther || SetDetail.setOppoErrOther,
           setNote: setNote || SetDetail.setNote,
-          setPlayerDetail: []
+          setPlayerDetail: [],
         },
       }
     );

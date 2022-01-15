@@ -17,16 +17,8 @@ export const CREATE_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser(
-    $userID: String
-    $userName: String
-    $userBirthday: Float
-  ) {
-    updateUser(
-      userID: $userID
-      userName: $userName
-      userBirthday: $userBirthday
-    ) {
+  mutation updateUser($userID: String, $userName: String) {
+    updateUser(userID: $userID, userName: $userName) {
       userID
     }
   }
@@ -78,11 +70,7 @@ export const USER_ACHEIEVEMENT_UPDATE = gql`
     $title: String
     $content: String
   ) {
-    updateUserAchievement(
-      userID: $userID
-      title: $title
-      content: $content
-    )
+    updateUserAchievement(userID: $userID, title: $title, content: $content)
   }
 `;
 
@@ -212,7 +200,7 @@ export const CREATE_TEAM_SCORE = gql`
     $contestMySet: Int
     $contestOppoSet: Int
   ) {
-    createContest (
+    createContest(
       teamID: $teamID
       contestDate: $contestDate
       contestIsWin: $contestIsWin
@@ -230,8 +218,8 @@ export const CREATE_SET_DETAIL = gql`
     $contestID: String
     $setNumber: Int
     $setScore: String
-    $setMyPoint: Int 
-    $setOppoPoint: Int 
+    $setMyPoint: Int
+    $setOppoPoint: Int
     $setOppoErrServe: Int
     $setOppoErrAttack: Int
     $setOppoErrOther: Int
@@ -295,7 +283,7 @@ export const CREATE_DETAIL_PLAYER = gql`
 `;
 
 export const UPDATE_SET_DETAIL = gql`
-  mutation updateSetDetail (
+  mutation updateSetDetail(
     $setID: String
     $setNumber: Int
     $setScore: String
@@ -321,7 +309,6 @@ export const UPDATE_SET_DETAIL = gql`
     }
   }
 `;
-
 
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {

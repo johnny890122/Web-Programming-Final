@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import Template from "../components/Template";
 import { Typography } from "@mui/material";
 import { MilitaryTech } from "@mui/icons-material";
-import {useQuery} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { USER_ACHEIEVEMENT_INIT } from "../graphql";
 
 const UserAchievement = (props) => {
@@ -16,15 +16,24 @@ const UserAchievement = (props) => {
     display: "inline-block",
   };
 
-  const { data, error, loading, subscribeToMore } = useQuery(USER_ACHEIEVEMENT_INIT, {
+  const { data, error, loading, subscribeToMore } = useQuery(
+    USER_ACHEIEVEMENT_INIT,
+    {
       variables: { userID: props.me },
-  });
+    }
+  );
 
   const achieveTitle = [];
   const achieveContent = [];
   if (!loading) {
-      data.initUserAchievement.map( i=> achieveTitle.push(i.userAchievementTitle))
-      data.initUserAchievement.map( i=> achieveContent.push(i.userAchievementContent))
+    if (data) {
+      data.initUserAchievement.map((i) =>
+        achieveTitle.push(i.userAchievementTitle)
+      );
+      data.initUserAchievement.map((i) =>
+        achieveContent.push(i.userAchievementContent)
+      );
+    }
   }
 
   let cardContent = [];

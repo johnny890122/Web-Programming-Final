@@ -10,11 +10,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-// import Avatar from "@mui/material/Avatar";
 import { Avatar } from "antd";
 import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { Modal } from "antd";
 import { Input, DatePicker, Tag } from "antd";
@@ -23,8 +20,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import { useNavigate } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 import {
@@ -38,17 +33,17 @@ import {
   PeopleAlt,
   SportsScore,
   HowToVote,
-  Collections,
-  StackedLineChart,
-  Edit,
   NavigateNext,
   TipsAndUpdatesOutlined,
 } from "@mui/icons-material";
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_ACCOUNT, UPDATE_USER, USER_ACHEIEVEMENT_UPDATE } from "../graphql";
-import moment from "moment";
+import {
+  USER_ACCOUNT,
+  UPDATE_USER,
+  USER_ACHEIEVEMENT_UPDATE,
+} from "../graphql";
 
 const drawerWidth = 210;
 const useStyles = makeStyles({
@@ -135,7 +130,6 @@ export default function Template({ content }) {
   const [name, setName] = React.useState(
     !userAccount.loading ? userAccount.data.myUserAccount.userName : ""
   );
-  const [birthday, setBirthday] = React.useState("");
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -152,10 +146,6 @@ export default function Template({ content }) {
     }
   }, [userAccount.loading]);
 
-  React.useEffect(() => {
-    console.log(name, birthday);
-  }, [name, birthday]);
-
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -165,7 +155,6 @@ export default function Template({ content }) {
       variables: {
         userID: localStorage.getItem(ME_KEY),
         userName: name,
-        userBirthday: birthday,
       },
     });
 
@@ -175,7 +164,7 @@ export default function Template({ content }) {
         title: "Newbie Medal",
         content: "Welcome!",
       },
-    })
+    });
 
     setIsModalVisible(false);
   };
@@ -292,30 +281,34 @@ export default function Template({ content }) {
               footer={[
                 <Button
                   variant="contained"
-                  color="error"
-                  key="logout"
-                  style={{ marginRight: "0.75rem" }}
-                  href="/"
-                >
-                  Log Out
-                </Button>,
-                <Button
-                  variant="contained"
                   key="ok"
-                  color="primary"
+                  color="success"
                   onClick={submitChange}
                   style={{ marginRight: "0.5rem" }}
                 >
-                  OK
+                  Update
                 </Button>,
+                <Link to="/">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    key="logout"
+                    style={{ marginRight: "0.75rem" }}
+                  >
+                    Log Out
+                  </Button>
+                </Link>,
               ]}
             >
               <div className="container" style={{ display: "flex" }}>
                 <Avatar
                   size={150}
-                  src= {`https://joeschmoe.io/api/v1/${userAccount}`}
+                  src={`https://joeschmoe.io/api/v1/${userAccount}`}
                 />
-                <div className="text-block" style={{ marginLeft: "2rem" }}>
+                <div
+                  className="text-block"
+                  style={{ marginLeft: "2rem", marginTop: "1.5rem" }}
+                >
                   <div className="row" style={{ display: "flex" }}>
                     <Tag color="geekblue">
                       <Typography>Account</Typography>
@@ -363,31 +356,6 @@ export default function Template({ content }) {
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
-                  <br />
-                  <div className="row" style={{ display: "flex" }}>
-                    <Tag color="geekblue">
-                      <Typography>Birthday</Typography>
-                    </Tag>
-                    <DatePicker
-                      addonBefore="Birthday"
-                      format={dateFormat}
-                      style={{ width: "70%" }}
-                      size="small"
-                      defaultValue={
-                        !userAccount.loading
-                          ? userAccount.data.myUserAccount.userBirthday
-                            ? moment(
-                                userAccount.data.myUserAccount.userBirthday
-                              )
-                            : moment()
-                          : moment()
-                      }
-                      onChange={(value) => {
-                        let birth = new Date(value);
-                        setBirthday(birth.getTime());
-                      }}
-                    />
-                  </div>
                 </div>
               </div>
             </Modal>
@@ -411,7 +379,7 @@ export default function Template({ content }) {
         <Divider />
         <List>
           {pages.map((text, index) => (
-            <a href={"/user/" + text}>
+            <Link to={"/user/" + text}>
               <ListItem button key={text}>
                 <ListItemIcon
                   onClick={() => {
@@ -426,19 +394,19 @@ export default function Template({ content }) {
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ color: "black" }} />
               </ListItem>
-            </a>
+            </Link>
           ))}
         </List>
         <Divider />
         <List>
           {isTeam
             ? teamPages.map((text, index) => (
-                <a href={"/team/" + breadItem[1] + "/" + text}>
+                <Link to={"/team/" + breadItem[1] + "/" + text}>
                   <ListItem button key={text}>
                     <ListItemIcon>{teamIconList[index]}</ListItemIcon>
                     <ListItemText primary={text} sx={{ color: "black" }} />
                   </ListItem>
-                </a>
+                </Link>
               ))
             : null}
         </List>

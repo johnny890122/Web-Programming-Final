@@ -36,7 +36,7 @@ type Query {
 
 type Mutation {
   createUser(userAccount: String, userPassword: String, userEmail: String): User
-  updateUser(userID: String, userName: String, userBirthday: Float): User
+  updateUser(userID: String, userName: String): User
   createUserTodo(userID: String, todoContent: String): Todo
 
   ## --------- Team ----------##
@@ -147,8 +147,8 @@ type Mutation {
     contestID: String
     setNumber: Int
     setScore: String
-    setMyPoint: Int 
-    setOppoPoint: Int 
+    setMyPoint: Int
+    setOppoPoint: Int
     setOppoErrServe: Int
     setOppoErrAttack: Int
     setOppoErrOther: Int
@@ -224,7 +224,7 @@ type Mutation {
     type: String
     content: String
   ): String
-  
+
   updateUserAchievement(userID: String, title: String, content: String): String
 
   createUserEvent(
