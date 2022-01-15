@@ -41,7 +41,7 @@ function CreateTeamEvent(props) {
   const [eTime, setETime] = useState(null);
 
   const [addEvent] = useMutation(CREATE_TEAM_EVENT, {
-    refetchQueries: [TEAM_EVENT_INIT, "initTeamEvent"],
+    refetchQueries: [TEAM_EVENT_INIT, USER_NOTIFICATION_INIT],
   });
   const [updateEvent] = useMutation(UPDATE_TEAM_EVENT, {
     refetchQueries: [TEAM_EVENT_INIT, "initTeamEvent"],
