@@ -17,8 +17,13 @@ import { USER_LOGIN } from "../graphql";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
+import bcryptjs from "bcryptjs";
 
 const LogIn = () => {
+
+  const bcrypt = require('bcryptjs');
+  const salt = bcrypt.genSaltSync(10);
+
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [me, setMe] = useState("");
