@@ -221,15 +221,10 @@ export const TEAM_VOTE_INIT = gql`
       voteDescription
       voteEnd
       voteLimit
-    }
-  }
-`;
-
-export const TEAM_VOTE_OPTION_INIT = gql`
-  query initVoteOption($voteID: String) {
-    initVoteOption(voteID: $voteID) {
-      voteOptionID
-      voteOptionName
+      voteOption {
+        voteOptionID
+        voteOptionName
+      }
     }
   }
 `;

@@ -188,6 +188,17 @@ const Query = {
     if (Team.teamVote.length !== 0) {
       for (let i = 0; i < Team.teamVote.length; i++) {
         let Vote = await db.VoteModel.findOne({ _id: Team.teamVote[i] });
+        let allVoteOptions = [];
+        if (Vote.voteOption.length !== 0) {
+          for (let j = 0; j < Vote.voteOption.length; j++) {
+            let Option = await db.VoteOptionModel.findOne({
+              _id: Vote.voteOption[j],
+            });
+            allVoteOptions.push(Option);
+          }
+        }
+        Vote.voteOption.voteOptionID = allVoteOptions.voteOptionID;
+        Vote.voteOption.voteOptionName = allVoteOptions.voteOptionName;
         allVotes.push(Vote);
       }
     }
@@ -244,14 +255,16 @@ const Query = {
   },
 
   /* ------------- Contest ------------- */
-  
+
   initContest: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
     const team = await db.TeamModel.findOne({ teamID: teamID });
     if (!team) {
       throw new Error("Team not found!");
     }
-    const contest = await db.ContestModel.find({_id: { $in : team.teamContest }})
+    const contest = await db.ContestModel.find({
+      _id: { $in: team.teamContest },
+    });
     if (!contest) {
       return [];
     }
@@ -264,7 +277,9 @@ const Query = {
     if (!contest) {
       throw new Error("Contest not found!");
     }
-    const setDetail = await db.SetDetailModel.find({_id: { $in : contest.contestSetDetail }})
+    const setDetail = await db.SetDetailModel.find({
+      _id: { $in: contest.contestSetDetail },
+    });
     if (!setDetail) {
       return [];
     }

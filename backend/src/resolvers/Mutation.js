@@ -150,7 +150,6 @@ const Mutation = {
     },
     { db, pubSub }
   ) => {
-
     const event = await db.DashboardEventModel.findOne({ eventID });
 
     if (!event) {
@@ -366,7 +365,7 @@ const Mutation = {
       postTime: timeNow,
     }).save();
 
-    console.log(post)
+    console.log(post);
 
     const newPost = await db.TeamModel.findOneAndUpdate(
       { teamID: teamID },
@@ -608,7 +607,7 @@ const Mutation = {
     } = args;
     const Creator = await db.UserModel.findOne({ userID: creatorID });
 
-    const timeNow = await new Date(); //
+    const timeNow = new Date(); //
     const OBID = ObjectId();
     const vote = await new db.VoteModel({
       _id: OBID,
@@ -1017,7 +1016,7 @@ const Mutation = {
     const { setID, contestID } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
     const SetDetail = await db.SetDetailOptionModel.findOne({
-      setID: setID
+      setID: setID,
     });
 
     const setToContest = await db.ContestModel.findOneAndUpdate(
