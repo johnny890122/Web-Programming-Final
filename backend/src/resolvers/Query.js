@@ -264,7 +264,7 @@ const Query = {
     if (!contest) {
       throw new Error("Contest not found!");
     }
-    const setDetail = await contest.teamContest;
+    const setDetail = await db.SetDetailModel.find({_id: { $in : contest.contestSetDetail }})
     if (!setDetail) {
       return [];
     }
