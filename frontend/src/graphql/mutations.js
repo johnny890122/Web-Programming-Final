@@ -211,7 +211,6 @@ export const CREATE_TEAM_SCORE = gql`
     }
   }
 `;
-
 export const CREATE_SET_DETAIL = gql`
   mutation createSetDetail(
     $contestID: String
@@ -280,6 +279,35 @@ export const CREATE_DETAIL_PLAYER = gql`
     }
   }
 `;
+
+export const UPDATE_SET_DETAIL = gql`
+  mutation updateSetDetail(
+    $setID: String
+    $setNumber: Int
+    $setScore: String
+    $setMyPoint: Int
+    $setOppoPoint: Int
+    $setOppoErrServe: Int
+    $setOppoErrAttack: Int
+    $setOppoErrOther: Int
+    $setNote: String
+  ) {
+    updateSetDetail(
+      setID: $setID
+      setNumber: $setNumber
+      setScore: $setScore
+      setMyPoint: $setMyPoint
+      setOppoPoint: $setOppoPoint
+      setOppoErrServe: $setOppoErrServe
+      setOppoErrAttack: $setOppoErrAttack
+      setOppoErrOther: $setOppoErrOther
+      setNote: $setNote
+    ) {
+      setID
+    }
+  }
+`;
+
 
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {

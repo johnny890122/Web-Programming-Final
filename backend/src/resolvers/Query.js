@@ -1,4 +1,6 @@
 import { UserModel } from "../db";
+import bcryptjs from "bcryptjs";
+
 
 const Query = {
   myUserAccount: async (parent, { userID }, { db, pubSub }) => {
@@ -12,10 +14,14 @@ const Query = {
 
   userLogin: async (parent, { userAccount, userPassword }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userAccount });
+    const bcrypt = require('bcryptjs');
+
+    // console.log(userPassword)
 
     if (!user) {
       throw new Error("Account not existed!");
-    } else if (user.userPassword != userPassword) {
+      // 
+    } else if (bcrypt.compareSync(userPassword, user.userPassword)) {
       throw new Error("Password not correct!");
     }
 

@@ -34,7 +34,7 @@ function Score(props) {
         id: i.contestID,
         title: i.contestTitle,
         opponent: i.contestOpponent,
-        date: new Date(i.contestDate).toDateString(),
+        date: i.contestDate,//new Date(i.contestDate).toDateString(),
         mySet: i.contestMySet,
         oppoSet: i.contestOppoSet,
       })
@@ -148,11 +148,9 @@ function Score(props) {
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
-                    <Box display="inline" sx={{ width: 160, height: 140 }}>
-                      <Typography display="inline" variant="h5" component="div" style={{ margin: "0 1rem" }}>
-                          {score.title}
-                      </Typography>
-                    </Box>
+                    <Typography display="inline" variant="h5" component="div" style={{ margin: "0 1rem" }}>
+                          [ {score.title} ]
+                    </Typography>
                     <Typography display="inline" variant="h5" 
                                   component="div" style={{ margin: "0 2rem" }}>
                         {decodeURI(breadItem[1])}
