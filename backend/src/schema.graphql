@@ -13,6 +13,7 @@ type Query {
   initTeamEvent(teamID: String): [Event]
   initTeamPost(teamID: String): [Post]
   initVote(teamID: String): [Vote]
+  initVoteOption(voteID: String): [VoteOption]
 
   myUserAccount(userID: String): User
   userEventDetail(eventID: String): Event

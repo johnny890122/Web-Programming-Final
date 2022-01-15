@@ -178,17 +178,39 @@ const Query = {
 
   initVote: async (parent, args, { db, pubSub }) => {
     const { teamID } = args;
-    const team = await db.TeamModel.findOne({ teamID: teamID });
+    const Team = await db.TeamModel.findOne({ teamID: teamID });
 
-    if (!team) {
+    if (!Team) {
       throw new Error("This team doesn't exist!");
     }
 
-    const teamVote = await team.teamVote;
-    if (!teamVote) {
-      return [];
+    let allVotes = [];
+    if (Team.teamVote.length !== 0) {
+      for (let i = 0; i < Team.teamVote.length; i++) {
+        let Vote = await db.VoteModel.findOne({ _id: Team.teamVote[i] });
+        allVotes.push(Vote);
+      }
     }
-    return teamVote;
+    return allVotes;
+  },
+
+  initVoteOption: async (parent, args, { db, pubSub }) => {
+    const { voteID } = args;
+    const Vote = await db.VoteModel.findOne({ voteID: voteID });
+
+    if (!Vote) {
+      throw new Error("Vote not found!");
+    }
+    let allVoteOptions = [];
+    if (Vote.voteOption.length !== 0) {
+      for (let i = 0; i < Vote.voteOption.length; i++) {
+        let Option = await db.VoteOptionModel.findOne({
+          _id: Vote.voteOption[i],
+        });
+        allVoteOptions.push(Option);
+      }
+    }
+    return allVoteOptions;
   },
 
   teamEventDetail: async (parent, args, { db, pubSub }) => {
