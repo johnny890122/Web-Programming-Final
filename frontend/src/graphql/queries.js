@@ -193,6 +193,23 @@ export const TEAM_SCORE_INIT = gql`
   }
 `;
 
+export const TEAM_CONTEST_DETAIL = gql`
+  query teamContestDetail($eventID: String) {
+    teamEventDetail(eventID: $eventID) {
+      eventTitle
+      eventStart
+      eventEnd
+      eventDescription
+      eventLocation
+      eventPostTime
+      eventCreator {
+        userID
+        userAccount
+      }
+    }
+  }
+`;
+
 export const TEAM_MEMBER_INIT = gql`
   query initMember($teamID: String) {
     initMember(teamID: $teamID) {

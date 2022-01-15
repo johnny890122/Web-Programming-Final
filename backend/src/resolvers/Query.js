@@ -258,6 +258,15 @@ const Query = {
     return contest;
   },
 
+  teamContestDetail: async (parent, args, { db, pubSub }) => {
+    const { contestID } = args;
+    const contest = await db.ContestModel.findOne({ contestID: contestID });
+    if (!contest) {
+      throw new Error("Contest not found!");
+    }
+    return contest;
+  },
+
   initSetDetail: async (parent, args, { db, pubSub }) => {
     const { contestID } = args;
     const contest = await db.ContestModel.findOne({ contestID: contestID });
