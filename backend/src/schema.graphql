@@ -25,6 +25,7 @@ type Query {
   #teamVoteOption(voteOptionID: String): VoteOption
 
   initContest(teamID: String): [Contest]
+  teamContestDetail(contestID: String): Contest
   initSetDetail(contestID: String): [SetDetail]
 
   users(query: String): [User]

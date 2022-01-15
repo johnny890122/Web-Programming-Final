@@ -265,8 +265,14 @@ const Query = {
     const contest = await db.ContestModel.find({
       _id: { $in: team.teamContest },
     });
+    return contest || [];
+  },
+
+  teamContestDetail: async (parent, args, { db, pubSub }) => {
+    const { contestID } = args;
+    const contest = await db.ContestModel.findOne({ contestID: contestID });
     if (!contest) {
-      return [];
+      throw new Error("Contest not found!");
     }
     return contest;
   },

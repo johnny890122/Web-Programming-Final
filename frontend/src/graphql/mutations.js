@@ -208,6 +208,34 @@ export const CREATE_TEAM_SCORE = gql`
   }
 `;
 
+export const CREATE_SET_DETAIL = gql`
+  mutation createSetDetail(
+    $contestID: String
+    $setNumber: Int
+    $setScore: String
+    $setMyPoint: Int 
+    $setOppoPoint: Int 
+    $setOppoErrServe: Int
+    $setOppoErrAttack: Int
+    $setOppoErrOther: Int
+    $setNote: String
+  ) {
+    createSetDetail(
+      contestID: $contestID
+      setNumber: $setNumber
+      setScore: $setScore
+      setMyPoint: $setMyPoint
+      setOppoPoint: $setOppoPoint
+      setOppoErrServe: $setOppoErrServe
+      setOppoErrAttack: $setOppoErrAttack
+      setOppoErrOther: $setOppoErrOther
+      setNote: $setNote
+    ) {
+      setID
+    }
+  }
+`;
+
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {
     deleteMember(teamID: $teamID, memberID: $memberID) {

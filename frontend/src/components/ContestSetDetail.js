@@ -44,23 +44,23 @@ const ContestSetDetail = (set) => {
             </TableHead>
             <TableBody>
               {set.setPlayerDetail.map((player) => (
-                <TableRow key={(player.playerID)} 
+                <TableRow key={(player.detailID)} 
                           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell align="center" key = {`${player.playerID}player`}>{player.playerID}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}pointServe`}>{player.detailPointServe}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}pointAttack`}>{player.detailPointAttack}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}pointTip`}>{player.detailPointTip}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}timeAttack`}>{player.detailTimeAttack}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}timePass`}>{player.detailTimePass}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}timeNoPass`}>{player.detailTimeNoPass}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errPassS`}>{player.detailErrPassS}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errPassA`}>{player.detailErrPassA}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errPass1`}>{player.detailErrPass1}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errSet`}>{player.detailErrSet}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errOther`}>{player.detailErrOther}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errAttack`}>{player.detailErrAttack}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}errServe`}>{player.detailErrServe}</TableCell>
-                  <TableCell align="center" key = {`${player.playerID}comboServe`}>{player.detailComboServe}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}player`}>{player.detailPlayer.userName}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}pointServe`}>{player.detailPointServe}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}pointAttack`}>{player.detailPointAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}pointTip`}>{player.detailPointTip}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}timeAttack`}>{player.detailTimeAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}timePass`}>{player.detailTimePass}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}timeNoPass`}>{player.detailTimeNoPass}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errPassS`}>{player.detailErrPassS}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errPassA`}>{player.detailErrPassA}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errPass1`}>{player.detailErrPass1}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errSet`}>{player.detailErrSet}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errOther`}>{player.detailErrOther}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errAttack`}>{player.detailErrAttack}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}errServe`}>{player.detailErrServe}</TableCell>
+                  <TableCell align="center" key = {`${player.detailID}comboServe`}>{player.detailComboServe}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

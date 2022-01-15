@@ -25,6 +25,7 @@ import About from "./About";
 function App() {
   const ME_KEY = "me";
   const TEAM_KEY = "nowTeam";
+  const CONTEST_KEY = "nowContest"
 
   return (
     <>
@@ -133,6 +134,7 @@ function App() {
             <TeamScoreDetail
               me={localStorage.getItem(ME_KEY)}
               nowTeam={localStorage.getItem(TEAM_KEY)}
+              nowContest={localStorage.getItem(CONTEST_KEY)}
             />
           }
         />

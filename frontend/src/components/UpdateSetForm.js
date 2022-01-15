@@ -50,7 +50,7 @@ const UpdateSetForm = (set, onUpdate, players) => {
                      style={{ width: 200 }}>
                   <Form.Item label="球員"
                     {...restField}
-                    name={[name, 'playerID']}
+                    name={[name, 'detailPlayer','userName']}
                     style={{ width: 300 }}
                     rules={[{ required: true, message: '必填球員' }]}>
                     <Select options={players}/>     
