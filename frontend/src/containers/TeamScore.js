@@ -144,7 +144,7 @@ function Score(props) {
                   console.log("now in contest:", score.id);
                   localStorage.setItem(CONTEST_KEY, score.id);
                 }}>
-            <ListItem key={score.id} sx={{ width: 800 }}>
+            <ListItem key={score.id} sx={{ width: 1400 }}>
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
@@ -172,6 +172,12 @@ function Score(props) {
                   </CardContent>
                 </CardActionArea>
               </Card>
+              <Button type="primary" style={{ margin: '0 8px' }}>
+                Edit
+              </Button>
+              <Button type="primary" danger style={{ margin: '0 8px' }}>
+                Delete
+              </Button>
             </ListItem>
           </Link>
         ))}
