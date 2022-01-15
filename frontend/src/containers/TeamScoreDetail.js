@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import Template from "../components/Template";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
          Paper, Typography } from "@mui/material";
 import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import ContestSetDetail from "../components/ContestSetDetail";
@@ -12,7 +12,7 @@ import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME, CREATE_SET_D
 
 
 const TeamScoreDetail = (props) => {
-  
+
   // TeamContest資料
   const queryData = useQuery(TEAM_CONTEST_DETAIL, {
     variables: { contestID: props.nowContest },
@@ -43,15 +43,15 @@ const TeamScoreDetail = (props) => {
   if (!queryTeamName.loading) {
     var teamName = queryTeamName.data.findTeamName
   } else var teamName = "me";
-  
-  
+
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const [modalMode, setModalMode] = useState("new");
   const [setNow, setSetNow] = useState({});
   const [setCreate, setSetCreate] = useState({});
   const [addSet] = useMutation(CREATE_SET_DETAIL);
-  
+
 
   const onCreate = async(values) => {
     await addSet(
@@ -90,14 +90,14 @@ const TeamScoreDetail = (props) => {
     setComponentInModal(ContestSetDetail(set));
     setSetNow(set);
     setModalMode("detail");
-    setIsModalVisible(true);    
+    setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setComponentInModal("");
     setSetNow({});
     setIsModalVisible(false);
-  }  
+  }
   const handleCreate = () => {
     setComponentInModal(CreateSetForm(onCreate, players));
     setModalMode("new");
@@ -107,11 +107,11 @@ const TeamScoreDetail = (props) => {
     console.log(setNow);
     setModalMode("edit");
     setComponentInModal(UpdateSetForm(setNow, onUpdate, players));
-  }   
+  }
   const handleBack = () => {
     setModalMode("detail");
     setComponentInModal(ContestSetDetail(setNow));
-  } 
+  }
 
   const detailFooter = ([
     <Button key="edit" onClick={handleEdit}>
@@ -120,7 +120,7 @@ const TeamScoreDetail = (props) => {
     <Button key="close" onClick={handleCancel}>
       Close
     </Button>
-  ]); 
+  ]);
   const editFooter = ([
     <Button key="back" onClick={handleBack}>
       Back
@@ -128,12 +128,12 @@ const TeamScoreDetail = (props) => {
     <Button key="close" onClick={handleCancel}>
       Cancel
     </Button>
-  ]);  
+  ]);
   const createFooter = ([
     <Button key="close" onClick={handleCancel}>
       Cancel
     </Button>
-  ]); 
+  ]);
 
 
   const SetModal = (set) => {
@@ -151,7 +151,7 @@ const TeamScoreDetail = (props) => {
       </Modal>
     )
   }
-  
+
   const SetTable = ({ data }) => {
 
     return (
@@ -168,10 +168,10 @@ const TeamScoreDetail = (props) => {
                 <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
-            {(data.contestSetDetail) ? 
+            {(data.contestSetDetail) ?
               <TableBody>
                 {(data.contestSetDetail).map(set => (
-                  <TableRow key={(set.setNumber)} 
+                  <TableRow key={(set.setNumber)}
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align="center" style={{width: '20%'}}>第 {set.setNumber} 局</TableCell>
                     <TableCell align="center">{set.setMyPoint}</TableCell>
@@ -179,7 +179,7 @@ const TeamScoreDetail = (props) => {
                     <TableCell align="center">
                       <Button onClick = {() => showModal(set)}>Detail</Button>
                     </TableCell>
-                  </TableRow> 
+                  </TableRow>
                 ))}
               </TableBody> :
               <TableBody></TableBody>
