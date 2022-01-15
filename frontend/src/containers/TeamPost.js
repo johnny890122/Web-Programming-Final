@@ -181,7 +181,9 @@ function TeamPost(props) {
               placeholder="Content" />
         </div>
 
-        <Button
+        {
+          postTitle & postContent ? 
+          <Button
           onClick={modalMode === "edit" ? onSave : onSubmit}
           sx={{ m: 2 }}
           color={modalMode === "edit" ? "error" : "success"}
@@ -190,7 +192,9 @@ function TeamPost(props) {
           htmltype="submit"
         >
           {modalMode === "edit" ? "Save" : "Submit"}
-        </Button >
+        </Button > : <></>
+        }
+       
       </Form>
   );
 

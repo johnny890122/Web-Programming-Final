@@ -82,7 +82,7 @@ const AchievementSchema = new Schema({
 });
 
 const DashboardEventSchema = new Schema({
-  //userID: { type: String, ref: "User" },
+  userID: { type: String, ref: "User" },
   eventID: { type: String, required: false },
   eventTitle: { type: String, required: false },
   eventDescription: { type: String, required: false },

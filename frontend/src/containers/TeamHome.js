@@ -19,6 +19,9 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import ShortTextIcon from '@mui/icons-material/ShortText';
+
 import {
   // EventData,
   // ScoreData,
@@ -74,7 +77,7 @@ function TeamHome(props) {
         id: i.postID,
         time: i.postTime,
         title: i.postTitle,
-        author: i.postAuthor.userID,
+        author: i.postAuthor.userAccount,
         content: i.postContent,
       })
     );
@@ -113,8 +116,13 @@ function TeamHome(props) {
                 <Typography gutterBottom variant="h6" component="div">
                   {event.title}
                 </Typography>
+
                 <Typography gutterBottom variant="subtitle2" component="div">
-                  <AccessTimeIcon sx={{ fontSize: "small" }} /> {event.start}
+                  <AccessTimeIcon sx={{ fontSize: "small" }} /> { new Date(parseInt(event.start)).toDateString() }
+                </Typography>
+
+                <Typography gutterBottom variant="subtitle2" component="div">
+                  <LocationOnIcon sx={{ fontSize: "small" }} /> { event.location }
                 </Typography>
               </CardContent>
           </Card>
@@ -137,7 +145,7 @@ function TeamHome(props) {
 
       <Card
         className="teamHp-post"
-        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
       >
         <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
@@ -146,20 +154,23 @@ function TeamHome(props) {
         </Box>
         {PostData.map((post) => (
           <Card
-            sx={{ m: 1.5, width: 410, height: 85, display: "block" }}
+            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={post.id}
           >
             
               <CardContent sx={{ p: 0.5 }}>
-                <Typography gutterBottom variant="subtitle1" component="div">
+                <Typography gutterBottom variant="h6" component="div">
                   {post.title}
                 </Typography>
                 <Typography gutterBottom variant="body2" component="div">
                   <DriveFileRenameOutlineIcon sx={{ fontSize: "small" }} />{" "}
                   {post.author}
                 </Typography>
+                <Typography gutterBottom variant="subtitle2" component="div">
+                  <AccessTimeIcon sx={{ fontSize: "small" }} /> { new Date(post.time).toDateString() }
+                </Typography>
                 <Typography gutterBottom variant="body1" component="div">
-                  {post.content.slice(0, 30)} ...
+                  <ShortTextIcon sx={{ fontSize: "small" }} /> {post.content.slice(0, 30)} ...
                 </Typography>
               </CardContent>
             
@@ -183,7 +194,7 @@ function TeamHome(props) {
 
       <Card
         className="teamHp-score"
-        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
       >
         <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
@@ -192,7 +203,7 @@ function TeamHome(props) {
         </Box>
         {ScoreData.map((score) => (
           <Card
-            sx={{ m: 1, width: 128, height: 180, display: "inline-block" }}
+            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={score.id}
           >
             
