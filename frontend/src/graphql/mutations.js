@@ -235,6 +235,47 @@ export const CREATE_SET_DETAIL = gql`
     }
   }
 `;
+export const CREATE_DETAIL_PLAYER = gql`
+  mutation createDetailPlayer(
+    $setID: String
+    $playerID: String
+    $detailPointServe: Int
+    $detailPointAttack: Int
+    $detailPointTip: Int
+    $detailTimeAttack: Int
+    $detailTimePass: Int
+    $detailTimeNoPass: Int
+    $detailErrPassS: Int
+    $detailErrPassA: Int
+    $detailErrPass1: Int
+    $detailErrSet: Int
+    $detailErrOther: Int
+    $detailErrAttack: Int
+    $detailErrServe: Int
+    $detailComboServe: String
+  ) {
+    createDetailPlayer(
+      setID: $setID
+      playerID: $playerID
+      detailPointServe: $detailPointServe
+      detailPointAttack: $detailPointAttack
+      detailPointTip: $detailPointTip
+      detailTimeAttack: $detailTimeAttack
+      detailTimePass: $detailTimePass
+      detailTimeNoPass: $detailTimeNoPass
+      detailErrPassS: $detailErrPassS
+      detailErrPassA: $detailErrPassA
+      detailErrPass1: $detailErrPass1
+      detailErrSet: $detailErrSet
+      detailErrOther: $detailErrOther
+      detailErrAttack: $detailErrAttack
+      detailErrServe: $detailErrServe
+      detailComboServe: $detailComboServe
+    ) {
+      detailID
+    }
+  }
+`;
 
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {

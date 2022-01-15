@@ -899,7 +899,7 @@ const Mutation = {
 
     const playerToSet = await db.SetDetailModel.findOneAndUpdate(
       { _id: Set._id },
-      { $push: { setPlayerDetail: detailPlayer._id } }
+      { $push: { setPlayerDetail: OBID } }
     );
     console.log("New Set Player Saved!");
     return detailPlayer;

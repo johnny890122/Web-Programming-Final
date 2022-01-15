@@ -123,7 +123,7 @@ const CreateSetForm = (onCreate, players) => {
                     <InputNumber min={0}/>
                   </Form.Item>
                   <Form.Item label="連續發球"
-                            name='detailComboServe'
+                            name={[name, 'detailComboServe']}
                             style={{ width: 450 }}>
                         <Input placeholder="ex : 2 4 1 ( 每次間隔一空格 )"/>
                   </Form.Item>

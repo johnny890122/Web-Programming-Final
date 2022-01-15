@@ -8,7 +8,8 @@ import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from
 import ContestSetDetail from "../components/ContestSetDetail";
 import CreateSetForm from "../components/CreateSetForm";
 import UpdateSetForm from "../components/UpdateSetForm";
-import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME, CREATE_SET_DETAIL } from "../graphql";
+import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
+         CREATE_SET_DETAIL, CREATE_DETAIL_PLAYER } from "../graphql";
 
 
 const TeamScoreDetail = (props) => {
@@ -33,9 +34,8 @@ const TeamScoreDetail = (props) => {
         userID: i.userID
       })
     );
-    console.log('players', queryMembers.data.initMember);
-    console.log(data.contestSetDetail);
   };
+  console.log('players', players);
   // TeamName資料
   const queryTeamName = useQuery(FIND_TEAM_NAME, {
     variables: { teamID: props.nowTeam },
@@ -50,11 +50,11 @@ const TeamScoreDetail = (props) => {
   const [modalMode, setModalMode] = useState("new");
   const [setNow, setSetNow] = useState({});
   const [setCreate, setSetCreate] = useState({});
-  const [addSet] = useMutation(CREATE_SET_DETAIL);
-  
+  const [addSet] = useMutation(CREATE_SET_DETAIL, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
+  const [addPlayer] = useMutation(CREATE_DETAIL_PLAYER, {refetchQueries: [ TEAM_CONTEST_DETAIL, "teamContestDetail" ]});
 
   const onCreate = async(values) => {
-    await addSet(
+    const newSet = await addSet(
       {variables: {
         contestID: props.nowContest,
         setNumber: values.setNumber,
@@ -65,20 +65,32 @@ const TeamScoreDetail = (props) => {
         setOppoErrAttack: values.setOppoErrAttack || 0,
         setOppoErrOther: values.setOppoErrOther || 0,
         setNote: values.setNote || "",
-      }})
-    /*const vars = await {
-      contestID: props.nowContest,
-      setNumber: values.setNumber,
-      setScore: values.setScore || "",
-      setMyPoint: values.setMyPoint,
-      setOppoPoint: values.setOppoPoint,
-      setOppoErrServe: values.setOppoErrServe || 0,
-      setOppoErrAttack: values.setOppoErrAttack || 0,
-      setOppoErrOther: values.setOppoErrOther || 0,
-      setNote: values.setNote || "",
-    };
-    addSet(
-      {variables: vars})*/
+      }});
+    console.log(values.setPlayerDetail)
+    const newSetID =  newSet.data.createSetDetail.setID
+    if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
+      //console.log(players.filter(e => e.label === player.playerID)[0].userID) 
+      addPlayer(
+        {variables: {
+          setID: newSetID,
+          playerID: players.filter(e => e.label === player.playerID)[0].userID,
+          detailPointServe: player.detailPointServe || 0,
+          detailPointAttack: player.detailPointAttack|| 0,
+          detailPointTip: player.detailPointTip|| 0,
+          detailTimeAttack: player.detailTimeAttack|| 0,
+          detailTimePass: player.detailTimePass|| 0,
+          detailTimeNoPass: player.detailTimeNoPass|| 0,
+          detailErrPassS: player.detailErrPassS|| 0,
+          detailErrPassA: player.detailErrPassA|| 0,
+          detailErrPass1: player.detailErrPass1|| 0,
+          detailErrSet: player.detailErrSet|| 0,
+          detailErrOther: player.detailErrOther|| 0,
+          detailErrAttack: player.detailErrAttack|| 0,
+          detailErrServe: player.detailErrServe|| 0,
+          detailComboServe: player.detailComboServe|| ""
+        }}
+      )}
+    )}
   };
   const onUpdate = values => {
     console.log('save set');
