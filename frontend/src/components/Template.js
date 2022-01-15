@@ -24,6 +24,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
+import { useNavigate } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 import {
@@ -279,16 +280,15 @@ export default function Template({ content }) {
               visible={isModalVisible}
               onCancel={handleCancel}
               footer={[
-                <Link to="/">
-                  <Button
-                    variant="contained"
-                    color="error"
-                    key="logout"
-                    style={{ marginRight: "0.75rem" }}
-                  >
-                    Log Out
-                  </Button>
-                </Link>,
+                <Button
+                  variant="contained"
+                  color="error"
+                  key="logout"
+                  style={{ marginRight: "0.75rem" }}
+                  href="/"
+                >
+                  Log Out
+                </Button>,
                 <Button
                   variant="contained"
                   key="ok"
@@ -401,7 +401,7 @@ export default function Template({ content }) {
         <Divider />
         <List>
           {pages.map((text, index) => (
-            <NavLink to={"/user/" + text}>
+            <a href={"/user/" + text}>
               <ListItem button key={text}>
                 <ListItemIcon
                   onClick={() => {
@@ -416,19 +416,19 @@ export default function Template({ content }) {
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ color: "black" }} />
               </ListItem>
-            </NavLink>
+            </a>
           ))}
         </List>
         <Divider />
         <List>
           {isTeam
             ? teamPages.map((text, index) => (
-                <Link to={"/team/" + breadItem[1] + "/" + text}>
+                <a href={"/user/" + breadItem[1] + "/" + text}>
                   <ListItem button key={text}>
                     <ListItemIcon>{teamIconList[index]}</ListItemIcon>
                     <ListItemText primary={text} sx={{ color: "black" }} />
                   </ListItem>
-                </Link>
+                </a>
               ))
             : null}
         </List>

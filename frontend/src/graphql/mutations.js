@@ -189,25 +189,28 @@ export const DELETE_TEAM_POST = gql`
 `;
 
 export const CREATE_TEAM_SCORE = gql`
-  mutation createScore(
+  mutation createContest(
     $teamID: String
-    $contestData: Int
-    $contestIsWin: Boolean
-    $contestTitle: String
+    $contestDate: String
     $contestOpponent: String
+    $contestIsWin: String
+    $contestTitle: String
+    $contestMySet: Int
+    $contestOppoSet: Int
   ) {
-    createScore(
+    createContest (
       teamID: $teamID
       contestDate: $contestDate
       contestIsWin: $contestIsWin
       contestTitle: $contestTitle
       contestOpponent: $contestOpponent
+      contestMySet: $contestMySet
+      contestOppoSet: $contestOppoSet
     ) {
       contestID
     }
   }
 `;
-
 export const CREATE_SET_DETAIL = gql`
   mutation createSetDetail(
     $contestID: String
@@ -276,6 +279,35 @@ export const CREATE_DETAIL_PLAYER = gql`
     }
   }
 `;
+
+export const UPDATE_SET_DETAIL = gql`
+  mutation updateSetDetail(
+    $setID: String
+    $setNumber: Int
+    $setScore: String
+    $setMyPoint: Int
+    $setOppoPoint: Int
+    $setOppoErrServe: Int
+    $setOppoErrAttack: Int
+    $setOppoErrOther: Int
+    $setNote: String
+  ) {
+    updateSetDetail(
+      setID: $setID
+      setNumber: $setNumber
+      setScore: $setScore
+      setMyPoint: $setMyPoint
+      setOppoPoint: $setOppoPoint
+      setOppoErrServe: $setOppoErrServe
+      setOppoErrAttack: $setOppoErrAttack
+      setOppoErrOther: $setOppoErrOther
+      setNote: $setNote
+    ) {
+      setID
+    }
+  }
+`;
+
 
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {

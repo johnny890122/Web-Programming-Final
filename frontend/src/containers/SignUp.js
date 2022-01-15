@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import { useQuery } from "@apollo/client";
 import { USER_LOGIN } from "../graphql";
-// import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 const SignUp = () => {
   
@@ -43,8 +43,7 @@ const SignUp = () => {
   const [passwordFormatWrong, setPasswordFormatWrong] = useState(false);
   const [passwordCheckIsWrong, setPasswordCheckIsWrong] = useState(false);
   const [passwordFormatHelperText, setPasswordFormatHelperText] = useState("");
-  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] =
-    useState("");
+  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] = useState("");
   // 顯示 password or not
   const [showPassword, setShowPassword] = useState(false);
 
@@ -52,6 +51,9 @@ const SignUp = () => {
   const [alertVisibility, setAlertVisibility] = useState("none");
   const [alertSeverity, setAlertSeverity] = useState("error");
   const [alertMessageBody, setAlertMessageBody] = useState("");
+
+  const bcrypt = require('bcryptjs');
+  const salt = bcrypt.genSaltSync(10);
 
   // 按下繳交
   const submitSignUp = async () => {
@@ -68,7 +70,7 @@ const SignUp = () => {
       await addUser({
         variables: {
           userAccount: account,
-          userPassword: password,
+          userPassword: bcrypt.hashSync(password, salt),
           userEmail: email,
         },
       });

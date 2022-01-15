@@ -177,7 +177,7 @@ type Mutation {
     contestID: String!
     contestDate: String
     contestOpponent: String
-    contestIsWin: ContestWinOption!
+    contestIsWin: String
     contestTitle: String
     contestMySet: Int
     contestOppoSet: Int
