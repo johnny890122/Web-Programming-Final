@@ -106,7 +106,31 @@ const TeamScoreDetail = (props) => {
         setOppoErrOther: values.setOppoErrOther || 0,
         setNote: values.setNote || "",
      }});
-     const editedSetID =  editedSet.data.updateSetDetail.setID
+    const editedSetID =  editedSet.data.updateSetDetail.setID;
+    
+    if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
+      console.log(player);
+      addPlayer(
+        {variables: {
+          setID: editedSetID,
+          playerID: players.filter(e => e.label === player.detailPlayer.userName)[0].userID,
+          detailPointServe: player.detailPointServe || 0,
+          detailPointAttack: player.detailPointAttack|| 0,
+          detailPointTip: player.detailPointTip|| 0,
+          detailTimeAttack: player.detailTimeAttack|| 0,
+          detailTimePass: player.detailTimePass|| 0,
+          detailTimeNoPass: player.detailTimeNoPass|| 0,
+          detailErrPassS: player.detailErrPassS|| 0,
+          detailErrPassA: player.detailErrPassA|| 0,
+          detailErrPass1: player.detailErrPass1|| 0,
+          detailErrSet: player.detailErrSet|| 0,
+          detailErrOther: player.detailErrOther|| 0,
+          detailErrAttack: player.detailErrAttack|| 0,
+          detailErrServe: player.detailErrServe|| 0,
+          detailComboServe: player.detailComboServe|| ""
+        }}
+      )
+    })}
     /*console.log({
       setID: setNow.setID,
       setNumber: values.setNumber,

@@ -934,18 +934,12 @@ const Mutation = {
     return contestUpdate;
   },
   updateSetDetail: async (parent, args, { db, pubSub }) => {
-    const {
-      setID,
-      setNumber,
-      setScore,
-      setMyPoint,
-      setOppoPoint,
-      setOppoErrServe,
-      setOppoErrAttack,
-      setOppoErrOther,
-      setNote,
-    } = args;
+    const { setID, setNumber, setScore, setMyPoint, setOppoPoint, setOppoErrServe, setOppoErrAttack, setOppoErrOther, setNote } = args;
     const SetDetail = await db.SetDetailModel.findOne({ setID: setID });
+
+    const setToDetailPlayer = await db.DetailPlayerModel.deleteMany({
+      _id: { $in: SetDetail.setPlayerDetail },
+    });
 
     const setDetailUpdate = await db.SetDetailModel.findOneAndUpdate(
       { _id: SetDetail._id },
@@ -959,6 +953,7 @@ const Mutation = {
           setOppoErrAttack: setOppoErrAttack || SetDetail.setOppoErrAttack,
           setOppoErrOther: setOppoErrOther || SetDetail.setOppoErrOther,
           setNote: setNote || SetDetail.setNote,
+          setPlayerDetail: []
         },
       }
     );
@@ -1051,7 +1046,7 @@ const Mutation = {
       }
     );
     const setToDetailPlayer = await db.DetailPlayerModel.deleteMany({
-      _id: { $in: SetDetail.setPlayerDetai },
+      _id: { $in: SetDetail.setPlayerDetail },
     });
     const deleteSetDetail = await db.SetDetailModel.deleteOne({
       _id: SetDetail._id,

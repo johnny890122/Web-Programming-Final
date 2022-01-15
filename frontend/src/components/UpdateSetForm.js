@@ -29,7 +29,7 @@ const UpdateSetForm = (set, onUpdate, players) => {
       <Row>
         <Form.Item label="對方發球失誤"
                   name='setOppoErrServe'>
-              <InputNumber min={1}/>
+              <InputNumber min={0}/>
         </Form.Item>
         <Form.Item label="對方攻擊失誤"
                   name='setOppoErrAttack'>
