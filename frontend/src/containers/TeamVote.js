@@ -13,7 +13,8 @@ import {
   Chip,
   TextField,
 } from "@mui/material";
-import { Modal, Tag, DatePicker } from "antd";
+import { Modal, Tag, Form } from "antd";
+import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TimePicker from "@mui/lab/TimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -60,8 +61,12 @@ function TeamVote(props) {
   const [newTitle, setNewTitle] = React.useState("");
   const [newLimit, setNewLimit] = React.useState();
   const [newDescription, setNewDescription] = React.useState("");
-  const [endDate, setEndDate] = React.useState();
-  const [endTime, setEndTime] = React.useState();
+  const [endDate, setEndDate] = React.useState(sevenDaysLater);
+  const [endTime, setEndTime] = React.useState(sevenDaysLater);
+  const [newVoteID, setNewVoteID] = React.useState("");
+
+  const [inputBoxes, setInputBoxes] = React.useState([1]);
+  const [inputs, setInputs] = React.useState([]);
 
   const votes = useQuery(TEAM_VOTE_INIT, {
     variables: {
@@ -83,7 +88,12 @@ function TeamVote(props) {
       );
     }
   }
-  const [createVote, { data, loading, error }] = useMutation(CREATE_TEAM_VOTE, {
+
+  const [createVote] = useMutation(CREATE_TEAM_VOTE, {
+    refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+    onCompleted: (e) => setNewVoteID(e.createVote.voteID),
+  });
+  const [createVoteOption] = useMutation(CREATE_TEAM_VOTE_OPTION, {
     refetchQueries: [TEAM_VOTE_INIT, "initVote"],
   });
 
@@ -96,9 +106,9 @@ function TeamVote(props) {
       <>
         <Typography variant="h4">{vote.title}</Typography>
         <div className="tags" style={{ marginTop: "0.75rem" }}>
-          <Tag color="gold">{vote.description}</Tag>
+          <p>{vote.description}</p>
           <Tag color="red">due at {vote.end}</Tag>
-          <Tag color="blue">vote up to {vote.limit} options</Tag>
+          <Tag color="blue">vote {vote.limit} options</Tag>
         </div>
         <FormGroup style={{ marginTop: "0.75rem" }}>
           {vote.voteOption.map((option) => (
@@ -115,10 +125,6 @@ function TeamVote(props) {
     setIsCreateModal1Visible(true);
   };
   const handleSubmitCreate = async () => {
-    let tempDate = endDate.toDateString();
-    let tempTime = endTime.toTimeString();
-    console.log(tempDate);
-    console.log(tempTime);
     let endDay = endDate.toDateString() + " " + endTime.toTimeString();
     await createVote({
       variables: {
@@ -135,12 +141,30 @@ function TeamVote(props) {
     setNewLimit();
     setEndDate(sevenDaysLater);
     setEndTime(sevenDaysLater);
-    if (!loading) console.log(data.voteID);
     setIsCreateModal1Visible(false);
     setIsCreateModal2Visible(true);
   };
 
-  const handleSubmitCreateOption = () => {
+  const handleAddBox = () => {
+    let temp = JSON.parse(JSON.stringify(inputBoxes));
+    temp.push(inputBoxes[inputBoxes.length - 1] + 1);
+    setInputBoxes(temp);
+  };
+  const handleOptionInput = (index, value) => {
+    let temp = JSON.parse(JSON.stringify(inputs));
+    temp[index] = value;
+    setInputs(temp);
+  };
+
+  const handleSubmitCreateOption = async () => {
+    for (let i = 0; i < inputs.length; i++) {
+      await createVoteOption({
+        variables: {
+          voteID: newVoteID,
+          voteOptionName: inputs[i],
+        },
+      });
+    }
     setIsCreateModal2Visible(false);
   };
 
@@ -210,12 +234,28 @@ function TeamVote(props) {
 
   const modalCreateOptionContent = (
     <>
-      <TextField
-        label="Option 1"
-        size="small"
-        style={{ margin: "0.5rem" }}
-        // onChange={(e) => setNewDescription(e.target.value)}
-      />
+      <p>{newVoteID}</p>
+      {inputBoxes.map((box, index) => (
+        <TextField
+          id="options"
+          value={inputs[index]}
+          label={"Option " + box}
+          size="small"
+          style={{ margin: "0.5rem 1rem" }}
+          onChange={(e) => handleOptionInput(index, e.target.value)}
+        />
+      ))}
+      <Form style={{ marginBottom: "2rem" }}>
+        <AddCircleOutlineSharpIcon
+          style={{
+            color: "green",
+            fontSize: "2rem",
+            margin: "1rem",
+            cursor: "pointer",
+          }}
+          onClick={handleAddBox}
+        />
+      </Form>
     </>
   );
 
@@ -226,13 +266,12 @@ function TeamVote(props) {
           <Typography gutterBottom variant="h4" component="div">
             {vote.title}
           </Typography>
-          <Chip label="已結束" size="large" />
+          <p>{vote.description}</p>
+          <Tag color="default">Ended</Tag>
           {/* <Typography gutterBottom variant="subtitle1" component="div">
               結果 : {vote.result.name} {vote.result.count} 票
             </Typography> */}
-          <Typography gutterBottom variant="subtitle2" component="div">
-            <AccessTimeFilledIcon sx={{ fontSize: "small" }} /> {vote.end}
-          </Typography>
+          <Tag color="red">due at {vote.end}</Tag>
         </CardContent>
       </CardActionArea>
     </Card>
@@ -245,23 +284,10 @@ function TeamVote(props) {
           <Typography gutterBottom variant="h4" component="div">
             {vote.title}
           </Typography>
-          <Chip
-            label="投票中"
-            color="success"
-            variant="outlined"
-            size="large"
-          />
-          {/* {vote.replied ? (
-              <Chip label="Replied" color="success" sx={{ m: 1 }} />
-            ) : (
-              <Chip label="Ureplied" color="error" sx={{ m: 1 }} />
-            )} */}
-          <Typography gutterBottom variant="subtitle1" component="div">
-            {!vote.limit ? "一人多票" : `一人${vote.limit}票`}
-          </Typography>
-          <Typography gutterBottom variant="subtitle2" component="div">
-            <AccessTimeFilledIcon sx={{ fontSize: "small" }} /> {vote.end}
-          </Typography>
+          <p>{vote.description}</p>
+          <Tag color="cyan">Ongoing</Tag>
+          <Tag color="blue">vote {vote.limit} options</Tag>
+          <Tag color="red">due at {vote.end}</Tag>
           {/*<Box sx={{ m:1, p: 1 }}>
               {vote.options.map(option => 
                   <Typography gutterBottom variant="body1" component="div" key = {option.id}>
