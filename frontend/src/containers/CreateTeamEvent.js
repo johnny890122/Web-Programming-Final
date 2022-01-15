@@ -45,7 +45,7 @@ function CreateTeamEvent(props) {
     refetchQueries: [TEAM_EVENT_INIT, USER_NOTIFICATION_INIT, USER_EVENT_INIT],
   });
   const [updateEvent] = useMutation(UPDATE_TEAM_EVENT, {
-    refetchQueries: [TEAM_EVENT_INIT, "initTeamEvent"],
+    refetchQueries: [TEAM_EVENT_INIT, USER_EVENT_INIT],
   });
 
   const submitCreateEvent = async () => {

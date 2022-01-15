@@ -18,7 +18,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_LOGIN, USER_ACHEIEVEMENT_UPDATE } from "../graphql";
+import { USER_LOGIN, USER_ACHEIEVEMENT_UPDATE, USER_ACHEIEVEMENT_INIT } from "../graphql";
 import bcryptjs from "bcryptjs";
 
 const SignUp = () => {
