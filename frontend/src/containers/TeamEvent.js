@@ -119,7 +119,7 @@ function TeamEvent(props) {
             {
               new Date(event.eventStart) <= today 
               ? <Chip label="Finished" sx={{ my: 1 }} /> 
-              : <Chip label="Ongoing" sx={{ my: 1 }} />
+              : <Chip label="Ongoing" color="success" sx={{ my: 1 }} />
             }
 
             <Box sx={{ textAlign: "right" }}>

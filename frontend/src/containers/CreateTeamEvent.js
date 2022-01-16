@@ -167,7 +167,7 @@ function CreateTeamEvent(props) {
                 id="create-event-eDime"
                 sx={{ m: 5 }}
                 label="結束時間 *"
-                value={eTime | initETime}
+                value={eTime || initETime}
                 required
                 onChange={(newValue) => {
                   setETime(newValue);

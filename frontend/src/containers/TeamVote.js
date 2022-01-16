@@ -22,6 +22,7 @@ import {
   CREATE_TEAM_VOTE,
   CREATE_TEAM_VOTE_OPTION,
   REPLY_TEAM_VOTE,
+  USER_NOTIFICATION_INIT
 } from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
 
@@ -81,7 +82,7 @@ function TeamVote(props) {
   }
 
   const [createVote] = useMutation(CREATE_TEAM_VOTE, {
-    refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+    refetchQueries: [TEAM_VOTE_INIT, USER_NOTIFICATION_INIT],
     onCompleted: (e) => setNewVoteID(e.createVote.voteID),
   });
   const [createVoteOption] = useMutation(CREATE_TEAM_VOTE_OPTION, {

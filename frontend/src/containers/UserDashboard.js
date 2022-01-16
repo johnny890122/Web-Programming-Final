@@ -161,9 +161,9 @@ const UserDashboard = (props) => {
             </Typography>
 
             {new Date(event.eventStart) <= today ? (
-              <Chip label="Finished" color="success" sx={{ my: 1 }} />
+              <Chip label="Finished" sx={{ my: 1 }} />
             ) : (
-              <Chip label="Ongoing" color="error" sx={{ my: 1 }} />
+              <Chip label="Ongoing" color="success" sx={{ my: 1 }} />
             )}
 
             <Box sx={{ textAlign: "right" }}>

@@ -17,9 +17,8 @@ import {
 } from "../graphql";
 
 function CreateUserEvent(props) {
-  let now = new Date(),
-    twoHoursLater = new Date(now);
-  twoHoursLater.setHours(now.getHours() + 2);
+  let now = new Date(), twoHoursLater = new Date(now);
+  // twoHoursLater.setHours(now.getHours() + 2);
 
   let initTitle = props.title ? props.title : null;
   let initDescription = props.description ? props.description : null;
@@ -171,7 +170,7 @@ function CreateUserEvent(props) {
                 id="create-event-eDime"
                 sx={{ m: 5 }}
                 label="End Time *"
-                value={eTime | initETime}
+                value={eTime || initETime}
                 required
                 onChange={(newValue) => {
                   setETime(newValue);
