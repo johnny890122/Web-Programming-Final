@@ -24,7 +24,7 @@
   * (yarn) cd frontend && yarn add
   * (yarn) cd backend && yarn add
 3. .env file
-  * 將 .env.defaults 的內容複製為 .env
+  * 將 .env.defaults (./backend) 的內容複製為 .env
   * 填入自己的 MONGO_URL
 4. 開啟第 1 個 terminal windows
   * (npm) cd frontend && npm start
@@ -34,16 +34,6 @@
   * (yarn) cd backend && yarn server 
 6. 打開 http://localhost:3000 
   * 開始使用!
-
- 
-
-
-### 前端
- * install 套件 => 從根目錄 start
-### 後端
- * install 套件 => 從根目錄 run server
-### 資料庫
- * env : MongoDB_URL
 
 
 [如何在 localhost 安裝與測試之詳細步驟
