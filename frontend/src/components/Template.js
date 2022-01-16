@@ -132,7 +132,11 @@ export default function Template({ content }) {
   });
 
   const [name, setName] = React.useState(
-    !userAccount.loading ? userAccount.data.myUserAccount.userName : ""
+    !userAccount.loading
+      ? userAccount.data
+        ? userAccount.data.myUserAccount.userName
+        : ""
+      : ""
   );
 
   const theme = useTheme();
@@ -144,8 +148,10 @@ export default function Template({ content }) {
 
   React.useEffect(() => {
     if (!userAccount.loading) {
-      if (!userAccount.data.myUserAccount.userName) {
-        setIsModalVisible(true);
+      if (userAccount.data) {
+        if (!userAccount.data.myUserAccount.userName) {
+          setIsModalVisible(true);
+        }
       }
     }
   }, [userAccount.loading]);
@@ -262,9 +268,11 @@ export default function Template({ content }) {
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             Hello{" "}
-            {userAccount.loading
-              ? ""
-              : userAccount.data.myUserAccount.userAccount}
+            {!userAccount.loading
+              ? userAccount.data
+                ? userAccount.data.myUserAccount.userAccount
+                : ""
+              : ""}
           </Typography>
           <Box
             sx={{ flexGrow: 0 }}
@@ -292,16 +300,15 @@ export default function Template({ content }) {
                 >
                   Update
                 </Button>,
-                <Link to="/">
-                  <Button
-                    variant="contained"
-                    color="error"
-                    key="logout"
-                    style={{ marginRight: "0.75rem" }}
-                  >
-                    Log Out
-                  </Button>
-                </Link>,
+                <Button
+                  variant="contained"
+                  color="error"
+                  key="logout"
+                  style={{ marginRight: "0.75rem" }}
+                  href="/"
+                >
+                  Log Out
+                </Button>,
               ]}
             >
               <div className="container" style={{ display: "flex" }}>
@@ -320,9 +327,11 @@ export default function Template({ content }) {
                     <Input
                       disabled={true}
                       defaultValue={
-                        userAccount.loading
-                          ? ""
-                          : userAccount.data.myUserAccount.userAccount
+                        !userAccount.loading
+                          ? userAccount.data
+                            ? userAccount.data.myUserAccount.userAccount
+                            : ""
+                          : ""
                       }
                       style={{ width: "70%" }}
                       size="small"
@@ -336,9 +345,11 @@ export default function Template({ content }) {
                     <Input
                       disabled={true}
                       defaultValue={
-                        userAccount.loading
-                          ? ""
-                          : userAccount.data.myUserAccount.userEmail
+                        !userAccount.loading
+                          ? userAccount.data
+                            ? userAccount.data.myUserAccount.userEmail
+                            : ""
+                          : ""
                       }
                       style={{ width: "76%" }}
                       size="small"
@@ -351,9 +362,11 @@ export default function Template({ content }) {
                     </Tag>
                     <Input
                       defaultValue={
-                        userAccount.loading
-                          ? name
-                          : userAccount.data.myUserAccount.userName
+                        !userAccount.loading
+                          ? userAccount.data
+                            ? userAccount.data.myUserAccount.userName
+                            : name
+                          : name
                       }
                       style={{ width: "58%" }}
                       size="small"

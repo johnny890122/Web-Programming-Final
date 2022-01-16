@@ -18,11 +18,14 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_LOGIN, USER_ACHEIEVEMENT_UPDATE, USER_ACHEIEVEMENT_INIT } from "../graphql";
+import {
+  USER_LOGIN,
+  USER_ACHEIEVEMENT_UPDATE,
+  USER_ACHEIEVEMENT_INIT,
+} from "../graphql";
 import bcryptjs from "bcryptjs";
 
 const SignUp = () => {
-  
   const [addAchievement] = useMutation(USER_ACHEIEVEMENT_UPDATE);
 
   // 後端的訊息
@@ -44,7 +47,8 @@ const SignUp = () => {
   const [passwordFormatWrong, setPasswordFormatWrong] = useState(false);
   const [passwordCheckIsWrong, setPasswordCheckIsWrong] = useState(false);
   const [passwordFormatHelperText, setPasswordFormatHelperText] = useState("");
-  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] = useState("");
+  const [passwordCheckIsWrongHelperText, setPasswordCheckIsWrongHelperText] =
+    useState("");
   // 顯示 password or not
   const [showPassword, setShowPassword] = useState(false);
 
@@ -53,20 +57,20 @@ const SignUp = () => {
   const [alertSeverity, setAlertSeverity] = useState("error");
   const [alertMessageBody, setAlertMessageBody] = useState("");
 
-  const bcrypt = require('bcryptjs');
+  const bcrypt = require("bcryptjs");
   const salt = bcrypt.genSaltSync(10);
 
   // 按下繳交
   const submitSignUp = async () => {
     if (
-      !emailFormatWrong &
-      !accountFormatWrong &
-      !passwordFormatWrong &
-      !passwordCheckIsWrong &
-      (email.length != 0) &
-      (account.length != 0) &
-      (password.length != 0) &
-      (passwordCheck.length != 0)
+      !emailFormatWrong &&
+      !accountFormatWrong &&
+      !passwordFormatWrong &&
+      !passwordCheckIsWrong &&
+      email.length != 0 &&
+      account.length != 0 &&
+      password.length != 0 &&
+      passwordCheck.length != 0
     ) {
       await addUser({
         variables: {
@@ -74,7 +78,6 @@ const SignUp = () => {
           userPassword: bcrypt.hashSync(password, salt),
           userEmail: email,
         },
-
       });
     } else {
       setAlertVisibility("inline-block");
@@ -96,11 +99,11 @@ const SignUp = () => {
       }
     }
 
-    if ((s.length <= 6) & (s.length != 0)) {
+    if (s.length <= 6 && s.length != 0) {
       setAccountFormatHelperText("帳戶長度需大於 6 個字元。");
       setAccountFormatWrong(true);
       return;
-    } else if ((account === password) & (s.length != 0)) {
+    } else if (account === password && s.length != 0) {
       setAccountFormatHelperText("帳號不可和密碼相同");
       setAccountFormatWrong(true);
       return;
@@ -122,11 +125,11 @@ const SignUp = () => {
       }
     }
 
-    if ((s.length <= 6) & (s.length != 0)) {
+    if (s.length <= 6 && s.length != 0) {
       setPasswordFormatHelperText("密碼長度需大於 6 個字元。");
       setPasswordFormatWrong(true);
       return;
-    } else if ((account === password) & (s.length != 0)) {
+    } else if (account === password && s.length != 0) {
       setPasswordFormatHelperText("密碼不可和帳號相同");
       setPasswordFormatWrong(true);
       return;
@@ -214,8 +217,6 @@ const SignUp = () => {
       setAlertVisibility("block");
     },
   });
-
-  
 
   return (
     <Box sx={{ display: "flex" }}>

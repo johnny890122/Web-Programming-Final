@@ -121,6 +121,7 @@ function CreateTeam({ me }) {
   const { Step } = Steps;
   const [inputBoxes, setInputBoxes] = useState([1]);
   const [inputs, setInputs] = useState([]);
+  // const [alertDisplay, setAlertDisplay] = useState("none");
 
   // some constant
   const totalStep = 3;
@@ -158,21 +159,22 @@ function CreateTeam({ me }) {
   };
 
   const handleSubmit = async () => {
-    await addTeam({
-      variables: {
-        teamName: name,
-        teamDescription: des,
-        // teamCreateTime: startDate,
-        teamType: selectedTeamType,
-        creatorID: me,
-        memberAccount: inputs,
-      },
-    });
+    try {
+      await addTeam({
+        variables: {
+          teamName: name,
+          teamDescription: des,
+          teamType: selectedTeamType,
+          creatorID: me,
+          memberAccount: inputs,
+        },
+      });
 
-    setTeamName("");
-    setTeamDes("");
-    setInputBoxes([1]);
-    setInputs();
+      setTeamName("");
+      setTeamDes("");
+      setInputBoxes([1]);
+      setInputs();
+    } catch (e) {}
   };
 
   useEffect(() => {

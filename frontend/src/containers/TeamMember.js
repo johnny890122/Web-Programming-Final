@@ -3,6 +3,7 @@ import Template from "../components/Template";
 import Table from "../components/Table";
 import { Button, Typography, TextField } from "@mui/material";
 import { Modal } from "antd";
+import Alert from "@mui/material/Alert";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {
   TEAM_MEMBER_INIT,
@@ -18,6 +19,9 @@ const TeamMember = (props) => {
   const [modalContent, setModalContent] = React.useState(null);
   const [IDToBeDeleted, setIDToBeDeleted] = React.useState("");
   const [inviteAccount, setInviteAccount] = React.useState("");
+  const [alertVisibility, setAlertVisibility] = React.useState("none");
+  const [alertSeverity, setAlertSeverity] = React.useState("error");
+  const [alertMessageBody, setAlertMessageBody] = React.useState("");
 
   const handleClose = () => {
     setIsModalVisible(false);
@@ -48,17 +52,23 @@ const TeamMember = (props) => {
     });
     setIsModalVisible(false);
   };
-  const [addMember] = useMutation(ADD_TEAM_MEMBER, {
+  const [addMember, { data, loading, error }] = useMutation(ADD_TEAM_MEMBER, {
     refetchQueries: [TEAM_MEMBER_INIT, "initTeamMember"],
   });
   const submitInvite = async () => {
-    await addMember({
-      variables: {
-        teamID: props.nowTeam,
-        memberAccount: inviteAccount,
-      },
-    });
-    setCreateModalVisible(false);
+    try {
+      await addMember({
+        variables: {
+          teamID: props.nowTeam,
+          memberAccount: inviteAccount,
+        },
+      });
+      setCreateModalVisible(false);
+    } catch (e) {
+      setAlertMessageBody("Account not exists.");
+      setAlertSeverity("error");
+      setAlertVisibility("inline-block");
+    }
   };
 
   const columnName = ["Name", "Account", "Email", "Role", ""];
@@ -158,12 +168,24 @@ const TeamMember = (props) => {
         ]}
       >
         <div>
-          <TextField
-            id="invite-account"
-            value={inviteAccount}
-            label="Invite Account"
-            onChange={(e) => setInviteAccount(e.target.value)}
-          />
+          <div className="container" style={{ display: "flex" }}>
+            <TextField
+              id="invite-account"
+              value={inviteAccount}
+              label="Invite Account"
+              onChange={(e) => setInviteAccount(e.target.value)}
+            />
+            <Alert
+              severity={alertSeverity}
+              style={{
+                display: alertVisibility,
+                marginLeft: "1rem",
+                width: "70%",
+              }}
+            >
+              <p>{alertMessageBody}</p>
+            </Alert>
+          </div>
         </div>
       </Modal>
     </div>
