@@ -282,6 +282,29 @@ export const CREATE_DETAIL_PLAYER = gql`
   }
 `;
 
+export const UPDATE_CONTEST = gql`
+  mutation updateContest(
+    $contestID: String
+    $contestDate: String
+    $contestOpponent: String
+    $contestIsWin: String
+    $contestTitle: String
+    $contestMySet: Int
+    $contestOppoSet: Int
+  ) {
+    updateContest(
+      contestID: $contestID
+      contestDate: $contestDate
+      contestOpponent: $contestOpponent
+      contestIsWin: $contestIsWin
+      contestTitle: $contestTitle
+      contestMySet: $contestMySet
+      contestOppoSet: $contestOppoSet
+    ) {
+      contestID
+    }
+  }
+`;
 export const UPDATE_SET_DETAIL = gql`
   mutation updateSetDetail(
     $setID: String
@@ -309,6 +332,34 @@ export const UPDATE_SET_DETAIL = gql`
     }
   }
 `;
+
+export const DELETE_CONTEST = gql`
+  mutation deleteContest(
+    $contestID: String 
+    $teamID: String
+  ) {
+    deleteContest(
+      teamID: $teamID, 
+      contestID: $contestID
+    ) {
+      teamID
+    }
+  }
+`;
+export const DELETE_SET_DETAIL = gql`
+  mutation deleteSetDetail(
+    $setID: String
+    $contestID: String
+  ) {
+    deleteSetDetail(
+      setID: $setID, 
+      contestID: $contestID
+    ) {
+      contestID
+    }
+  }
+`;
+
 
 export const DELETE_TEAM_MEMBER = gql`
   mutation deleteMember($teamID: String, $memberID: String) {

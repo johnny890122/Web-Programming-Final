@@ -4,7 +4,9 @@ import { MinusCircleOutlined } from '@ant-design/icons';
 const CreateSetForm = (onCreate, players) => {
 
   return (
-    <Form name="dynamic_form_nest_item" onFinish={onCreate} autoComplete="off">
+    <Form name="create-set-form"
+          onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} 
+          onFinish={onCreate} autoComplete="off">
       <Row>
         <Form.Item label="局數"
                   name='setNumber'

@@ -1,17 +1,19 @@
-import { Row, Col, Modal, Form, Input, Button, Space, InputNumber, Select } from 'antd';
+import { Row, Col, Popconfirm, Form, Input, Button, Space, InputNumber, Select } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
 
-const UpdateSetForm = (set, onUpdate, players) => {
-  const playerDetails = set.setPlayerDetail;
-  console.log(playerDetails)
+const UpdateSetForm = (set, onUpdate, onDelete, players) => {
+  //const playerDetails = set.setPlayerDetail;
+  //console.log(playerDetails)
   return (
     <Form name="dynamic_form_nest_item"
+          onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
           initialValues={set} 
           onFinish={onUpdate} 
           autoComplete="off">
       <Row>
         <Form.Item label="局數"
                   name='setNumber'
+                  onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                   rules={[{ required: true, message: '必填局數' }]}>
               <InputNumber min={1}/>
         </Form.Item>
@@ -159,7 +161,7 @@ const UpdateSetForm = (set, onUpdate, players) => {
           </Button>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" danger style={{ margin: '0 8px' }}>
+          <Button type="primary" danger style={{ margin: '0 8px' }} onClick={() => onDelete(set)}>
             Delete
           </Button>
         </Form.Item>

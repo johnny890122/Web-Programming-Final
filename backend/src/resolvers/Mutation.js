@@ -1068,7 +1068,7 @@ const Mutation = {
   deleteSetDetail: async (parent, args, { db, pubSub }) => {
     const { setID, contestID } = args;
     const Contest = await db.ContestModel.findOne({ contestID: contestID });
-    const SetDetail = await db.SetDetailOptionModel.findOne({
+    const SetDetail = await db.SetDetailModel.findOne({
       setID: setID,
     });
 

@@ -2,21 +2,27 @@ import React, { useState } from "react";
 import Template from "../components/Template";
 import {
   Box,
+  Grid,
+  List,
   ListItem,
   Typography,
   Card,
   CardActionArea,
   CardContent,
-  Button,
 } from "@mui/material";
 import {
+  Row,
+  Col,
   Modal,
   Form,
   Input,
+  Button,
   Space,
   InputNumber,
   Select,
   DatePicker,
+  Popconfirm,
+  message,
 } from "antd";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -26,9 +32,16 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { TEAM_SCORE_INIT, CREATE_TEAM_SCORE } from "../graphql";
+import {
+  TEAM_SCORE_INIT,
+  CREATE_TEAM_SCORE,
+  UPDATE_CONTEST,
+  DELETE_CONTEST,
+} from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
+//import UpdateContestForm from "../components/UpdateContestForm";
 
 function Score(props) {
   const CONTEST_KEY = "nowContest";
@@ -46,19 +59,29 @@ function Score(props) {
     console.log(teamScore.data.initContest);
     teamScore.data.initContest.map((i) =>
       ScoreData.push({
-        id: i.contestID,
-        title: i.contestTitle,
-        opponent: i.contestOpponent,
-        date: i.contestDate, //new Date(i.contestDate).toDateString(),
-        mySet: i.contestMySet,
-        oppoSet: i.contestOppoSet,
+        contestID: i.contestID,
+        contestTitle: i.contestTitle,
+        contestOpponent: i.contestOpponent,
+        contestDate: i.contestDate, //new Date(i.contestDate).toDateString(),
+        contestMySet: i.contestMySet,
+        contestOppoSet: i.contestOppoSet,
+        contestIsWin: i.contestIsWin,
       })
     );
   }
 
+  const WinOption = [
+    { label: "win", value: "win" },
+    { label: "lose", value: "lose" },
+    { label: "tie", value: "tie" },
+  ];
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
   const [addContest] = useMutation(CREATE_TEAM_SCORE, {
+    refetchQueries: [TEAM_SCORE_INIT, "initContest"],
+  });
+  const [removeContest] = useMutation(DELETE_CONTEST, {
     refetchQueries: [TEAM_SCORE_INIT, "initContest"],
   });
 
@@ -69,9 +92,12 @@ function Score(props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const cancel = (e) => {
+    console.log("cancel");
+  };
 
   const onCreate = async (values) => {
-    //console.log(values.contestDate.format('YYYY/MM/DD'));
+    setIsModalVisible(false);
     const newContest = await addContest({
       variables: {
         teamID: props.nowTeam,
@@ -83,18 +109,27 @@ function Score(props) {
         contestOppoSet: values.contestOppoSet || 0,
       },
     });
-    //setIsModalVisible(true);
+  };
+  const onDelete = async (score) => {
+    console.log(score.contestID);
+    const deleteContest = await removeContest({
+      variables: {
+        teamID: props.nowTeam,
+        contestID: score.contestID,
+      },
+    });
   };
 
   const scoreForm = () => {
-    const WinOption = [
-      { label: "win", value: "win" },
-      { label: "lose", value: "lose" },
-      { label: "tie", value: "tie" },
-    ];
-
     return (
-      <Form name="create-contest-form" onFinish={onCreate} autoComplete="off">
+      <Form
+        name="create-contest-form"
+        onFinish={onCreate}
+        autoComplete="off"
+        onKeyPress={(e) => {
+          e.key === "Enter" && e.preventDefault();
+        }}
+      >
         <Form.Item
           label="比賽名稱"
           name="contestTitle"
@@ -167,16 +202,16 @@ function Score(props) {
       </div>
       <div className="teamScore-container" style={{ marginTop: "1rem" }}>
         {ScoreData.map((score) => (
-          <Link
-            to={{
-              pathname: `/team/${breadItem[1]}/Score/${score.title}/detail`,
-            }}
-            onClick={() => {
-              console.log("now in contest:", score.id);
-              localStorage.setItem(CONTEST_KEY, score.id);
-            }}
-          >
-            <ListItem key={score.id} sx={{ width: 1400 }}>
+          <ListItem key={score.contestID} sx={{ width: 1400 }}>
+            <Link
+              to={{
+                pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`,
+              }}
+              onClick={() => {
+                console.log("now in contest:", score.contestTitle);
+                localStorage.setItem(CONTEST_KEY, score.contestID);
+              }}
+            >
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
@@ -186,7 +221,7 @@ function Score(props) {
                       component="div"
                       style={{ margin: "0 1rem" }}
                     >
-                      [ {score.title} ]
+                      [ {score.contestTitle} ]
                     </Typography>
                     <Typography
                       display="inline"
@@ -202,7 +237,7 @@ function Score(props) {
                       component="div"
                       style={{ margin: "0 1rem" }}
                     >
-                      {score.mySet} - {score.oppoSet}
+                      {score.contestMySet} - {score.contestOppoSet}
                     </Typography>
                     <Typography
                       display="inline"
@@ -210,7 +245,7 @@ function Score(props) {
                       component="div"
                       style={{ margin: "0 2rem" }}
                     >
-                      {score.opponent}
+                      {score.contestOpponent}
                     </Typography>
                     <Typography
                       display="inline"
@@ -218,19 +253,24 @@ function Score(props) {
                       component="div"
                       style={{ margin: "0 2rem" }}
                     >
-                      {score.date}
+                      {score.contestDate}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <Button type="primary" style={{ margin: "0 8px" }}>
-                Edit
-              </Button>
+            </Link>
+            <Popconfirm
+              title="Are you sure to delete this contest?"
+              onConfirm={() => onDelete(score)}
+              onCancel={() => cancel}
+              okText="Yes"
+              cancelText="No"
+            >
               <Button type="primary" danger style={{ margin: "0 8px" }}>
                 Delete
               </Button>
-            </ListItem>
-          </Link>
+            </Popconfirm>
+          </ListItem>
         ))}
       </div>
     </Box>

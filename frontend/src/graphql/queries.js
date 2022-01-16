@@ -190,6 +190,7 @@ export const TEAM_SCORE_INIT = gql`
       contestDate
       contestMySet
       contestOppoSet
+      contestIsWin
     }
   }
 `;
