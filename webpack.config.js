@@ -2,7 +2,7 @@
 const path = require('path');
 const clientConfig = {
   entry: {
-    'index': './frontend/src/containers/App.js'
+    'index': './frontend/src/index.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
