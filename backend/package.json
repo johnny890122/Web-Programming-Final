@@ -19,7 +19,8 @@
     "server": "nodemon src/index.js --ext js,graphql --exec babel-node"
   },
   "devDependencies": {
-    "@babel/node": "^7.16.5"
+    "@babel/node": "^7.16.5",
+    "babel-plugin-transform-async-to-generator": "^6.24.1"
   },
   "resolutions": {
     "graphql": "^15.6.1",
