@@ -8,7 +8,9 @@ import {
   Chip,
   CardContent,
 } from "@mui/material";
+import { Tag } from "antd";
 import { CardActionArea } from "@mui/material";
+import { Link } from "react-router-dom";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -20,28 +22,19 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import ShortTextIcon from '@mui/icons-material/ShortText';
+import ShortTextIcon from "@mui/icons-material/ShortText";
 
-import {
-  // EventData,
-  // ScoreData,
-  VoteData,
-  // PostData,
-} from "../components/ListData";
 import {
   TEAM_EVENT_INIT,
   TEAM_POST_INIT,
   TEAM_SCORE_INIT,
+  TEAM_VOTE_INIT,
   FIND_TEAM_NAME,
 } from "../graphql";
 import { useQuery } from "@apollo/client";
 
 function TeamHome(props) {
-  // const events = EventData.filter((event) => event.type === "team").slice(0, 3);
-  // const scores = ScoreData.slice(0, 3);
-  const votes = VoteData.slice(0, 3);
-  // const posts = PostData.slice(0, 2);
-
+  let nowTime = Date.now();
   const findTeamName = useQuery(FIND_TEAM_NAME, {
     variables: { teamID: props.nowTeam },
   });
@@ -53,6 +46,9 @@ function TeamHome(props) {
     variables: { teamID: props.nowTeam },
   });
   const teamScore = useQuery(TEAM_SCORE_INIT, {
+    variables: { teamID: props.nowTeam },
+  });
+  const teamVote = useQuery(TEAM_VOTE_INIT, {
     variables: { teamID: props.nowTeam },
   });
 
@@ -95,6 +91,21 @@ function TeamHome(props) {
       })
     );
   }
+  const VoteData = [];
+  if (!teamVote.loading) {
+    if (teamVote.data) {
+      teamVote.data.initVote.map((i) =>
+        VoteData.push({
+          id: i.voteID,
+          title: i.voteTitle,
+          description: i.voteDescription,
+          end: i.voteEnd,
+          limit: i.voteLimit,
+          voteOption: i.voteOption,
+        })
+      );
+    }
+  }
 
   const homepage = (
     <div className="team-home" style={{ display: "flex", flexWrap: "wrap" }}>
@@ -107,186 +118,175 @@ function TeamHome(props) {
             <EventNoteIcon sx={{ mx: 1, my: 0 }} /> Event
           </Typography>
         </Box>
-        {EventData.map((event) => (
+        {EventData.slice(0, 3).map((event) => (
           <Card
             sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={event.id}
           >
-              <CardContent sx={{ p: 2 }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {event.title}
-                </Typography>
+            <CardContent sx={{ p: 2 }}>
+              <Typography gutterBottom variant="h6" component="div">
+                {event.title}
+              </Typography>
 
-                <Typography gutterBottom variant="subtitle2" component="div">
-                  <AccessTimeIcon sx={{ fontSize: "small" }} /> { new Date(parseInt(event.start)).toDateString() }
-                </Typography>
+              <Typography gutterBottom variant="subtitle2" component="div">
+                <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
+                {new Date(parseInt(event.start)).toDateString()}
+              </Typography>
 
-                <Typography gutterBottom variant="subtitle2" component="div">
-                  <LocationOnIcon sx={{ fontSize: "small" }} /> { event.location }
-                </Typography>
-              </CardContent>
+              <Typography gutterBottom variant="subtitle2" component="div">
+                <LocationOnIcon sx={{ fontSize: "small" }} /> {event.location}
+              </Typography>
+            </CardContent>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
-          <Button
-            variant="outlined"
-            color="success"
-            sx={{ m: 1 }}
-            href={
-              "/team/" +
-              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
-              "/Event"
-            }
-          >
-            View All
-          </Button>
-        </Box>
+        <Link
+          to={
+            "/team/" +
+            (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+            "/Event"
+          }
+        >
+          <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
+            <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              View All
+            </Button>
+          </Box>
+        </Link>
       </Card>
 
       <Card
         className="teamHp-post"
-        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
         <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
             <PostAddIcon sx={{ mx: 1, my: 0 }} /> Post
           </Typography>
         </Box>
-        {PostData.map((post) => (
+        {PostData.slice(0, 2).map((post) => (
           <Card
-            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
+            sx={{ m: 1, width: 200, height: 180, display: "inline-block" }}
             key={post.id}
           >
-            
-              <CardContent sx={{ p: 0.5 }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {post.title}
-                </Typography>
-                <Typography gutterBottom variant="body2" component="div">
-                  <DriveFileRenameOutlineIcon sx={{ fontSize: "small" }} />{" "}
-                  {post.author}
-                </Typography>
-                <Typography gutterBottom variant="subtitle2" component="div">
-                  <AccessTimeIcon sx={{ fontSize: "small" }} /> { new Date(post.time).toDateString() }
-                </Typography>
-                <Typography gutterBottom variant="body1" component="div">
-                  <ShortTextIcon sx={{ fontSize: "small" }} /> {post.content.slice(0, 30)} ...
-                </Typography>
-              </CardContent>
-            
+            <CardContent sx={{ p: 0.5 }}>
+              <Typography gutterBottom variant="h6" component="div">
+                {post.title}
+              </Typography>
+              <Typography gutterBottom variant="body2" component="div">
+                <DriveFileRenameOutlineIcon sx={{ fontSize: "small" }} />{" "}
+                {post.author}
+              </Typography>
+              <Typography gutterBottom variant="subtitle2" component="div">
+                <AccessTimeIcon sx={{ fontSize: "small" }} />{" "}
+                {new Date(post.time).toDateString()}
+              </Typography>
+              <Typography gutterBottom variant="body1" component="div">
+                <ShortTextIcon sx={{ fontSize: "small" }} />{" "}
+                {post.content.slice(0, 30)} ...
+              </Typography>
+            </CardContent>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
-          <Button
-            variant="outlined"
-            color="success"
-            sx={{ m: 1 }}
-            href={
-              "/team/" +
-              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
-              "/Posts"
-            }
-          >
-            View All
-          </Button>
-        </Box>
+        <Link
+          to={
+            "/team/" +
+            (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+            "/Posts"
+          }
+        >
+          <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
+            <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              View All
+            </Button>
+          </Box>
+        </Link>
       </Card>
 
       <Card
         className="teamHp-score"
         sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
       >
-        <Box sx={{ width: "100%", maxWidth: 470 }}>
+        <Box sx={{ width: "100%", maxWidth: 540 }}>
           <Typography gutterBottom variant="h5" component="div">
             <SportsScoreIcon sx={{ mx: 1, my: 0 }} /> Score
           </Typography>
         </Box>
-        {ScoreData.map((score) => (
+        {ScoreData.slice(0, 3).map((score) => (
           <Card
             sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
             key={score.id}
           >
-            
-              <CardContent sx={{ p: 2 }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {score.opponent}
-                </Typography>
-                <Typography gutterBottom variant="subtitle2" component="div">
-                  <CalendarTodayIcon sx={{ fontSize: "small" }} /> {score.date}
-                </Typography>
-                <Typography gutterBottom variant="h6" component="div">
-                  {score.mySet} : {score.oppoSet}
-                </Typography>
-              </CardContent>
-            
+            <CardContent sx={{ p: 2 }}>
+              <Typography gutterBottom variant="h6" component="div">
+                {score.opponent}
+              </Typography>
+              <Typography gutterBottom variant="subtitle2" component="div">
+                <CalendarTodayIcon sx={{ fontSize: "small" }} /> {score.date}
+              </Typography>
+              <Typography gutterBottom variant="h6" component="div">
+                {score.mySet} : {score.oppoSet}
+              </Typography>
+            </CardContent>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 470, textAlign: "right" }}>
-          <Button
-            variant="outlined"
-            color="success"
-            sx={{ m: 1 }}
-            href={
-              "/team/" +
-              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
-              "/Score"
-            }
-          >
-            View All
-          </Button>
-        </Box>
+        <Link
+          to={
+            "/team/" +
+            (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+            "/Score"
+          }
+        >
+          <Box sx={{ px: 1, width: "100%", maxWidth: 535, textAlign: "right" }}>
+            <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              View All
+            </Button>
+          </Box>
+        </Link>
       </Card>
 
       <Card
         className="teamHp-vote"
-        sx={{ m: 2, p: 2, width: 535, height: 315, display: "inline-block" }}
+        sx={{ m: 2, p: 2, width: 470, height: 315, display: "inline-block" }}
       >
-        <Box sx={{ width: "100%", maxWidth: 540 }}>
+        <Box sx={{ width: "100%", maxWidth: 470 }}>
           <Typography gutterBottom variant="h5" component="div">
             <HowToVoteIcon sx={{ mx: 1, my: 0 }} /> Vote
           </Typography>
         </Box>
-        {votes.map((vote) => (
+        {VoteData.slice(0, 2).map((vote) => (
           <Card
-            sx={{ m: 1, width: 150, height: 180, display: "inline-block" }}
+            sx={{ m: 1, width: 200, height: 180, display: "inline-block" }}
             key={vote.id}
           >
-            
-              <CardContent sx={{ p: 2 }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  {vote.title}
-                </Typography>
-                <Typography gutterBottom variant="subtitle2" component="div">
-                  <AccessTimeFilledIcon sx={{ fontSize: "small" }} /> {vote.end}
-                </Typography>
-                {vote.act ? (
-                  <Chip
-                    label="投票中"
-                    color="success"
-                    variant="outlined"
-                    size="small"
-                  />
-                ) : (
-                  <Chip label="已結束" size="small" />
-                )}
-              </CardContent>
-            
+            <CardContent sx={{ p: 2 }}>
+              <Typography gutterBottom variant="h6" component="div">
+                {vote.title}
+              </Typography>
+              {new Date(vote.end).getTime() > nowTime ? (
+                <Tag color="cyan">Ongoing</Tag>
+              ) : (
+                <Tag color="default">End</Tag>
+              )}
+              <br />
+              <Tag color="red" style={{ marginTop: "0.5rem" }}>
+                due: {vote.end}
+              </Tag>
+            </CardContent>
           </Card>
         ))}
-        <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
-          <Button
-            variant="outlined"
-            color="success"
-            sx={{ m: 1 }}
-            href={
-              "/team/" +
-              (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
-              "/Vote"
-            }
-          >
-            View All
-          </Button>
-        </Box>
+        <Link
+          to={
+            "/team/" +
+            (findTeamName.loading ? "" : findTeamName.data.findTeamName) +
+            "/Vote"
+          }
+        >
+          <Box sx={{ px: 1, width: "100%", maxWidth: 530, textAlign: "right" }}>
+            <Button variant="outlined" color="success" sx={{ m: 1 }}>
+              View All
+            </Button>
+          </Box>
+        </Link>
       </Card>
       {/* <Card
         className="teamHp-gallery"

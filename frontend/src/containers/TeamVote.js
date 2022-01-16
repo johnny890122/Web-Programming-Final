@@ -35,7 +35,6 @@ const cardStyle = {
 /* 點擊vote進入detail頁面 */
 
 function TeamVote(props) {
-  const dateFormat = "YYYY/MM/DD";
   let nowTime = Date.now();
   let now = new Date();
   let sevenDaysLater = new Date(now);
@@ -123,12 +122,21 @@ function TeamVote(props) {
             <>
               <FormControlLabel
                 control={
-                  <Checkbox
-                    size="medium"
-                    value={option.voteOptionID}
-                    defaultChecked={checkChecked(option) ? true : false}
-                    onChange={(e) => handleReply(e)}
-                  />
+                  new Date(vote.end).getTime() > nowTime ? (
+                    <Checkbox
+                      size="medium"
+                      value={option.voteOptionID}
+                      defaultChecked={checkChecked(option) ? true : false}
+                      onChange={(e) => handleReply(e)}
+                    />
+                  ) : (
+                    <Checkbox
+                      size="medium"
+                      value={option.voteOptionID}
+                      defaultChecked={checkChecked(option) ? true : false}
+                      disabled={true}
+                    />
+                  )
                 }
                 label={
                   option.voteOptionName +
@@ -137,7 +145,6 @@ function TeamVote(props) {
                   " votes)"
                 }
               />
-              {/* <p>{option.votedUser ? option.votedUser.length : 0}</p> */}
             </>
           ))}
         </FormGroup>

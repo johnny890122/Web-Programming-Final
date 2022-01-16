@@ -39,7 +39,12 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_ACCOUNT, UPDATE_USER, USER_ACHEIEVEMENT_UPDATE, USER_ACHEIEVEMENT_INIT } from "../graphql";
+import {
+  USER_ACCOUNT,
+  UPDATE_USER,
+  USER_ACHEIEVEMENT_UPDATE,
+  USER_ACHEIEVEMENT_INIT,
+} from "../graphql";
 import moment from "moment";
 
 const drawerWidth = 210;
@@ -122,7 +127,9 @@ export default function Template({ content }) {
     variables: { userID: localStorage.getItem(ME_KEY) },
   });
   const [updateUser] = useMutation(UPDATE_USER);
-  const [addAchievement] = useMutation(USER_ACHEIEVEMENT_UPDATE, { refetchQueries: [USER_ACHEIEVEMENT_INIT] });
+  const [addAchievement] = useMutation(USER_ACHEIEVEMENT_UPDATE, {
+    refetchQueries: [USER_ACHEIEVEMENT_INIT],
+  });
 
   const [name, setName] = React.useState(
     !userAccount.loading ? userAccount.data.myUserAccount.userName : ""
@@ -375,6 +382,12 @@ export default function Template({ content }) {
         </DrawerHeader>
         <Divider />
         <List>
+          {/* <a href="/user/Dashboard">
+            <ListItem button key="Dashboard">
+              <ListItemIcon>{iconList[0]}</ListItemIcon>
+              <ListItemText primary="Dashboard" sx={{ color: "black" }} />
+            </ListItem>
+          </a> */}
           {pages.map((text, index) => (
             <Link to={"/user/" + text}>
               <ListItem button key={text}>
