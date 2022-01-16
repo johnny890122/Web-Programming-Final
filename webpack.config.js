@@ -2,7 +2,7 @@
 const path = require('path');
 const clientConfig = {
   entry: {
-    'index': './frontend/src/index.js'
+    'index': './frontend/src/containers/App.js'
   },
   module:{
     rules:[{
