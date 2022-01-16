@@ -225,7 +225,7 @@ export default function Template({ content }) {
     // <StackedLineChart sx={{ fill: "#2e4c6d", fontSize: "1.5rem" }} />,
   ];
   let breadItem = window.location.href
-    .replace("http://localhost:3000", "")
+    .replace("http://", "")
     .split("/");
   breadItem.shift();
 
