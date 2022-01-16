@@ -52,6 +52,8 @@ const server = new GraphQLServer({
   },
 });
 
+server.applyMiddleWare({app});
+
 mongo();
 
 server.start({ port: process.env.PORT | 4000 }, () => {
