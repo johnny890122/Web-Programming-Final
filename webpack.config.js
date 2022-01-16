@@ -7,8 +7,8 @@ const clientConfig = {
   module:{
     rules:[{
        loader: 'babel-loader',
-            test: '/\.(js|jsx)$/',
             exclude: /node_modules/
+            test: '/\.js$|jsx/',
     }]
   },
   output: {
