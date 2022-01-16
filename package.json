@@ -19,6 +19,7 @@
     "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "webpack-cli": "^4.9.1"
   }
 }
