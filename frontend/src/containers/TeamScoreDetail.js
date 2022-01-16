@@ -16,12 +16,16 @@ import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
 const TeamScoreDetail = (props) => {
   
   // TeamContest資料
+  //console.log(props.nowContest)
   const queryData = useQuery(TEAM_CONTEST_DETAIL, {
     variables: { contestID: props.nowContest },
   });
-  if (!queryData.loading) {
-    var data = queryData.data.teamContestDetail;
-  } else var data = null;
+  //console.log('query', queryData.data)
+  if ((!queryData.loading)) {
+    var contestData = queryData.data.teamContestDetail
+  } else var contestData = {};
+  console.log('contest', contestData)
+  
   // TeamMember資料
   const queryMembers = useQuery(TEAM_PLAYERNAME_INIT, {
     variables: { teamID: props.nowTeam },
@@ -209,7 +213,9 @@ const TeamScoreDetail = (props) => {
     )
   }
   
-  const SetTable = (data) => {
+  const SetTable = (contestData) => {
+
+    console.log("data", contestData)
 
     return (
       <>
@@ -221,13 +227,12 @@ const TeamScoreDetail = (props) => {
               <TableRow>
                 <TableCell align="center" style={{width: '20%'}}>局數</TableCell>
                 <TableCell align="center">{teamName}</TableCell>
-                <TableCell align="center">{data ? data.contestOpponent : '對手' }</TableCell>
+                <TableCell align="center">{contestData.contestOpponent ? contestData.contestOpponent : '對手' }</TableCell>
                 <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.contestSetDetail ?  
-                (data.contestSetDetail).map(set => (
+              {contestData.contestSetDetail ? (contestData.contestSetDetail.map(set => (
                   <TableRow key={(set.setNumber)} 
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align="center" style={{width: '20%'}}>第 {set.setNumber} 局</TableCell>
@@ -237,7 +242,7 @@ const TeamScoreDetail = (props) => {
                       <Button onClick = {() => showModal(set)}>Detail</Button>
                     </TableCell>
                   </TableRow> 
-                )):<></>
+                ))) : <></>
               }              
             </TableBody>
           </Table>
@@ -246,10 +251,10 @@ const TeamScoreDetail = (props) => {
     );
   };
 
-  let setDetail = <SetTable data={data} />;
+  //let setDetail = SetTable(contestData);
   return (
     <div className="Wrapper">
-      <Template content={setDetail} />
+      <Template content={SetTable(contestData)} />
     </div>
   );
 };

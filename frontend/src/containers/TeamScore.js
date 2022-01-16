@@ -31,7 +31,7 @@ function Score(props) {
   });
   const ScoreData = [];
   if (!teamScore.loading) {
-    //console.log(teamScore.data.initContest)
+    console.log(teamScore.data.initContest)
     teamScore.data.initContest.map((i) =>
       ScoreData.push({
         contestID: i.contestID,
@@ -156,7 +156,7 @@ function Score(props) {
           <ListItem key={score.contestID} sx={{ width: 1400 }}>
             <Link to={{ pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`}}
                   onClick={() => {
-                  console.log("now in contest:", score.contestID);
+                  console.log("now in contest:", score.contestTitle);
                   localStorage.setItem(CONTEST_KEY, score.contestID);}}>
                 <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
