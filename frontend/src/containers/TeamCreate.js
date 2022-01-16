@@ -1,32 +1,18 @@
 import React from "react";
 import Template from "../components/Template";
 import { useState, useEffect } from "react";
-import {
-  Steps,
-  Divider,
-  Input,
-  // Button,
-  Tooltip,
-  Form,
-  DatePicker,
-  Menu,
-  Dropdown,
-} from "antd";
+import { Steps, Divider, Input, Form, Menu, Dropdown } from "antd";
 import { TextField, Button } from "@mui/material";
 import {
-  CopyOutlined,
   LeftCircleOutlined,
   RightCircleOutlined,
-  InfoCircleOutlined,
   UserOutlined,
-  UserAddOutlined,
 } from "@ant-design/icons";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
 import { Link } from "react-router-dom";
 import "../App.css";
 import { CREATE_TEAM, TEAM_INIT } from "../graphql";
 import { useMutation } from "@apollo/client";
-import { mergeDeepArray } from "@apollo/client/utilities";
 
 function TeamForm(props) {
   const { TextArea } = Input;
@@ -84,16 +70,6 @@ function TeamForm(props) {
           {props.selectedTeamType}
         </Dropdown.Button>
       </Form.Item>
-
-      {/*成立日期*/}
-      {/* <Form.Item
-        label="成立日期"
-        tooltip={{ title: "提示文字", icon: <InfoCircleOutlined /> }}
-      >
-        <Input.Group compact>
-          <DatePicker onChange={(dateString) => handleDateInput(dateString)} />
-        </Input.Group>
-      </Form.Item> */}
     </Form>
   );
 }

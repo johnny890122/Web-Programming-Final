@@ -6,7 +6,6 @@ import { Typography } from "@mui/material";
 import { MilitaryTech } from "@mui/icons-material";
 import { useQuery } from "@apollo/client";
 import { USER_ACHEIEVEMENT_INIT } from "../graphql";
-// import { WaveLoading } from 'react-loadingg';
 import { useState, useEffect } from "react";
 
 const UserAchievement = (props) => {

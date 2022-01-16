@@ -1,26 +1,15 @@
 import React from "react";
 import Template from "../components/Template";
-import {
-  Typography,
-  Box,
-  Card,
-  Button,
-  Chip,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Card, Button, CardContent } from "@mui/material";
 import { Tag } from "antd";
-import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
-import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 

@@ -3,17 +3,11 @@ import { useQuery } from "@apollo/client";
 import { USER_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
 import { useState } from "react";
 
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  ListItemButton,
-  Checkbox,
-  Button,
-} from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
 
 function DashboardEvent(props) {
+  let now = new Date();
+  let threeDaysAfter = now.setDate(now.getDate() + 3);
   const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
   });
@@ -56,14 +50,16 @@ function DashboardEvent(props) {
       <h2 style={{ display: "inline-block" }}>Upcoming Events</h2>
 
       <List className="dashboard-event-list">
-        {eventData.map((event) => (
-          <ListItem>
-            <ListItemText
-              primary={event.title}
-              secondary={event.start.toDateString()}
-            />
-          </ListItem>
-        ))}
+        {eventData
+          .filter((e) => Date.parse(e.start) < threeDaysAfter)
+          .map((event) => (
+            <ListItem>
+              <ListItemText
+                primary={event.title}
+                secondary={event.start.toDateString()}
+              />
+            </ListItem>
+          ))}
       </List>
     </div>
   );
