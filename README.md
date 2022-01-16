@@ -102,11 +102,11 @@
 組別 44 
 組長中文姓名 錢紫翎
 題目名稱 管好你的事
-Deployed service 網址
+[Deployed service 網址]
 Github Repo 網址 https://github.com/johnny890122/Web-Programming-Final
-Demo 影片網址
-FB 社團貼文網址
-(Optionoal) 其他想提醒老師與助教評分之事項
+[Demo 影片網址]
+[FB 社團貼文網址]
+[(Optionoal) 其他想提醒老師與助教評分之事項]
 
 ## 影片
 不得超過 6 分鐘，請在專題 deadline 前，上傳至雲端空間 (preferrably a video hosting service)，如 NTU G Suite, Youtube, Vimeo, FB 等
@@ -128,14 +128,14 @@ Group 44 管好你的事
 使用者在個人頁面可以清楚看到自己及參與的球隊的所有活動日程，球隊頁面則可以提供活動日程、公告訊息、投票活動、比賽紀錄等功能。  
 透過這次的專案，希望能幫助到所有事情太多煩不完的無力小老百姓。
 
-* [Deployed 連結 (如有自己有安全性的疑慮，則可以不用在 FB 社團公告此項)
-(如果有給 deployed 連結) 使用/操作方式 (含伺服器端以及使用者端)
-(Optional, 如果你有另外建立一個開源的 repo) Github link (請不要給成你的 private wp1101 repo <= 別人看不到)]
+* [Deployed 連結]
 
-其他說明
-使用與參考之框架/模組/原始碼
-使用之第三方套件、框架、程式碼
-專題製作心得
+使用與參考之框架/模組/套件
+前端: React、Apollo GraphQL、MUI、antd、full Calendar 等
+後端: Node.js、GraphQL 等
+資料庫: MongoDB
+
+* [專題製作心得]
 
 ## 組員互評
 請注意，每個人的貢獻分數請介於 0 ~ 100 之間，然後所有人的總和應為 100.0.
