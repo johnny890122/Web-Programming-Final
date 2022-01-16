@@ -9,8 +9,12 @@
     "bcryptjs": "^2.4.3",
     "react-router-dom": "^6.1.1"
   },
+  "engines": {
+    "node": "14.17"
+  },
   "scripts": {
     "start": "cd frontend && yarn start",
-    "server": "cd backend && yarn server"
+    "server": "cd backend && yarn server",
+    "heroku-postbuild": "cd backend/ && yarn install && yarn server"
   }
 }
