@@ -152,8 +152,8 @@ Group 44 管好你的事
 * [Deployed 連結]
   
 使用與參考之框架/模組/套件  
-前端: React、Apollo GraphQL、MUI、antd、full Calendar 等  
-後端: Node.js、GraphQL 等  
+前端: React、React.Router、Apollo GraphQL、Material UI、Ant Design、Google Full Calendar 等  
+後端: Node.js、GraphQL、express.js、byryptjs 等  
 資料庫: MongoDB  
 
 * [專題製作心得]
