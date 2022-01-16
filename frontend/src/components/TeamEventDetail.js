@@ -10,7 +10,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { Box, Button, Chip, List, Icon, ToggleButtonGroup, ToggleButton, Typography, Card, CardContent } from '@mui/material';
 import {useState} from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { TEAM_EVENT_DETAIL, DELETE_TEAM_EVENT, UPDATE_TEAM_EVENT, TEAM_EVENT_INIT } from "../graphql";
+import { TEAM_EVENT_DETAIL, DELETE_TEAM_EVENT, UPDATE_TEAM_EVENT, TEAM_EVENT_INIT, USER_TEAM_EVENT_INIT } from "../graphql";
 import CreateTeamEvent  from "../containers/CreateTeamEvent"
 import { Modal } from "antd";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -23,7 +23,7 @@ function TeamEventDetail(props) {
         variables: { eventID: props.id },
     });
 
-    const [deleteEvent] = useMutation(DELETE_TEAM_EVENT, {refetchQueries: [ TEAM_EVENT_INIT, "initTeamEvent" ]} );
+    const [deleteEvent] = useMutation(DELETE_TEAM_EVENT, {refetchQueries: [ TEAM_EVENT_INIT, USER_TEAM_EVENT_INIT ]} );
     
     const [isEditMode, setIsEditMode] = useState(false);
     const [isDeletedMode, setIsDeletedMode] = useState(false);

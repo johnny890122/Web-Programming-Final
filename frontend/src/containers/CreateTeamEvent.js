@@ -16,6 +16,7 @@ import {
   TEAM_EVENT_INIT,
   USER_EVENT_INIT,
   USER_NOTIFICATION_INIT,
+  USER_TEAM_EVENT_INIT
 } from "../graphql";
 
 function CreateTeamEvent(props) {
@@ -42,10 +43,10 @@ function CreateTeamEvent(props) {
   const [eTime, setETime] = useState(null);
 
   const [addEvent] = useMutation(CREATE_TEAM_EVENT, {
-    refetchQueries: [TEAM_EVENT_INIT, USER_NOTIFICATION_INIT, USER_EVENT_INIT],
+    refetchQueries: [USER_NOTIFICATION_INIT, USER_TEAM_EVENT_INIT, TEAM_EVENT_INIT ],
   });
   const [updateEvent] = useMutation(UPDATE_TEAM_EVENT, {
-    refetchQueries: [TEAM_EVENT_INIT, USER_EVENT_INIT],
+    refetchQueries: [TEAM_EVENT_INIT, USER_TEAM_EVENT_INIT],
   });
 
   const submitCreateEvent = async () => {
@@ -107,7 +108,6 @@ function CreateTeamEvent(props) {
             placeholder="Title"
             onChange={(e) => {
               setTitle(e.target.value);
-              console.log(title);
             }}
             value={title}
           />

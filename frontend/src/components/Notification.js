@@ -10,6 +10,7 @@ function Notification(props) {
     USER_NOTIFICATION_INIT,
     {
       variables: { userID: props.me },
+      fetchPolicy: "cache-and-network"
     }
   );
 

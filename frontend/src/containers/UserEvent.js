@@ -64,6 +64,8 @@ function UserEvent(props) {
     }
   }
 
+  console.log(EventData);
+
   const CalendarView = () => (
     <FullCalendar
       className="user-event-calendar"

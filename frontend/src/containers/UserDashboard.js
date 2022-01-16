@@ -41,33 +41,50 @@ const ViewBox = styled.div`
 
 const UserDashboard = (props) => {
   const today = new Date();
-  const [events, setEvents] = useState(null); // 所有活動資料
+  const [events, setEvents] = useState([]); // 所有活動資料
   const [filtermode, setFiltermode] = useState("all"); // 活動篩選模式
   const [filterMainMode, setFilterMainMode] = useState("Role");
 
   const userEvent = useQuery(USER_EVENT_INIT, {
     variables: { userID: props.me },
+    fetchPolicy: "cache-and-network"
   });
 
   const teamEvent = useQuery(USER_TEAM_EVENT_INIT, {
     variables: { userID: props.me },
+    fetchPolicy: "cache-and-network"
   });
-
-  let data = [];
-  if (!userEvent.loading && !teamEvent.loading) {
-    if (userEvent.data) {
-      data = userEvent.data.initUserEvent;
-      if (teamEvent.data) {
-        data = data.concat(teamEvent.data.initUserTeamEvent);
-      }
-    }
-  }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
 
+  let data=[];
+  try{
+    userEvent.data.initUserEvent.map(i => data.push(i))
+    teamEvent.data.initUserTeamEvent.map(i => data.push(i))
+
+    if (filtermode === "upcoming") {
+      data = data.filter((event) => new Date(parseInt(event.eventStart)) > today);
+    } else if (filtermode === "past") {
+      data = data.filter((event) => new Date(parseInt(event.eventStart)) <= today);
+    } else if (filtermode === "unrespond") {
+      data = 
+        data.filter(
+          (event) =>
+            event.reply === false &&
+            new Date(parseInt(event.eventStart)) > today
+        );
+    } else if (filtermode === "user") {
+      data = data.filter((event) => event.type === "user");
+    } else if (filtermode === "team") {
+      data = data.filter((event) => event.type === "team");
+    } 
+  }
+  catch{}
+
   const handleFilterChange = (filter, newFilter) => {
     setFiltermode(newFilter);
+
     if (newFilter === "upcoming") {
       setEvents(
         data.filter((event) => new Date(parseInt(event.eventStart)) > today)
@@ -114,7 +131,8 @@ const UserDashboard = (props) => {
       className="user-event-list"
       style={{ display: "flex", flexWrap: "wrap", width: "750px" }}
     >
-      {events.map((event) => (
+      {
+        data.map((event) => (
         <Card
           style={{ width: "325px", flexDirection: "row" }}
           className="user-event-item"

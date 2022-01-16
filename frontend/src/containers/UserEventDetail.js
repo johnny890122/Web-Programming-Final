@@ -19,8 +19,8 @@ function UserEventDetail(props) {
 	const { data, error, loading, subscribeToMore } = useQuery(USER_EVENT_DETAIL, {
 	variables: { eventID: props.id },
 	});
-	const [deleteEvent] = useMutation(DELETE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]});
-    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT, "initUserEvent" ]});
+	const [deleteEvent] = useMutation(DELETE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT ]});
+    const [updateUserEvent] = useMutation(UPDATE_USER_EVENT, {refetchQueries: [ USER_EVENT_INIT]});
 
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isDeletedMode, setIsDeletedMode] = useState(false);
