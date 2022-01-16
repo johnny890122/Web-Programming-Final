@@ -20,7 +20,7 @@
 ### 後端
  * install 套件 => 從根目錄 run server
 ### 資料庫
- * env: MongoDB_URL
+ * env : MongoDB_URL
 
 
 [如何在 localhost 安裝與測試之詳細步驟
@@ -32,12 +32,20 @@
 建議準備一組測試用的 Secret key, 把它用 e-mail 寄到助教的信箱 (eewebprogramming...), 然後在 .env 以及 README 把需要填的 variables 填上去 (值請留空白), 屆時助教再根據 e-mail 提供的 key 填上去即可。當然，請事先在你們的 local host 測過，如果有什麼需要特別注意的地方，也請在 README.md 寫清楚。我們在測試時如有問題，會再詢問你們。]
 
 
-### User: 個人頁面
+### Sign up / Log in 頁面 :
+#### Sign up
+ * 初次使用先申請一個新的帳號，必要資訊為電子郵件、帳號、密碼。
+#### Log in
+ * 完成申請後使用該組帳號密碼登入。
 
+### User: 個人頁面
+#### User Setting
+ * 首次登入時須設定用戶名稱，顯示在個人及球隊頁面。
+#### Dashboard
 #### Event
 #### Achievement
 #### Notification 
-#### Team
+#### all Teams
 
 ### Team: 團隊頁面
 #### Member
