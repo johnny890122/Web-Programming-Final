@@ -94,17 +94,18 @@ function CreateUserEvent(props) {
 
   const CreatePage = (
     <div className="create-event-page">
-      <h2> {props.mode === "create" ? "Create" : "Edit"} </h2>
+      <h3> {props.mode === "create" ? "Create Event" : "Edit Event"} </h3>
       <Box component="form" noValidate autoComplete="off">
         <div>
           <TextField
             id="create-event-title"
             sx={{ m: 2 }}
             required
-            label="活動名稱"
+            label="Event Title"
             placeholder="Title"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
+            size="small"
           />
         </div>
         <div>
@@ -113,9 +114,10 @@ function CreateUserEvent(props) {
             value={description}
             required
             sx={{ m: 2 }}
-            label="活動內容"
+            label="Event Description"
             placeholder="Description"
             onChange={(e) => setDescription(e.target.value)}
+            size="small"
           />
         </div>
         <div>
@@ -123,24 +125,30 @@ function CreateUserEvent(props) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <MobileDatePicker
                 id="create-event-sDate"
-                label="開始日期 *"
+                label="Start Time *"
                 value={sDate || initSDate}
                 required
                 onChange={(newValue) => {
                   setSDate(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField {...params} size="small" />}
               />
               <TimePicker
                 id="create-event-sTime"
                 sx={{ m: 5 }}
-                label="開始時間 *"
+                label="Start Time *"
                 value={sTime || initSTime}
                 required
                 onChange={(newValue) => {
                   setSTime(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    style={{ marginLeft: "1rem" }}
+                  />
+                )}
               />
             </LocalizationProvider>
           </Box>
@@ -151,24 +159,30 @@ function CreateUserEvent(props) {
               <MobileDatePicker
                 id="create-event-eDate"
                 sx={{ m: 5 }}
-                label="結束日期 *"
+                label="End Time *"
                 value={eDate || initEDate}
                 required
                 onChange={(newValue) => {
                   setEDate(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField {...params} size="small" />}
               />
               <TimePicker
                 id="create-event-eDime"
                 sx={{ m: 5 }}
-                label="結束時間 *"
+                label="End Time *"
                 value={eTime | initETime}
                 required
                 onChange={(newValue) => {
                   setETime(newValue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    style={{ marginLeft: "1rem" }}
+                  />
+                )}
               />
             </LocalizationProvider>
           </Box>
@@ -177,11 +191,12 @@ function CreateUserEvent(props) {
           <TextField
             id="create-event-location"
             sx={{ m: 2 }}
-            label="活動地點"
+            label="Event Location"
             placeholder="Location"
             value={location}
             required
             onChange={(e) => setLocation(e.target.value)}
+            size="small"
           />
         </div>
         <div>
@@ -191,7 +206,6 @@ function CreateUserEvent(props) {
                 sx={{ m: 2 }}
                 color="success"
                 variant="contained"
-                size="large"
                 onClick={submitCreateEvent}
               >
                 Create{" "}

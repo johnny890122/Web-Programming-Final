@@ -34,24 +34,31 @@ function UserEvent(props) {
 
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
-    data = userEvent.data.initUserEvent.concat(
-      teamEvent.data.initUserTeamEvent
-    );
+    if (userEvent) {
+      data = userEvent.data.initUserEvent;
+      if (teamEvent) {
+        data = data.concat(teamEvent.data.initUserTeamEvent);
+      }
+    }
   }
 
   const EventData = [];
   if (!userEvent.loading && !teamEvent.loading) {
-    data.map((i) =>
-      EventData.push({
-        title: i.eventTitle,
-        description: i.eventDescription,
-        start: parseInt(i.eventStart),
-        end: parseInt(i.eventEnd),
-        location: i.eventLocation,
-        posttime: i.eventPostTime,
-        color: i.type === "user" ? "#378006" : "#12345",
-      })
-    );
+    // 要加這個 if(data)，否則可能因為無法 map 而噴 error
+    if (data) {
+      data.map((i) =>
+        EventData.push({
+          title: i.eventTitle,
+          description: i.eventDescription,
+          start: parseInt(i.eventStart),
+          end: parseInt(i.eventEnd),
+          location: i.eventLocation,
+          posttime: i.eventPostTime,
+          color: i.type === "user" ? "#378006" : "#12345",
+        })
+      );
+    }
+
     if (!events) {
       setEvents(EventData);
     }

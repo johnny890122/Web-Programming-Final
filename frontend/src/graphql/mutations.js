@@ -356,6 +356,18 @@ export const CREATE_TEAM_VOTE_OPTION = gql`
   }
 `;
 
+export const REPLY_TEAM_VOTE = gql`
+  mutation replyVote($voterID: String, $voteOptionID: String) {
+    replyVote(voterID: $voterID, voteOptionID: $voteOptionID) {
+      votedUser {
+        userAccount
+      }
+      voteOptionID
+      voteOptionName
+    }
+  }
+`;
+
 export const CREATE_GALLERY = gql`
   mutation createGallery($teamID: String, $galleryTitle: String) {
     createGallery(teamID: $teamID, galleryTitle: $galleryTitle) {

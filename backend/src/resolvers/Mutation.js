@@ -733,14 +733,14 @@ const Mutation = {
 
   replyVote: async (parent, args, { db, pubSub }) => {
     const { voteOptionID, voterID } = args;
-    const Voter = await await db.UserModel.findOne({ userID: voterID });
+    const Voter = await db.UserModel.findOne({ userID: voterID });
     const VoteOption = await db.VoteOptionModel.findOne({
       voteOptionID: voteOptionID,
     });
 
     if (VoteOption.votedUser.includes(Voter._id)) {
       const replyOption = await db.VoteOptionModel.findOneAndUpdate(
-        { _id: VoteOption._id },
+        { voteOptionID: voteOptionID },
         {
           $pull: {
             votedUser: Voter._id,
@@ -751,7 +751,7 @@ const Mutation = {
       return replyOption;
     } else {
       const replyOption = await db.VoteOptionModel.findOneAndUpdate(
-        { _id: VoteOption._id },
+        { voteOptionID: voteOptionID },
         {
           $push: {
             votedUser: Voter._id,

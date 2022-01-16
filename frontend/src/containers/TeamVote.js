@@ -1,16 +1,10 @@
 import React from "react";
 import Template from "../components/Template";
 import {
-  List,
-  ListItem,
-  ListItemText,
   Typography,
   Card,
-  Box,
   Button,
-  Grid,
   CardContent,
-  Chip,
   TextField,
 } from "@mui/material";
 import { Modal, Tag, Form } from "antd";
@@ -19,9 +13,6 @@ import MobileDatePicker from "@mui/lab/MobileDatePicker";
 import TimePicker from "@mui/lab/TimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { CardActionArea } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -30,9 +21,9 @@ import {
   TEAM_VOTE_INIT,
   CREATE_TEAM_VOTE,
   CREATE_TEAM_VOTE_OPTION,
+  REPLY_TEAM_VOTE,
 } from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
-import moment from "moment";
 
 const cardStyle = {
   width: "45%",
@@ -64,12 +55,10 @@ function TeamVote(props) {
   const [endDate, setEndDate] = React.useState(sevenDaysLater);
   const [endTime, setEndTime] = React.useState(sevenDaysLater);
   const [newVoteID, setNewVoteID] = React.useState("");
-  // const [voteOptionID, setVoteOptionID] = React.useState([]);
+  const [nowVote, setNowVote] = React.useState("");
 
   const [inputBoxes, setInputBoxes] = React.useState([1]);
   const [inputs, setInputs] = React.useState([]);
-
-  const [reply, setReply] = React.useState([]);
 
   const votes = useQuery(TEAM_VOTE_INIT, {
     variables: {
@@ -100,12 +89,27 @@ function TeamVote(props) {
     refetchQueries: [TEAM_VOTE_INIT, "initVote"],
     // onCompleted: (e) => setVoteOptionID(e.createVoteOption.voteOptionID),
   });
+  const [replyVote] = useMutation(REPLY_TEAM_VOTE, {
+    refetchQueries: [TEAM_VOTE_INIT, "initVote"],
+  });
+
+  const checkChecked = (voteOption) => {
+    let checked = false;
+    for (let i = 0; i < voteOption.votedUser.length; i++) {
+      if (voteOption.votedUser[i].userID === props.me) {
+        checked = true;
+        return true;
+      }
+    }
+    return false;
+  };
 
   const handleClose = () => {
     setIsModalVisible(false);
   };
   const handleOpen = (vote) => {
     setIsModalVisible(true);
+    setNowVote(vote.id);
     setModalContent(
       <>
         <Typography variant="h4">{vote.title}</Typography>
@@ -116,24 +120,39 @@ function TeamVote(props) {
         </div>
         <FormGroup id="reply" style={{ marginTop: "0.75rem" }}>
           {vote.voteOption.map((option, index) => (
-            <FormControlLabel
-              control={<Checkbox size="medium" value={index} />}
-              label={option.voteOptionName}
-            />
+            <>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    size="medium"
+                    value={option.voteOptionID}
+                    defaultChecked={checkChecked(option) ? true : false}
+                    onChange={(e) => handleReply(e)}
+                  />
+                }
+                label={
+                  option.voteOptionName +
+                  "  (" +
+                  (option.votedUser ? option.votedUser.length : 0) +
+                  " votes)"
+                }
+              />
+              {/* <p>{option.votedUser ? option.votedUser.length : 0}</p> */}
+            </>
           ))}
         </FormGroup>
       </>
     );
   };
 
-  const handleReply = () => {
-    let options = document.querySelector("#reply").children;
-    let temp = [];
-    for (let i = 0; i < options.length; i++) {
-      console.log(options[i].control);
-      temp.push(options[i].control.checked);
-    }
-    console.log(temp);
+  const handleReply = async (e) => {
+    console.log("user", props.me, "vote for", e.target.value);
+    await replyVote({
+      variables: {
+        voterID: props.me,
+        voteOptionID: e.target.value,
+      },
+    });
   };
 
   const handleOpenCreate = () => {
@@ -180,6 +199,11 @@ function TeamVote(props) {
         },
       });
     }
+    setNewTitle("");
+    setNewDescription("");
+    setNewLimit();
+    setEndDate(sevenDaysLater);
+    setEndTime(sevenDaysLater);
     setIsCreateModal2Visible(false);
   };
 
@@ -323,7 +347,7 @@ function TeamVote(props) {
           <Button
             key="ok"
             variant="contained"
-            onClick={handleReply}
+            onClick={() => setIsModalVisible(false)}
             style={{ margin: "0 0.5rem" }}
           >
             OK

@@ -165,6 +165,12 @@ const VoteOptionSchema = new Schema({
   votedUser: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
+const VoteReplySchema = new Schema({
+  userID: { type: String, required: true },
+  voteOptionID: [{ type: String, required: true }],
+  checked: [{ type: Boolean, required: true }],
+});
+
 const UserModel = mongoose.model("User", UserSchema);
 const TodoModel = mongoose.model("Todo", TodoSchema);
 const TeamModel = mongoose.model("Team", TeamSchema);
@@ -173,6 +179,7 @@ const EventReplyModel = mongoose.model("EventReply", EventReplySchema);
 const PostModel = mongoose.model("Post", PostSchema);
 const VoteModel = mongoose.model("Vote", VoteSchema);
 const VoteOptionModel = mongoose.model("VoteOption", VoteOptionSchema);
+const VoteReplyModel = mongoose.model("VoteReply", VoteReplySchema);
 const NotificationTaskModel = mongoose.model(
   "NotificationTask",
   NotificationTaskSchema
@@ -195,6 +202,7 @@ export {
   PostModel,
   VoteModel,
   VoteOptionModel,
+  VoteReplyModel,
   NotificationTaskModel,
   AchievementModel,
   DashboardEventModel,

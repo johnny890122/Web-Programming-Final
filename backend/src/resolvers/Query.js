@@ -1,7 +1,6 @@
 import { UserModel } from "../db";
 import bcryptjs from "bcryptjs";
 
-
 const Query = {
   myUserAccount: async (parent, { userID }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userID: userID });
@@ -14,11 +13,11 @@ const Query = {
 
   userLogin: async (parent, { userAccount, userPassword }, { db, pubSub }) => {
     const user = await db.UserModel.findOne({ userAccount });
-    const bcrypt = require('bcryptjs');
+    const bcrypt = require("bcryptjs");
 
     if (!user) {
       throw new Error("Account not existed!");
-    } else if ( !bcrypt.compareSync(userPassword, user.userPassword)) {
+    } else if (!bcrypt.compareSync(userPassword, user.userPassword)) {
       throw new Error("Password not correct!");
     }
 
@@ -202,6 +201,7 @@ const Query = {
         }
         Vote.voteOption.voteOptionID = allVoteOptions.voteOptionID;
         Vote.voteOption.voteOptionName = allVoteOptions.voteOptionName;
+        Vote.voteOption.votedUser = allVoteOptions.votedUser;
         allVotes.push(Vote);
       }
     }

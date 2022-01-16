@@ -275,6 +275,10 @@ export const TEAM_VOTE_INIT = gql`
       voteOption {
         voteOptionID
         voteOptionName
+        votedUser {
+          userID
+          userAccount
+        }
       }
     }
   }
