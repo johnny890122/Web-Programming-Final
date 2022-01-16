@@ -2,11 +2,7 @@
 const path = require('path');
 const clientConfig = {
   entry: {
-<<<<<<< HEAD
-    'index': './frontend/src/index.js'
-=======
     'index': './frontend/src/containers/App.js'
->>>>>>> main
   },
   module:{
     rules:[{
