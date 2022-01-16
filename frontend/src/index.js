@@ -43,13 +43,16 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+
 ReactDOM.render(
+  <>
   <ApolloProvider client={client}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </ApolloProvider>,
-  document.getElementById("root")
+  </ApolloProvider>
+  </>
+  , document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
