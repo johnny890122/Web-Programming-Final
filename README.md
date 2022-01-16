@@ -1,7 +1,6 @@
-# Kuan好你ㄉ事 -- Web Programming Final Project
+# Kuan好你ㄉ事 管好你的事 -- Web Programming Final Project
 
 ## 簡介
-
 這是一個能夠簡單管理個人及團隊事務的網站。  
 我們的靈感來自系女排每位迷迷糊糊的隊員以及各種繁雜的球隊事務，透過這個網站，球隊幹部可以輕鬆管理活動、公告、投票、比賽紀錄等重要資訊。  
 使用者在個人頁面可以清楚看到自己及參與的球隊的所有活動日程，球隊頁面則可以提供活動日程、公告訊息、投票活動、比賽紀錄等功能。  
@@ -17,22 +16,22 @@
 ## 使用方式與功能
 
 ### 如何在 localhost 安裝與測試
-1. Clone repo
-2. 安裝 frontend & backend packages
+ 1. Clone repo
+ 2. 安裝 frontend & backend packages
   * (npm) cd frontend && npm install
   * (npm) cd backend && npm install
   * (yarn) cd frontend && yarn add
   * (yarn) cd backend && yarn add
-3. .env file
+ 3. .env file
   * 將 .env.defaults (./backend) 的內容複製為 .env
   * 填入自己的 MONGO_URL
-4. 開啟第 1 個 terminal windows
+ 4. 開啟第 1 個 terminal windows
   * (npm) cd frontend && npm start
   * (yarn) cd frontend && yarn start
-5. 開啟第 2 個 terminal windows
+ 5. 開啟第 2 個 terminal windows
   * (npm) cd backend && npm run server
   * (yarn) cd backend && yarn server 
-6. 打開 http://localhost:3000 
+ 6. 打開 http://localhost:3000 
   * 開始使用!
 
 
@@ -106,7 +105,19 @@
     3. 發表日期  
     4. 文章內容  
  * 在詳細內容中也可以修改文章內容，以及刪除文章。  
-   
+  
+#### Score  
+ * 點擊 CREATE可新增比賽紀錄。
+ * 各 SCORE區塊顯示各場比賽標題、對手、局數及比賽日期。 
+ * 點擊 DELETE按鈕可刪除該場比賽紀錄。
+ * 點擊 SCORE區塊進入各局詳細記錄。
+
+#### Score Detail
+ * 點擊 CREATE可新增各局詳細紀錄。  
+ * 紀錄單中可新增任意人數的球員個人詳細數據。  
+ * 未填寫的欄位會自動填入 0或 ""。  
+ * 點擊各局 Detail 可觀看詳細記錄單或編輯、刪除紀錄。  
+  
 #### Vote
  * 點擊 CREATE可新增投票活動，可設定截止時間及每人票數限制。  
  * 點擊投票活動可顯示詳細內容，包括 :  
@@ -114,12 +125,9 @@
     2. 截止時間
     3. 票數限制  
     4. 各選項及其得票數。  
- * 使用者勾選選項及可參與投票，票數會在。 
- * 使用者點擊後可在對話框中選擇投票選項。
-#### Score
- * 可新增比賽紀錄，並提供每局的團隊數據及該局每位球員之個人數據。  
- * 表單完美複製經濟女排慣用的紀錄單格式，讓使用者輕鬆運用毫無阻礙。
-
+ * 使用者勾選選項及可參與投票，票數會在下次檢視詳細內容時時更新。  
+ * 使用者取消勾選選項及可取消投票。  
+  
 ## 組員心得
 ### 經濟四 錢紫翎:
     一開始的理想很美好，開始寫之後就一切都不一樣了。  
@@ -136,7 +144,8 @@
     真正使用這套 app！
 ### 經濟五 陳又加:
     我以為每個星期寫作業已經好辛苦了，結果做 final的時候直接都不用睡覺了 QQ。 
-    Web 的作業和課程真的讓我學到好多，雖然 hack的分數都很爛但我有學到好多東西的。  
+    Web 的作業和課程真的讓我學到好多，雖然 hack的分數都很爛但我有學到好多東西的。 
+    尤其是做 final的時候深感功力大增，hack的時候不會的東西突然都會了...   
     謝謝教授、助教、組員、Stack Overflow 跟 Youtube 上面的外國人老師。
 
 ## 使用與參考之框架/模組/套件
@@ -155,7 +164,7 @@
 ## 表單
 組別 44 
 組長中文姓名 錢紫翎
-題目名稱 管好你的事
+題目名稱 Kuan好你ㄉ事 管好你的事
 [Deployed service 網址]
 Github Repo 網址 https://github.com/johnny890122/Web-Programming-Final
 [Demo 影片網址]
