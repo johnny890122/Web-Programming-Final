@@ -53,19 +53,12 @@ function Score(props) {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [componentInModal, setComponentInModal] = useState("");
-  const [contestNow, setContestNow] = useState("");
   const [addContest] = useMutation(CREATE_TEAM_SCORE, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
-  const [editContest] = useMutation(UPDATE_CONTEST, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
   const [removeContest] = useMutation(DELETE_CONTEST, {refetchQueries: [ TEAM_SCORE_INIT, "initContest" ]});
   
   const handleCreate = () => {
     setIsModalVisible(true);
     setComponentInModal(scoreForm);
-  };
-  const handleEdit = (score) => {
-    //const contest1 = await setContestNow(contest);
-    setIsModalVisible(true);
-    setComponentInModal(UpdateContestForm(score));
   };
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -78,20 +71,6 @@ function Score(props) {
     const newContest = await addContest(
       {variables: {
         teamID: props.nowTeam,
-        contestDate: values.contestDate.format('YYYY/MM/DD'),
-        contestIsWin: values.contestIsWin,
-        contestTitle: values.contestTitle,
-        contestOpponent: values.contestOpponent,
-        contestMySet: values.contestMySet || 0,
-        contestOppoSet: values.contestOppoSet || 0,
-      }});
-  };
-  const onUpdate = async(values, contestID) => {
-    setIsModalVisible(false);
-    //console.log(contest, values);
-    const upContest = await editContest(
-      {variables: {
-        contestID: contestID,
         contestDate: values.contestDate.format('YYYY/MM/DD'),
         contestIsWin: values.contestIsWin,
         contestTitle: values.contestTitle,
@@ -113,64 +92,8 @@ function Score(props) {
   const scoreForm = () => {
     return (
       <Form name="create-contest-form" onFinish={onCreate} 
-            autoComplete="off" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
-          <Form.Item label="比賽名稱"
-                    name='contestTitle'
-                    rules={[{ required: true, message: '必填比賽名稱' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="比賽日期"
-                    name='contestDate'
-                    rules={[{ required: true, message: '必填比賽日期' }]}>
-                <DatePicker />
-          </Form.Item>
-          <Form.Item label="比賽輸贏"
-                    name='contestIsWin'
-                    style={{ width: 200 }}
-                    rules={[{ required: true, message: '必填比賽輸贏' }]}>
-            <Select options={WinOption}/>
-          </Form.Item>
-          <Form.Item label="對手名稱"
-                    name='contestOpponent'
-                    rules={[{ required: true, message: '必填對手名稱' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="我方局數"
-                    name='contestMySet'>
-                <InputNumber min={0}/>
-          </Form.Item>
-          <Form.Item label="對方局數"
-                    name='contestOppoSet'>
-                <InputNumber min={0}/>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-      </Form>
-    )
-  };
-
-  const UpdateContestForm = (score) => {
-    
-    const WinOption = [
-        {label: "win", value: "win"},
-        {label: "lose", value: "lose"},
-        {label: "tie", value: "tie"}
-      ];
-    
-    return (
-      <Form name="update-contest-form" onFinish={(values) => onUpdate(values, score.contestID)} 
-            initialValues={{ 
-                contestTitle: score.contestTitle,
-                contestDate: moment(score.contestDate),
-                contestIsWin: score.contestIsWin,
-                contestOpponent: score.contestOpponent,
-                contestMySet: score.contestMySet,
-                contestOppoSet: score.contestOppoSet,
-              }}
-            autoComplete="off" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
+            autoComplete="off" 
+            onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}>
           <Form.Item label="比賽名稱"
                     name='contestTitle'
                     rules={[{ required: true, message: '必填比賽名稱' }]}>
@@ -263,9 +186,6 @@ function Score(props) {
                 </CardActionArea>
               </Card>
             </Link>            
-            <Button type="primary" style={{ margin: '0 8px' }} onClick={() => handleEdit(score)}>
-              Edit
-            </Button>
             <Popconfirm
               title="Are you sure to delete this contest?"
               onConfirm={() => onDelete(score)}

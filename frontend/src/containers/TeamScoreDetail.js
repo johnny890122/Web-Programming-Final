@@ -209,7 +209,7 @@ const TeamScoreDetail = (props) => {
     )
   }
   
-  const SetTable = ({ data }) => {
+  const SetTable = (data) => {
 
     return (
       <>
@@ -225,9 +225,9 @@ const TeamScoreDetail = (props) => {
                 <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
-            {(data) ? 
-              <TableBody>
-                {(data.contestSetDetail).map(set => (
+            <TableBody>
+              {data.contestSetDetail ?  
+                (data.contestSetDetail).map(set => (
                   <TableRow key={(set.setNumber)} 
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align="center" style={{width: '20%'}}>第 {set.setNumber} 局</TableCell>
@@ -237,10 +237,9 @@ const TeamScoreDetail = (props) => {
                       <Button onClick = {() => showModal(set)}>Detail</Button>
                     </TableCell>
                   </TableRow> 
-                ))}
-              </TableBody> :
-              <TableBody></TableBody>
-            }
+                )):<></>
+              }              
+            </TableBody>
           </Table>
         </TableContainer>
       </>
