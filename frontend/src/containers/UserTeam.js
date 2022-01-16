@@ -21,18 +21,18 @@ function UserTeam(props) {
   });
 
   const AllTeamData = [];
-  if (!loading) {
-    if (data) {
-      data.initTeam.map((i) =>
-        AllTeamData.push({
-          id: i.teamID,
-          name: i.teamName,
-          description: i.teamDescription,
-          type: i.teamType,
-        })
-      );
-    }
-  }
+  try {
+    console.log(data);
+    data.initTeam.map((i) =>
+      AllTeamData.push({
+        id: i.teamID,
+        name: i.teamName,
+        description: i.teamDescription,
+        type: i.teamType,
+      })
+    );
+  } catch (e) {}
+
   const TEAM_KEY = "nowTeam";
 
   const teamlist = (

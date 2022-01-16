@@ -20,8 +20,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import bcryptjs from "bcryptjs";
 
 const LogIn = () => {
-
-  const bcrypt = require('bcryptjs');
+  const bcrypt = require("bcryptjs");
   const salt = bcrypt.genSaltSync(10);
 
   const [account, setAccount] = useState("");
@@ -47,13 +46,12 @@ const LogIn = () => {
     if (userLogin.error) {
       localStorage.setItem(ME_KEY, "");
       setErrorVisibility("block");
-      return
-    } 
+      return;
+    }
 
     console.log(userLogin.error);
     setLogin(true);
     localStorage.setItem(ME_KEY, me);
-    
   };
 
   const handleClickShowPassword = () => {
@@ -85,7 +83,6 @@ const LogIn = () => {
         </Alert>
       ))
     : [];
-
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -155,15 +152,7 @@ const LogIn = () => {
 
           {errorBlock}
           <Link
-            // to={
-            //   dataCorrect
-            //     ? userLogin.data.userLogin.userBirthday
-            //       ? "/user/Dashboard"
-            //       : "/user/Settings"
-            //     : "/"
-            // }
             to={dataCorrect ? "/user/Dashboard" : "/"}
-            // params={{ me: me }}
             style={{ width: "20%" }}
           >
             <Button
