@@ -75,8 +75,6 @@ function TeamEvent(props) {
     variables: { teamID: props.nowTeam },
   });
 
-  console.log(data);
-
   const EventData = [];
   if (!loading) {
     data.initTeamEvent.map((i) =>
