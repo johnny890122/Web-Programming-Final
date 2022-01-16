@@ -1,5 +1,5 @@
 # Kuan好你ㄉ事 -- Web Programming Final Project
-## 組員:
+## 組員
  * 經濟四 - 錢紫翎
  * 經濟四 - 張祥賢 
  * 經濟五 - 陳又加
