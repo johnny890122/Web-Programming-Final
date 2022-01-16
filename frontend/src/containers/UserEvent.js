@@ -34,7 +34,7 @@ function UserEvent(props) {
 
   let data = [];
   if (!userEvent.loading && !teamEvent.loading) {
-    if (userEvent) {
+    if (userEvent.data) {
       data = userEvent.data.initUserEvent;
       if (teamEvent) {
         data = data.concat(teamEvent.data.initUserTeamEvent);
@@ -63,8 +63,6 @@ function UserEvent(props) {
       setEvents(EventData);
     }
   }
-
-  console.log(EventData);
 
   const CalendarView = () => (
     <FullCalendar

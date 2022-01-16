@@ -43,42 +43,49 @@ function TeamHome(props) {
 
   const EventData = [];
   if (!teamEvent.loading) {
-    teamEvent.data.initTeamEvent.map((i) =>
-      EventData.push({
-        id: i.eventID,
-        title: i.eventTitle,
-        description: i.eventDescription,
-        start: i.eventStart,
-        end: i.eventEnd,
-        location: i.eventLocation,
-        posttime: i.eventPostTime,
-      })
-    );
+    if (teamEvent.data) {
+      teamEvent.data.initTeamEvent.map((i) =>
+        EventData.push({
+          id: i.eventID,
+          title: i.eventTitle,
+          description: i.eventDescription,
+          start: i.eventStart,
+          end: i.eventEnd,
+          location: i.eventLocation,
+          posttime: i.eventPostTime,
+        })
+      ); 
+    }
   }
   const PostData = [];
   if (!teamPost.loading) {
-    teamPost.data.initTeamPost.map((i) =>
-      PostData.push({
-        id: i.postID,
-        time: i.postTime,
-        title: i.postTitle,
-        author: i.postAuthor.userAccount,
-        content: i.postContent,
-      })
-    );
+    if (teamPost.data) {
+      teamPost.data.initTeamPost.map((i) =>
+        PostData.push({
+          id: i.postID,
+          time: i.postTime,
+          title: i.postTitle,
+          author: i.postAuthor.userAccount,
+          content: i.postContent,
+        })
+      );  
+    }
   }
   const ScoreData = [];
   if (!teamScore.loading) {
-    teamScore.data.initContest.map((i) =>
-      ScoreData.push({
-        id: i.contestID,
-        title: i.contestTitle,
-        opponent: i.contestOpponent,
-        date: i.contestDate,
-        mySet: i.contestMySet,
-        oppoSet: i.contestOppoSet,
-      })
-    );
+    if (teamScore.data){
+      teamScore.data.initContest.map((i) =>
+        ScoreData.push({
+          id: i.contestID,
+          title: i.contestTitle,
+          opponent: i.contestOpponent,
+          date: i.contestDate,
+          mySet: i.contestMySet,
+          oppoSet: i.contestOppoSet,
+        })
+      );
+    }
+
   }
   const VoteData = [];
   if (!teamVote.loading) {
