@@ -18,6 +18,7 @@ import DetailPlayer from "./resolvers/DetailPlayer";
 // db
 import * as db from "./db";
 
+
 const pubSub = new PubSub();
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
@@ -41,6 +42,7 @@ const server = new GraphQLServer({
     pubSub,
   },
 });
+
 
 mongo();
 
