@@ -14,17 +14,19 @@ import { TEAM_PLAYERNAME_INIT, TEAM_CONTEST_DETAIL, FIND_TEAM_NAME,
 
 
 const TeamScoreDetail = (props) => {
+  //console.log('contestID', props.nowContest)
+  const cID = localStorage.getItem('CONTEST_KEY');
   
   // TeamContest資料
-  //console.log(props.nowContest)
   const queryData = useQuery(TEAM_CONTEST_DETAIL, {
-    variables: { contestID: props.nowContest },
+    variables: { contestID: cID },
+    //fetchPolicy: 'cache-and-network'
   });
-  //console.log('query', queryData.data)
-  if ((!queryData.loading)) {
-    var contestData = queryData.data.teamContestDetail
-  } else var contestData = {};
-  console.log('contest', contestData)
+  if (!queryData.loading) {
+    console.log('queryData', queryData.data.teamContestDetail)
+    var ContestData = (queryData.data.teamContestDetail)
+  }
+  //console.log('query',ContestData)
   
   // TeamMember資料
   const queryMembers = useQuery(TEAM_PLAYERNAME_INIT, {
@@ -40,7 +42,7 @@ const TeamScoreDetail = (props) => {
       })
     );
   };
-  console.log('players', players);
+  //console.log('players', players);
   // TeamName資料
   const queryTeamName = useQuery(FIND_TEAM_NAME, {
     variables: { teamID: props.nowTeam },
@@ -63,7 +65,7 @@ const TeamScoreDetail = (props) => {
     setIsModalVisible(false);
     const newSet = await addSet(
       {variables: {
-        contestID: props.nowContest,
+        contestID: cID,
         setNumber: values.setNumber,
         setScore: values.setScore || "",
         setMyPoint: values.setMyPoint,
@@ -74,11 +76,11 @@ const TeamScoreDetail = (props) => {
         setNote: values.setNote || "",
       }});
     //console.log(values.setPlayerDetail)
-    const newSetID =  newSet.data.createSetDetail.setID
+    //const newSetID =  newSet.data.createSetDetail.setID
     if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
       addPlayer(
         {variables: {
-          setID: newSetID,
+          setID: newSet.data.createSetDetail.setID,
           playerID: players.filter(e => e.label === player.playerID)[0].userID,
           detailPointServe: player.detailPointServe || 0,
           detailPointAttack: player.detailPointAttack|| 0,
@@ -115,7 +117,7 @@ const TeamScoreDetail = (props) => {
     const editedSetID =  editedSet.data.updateSetDetail.setID;
     
     if (values.setPlayerDetail) {await values.setPlayerDetail.map((player) =>{
-      console.log(player);
+      //console.log(player);
       addPlayer(
         {variables: {
           setID: editedSetID,
@@ -213,9 +215,10 @@ const TeamScoreDetail = (props) => {
     )
   }
   
-  const SetTable = (contestData) => {
+  const SetTable = (contest) => {
 
-    console.log("data", contestData)
+    console.log("contest", contest)
+    //const contest = data.teamContestDetail
 
     return (
       <>
@@ -227,12 +230,12 @@ const TeamScoreDetail = (props) => {
               <TableRow>
                 <TableCell align="center" style={{width: '20%'}}>局數</TableCell>
                 <TableCell align="center">{teamName}</TableCell>
-                <TableCell align="center">{contestData.contestOpponent ? contestData.contestOpponent : '對手' }</TableCell>
+                <TableCell align="center">{contest ? contest.contestOpponent :'對手' }</TableCell>
                 <TableCell align="center">詳細記錄</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {contestData.contestSetDetail ? (contestData.contestSetDetail.map(set => (
+             {contest ? (contest.contestSetDetail.map(set => (
                   <TableRow key={(set.setNumber)} 
                             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align="center" style={{width: '20%'}}>第 {set.setNumber} 局</TableCell>
@@ -254,7 +257,7 @@ const TeamScoreDetail = (props) => {
   //let setDetail = SetTable(contestData);
   return (
     <div className="Wrapper">
-      <Template content={SetTable(contestData)} />
+      <Template content={SetTable(ContestData)} />
     </div>
   );
 };

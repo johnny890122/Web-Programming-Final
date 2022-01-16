@@ -44,7 +44,8 @@ import { useQuery, useMutation } from "@apollo/client";
 //import UpdateContestForm from "../components/UpdateContestForm";
 
 function Score(props) {
-  const CONTEST_KEY = "nowContest";
+  const CONTEST_KEY = "";
+  localStorage.setItem(CONTEST_KEY, "");
 
   let breadItem = window.location.href
     .replace("http://localhost:3000", "")
@@ -53,6 +54,7 @@ function Score(props) {
 
   const teamScore = useQuery(TEAM_SCORE_INIT, {
     variables: { teamID: props.nowTeam },
+    fetchPolicy: 'cache-and-network'
   });
   const ScoreData = [];
   if (!teamScore.loading) {
@@ -201,17 +203,17 @@ function Score(props) {
         </Button>
       </div>
       <div className="teamScore-container" style={{ marginTop: "1rem" }}>
-        {ScoreData.map((score) => (
+        {ScoreData.map(score => (
           <ListItem key={score.contestID} sx={{ width: 1400 }}>
             <Link
               to={{
                 pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`,
               }}
-              onClick={() => {
-                console.log("now in contest:", score.contestTitle);
-                localStorage.setItem(CONTEST_KEY, score.contestID);
-              }}
-            >
+              onClick={() => {                
+                let cID =  score.contestID;
+                localStorage.setItem('CONTEST_KEY' ,cID );
+                console.log("now in contest:", score.contestTitle, cID );
+              }}>
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
