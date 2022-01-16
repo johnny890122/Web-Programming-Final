@@ -60,11 +60,11 @@
  * 後續的登入中，點擊 setting 可以修改用戶名稱，也可以查看帳戶資訊。
 #### Dashboard
  * 使用者的個人主頁面。
- * 可在此創建個人 event，新增的個人事項會顯示在畫面左方的 information card 中。
- * 若使用者所屬的球隊裡，有人新增團隊事項，該團隊事項會同步更新在個人頁面的 
+ ** 可在此創建個人 event，新增的個人事項會顯示在畫面左方的 information card 中。
+ ** 若使用者所屬的球隊裡，有人新增團隊事項，該團隊事項會同步更新在個人頁面的 
    information card 中。
- * 所有的 infomation card 點擊可以查看細節、刪除事項、更新內容。
- * 
+ ** 所有的 infomation card 點擊可以查看細節、刪除事項、更新內容。
+ ** 
 #### Event
  * 
 #### Achievement
