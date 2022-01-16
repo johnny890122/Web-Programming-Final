@@ -28,6 +28,7 @@ app.get("/*", function(req, res){
 
 
 
+
 const pubSub = new PubSub();
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
@@ -52,7 +53,6 @@ const server = new GraphQLServer({
   },
 });
 
-server.applyMiddleWare({app});
 
 mongo();
 

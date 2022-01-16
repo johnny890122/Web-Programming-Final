@@ -2,37 +2,23 @@ import React, { useState } from "react";
 import Template from "../components/Template";
 import {
   Box,
-  Grid,
-  List,
   ListItem,
   Typography,
   Card,
   CardActionArea,
   CardContent,
+  Button,
 } from "@mui/material";
 import {
-  Row,
-  Col,
   Modal,
   Form,
   Input,
-  Button,
-  Space,
   InputNumber,
   Select,
   DatePicker,
   Popconfirm,
-  message,
 } from "antd";
-import SportsScoreIcon from "@mui/icons-material/SportsScore";
-import CircleIcon from "@mui/icons-material/Circle";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import ChangeHistoryTwoToneIcon from "@mui/icons-material/ChangeHistoryTwoTone";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import moment from "moment";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Link } from "react-router-dom";
 import {
   TEAM_SCORE_INIT,
@@ -41,7 +27,6 @@ import {
   DELETE_CONTEST,
 } from "../graphql";
 import { useQuery, useMutation } from "@apollo/client";
-//import UpdateContestForm from "../components/UpdateContestForm";
 
 function Score(props) {
   const CONTEST_KEY = "";
@@ -54,7 +39,11 @@ function Score(props) {
 
   const teamScore = useQuery(TEAM_SCORE_INIT, {
     variables: { teamID: props.nowTeam },
+<<<<<<< HEAD
     fetchPolicy: 'cache-and-network'
+=======
+    fetchPolicy: "cache-and-network",
+>>>>>>> main
   });
   const ScoreData = [];
   if (!teamScore.loading) {
@@ -209,11 +198,20 @@ function Score(props) {
               to={{
                 pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`,
               }}
+<<<<<<< HEAD
               onClick={() => {                
                 let cID =  score.contestID;
                 localStorage.setItem('CONTEST_KEY' ,cID );
                 console.log("now in contest:", score.contestTitle, cID );
               }}>
+=======
+              onClick={() => {
+                let cID = score.contestID;
+                localStorage.setItem("CONTEST_KEY", cID);
+                console.log("now in contest:", score.contestTitle, cID);
+              }}
+            >
+>>>>>>> main
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
@@ -268,9 +266,14 @@ function Score(props) {
               okText="Yes"
               cancelText="No"
             >
-              <Button type="primary" danger style={{ margin: "0 8px" }}>
-                Delete
-              </Button>
+              <DeleteOutlineOutlinedIcon
+                style={{
+                  marginLeft: "1.25rem",
+                  fontSize: "2rem",
+                  color: "red",
+                  cursor: "pointer",
+                }}
+              />
             </Popconfirm>
           </ListItem>
         ))}
