@@ -39,11 +39,7 @@ function Score(props) {
 
   const teamScore = useQuery(TEAM_SCORE_INIT, {
     variables: { teamID: props.nowTeam },
-<<<<<<< HEAD
     fetchPolicy: 'cache-and-network'
-=======
-    fetchPolicy: "cache-and-network",
->>>>>>> main
   });
   const ScoreData = [];
   if (!teamScore.loading) {
@@ -198,20 +194,11 @@ function Score(props) {
               to={{
                 pathname: `/team/${breadItem[1]}/Score/${score.contestTitle}/detail`,
               }}
-<<<<<<< HEAD
-              onClick={() => {                
+              onClick={() => {
                 let cID =  score.contestID;
                 localStorage.setItem('CONTEST_KEY' ,cID );
                 console.log("now in contest:", score.contestTitle, cID );
               }}>
-=======
-              onClick={() => {
-                let cID = score.contestID;
-                localStorage.setItem("CONTEST_KEY", cID);
-                console.log("now in contest:", score.contestTitle, cID);
-              }}
-            >
->>>>>>> main
               <Card>
                 <CardActionArea sx={{ width: 800, height: 140 }}>
                   <CardContent sx={{ p: 2 }}>
