@@ -20,7 +20,7 @@
   * (yarn) `cd backend` && `yarn add`
  3. Set up database
   * Make a copy of `.env.defaults (./backend)` and rename it as `.env`
-  * Fill in your `MONGO_URL` (https://www.mongodb.com)
+  * Fill in your `MONGO_URL` (Visit https://www.mongodb.com for more.)
  4. Open a terminal windows
   * (npm) `cd frontend` && `npm start`
   * (yarn) `cd frontend` && `yarn start`
