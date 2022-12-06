@@ -216,7 +216,6 @@ const SignUp = () => {
       setAlert(err);
       setAlertSeverity("error");
       setAlertVisibility("block");
-      setAlertMessageBody("test")
     },
   });
 
