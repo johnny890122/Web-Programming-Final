@@ -39,7 +39,7 @@
 #### Log in
  * 完成申請後使用該組帳號密碼登入。
 
-<img src="./pic/sign_up.gif" width="700">
+<img src="./pic/sign_up.gif" width="800">
 
 ### User 個人頁面 :
 #### User Setting
