@@ -154,3 +154,6 @@
  * GraphQL
 ### 資料庫
  * MongoDB
+ 
+ ## About us: the best partners! 
+ <img src="./pic/about.png" width="700">
