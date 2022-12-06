@@ -1,4 +1,4 @@
-# Kuan好你ㄉ事 管好你的事 -- Web Programming Final Project
+# Kuan好你ㄉ事！讓我管好你的事！ 
 
 ## 簡介
 這是一個能夠簡單管理個人及團隊事務的網站。  
