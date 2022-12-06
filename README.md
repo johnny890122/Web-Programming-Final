@@ -30,18 +30,18 @@
  6. Open http://localhost:3000 in your browser and enjoy! 
 
 ## 功能介紹
-### Sign up / Log in 頁面 :
+### ⚾ Sign up / Log in 頁面 :
 #### Sign up
  * 初次使用需申請一個新的帳號，必要資訊為電子郵件、帳號、密碼。
- * 填寫頁面有設計防呆機制，確保填寫的資料格式正確。
+ * 頁面有設計防呆機制，例如：帳號密碼長度、該帳號是否已被註冊等等，確保填寫的個人資料有效。
  * 密碼使用 bcryptjs 加密後存入資料庫。
 
 #### Log in
  * 完成申請後使用該組帳號密碼登入。
 
-<img src="./pic/sign_up.gif" width="800">
+<img src="./pic/signup.gif" width="800">
 
-### User 個人頁面 :
+### ⚾ User 個人頁面 :
 #### User Setting
  * 首次登入時須設定用戶名稱，顯示在個人及球隊頁面。
  * 後續的登入中，點擊 setting 可以修改用戶名稱，也可以查看帳戶資訊。
@@ -64,7 +64,7 @@
  * 顯示使用者參加的所有團隊，點及即可進入團隊頁面。
  * 使用者也可以在此創建團隊，並加入已註冊的用戶做為團隊成員。
 
-### Team 團隊頁面 :
+### ⚾ Team 團隊頁面 :
 #### TeamHome 
  * 進入團隊頁面後，畫面左側新增團隊頁面專用的 Navbar (Home、Event、Post、Member、Score、Vote)。
  * 團隊首頁可顯示最近幾項活動、公告、投票、比賽紀錄。
