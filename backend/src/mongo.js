@@ -10,4 +10,5 @@ export default () => {
     })
     .then((res) => console.log("mongo db connection created"))
     .catch((res) => console.log("mongo db connection has not created")); // 定義 Mongo DB 的連線
+
 };

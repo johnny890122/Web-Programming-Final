@@ -83,6 +83,7 @@ const SignUp = () => {
       setAlertVisibility("inline-block");
       setAlertSeverity("error");
       setAlertMessageBody("請完整填寫正確格式的資訊！");
+
     }
   };
 
@@ -215,6 +216,7 @@ const SignUp = () => {
       setAlert(err);
       setAlertSeverity("error");
       setAlertVisibility("block");
+      setAlertMessageBody("test")
     },
   });
 
