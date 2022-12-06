@@ -1,40 +1,35 @@
 # Kuan好你ㄉ事！讓我管好你的事！ 
 
 ## 簡介
-這是一個能夠簡單管理個人及團隊事務的網站。  
-我們的靈感來自系女排每位迷迷糊糊的隊員以及各種繁雜的球隊事務，透過這個網站，球隊幹部可以輕鬆管理活動、公告、投票、比賽紀錄等重要資訊。  
-使用者在個人頁面可以清楚看到自己及參與的球隊的所有活動日程，球隊頁面則可以提供活動日程、公告訊息、投票活動、比賽紀錄等功能。  
-透過這次的專案，希望能幫助到所有事情太多煩不完的無力小老百姓。
+這是一個針對系上球隊開發，能夠簡單管理個人及球隊事務的網站。
+
+在個人頁面中，使用者除了可以查看自己的日常行程外，還能清楚看到自己所在球隊的活動日程；在球隊頁面則提供了公告訊息、投票、比賽紀錄、新增活動等功能，讓球隊幹部可以輕鬆傳達各種重要資訊。
+
+透過這次的專案，希望能幫助到所有事情太多、煩不完的無力小老百姓。🥳
+
 #### GitHub repo :  https://github.com/johnny890122/Web-Programming-Final  
 #### 影片 demo: https://youtu.be/RN1N1_OHGTE
+此為 110-1 黃鐘揚教授開設的「網路服務程式設計」期末專案。
 
-## 組員
- * 經濟四 - 錢紫翎
- * 經濟四 - 張祥賢 
- * 經濟五 - 陳又加
+## 如何在 localhost 安裝與測試
+ 1. Clone this repo: `git clone https://github.com/johnny890122/Web-Programming-Final`
+ 2. Install frontend & backend packages (You can choose one of them to install.)
+  * (npm) `cd frontend` && `npm install`
+  * (npm) `cd backend` && `npm install`
+  * (yarn) `cd frontend` && `yarn add`
+  * (yarn) `cd backend` && `yarn add`
+ 3. Set up database
+  * Make a copy of `.env.defaults (./backend)` and rename it as `.env`
+  * Fill in your `MONGO_URL` (https://www.mongodb.com)
+ 4. Open a terminal windows
+  * (npm) `cd frontend` && `npm start`
+  * (yarn) `cd frontend` && `yarn start`
+ 5. Open another terminal windows
+  * (npm) `cd backend` && `npm run server`
+  * (yarn) `cd backend` && `yarn server`
+ 6. Open http://localhost:3000 in your browser and enjoy! 
 
-## 使用方式與功能
-
-### 如何在 localhost 安裝與測試
- 1. Clone repo
- 2. 安裝 frontend & backend packages
-  * (npm) cd frontend && npm install
-  * (npm) cd backend && npm install
-  * (yarn) cd frontend && yarn add
-  * (yarn) cd backend && yarn add
- 3. .env file
-  * 將 .env.defaults (./backend) 的內容複製為 .env
-  * 填入自己的 MONGO_URL
- 4. 開啟第 1 個 terminal windows
-  * (npm) cd frontend && npm start
-  * (yarn) cd frontend && yarn start
- 5. 開啟第 2 個 terminal windows
-  * (npm) cd backend && npm run server
-  * (yarn) cd backend && yarn server 
- 6. 打開 http://localhost:3000 
-  * 開始使用!
-
-
+## 功能介紹
 ### Sign up / Log in 頁面 :
 #### Sign up
  * 初次使用需申請一個新的帳號，必要資訊為電子郵件、帳號、密碼。
@@ -138,6 +133,12 @@
     尤其是做 final的時候深感功力大增，hack的時候不會的東西突然都會了...  
     希望球隊的人會喜歡，有機會的話也想再把它的功能弄得更完整。  
     謝謝教授、助教、組員、Stack Overflow 跟 Youtube 上面的外國人老師們。  
+
+
+## 組員
+ * 經濟四 - 錢紫翎
+ * 經濟四 - 張祥賢 
+ * 經濟五 - 陳又加
 
 ## 使用與參考之框架/模組/套件
 ### 前端
