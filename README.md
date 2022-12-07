@@ -63,6 +63,8 @@
  * 顯示使用者參加的所有團隊，點擊進入團隊頁面。
  * 使用者也可以在此創建自己的團隊，並加入已註冊的用戶做為團隊成員。
 
+<img src="./pic/user.gif" width="800">
+
 ### ⚾ Team 頁面 :
 #### Team Home 
  * 進入團隊頁面後，畫面左側新增該團隊專用的 NavBar，功能包含：Home、Event、Post、Member、Score、Vote。
