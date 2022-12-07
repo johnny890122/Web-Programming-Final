@@ -113,6 +113,7 @@
     4. 各選項及其得票數。  
  * 使用者勾選選項及可參與投票，票數會在下次檢視詳細內容時更新。  
  * 使用者取消勾選選項，即可取消投票。  
+<img src="./pic/team.gif" width="800">
 
  ## About us: the best partners!
  * Special thanks to Kurt for his contribution in the depolyment! 
