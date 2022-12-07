@@ -117,15 +117,13 @@
 
 ## 使用與參考之框架/模組/套件
 ### 前端
- * React
+ * React-JS
  * Apollo GraphQL
  * MUI
- * antd
- * full Calendar
+ * Antd
+ * Full Calendar
 ### 後端
- * Node.js
+ * Node-JS
  * GraphQL
 ### 資料庫
  * MongoDB
- 
-
