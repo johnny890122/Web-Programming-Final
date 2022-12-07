@@ -115,8 +115,8 @@
  * 使用者取消勾選選項，即可取消投票。  
 <img src="./pic/team.gif" width="800">
 
- ## About us: the best partners!
- * Special thanks to Kurt for his contribution in the depolyment! 
+ ## About us
+ * 特別感謝 Kurt 協助 Deployment 相關問題！
  <img src="./pic/about.png" width="700">
 
 ## 使用與參考之框架/模組/套件
