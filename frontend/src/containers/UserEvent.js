@@ -9,6 +9,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
 import { Modal } from "antd";
 import CreateUserEvent from "../containers/CreateUserEvent";
+import { Box } from "@mui/material";
 
 /*
 讀取、回傳 event資料
@@ -74,9 +75,9 @@ function UserEvent(props) {
       locale="zh-tw" // 中文化
       events={EventData}
       selectable={true}
-      dateClick={(info) =>
-        setDateClicked(info.date.getTime()) & setIsModalVisible(true)
-      }
+      // dateClick={(info) =>
+      //   setDateClicked(info.date.getTime()) & setIsModalVisible(true)
+      // }
     />
   );
 
@@ -93,25 +94,27 @@ function UserEvent(props) {
   );
 
   const eventlist = (
-    <div className="user-event">
+    <div className="create-event-page">
       <ViewBox>
         <CalendarView />
       </ViewBox>
 
       <Modal
+        style={{width:"700px"}}
         visible={isModalVisible}
         onOk={() => setIsModalVisible(false)}
-        style={{ zIndex: 1200 }}
         footer={[
           <Button key="ok" onClick={() => setIsModalVisible(false)}>
             {" "}
             Cancel{" "}
           </Button>,
         ]}
-      >
+        >
         {createEvent}
       </Modal>
+
     </div>
+
   );
 
   return (

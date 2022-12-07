@@ -182,7 +182,6 @@ function TeamPost(props) {
         </div>
 
         {
-          postTitle & postContent ? 
           <Button
           onClick={modalMode === "edit" ? onSave : onSubmit}
           sx={{ m: 2 }}
@@ -192,7 +191,7 @@ function TeamPost(props) {
           htmltype="submit"
         >
           {modalMode === "edit" ? "Save" : "Submit"}
-        </Button > : <></>
+        </Button > 
         }
        
       </Form>
@@ -285,8 +284,8 @@ function TeamPost(props) {
           <ListItem key={post.id} style={{flexDirection: "row", width: "400px"}}>
             <Card>
                 <CardContent sx={{ p: 2 }}>
-                  <Box sx={{ m: 1, p: 1 }} style={{width: "400px"}} >
-                    <Typography gutterBottom variant="h4" component="div">
+                  <Box sx={{ m: 1, p: 1 }} style={{ width: "380px", height: "200px"}} >
+                    <Typography gutterBottom variant="h4" component="div" style={{ width: "300px"}}>
                       {post.title}
                     </Typography>
 
@@ -308,8 +307,8 @@ function TeamPost(props) {
                       {new Date(post.time).toDateString()}
                     </Typography>
 
-                    <Typography gutterBottom variant="body1" component="div">
-                      <ShortTextIcon sx={{ fontSize: "small" }} />{" "}
+                    <Typography gutterBottom variant="body1" component="div" style={{ width: "300px"}}>
+                      <ShortTextIcon sx={{ fontSize: "small" }} />
                       {post.content.slice(0, 30)} ...
                     </Typography>
                   </Box>

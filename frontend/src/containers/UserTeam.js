@@ -23,15 +23,16 @@ function UserTeam(props) {
   const AllTeamData = [];
   try {
     console.log(data);
-    data.initTeam.map((i) =>
-      AllTeamData.push({
-        id: i.teamID,
-        name: i.teamName,
-        description: i.teamDescription,
-        type: i.teamType,
-      })
-    );
+  data.initTeam.filter( (i) => i!= null).map((i) =>
+    AllTeamData.push({
+      id: i.teamID,
+      name: i.teamName,
+      description: i.teamDescription,
+      type: i.teamType,
+    })
+  );
   } catch (e) {}
+
 
   const TEAM_KEY = "nowTeam";
 
