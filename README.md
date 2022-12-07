@@ -112,7 +112,8 @@
  * 使用者勾選選項及可參與投票，票數會在下次檢視詳細內容時更新。  
  * 使用者取消勾選選項，即可取消投票。  
 
- ## About us: the best partners! 
+ ## About us: the best partners!
+ * Special thanks to Kurt for his contribution in the depolyment! 
  <img src="./pic/about.png" width="700">
 
 ## 使用與參考之框架/模組/套件
