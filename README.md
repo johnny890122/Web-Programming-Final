@@ -69,7 +69,7 @@
  * 進入團隊頁面後，畫面左側新增團隊頁面專用的 Navbar (Home、Event、Post、Member、Score、Vote)。
  * 團隊首頁可顯示最近幾項活動、公告、投票、比賽紀錄。
  * 點擊各區塊的 VIEW ALL 按鈕觀看完整資訊。
-
+ <img src="./pic/teamHome.gif" width="800">
  #### Event
  * 可依照條件篩選顯示的活動 (全部、未來、過去等)。
  * 點擊 CREATE 可新增活動並顯示在團隊頁面及所有成員的個人頁面。
